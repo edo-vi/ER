@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
@@ -48,7 +47,7 @@
                <children>
                   <Label id="nameLabel" fx:id="nameLabel" layoutX="24.0" layoutY="35.0" prefHeight="21.0" prefWidth="107.0" style="-fx-font-size: 20;" text="Nome" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="30.0" />
                   <Label id="surnameLabel" fx:id="surnameLabel" layoutX="24.0" layoutY="64.0" prefHeight="21.0" prefWidth="133.0" style="-fx-font-size: 20;" text="Cognome" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="70.0" />
-                  <TableView fx:id="table" layoutY="200.0" prefHeight="400.0" prefWidth="650.0" style="-fx-background-color: black;">
+                  <TableView fx:id="table" layoutY="200.0" prefHeight="400.0" prefWidth="650.0" style="-fx-background-color: black;" fixedCellSize="31">
                     <columns>
                       <TableColumn prefWidth="180.0" resizable="false" text="Heart Rate">
                           <cellValueFactory>
@@ -67,7 +66,7 @@
                     </TableColumn>
                     <TableColumn prefWidth="130.0" resizable="false" text="SBP">
                         <cellValueFactory>
-                            <PropertyValueFactory property="diastolicPressure" />
+                            <PropertyValueFactory property="systolicPressure" />
                         </cellValueFactory>
                     </TableColumn>
                     </columns>
@@ -87,10 +86,10 @@
                <children>
                   <LineChart fx:id="hrGraphic" prefHeight="300.0" prefWidth="440.0" title="Heart Rate">
                      <xAxis>
-                        <CategoryAxis side="BOTTOM" tickLabelFill="WHITE" />
+                        <NumberAxis side="BOTTOM" tickLabelFill="WHITE" fx:id="xhrAxis" />
                      </xAxis>
                      <yAxis>
-                        <NumberAxis side="LEFT" tickLabelFill="WHITE" />
+                        <NumberAxis fx:id="yhrAxis" side="LEFT" tickLabelFill="WHITE" />
                      </yAxis>
                      <effect>
                         <Lighting diffuseConstant="1.23" specularConstant="0.0" specularExponent="40.0" surfaceScale="0.0">
@@ -105,10 +104,10 @@
                   </LineChart>
                   <LineChart fx:id="bpGraphic" prefHeight="300.0" prefWidth="440.0" title="DBP / SBP">
                      <xAxis>
-                        <CategoryAxis side="BOTTOM" tickLabelFill="WHITE" />
+                        <NumberAxis side="BOTTOM" tickLabelFill="WHITE" fx:id="xbpAxis" />
                      </xAxis>
                      <yAxis>
-                        <NumberAxis side="LEFT" tickLabelFill="WHITE" />
+                        <NumberAxis fx:id="ybpAxis" side="LEFT" tickLabelFill="WHITE" />
                      </yAxis>
                      <effect>
                         <Lighting diffuseConstant="1.23" specularConstant="0.0" specularExponent="40.0" surfaceScale="0.0">

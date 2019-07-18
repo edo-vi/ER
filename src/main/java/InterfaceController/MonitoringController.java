@@ -1,10 +1,8 @@
 package InterfaceController;
 
-import Component.LoginComponent;
 import Entities.Monitoring;
 import Entities.Patient;
 import Entities.Recovery;
-import State.State;
 import State.StateEvent;
 import State.Store;
 import State.StringCommand;
@@ -14,7 +12,7 @@ import io.reactivex.subjects.Subject;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.chart.LineChart;
+import javafx.scene.chart.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 
@@ -32,35 +30,109 @@ public class MonitoringController {
     @FXML private Label sbpLabel;
     @FXML private LineChart hrGraphic;
     @FXML private LineChart bpGraphic;
+    @FXML private NumberAxis xhrAxis;
+    @FXML private NumberAxis xbpAxis;
+    @FXML private NumberAxis yhrAxis;
+    @FXML private NumberAxis ybpAxis;
     private Recovery activeRecovery;
     private Subject<StateEvent> stream;
     private Disposable dis;
+    private int counter = 1;
+    private XYChart.Series seriesHR = new XYChart.Series();
+    private XYChart.Series seriesS = new XYChart.Series();
+    private XYChart.Series seriesD = new XYChart.Series();
 
     public MonitoringController(Store store, Subject<StateEvent> stream) {
         this.store = store;
         this.stream = stream;
-        // iscrizione
+
         try {
             dis.dispose();
-        } catch (NullPointerException e) {}
+        } catch (NullPointerException e) {
+        }
         dis = this.stream.subscribe(se -> {
             String name = se.command().name();
-            if (name.equals("GENERATE_BP") || name.equals("GENERATE_HEART_RATE")
-                    || name.equals("GENERATE_TEMPERATURE")) {
-                ObservableList<Monitoring> data  = table.getItems();
+            if (name.equals("GENERATE_BP") || name.equals("GENERATE_HEART_RATE") || name.equals("GENERATE_TEMPERATURE")) {
+                ObservableList<Monitoring> data = table.getItems();
+                if(table.getItems().size() > 10)
+                    table.getItems().remove(9);
                 Monitoring lastMonitoring = activeRecovery.getLastMonitoring();
-                data.add(0,lastMonitoring);
+                data.add(0, lastMonitoring);
 
                 Platform.runLater(() -> hrLabel.setText(String.valueOf(lastMonitoring.getHeartRate())));
-                Platform.runLater(() ->tempLabel.setText(String.valueOf(lastMonitoring.getTemperature()).substring(0,4)));
-                Platform.runLater(() ->dbpLabel.setText(String.valueOf(lastMonitoring.getDiastolicPressure())));
-                Platform.runLater(() ->sbpLabel.setText(String.valueOf(lastMonitoring.getSystolicPressure())));
+                Platform.runLater(() -> tempLabel.setText(String.valueOf(lastMonitoring.getTemperature()).substring(0, 4)));
+                Platform.runLater(() -> dbpLabel.setText(String.valueOf(lastMonitoring.getDiastolicPressure())));
+                Platform.runLater(() -> sbpLabel.setText(String.valueOf(lastMonitoring.getSystolicPressure())));
+
+                if (name.equals("GENERATE_BP") || name.equals("GENERATE_HEART_RATE")) {
+                    Platform.runLater(() -> yhrAxis.setLabel("bpm"));
+                    Platform.runLater(() -> seriesHR.setName("HR"));
+                    Platform.runLater(() -> {
+                        xhrAxis.setLowerBound((counter - 11 > 0) ? counter - 11 : 0);
+                        xhrAxis.setUpperBound(counter + 1);
+                    });
+                    Platform.runLater(() -> {
+                        XYChart.Data elem = new XYChart.Data(counter, lastMonitoring.getHeartRate());
+                        ObservableList<XYChart.Data> s = seriesHR.getData();
+                        if (s.size() > 10)
+                            s.remove(0);
+                        s.add(elem);
+                        seriesHR.setData(s);
+                        hrGraphic.getData().add(seriesHR);
+                    });
+
+                    Platform.runLater(() -> ybpAxis.setLabel("mmHg"));
+                    Platform.runLater(() -> {
+                        seriesS.setName("SBP");
+                        seriesD.setName("DBP");
+                    });
+                    Platform.runLater(() -> {
+                        xbpAxis.setLowerBound((counter - 11 > 0) ? counter - 11 : 0);
+                        xbpAxis.setUpperBound(counter + 1);
+                    });
+                    Platform.runLater(() -> {
+                        XYChart.Data elem = new XYChart.Data(counter, lastMonitoring.getSystolicPressure());
+                        ObservableList<XYChart.Data> s = seriesS.getData();
+                        if (s.size() > 10)
+                            s.remove(0);
+                        s.add(elem);
+                        seriesS.setData(s);
+
+                        elem = new XYChart.Data(counter, lastMonitoring.getDiastolicPressure());
+                        s = seriesD.getData();
+                        if (s.size() > 10)
+                            s.remove(0);
+                        s.add(elem);
+                        seriesD.setData(s);
+
+                        bpGraphic.getData().addAll(seriesS, seriesD);
+
+                        counter++;
+                    });
+                }
             }
         });
     }
 
     @FXML public void initialize() {
         setInfo(0);
+        xhrAxis.setAutoRanging(false);
+        xhrAxis.setLowerBound(counter-1);
+        xhrAxis.setUpperBound(counter+1);
+        xhrAxis.setTickUnit(1.0);
+        yhrAxis.setAutoRanging(false);
+        yhrAxis.setLowerBound(40.0);
+        yhrAxis.setUpperBound(160);
+        yhrAxis.setTickUnit(40.0);
+
+        xbpAxis.setAutoRanging(false);
+        xbpAxis.setLowerBound(counter-1);
+        xbpAxis.setUpperBound(counter+1);
+        xbpAxis.setTickUnit(1.0);
+        ybpAxis.setAutoRanging(false);
+        ybpAxis.setLowerBound(40.0);
+        ybpAxis.setUpperBound(220);
+        ybpAxis.setTickUnit(40.0);
     }
 
     @FXML protected void login() {
@@ -76,8 +148,7 @@ public class MonitoringController {
         store.update(new StringCommand("SHOW_ALARMS"));
     }
 
-    @FXML protected void setInfo(int index) {
-
+    @FXML private void setInfo(int index) {
         try {
             this.activeRecovery = store.poll().getAllRecoveries().get(index);
             Patient p = activeRecovery.getPatient();
@@ -87,10 +158,7 @@ public class MonitoringController {
             data.addAll(p.getRecoveries().stream().flatMap(r -> r.getMonitorings().stream()).collect(Collectors.toList()));
 
         } catch (Exception e) {
-
+            System.out.println("Some error occured");
         }
-
      }
-
-
 }

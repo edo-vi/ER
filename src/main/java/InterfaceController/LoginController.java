@@ -20,7 +20,6 @@ public class LoginController {
     private Store<StringCommand> store;
     @FXML private TextField userField;
     @FXML private PasswordField passField;
-    private Stage stage = null;
 
     public LoginController(Store store, Subject<StateEvent> stream) {
         this.store = store;

@@ -7,7 +7,7 @@ import java.util.Random;
 public class BPGenerator implements GeneratorInterface {
     private final Random randomS = new Random();
     private double meanS = 120.0;
-    private double varianceS = 9.5;
+    private double varianceS = 9.25;
 
     private final Random randomD = new Random();
     private double meanD = 77.5;
