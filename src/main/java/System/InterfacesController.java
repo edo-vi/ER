@@ -1,8 +1,11 @@
 package System;
 
+import State.StringCommand;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.util.HashMap;
 
@@ -30,9 +33,22 @@ public class InterfacesController {
         main.setResizable(false);
         main.setTitle(title);
         main.sizeToScene();
+        main.toFront();
+        main.show();
+
+        main.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            public void handle(WindowEvent we) {
+                Sistema.getInstance().getStore().update(new StringCommand("LOGOUT"));
+            }
+        });
     }
 
     public void deactivate() {
         main.close();
+    }
+
+    public void toFront() {
+        main.toFront();
+        main.show();
     }
 }

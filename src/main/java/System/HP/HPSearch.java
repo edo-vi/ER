@@ -6,7 +6,7 @@ public class HPSearch<C extends Command> implements HPInterface{
     private String file;
 
     public HPSearch() {
-        this.file = "/A_HP_Search.fxml";
+        this.file = "/HP_Search.fxml";
     }
 
     public String getFile() {

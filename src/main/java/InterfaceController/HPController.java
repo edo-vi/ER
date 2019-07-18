@@ -19,15 +19,12 @@ public class HPController {
     private final Store<StringCommand> store;
     private final Sistema sys = Sistema.getInstance();
     @FXML private TableView<Patient> table = new TableView<>();
-
-    Disposable dis;
+    private Disposable dis;
 
     public HPController(Store<StringCommand> store, Subject<StateEvent> stream) {
-
         this.store = store;
         ObservableList<Patient> data  = table.getItems();
         data.addAll(store.poll().getPatients());
-
 
         try {
             dis.dispose();
@@ -39,15 +36,11 @@ public class HPController {
             data2.removeAll(table.getItems());
             data2.addAll(se.state().getPatients());
         });
-
     }
 
-    @FXML protected void showPatients() {
-        //TODO: get from state patients and write them into the table
-        /*ObservableList<Patient> data  = table.getItems();
-        data.removeAll(table.getItems());
-        data.addAll(store.poll().getPatients());*/
-        sys.setInterface("HPDF", HPComponent.HPTitle);
+    @FXML protected void showMonitoring() {
+        store.update(new StringCommand("SHOW_MONITORING"));
+        store.update(new StringCommand("START_MONITORING"));
     }
 
     @FXML protected void search() {
@@ -56,12 +49,16 @@ public class HPController {
     @FXML protected void dismissPatient() {
         sys.setInterface("HPD", HPComponent.HPTitle);
     }
-    @FXML protected void showMonitoring() {
+    @FXML protected void showLast2H() {
         sys.setInterface("HPM", HPComponent.HPTitle);
     }
 
     @FXML protected void logout() {
         store.update(new StringCommand("LOGOUT"));
         sys.setInterface("login", LoginComponent.loginTitle);
+    }
+
+    @FXML protected void close() {
+        sys.endSystem();
     }
 }

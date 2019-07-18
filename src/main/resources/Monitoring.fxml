@@ -28,11 +28,11 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-                  <MenuItem mnemonicParsing="false" text="Login" />
+                  <MenuItem mnemonicParsing="false" text="Login" onAction="#login"/>
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" text="Alarms Test" />
+                  <MenuItem mnemonicParsing="false" text="Alarms Test" onAction="#showAlarmController"/>
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" text="Close" />
+                  <MenuItem mnemonicParsing="false" text="Close" onAction="#close"/>
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
@@ -46,8 +46,8 @@
          <children>
             <AnchorPane prefHeight="600.0" prefWidth="650.0">
                <children>
-                  <Label layoutX="24.0" layoutY="35.0" prefHeight="21.0" prefWidth="107.0" style="-fx-font-size: 20;" text="Nome" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="30.0" fx:id="nameLabel"/>
-                  <Label layoutX="24.0" layoutY="64.0" prefHeight="21.0" prefWidth="133.0" style="-fx-font-size: 20;" text="Cognome" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="70.0" fx:id="surnameLabel"/>
+                  <Label layoutX="24.0" layoutY="35.0" prefHeight="21.0" prefWidth="107.0" style="-fx-font-size: 20;" text="Nome" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="30.0" fx:id="nameLabel" id="nameLabel"/>
+                  <Label layoutX="24.0" layoutY="64.0" prefHeight="21.0" prefWidth="133.0" style="-fx-font-size: 20;" text="Cognome" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="70.0" fx:id="surnameLabel" id="surnameLabel"/>
                   <TableView layoutY="200.0" prefHeight="400.0" prefWidth="650.0" style="-fx-background-color: black;" fx:id="dataTable">
                     <columns>
                       <TableColumn prefWidth="180.0" text="Heart Rate">
@@ -80,7 +80,7 @@
                   <Label layoutX="301.0" layoutY="141.0" prefHeight="21.0" prefWidth="17.0" text="°C" />
                   <Label layoutX="465.0" layoutY="141.0" style="-fx-font-size: 13;" text="mmHg" />
                   <Label layoutX="590.0" layoutY="141.0" style="-fx-font-size: 13;" text="mmHg" />
-                  <Label layoutX="523.0" layoutY="23.0" prefHeight="45.0" prefWidth="119.0" style="-fx-font-size: 30;" text="Room 10" />
+                  <Label layoutX="523.0" layoutY="23.0" prefHeight="45.0" prefWidth="119.0" style="-fx-font-size: 30;" text="Room 1" />
                </children>
             </AnchorPane>
             <VBox prefHeight="200.0" prefWidth="550.0">

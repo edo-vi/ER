@@ -3,14 +3,13 @@ import Entities.*;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class State implements Serializable {
     private User userCheck;
     private User user;
     private List<Patient> patients = new ArrayList<>();
-    private List<Monitoring> monitorings = new ArrayList<>();
-    private Recovery mainRecovery;
-    private List<Recovery> activeRecoveries;
+    private int mainRecoveryIndex;
 
     // Must be the initial state
     public State() {
@@ -82,40 +81,56 @@ public class State implements Serializable {
         this.patients.add(patient);
     }
 
-    public List<Monitoring> getMonitorings() {
-        return monitorings;
+    public void deletePatient(int index) {
+        this.patients.remove(index);
     }
 
-    public void setMonitorings(List<Monitoring> monitorings) {
-        this.monitorings = monitorings;
+    public void deletePatient(Patient patient) {
+        this.patients.remove(patient);
     }
 
-    public void addMonitoring(Monitoring monitoring) {
-        this.monitorings.add(monitoring);
+    public int getMainRecoveryIndex() {
+        return this.mainRecoveryIndex;
     }
 
+    public void setMainRecoveryIndex(int mainRecoveryIndex) {
+        this.mainRecoveryIndex = mainRecoveryIndex;
+    }
 
     public Recovery getMainRecovery() {
-        return mainRecovery;
+        return this.getActiveRecoveries().get(mainRecoveryIndex);
     }
 
-    public void setMainRecovery(Recovery mainRecovery) {
-        this.mainRecovery = mainRecovery;
+    public List<Recovery> getAllRecoveries() {
+        return patients.stream()
+                .flatMap(p -> p.getRecoveries().stream())
+                .collect(Collectors.toList());
     }
 
     public List<Recovery> getActiveRecoveries() {
-        return activeRecoveries;
+        return patients.stream()
+                .flatMap(p -> p.getRecoveries().stream().filter(Recovery::isActive))
+                .collect(Collectors.toList());
     }
 
-    public void setActiveRecoveries(List<Recovery> activeRecoveries) {
-        this.activeRecoveries = activeRecoveries;
+    public List<Monitoring> getActiveMonitorings() {
+        return this.getActiveRecoveries().stream()
+                .flatMap(r -> r.getMonitorings().stream())
+                .collect(Collectors.toList());
+    }
+
+    public List<Monitoring> getAllMonitorings() {
+        return this.getAllRecoveries().stream()
+                .flatMap(r -> r.getMonitorings().stream())
+                .collect(Collectors.toList());
     }
 
 
     @Override
     public boolean equals(Object oth) {
         return (oth instanceof State) && ((State) oth).getPatients().equals(this.patients)
-                && ((State) oth).getMonitorings().equals(this.monitorings)
-                && ((State) oth).getUser().equals(this.user);
+                && ((State) oth).getUser().equals(this.user)
+                && ((State) oth).getUserCheck().equals(this.userCheck)
+                && ((State) oth).getMainRecoveryIndex() == this.mainRecoveryIndex;
     }
 }

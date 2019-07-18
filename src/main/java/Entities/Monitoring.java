@@ -1,10 +1,13 @@
 package Entities;
 
 import javax.persistence.*;
+import java.io.*;
+import java.sql.Time;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
-public class Monitoring implements Entry{
+public class Monitoring implements Entry {
     @Id
     @GeneratedValue
     @Column(name = "monitoring_id")
@@ -47,8 +50,17 @@ public class Monitoring implements Entry{
 
 
     public Monitoring() {
+
     }
 
+    public Monitoring defaultMonitoring() {
+        this.diastolicPressure = 80;
+        this.systolicPressure = 120;
+        this.temperature = 37;
+        this.heartRate = 75;
+        this.date = new java.sql.Date(new Date().getTime());
+        return this;
+    }
     /**
      * GETTERS AND SETTERS
      */
@@ -106,12 +118,25 @@ public class Monitoring implements Entry{
     }
 
     public String toString() {
-        String s = String.format("{%s, %d, %d, %d, %fd", this.date, this.diastolicPressure, this.systolicPressure ,
-                this.heartRate, this.temperature);
+        try (Writer writer = new BufferedWriter(new FileWriter("monitoring.log", true))) {
 
-        if (recovery != null) s += ", " + this.recovery.getId();
-        s += "}";
+            String s = String.format("{%s, %d, %d, %d, %fd", this.date, this.diastolicPressure, this.systolicPressure ,
+                    this.heartRate, this.temperature);
 
-        return s;
+            if (recovery != null) s += ", " + this.recovery.getId();
+            s += "}";
+
+            writer.write(s + "\n");
+
+            return s;
+        }
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+            System.out.println("Problema di I/O");
+        }
+
+        return null;
     }
 }

@@ -1,11 +1,11 @@
 package System;
 
 import Component.MonitoringComponent;
-import Entities.Monitoring;
 import Entities.Patient;
 import Entities.Recovery;
 import Entities.User;
-import Generator.MonitoringEntry;
+import Generator.DataThread;
+import Generator.Value;
 import State.Reducer;
 import State.ReducerString;
 import State.StringCommand;
@@ -15,6 +15,7 @@ import State.DatabaseService;
 import State.MiddlewareString;
 import State.Middleware;
 import Component.HPComponent;
+import Component.AlarmsComponent;
 
 import Component.LoginComponent;
 import javafx.scene.Scene;
@@ -22,6 +23,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import Main.Tuple;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -30,6 +32,7 @@ public class Sistema {
     private Store<StringCommand> store;
     private InterfacesController controller;
     private Stage monitoringStage = null;
+    private Stage alarmStage = null;
 
     public static Sistema getInstance() {
         if (s == null)
@@ -46,10 +49,31 @@ public class Sistema {
                     s.setUser(new User());
                     return s;
                 })
+                .with("GENERATE_BP", (c, s) -> {
+                    s.getActiveRecoveries().forEach(r -> r.generateMonitoring(Value.BP));
+                    return s;
+                })
+                .with("GENERATE_HEART_RATE", (c, s) -> {
+                    s.getActiveRecoveries().forEach(r -> r.generateMonitoring(Value.HEART_RATE));
+                    return s;
+                })
+                .with("GENERATE_TEMPERATURE", (c, s) -> {
+                    s.getActiveRecoveries().forEach(r -> r.generateMonitoring(Value.TEMPERATURE));
+                    return s;
+                })
                 .with("LOAD")
                 .with("ADD_PATIENT")
-                .with("START_MONITORING")
-                .with("ADD_MONITORING_ENTRY");
+                .with("START_MONITORING")               
+                .with("SHOW_MONITORING")
+                .with("STOP_MONITORING")
+                .with("CLOSE_MONITORING")
+                .with("SHOW_ALARMS")
+                .with("GET_LOGIN", (c, s) -> {
+                    if(s.getUser().isValid())
+                        controller.toFront();
+                    else controller.activate("login", LoginComponent.loginTitle);
+                    return s;
+                });
         Middleware<StringCommand> middleware = new MiddlewareString(monitoringStage)
                 .with("LOGIN", (c, s, m) -> {
                     User u = (User) c.getArg();
@@ -72,63 +96,67 @@ public class Sistema {
                     /*if (rec.size() == 0) {
 
                     }*/
-                    s.setActiveRecoveries(rec);
-                    s.setMainRecovery(rec.get(0));
+                    s.setMainRecoveryIndex(0);
                     return new Tuple<>(new StringCommand("LOADED"), s);
-                }).with("ADD_PATIENT" , (c, s, m) -> {
+                })
+                .with("ADD_PATIENT" , (c, s, m) -> {
                     Patient patient = (Patient) c.getArg();
                     s.addPatient(patient);
                     DatabaseService.addEntry(patient);
                     return new Tuple<>(new StringCommand("ADDED_PATIENT"), s);
-                })
-                .with("ADD_MONITORING_ENTRY", (c,s,m) -> {
-                    MonitoringEntry me = (MonitoringEntry) c.getArg();
-                    List<Monitoring> monitorings = s.getMonitorings();
-                    Monitoring entry = new Monitoring();
-                    if (monitorings.size() == 0) {
-                        entry.setDate(new Date(System.currentTimeMillis()));
-                        entry.setDiastolicPressure(80);
-                        entry.setSystolicPressure(120);
-                        entry.setHeartRate(75);
-                        entry.setTemperature(37.3);
-                    } else {
-                        Monitoring last = monitorings.get(monitorings.size() - 1);
-                        entry.setDate(new Date(System.currentTimeMillis()));
-                        entry.setDiastolicPressure(last.getDiastolicPressure());
-                        entry.setSystolicPressure(last.getSystolicPressure());
-                        entry.setHeartRate(last.getHeartRate());
-                        entry.setTemperature(last.getTemperature());
-                    }
-                    switch(me.getValue()) {
-                        case BP:
-                            entry.setDiastolicPressure(((Tuple<Integer, Integer>) me.getEntry()).fst());
-                            entry.setSystolicPressure(((Tuple<Integer, Integer>) me.getEntry()).snd());
-                            break;
-                        case HEART_RATE:
-                            entry.setHeartRate((int) me.getEntry());
-                            break;
-                        case TEMPERATURE:
-                            entry.setTemperature((double) me.getEntry());
-                    }
-                    s.addMonitoring(entry);
-                    return new Tuple<>(new StringCommand("ADDED_MONITORING"), s);
-                }).with("START_MONITORING", (c,s,m) -> {
+                    })
+                .with("SHOW_MONITORING", (c,s,m) -> {
                     if (monitoringStage == null) {
                         monitoringStage = new Stage();
                         monitoringStage.getIcons().add(new Image("/logo.png"));
-                        monitoringStage.setScene(new Scene(Sistema.getInstance().getInterface("MON")));
+                        monitoringStage.setScene(new Scene(getInterface("MON")));
                         monitoringStage.setTitle(MonitoringComponent.monitoringTitle);
                         monitoringStage.sizeToScene();
+                        monitoringStage.setOnCloseRequest(e -> store.update(new StringCommand("STOP_MONITORING")));
                     }
                     monitoringStage.show();
                     monitoringStage.toFront();
-                    return new Tuple((new StringCommand("SHOW_MONITORING")), s);
+                    return new Tuple<>((new StringCommand("SHOW_MONITORING")), s);
+                })
+                .with("START_MONITORING", (c,s,m) -> {
+                    MiddlewareString x = ((MiddlewareString) m);
+                    if(x.getMonitoring() != null) {
+                        x.getMonitoring().restart();
+                    } else {
+                        DataThread t = new DataThread(store);
+                        x.setMonitoring(t);
+                        t.start();
+                    }
+                    return new Tuple<>(new StringCommand("MONITORING_HAS_STARTED"), s);
+                })
+                .with("STOP_MONITORING", (c,s,m) -> {
+                    ((MiddlewareString) m).getMonitoring().interrupt();
+                    return new Tuple<>(new StringCommand("STOPPED_MONITORING"), s);
+                })
+                .with("CLOSE_MONITORING", (c,s,m) -> {
+                    monitoringStage.close();
+                    return new Tuple<>(new StringCommand("CLOSE_MONITORING"), s);
+                })
+                .with("SHOW_ALARMS", (c,s,m) -> {
+                    if (alarmStage == null) {
+                        alarmStage = new Stage();
+                        alarmStage.getIcons().add(new Image("/logo.png"));
+                        alarmStage.setScene(new Scene(getInterface("ALM")));
+                        alarmStage.setTitle(AlarmsComponent.AlarmsTitle);
+                        alarmStage.sizeToScene();
+                    }
+                    alarmStage.show();
+                    alarmStage.toFront();
+                    return new Tuple<>(new StringCommand("SHOW_ALARMS"), s);
                 });
 
         store = new Store<StringCommand>(new State(), reducer, middleware);
         store.update(new StringCommand("LOAD"));
-        /*store.update(new StringCommand("ADD_PATIENT", new Patient("Roberto", "Posenato", "PSNRBRA373UUS88I",
-                "Verona", new GregorianCalendar(1981, Calendar.FEBRUARY, 11).getTime())));*/
+        /*
+        store.update(new StringCommand("START_MONITORING"));
+        store.update(new StringCommand("ADD_PATIENT", new Patient("Roberto", "Posenato", "PSNRBRA373UUS88I",
+                "Verona", new GregorianCalendar(1981, Calendar.FEBRUARY, 11).getTime())));
+        */
     }
 
     public void setupUI(Stage stage){
@@ -136,11 +164,12 @@ public class Sistema {
             stage.getIcons().add(new Image("/logo.png"));
             this.controller = new InterfacesController(stage);
             this.controller.addInterface("login", new LoginComponent<StringCommand>().getLoader().load());
-            this.controller.addInterface("HPDF", new HPComponent<StringCommand>("default").getLoader().load());
             this.controller.addInterface("HPS", new HPComponent<StringCommand>("search").getLoader().load());
+            this.controller.addInterface("HPSR", new HPComponent<StringCommand>("searchResult").getLoader().load());
             this.controller.addInterface("HPM", new HPComponent<StringCommand>("monitoring").getLoader().load());
-            this.controller.addInterface("HPD", new HPComponent<StringCommand>("dismiss").getLoader().load());
+            this.controller.addInterface("HPD", new HPComponent<StringCommand>("default").getLoader().load());
             this.controller.addInterface("MON", new MonitoringComponent<StringCommand>().getLoader().load());
+            this.controller.addInterface("ALM", new AlarmsComponent<StringCommand>().getLoader().load());
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error during interfaces setup");
