@@ -91,7 +91,7 @@ Ad Elia ed Edoardo invece è stato assegnato il compito di progettare e sviluppar
 \begin{centering}
 	\begin{tikzpicture}
 \begin{umlpackage}[ x=0, y=0]{State}
-\umlclass[x=5.5, template={C}]{Store} {- s: State\\- r: Reducer \\- m: Middleware}{+ poll(): State \\ + update()}
+\umlclass[x=5.5, template={C}]{Store} {- s: State\\- r: Reducer \\- m: Middleware}{+ poll(): State \\ + update(com: C)}
 
 \umlinterface[x=0, y=-3, template={C}]{Reducer}{}{+ run(s: State, c: C): State \\+ with(s: String, f: Function) }
 \umlsimpleclass[x=0, y=-6]{ReducerString}{}{}
@@ -100,12 +100,12 @@ Ad Elia ed Edoardo invece è stato assegnato il compito di progettare e sviluppar
 \umlsimpleclass[x=11, y=-6]{MiddlewareString}{}{}
 
 \umlsimpleclass[x=5.5, y=-3.5]{State} {}{}
-\umlclass[x=5.5, y=-6, template={C}]{StateEvent}{}{}
+\umlsimpleclass[x=5.5, y=-6, template={C}]{StateEvent}{}{}
 
 \umlinterface[ y=-9, x=3]{Command}{}{+ name(): String \\+ getArg(): Object}
 \umlsimpleclass[x=3, y=-12]{StringCommand}
 
-\umlclass[x=9, y=-9]{DatabaseService}{}{}
+\umlsimpleclass[x=9, y=-9]{DatabaseService}{}{}
 
 \umlreal[]{MiddlewareString}{Middleware}
 \umlreal[]{ReducerString}{Reducer}
@@ -118,6 +118,6 @@ Ad Elia ed Edoardo invece è stato assegnato il compito di progettare e sviluppar
 \end{umlpackage}  
 	
 \end{tikzpicture}
-\end{centering}
+\end{centering}\caption{Diagramma di classe del \textit{package} State.}\label{StateClassDiagram}
 \end{figure}
 \end{document}
