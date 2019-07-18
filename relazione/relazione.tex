@@ -1,18 +1,16 @@
-\documentclass[draft, smallextended]{svjour3}
+\documentclass[final, smallextended]{svjour3}
 %opening
 \usepackage[11pt]{extsizes}
-\usepackage[top=2cm,bottom=3cm,left=2.3cm,right=2.3cm, asymmetric]{geometry}
+\usepackage[top=2cm,bottom=3cm,left=2.3cm,right=2.3cm]{geometry}
 
 \title{Relazione progetto di Ingegneria del software 2019}
 \author{***REMOVED***, Elia Piccoli, Marian Statache}
 \date{Luglio 2019}
 \usepackage{tikz}
 \usepackage{pgfopts}
-\usepackage{xstring}
-\usepackage{calc}
-\usepackage{ifthen}
 \usepackage{./tikz-uml}
 \usepackage{babel}[italian]
+\usepackage[latin1]{inputenc}
 \begin{document}
 
 \maketitle
@@ -21,10 +19,23 @@
 
 \section{Ingegneria e sviluppo}
 \subsection{Metodologia del processo di sviluppo}
+La dimensione del team di sviluppo --- tre persone --- e i diversi livelli di interesse relativi agli `ambiti' di programmazione concernenti tale progetto, espressi inizialmente dai soggetti del team, hanno portato alla decisione di suddividere in modo moderatamente netto i compiti assegnati alle diverse persone, perlomeno almeno inizialmente. 
 
-\subsection{Patterns usati}
-\section{Casi d'uso}
+Specificatamente, la decisione è stata quella di assegnare a Marian il compito di creare e sviluppare la maggior parte delle interfacce grafiche di tutti i componenti costituenti il sistema nel suo complesso e quello di ideare e sviluppare la GUI generale, in particolar modo di considerare i modi con cui gli utenti si aspettano di interagire con il sistema e quindi di sviluppare le relative interfacce grafiche accordatamente.
+Ad Elia ed Edoardo invece è stato assegnato il compito di ideare e sviluppare la back-end, l'architettura del sistema generale e le interfacce di comunicazione e interazione dei diversi componenti; pur non avendo definito inizialmente la suddivisione specifica di questi compiti, nel corso dello sviluppo del sistema, a seguito degli iterati processi di specificazione e design, ...  
+%
+%\subsubsection{Ingegneria dei requisiti}
+%
+%\subsubsection{Design del sistema}
+%
+%\subsubsection{Implementazione}
+%
+%\subsubsection{Verifica e convalida}
+%\subsection{Design e struttura del sistema}
+%
+%\section{Specifica del sistema}
 
+\subsection{Casi d'uso}
 \begin{tikzpicture}
 \begin{umlsystem}[x=-.5, fill=red!5]{Casi d'uso}
 \umlusecase[x=1.5]{Inserisce dati anagrafici del paziente}
