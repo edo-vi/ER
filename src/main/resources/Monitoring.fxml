@@ -46,8 +46,8 @@
          <children>
             <AnchorPane prefHeight="600.0" prefWidth="650.0">
                <children>
-                  <Label layoutX="24.0" layoutY="35.0" prefHeight="21.0" prefWidth="107.0" style="-fx-font-size: 20;" text="Nome" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="30.0" fx:id="nameLabel"/>
-                  <Label layoutX="24.0" layoutY="64.0" prefHeight="21.0" prefWidth="133.0" style="-fx-font-size: 20;" text="Cognome" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="70.0" fx:id="surnameLabel"/>
+                  <Label layoutX="24.0" layoutY="35.0" prefHeight="21.0" prefWidth="107.0" style="-fx-font-size: 20;" text="Nome" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="30.0" fx:id="nameLabel" id="nameLabel"/>
+                  <Label layoutX="24.0" layoutY="64.0" prefHeight="21.0" prefWidth="133.0" style="-fx-font-size: 20;" text="Cognome" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="70.0" fx:id="surnameLabel" id="surnameLabel"/>
                   <TableView layoutY="200.0" prefHeight="400.0" prefWidth="650.0" style="-fx-background-color: black;" fx:id="dataTable">
                     <columns>
                       <TableColumn prefWidth="180.0" text="Heart Rate">
