@@ -15,19 +15,19 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-                  <MenuItem mnemonicParsing="false" text="Monitoring" />
+                  <MenuItem mnemonicParsing="false" text="Monitoring" onAction="#showMonitoring"/>
                   <MenuItem mnemonicParsing="false" text="Last week report" />
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" text="Log Out" onAction="#logout"/>
-              <MenuItem mnemonicParsing="false" text="Close"/>
+              <MenuItem mnemonicParsing="false" text="Close" onAction="#close"/>
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="View">
                <items>
-                  <MenuItem mnemonicParsing="false" text="Dimissione paziente" />
+                  <MenuItem mnemonicParsing="false" text="Dimissione paziente" onAction="#dismissPatient"/>
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" text="Dati ultime 2 ore" />
-                  <MenuItem mnemonicParsing="false" text="Cartella clinica" />
+                  <MenuItem mnemonicParsing="false" text="Dati ultime 2 ore" onAction="#showLast2H"/>
+                  <MenuItem mnemonicParsing="false" text="Cartella clinica" onAction="#search"/>
                </items>
             </Menu>
           <Menu mnemonicParsing="false" text="Help">
@@ -41,10 +41,10 @@
          <children>
             <AnchorPane prefHeight="773.0" prefWidth="210.0">
                <children>
-                  <Button layoutY="40.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="Dimissione&#10;paziente" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
-                  <Button layoutY="120.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="Dati ultime&#10;2 ore" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
-                  <Button layoutY="200.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="Cartella&#10;clinica" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
-                  <Button layoutY="695.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 20;" text="Log Out" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
+                  <Button layoutY="40.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="Dimissione&#10;paziente" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" onAction="#dismissPatient"/>
+                  <Button layoutY="120.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="Dati ultime&#10;2 ore" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" onAction="#showLast2H"/>
+                  <Button layoutY="200.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="Cartella&#10;clinica" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" onAction="#search"/>
+                  <Button layoutY="695.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 20;" text="Log Out" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" onAction="#logout"/>
                </children>
             </AnchorPane>
             <AnchorPane prefHeight="773.0" prefWidth="3.0" style="-fx-background-color: grey;" />
