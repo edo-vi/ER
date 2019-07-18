@@ -19,10 +19,10 @@
 
 \section{Ingegneria e sviluppo}
 \subsection{Metodologia del processo di sviluppo}
-La dimensione del team di sviluppo --- tre persone --- e i diversi livelli di interesse relativi agli `ambiti' di programmazione concernenti tale progetto, espressi inizialmente dai soggetti del team, hanno portato alla decisione di suddividere in modo moderatamente netto i compiti assegnati alle diverse persone, perlomeno almeno inizialmente. 
+La dimensione del team di sviluppo --- tre persone --- e i diversi livelli di interesse relativi agli `ambiti' di programmazione concernenti tale progetto, espressi inizialmente dai soggetti del team, hanno portato alla decisione di suddividere in modo moderatamente netto i compiti assegnati alle diverse persone, perlomeno nella fase iniziale, pre-design. 
 
-Specificatamente, la decisione è stata quella di assegnare a Marian il compito di creare e sviluppare la maggior parte delle interfacce grafiche di tutti i componenti costituenti il sistema nel suo complesso e quello di ideare e sviluppare la GUI generale, in particolar modo di considerare i modi con cui gli utenti si aspettano di interagire con il sistema e quindi di sviluppare le relative interfacce grafiche accordatamente.
-Ad Elia ed Edoardo invece è stato assegnato il compito di ideare e sviluppare la back-end, l'architettura del sistema generale e le interfacce di comunicazione e interazione dei diversi componenti; pur non avendo definito inizialmente la suddivisione specifica di questi compiti, nel corso dello sviluppo del sistema, a seguito degli iterati processi di specificazione e design, ...  
+Specificatamente, la decisione è stata quella di assegnare a Marian il compito di creare e sviluppare la maggior parte delle interfacce grafiche di tutti i componenti costituenti il sistema nel suo complesso e quello di ideare e sviluppare la GUI generale, e in particolar modo di considerare i modi con cui gli utenti si aspettano di interagire con il sistema e quindi di sviluppare accordatamente le relative interfacce grafiche.
+Ad Elia ed Edoardo invece è stato assegnato il compito di ideare e sviluppare la back-end, l'architettura del sistema generale e le interfacce di comunicazione e interazione dei diversi componenti. Pur non avendo definito inizialmente la suddivisione specifica di questi compiti, nel corso dello sviluppo del sistema, a seguito della fase di progettazione dove si sono prese decisioni relative ai design patterns migliori da usare --- in particolare il pattern MVC e il pattern Observer --- le aree di progettazione sono state naturalmente divise nello sviluppo dei controllori e modelli dei componenti, assegnata ad Elia, e lo sviluppo e gestione dello stato centralizzato, secondo il pattern Observer, assegnata invece ad Edoardo. Data la fondamentale connessione tra tali due aree da un certo punto in poi lo sviluppo dell'architettura, e in particolar modo l'nterfaccia comune tra stato e controllori, è stata eseguita in modo unico dai i due soggetti che hanno seguito la tecnica di dual programming, secondo la quale il codice è stato scritto insieme, a turno, con l'input dell'altro: questo sia per coadiuvare la comprensione dell'architettura nel suo complesso, sia per permettere di sviluppare codice che sin da subito rispettasse i due diversi approcci di programmazione e che unisse nel modo più chiaro possibile le interfacce tra le due aree.
 %
 %\subsubsection{Ingegneria dei requisiti}
 %
@@ -36,22 +36,23 @@ Ad Elia ed Edoardo invece è stato assegnato il compito di ideare e sviluppare la
 %\section{Specifica del sistema}
 
 \subsection{Casi d'uso}
+\begin{figure}[b]
 \begin{tikzpicture}
 \begin{umlsystem}[x=-.5, fill=red!5]{Casi d'uso}
-\umlusecase[x=1.5]{Inserisce dati anagrafici del paziente}
-\umlusecase[y=-1.2, x=.95]{Inserisce dati somministrazione}
-\umlusecase[x=5.8, y=-2.2]{Inserisce note stato paziente}
-\umlusecase[y=-3.5, x =1.3]{Visualizza dati paziente (ultime due ore)}
-\umlusecase[x=3, y=-5]{Inserisce diagnosi d'ingresso}
-\umlusecase[x=3, y=-6.2]{Aggiunge prescrizioni}
-\umlusecase[x=2.9,  y=-7.4]{Spegne allarmi}
-\umlusecase[x=.6, y=-9]{Visualizza/stampa reports pazienti}
-\umlusecase[x=0, y=-10.2]{Compila lettera di dimissioni}
+\umlusecase[x=1.9, y=-2.]{Inserisce dati anagrafici del paziente}
+\umlusecase[ x=.95]{Inserisce dati somministrazione}
+\umlusecase[x=5.8, y=-1,]{Inserisce note stato paziente}
+\umlusecase[y=-5, x =1.3]{Visualizza dati paziente (ultime due ore)}
+\umlusecase[x=3.9, y=-4]{Inserisce diagnosi d'ingresso}
+\umlusecase[x=3.5, y=-6.3]{Aggiunge prescrizioni}
+\umlusecase[x=3.5,  y=-7.5]{Spegne allarmi}
+\umlusecase[x=.6, y=-9.4]{Visualizza/stampa reports pazienti}
+\umlusecase[x=0, y=-10.8]{Compila lettera di dimissioni}
 \end{umlsystem}
 
 \umlactor[x=-5.5]{Infermiere}
 \umlactor[x=-5.5, y=-9.7]{Primario}
-\umlactor[x=-5.5, y=-5.7]{Medico}
+\umlactor[x=10.2, y=-5.7]{Medico}
 
 \umlassoc{Infermiere}{usecase-1}
 \umlassoc{Infermiere}{usecase-2}
@@ -74,5 +75,7 @@ Ad Elia ed Edoardo invece è stato assegnato il compito di ideare e sviluppare la
 %
 %\umlnote[x=7, y=-7]{incl-1}{note on include dependency}
 \end{tikzpicture}
+
+\end{figure}
 
 \end{document}
