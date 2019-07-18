@@ -153,10 +153,9 @@ public class Sistema {
             stage.getIcons().add(new Image("/logo.png"));
             this.controller = new InterfacesController(stage);
             this.controller.addInterface("login", new LoginComponent<StringCommand>().getLoader().load());
-            this.controller.addInterface("HPDF", new HPComponent<StringCommand>("default").getLoader().load());
             this.controller.addInterface("HPS", new HPComponent<StringCommand>("search").getLoader().load());
             this.controller.addInterface("HPM", new HPComponent<StringCommand>("monitoring").getLoader().load());
-            this.controller.addInterface("HPD", new HPComponent<StringCommand>("dismiss").getLoader().load());
+            this.controller.addInterface("HPD", new HPComponent<StringCommand>("default").getLoader().load());
             this.controller.addInterface("MON", new MonitoringComponent<StringCommand>().getLoader().load());
             this.controller.addInterface("ALM", new AlarmsComponent<StringCommand>().getLoader().load());
         } catch (Exception e) {
