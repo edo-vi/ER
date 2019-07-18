@@ -66,7 +66,13 @@ public class Sistema {
                 .with("SHOW_MONITORING")
                 .with("STOP_MONITORING")
                 .with("CLOSE_MONITORING")
-                .with("SHOW_ALARMS");
+                .with("SHOW_ALARMS")
+                .with("GET_LOGIN", (c, s) -> {
+                    if(s.getUser().isValid())
+                        controller.toFront();
+                    else controller.activate("login", LoginComponent.loginTitle);
+                    return s;
+                });
         Middleware<StringCommand> middleware = new MiddlewareString(monitoringStage)
                 .with("LOGIN", (c, s, m) -> {
                     User u = (User) c.getArg();
@@ -118,7 +124,7 @@ public class Sistema {
                     ((MiddlewareString) m).getMonitoring().interrupt();
                     return new Tuple<>(new StringCommand("STOPPED_MONITORING"), s);
                 })
-                .with("CLOSE_MONITORING", (s,c,m) -> {
+                .with("CLOSE_MONITORING", (c,s,m) -> {
                     monitoringStage.close();
                     return new Tuple<>(new StringCommand("CLOSE_MONITORING"), s);
                 })

@@ -26,11 +26,11 @@ public class LoginController {
         this.store = store;
         stream.subscribe(se -> {
             if (se.command().name().equals("LOGIN_SUCCESS") || se.command().name().equals("LOGIN_FAILURE")) {
+                userField.clear();
+                passField.clear();
                 if (se.state().getUser() == se.state().getUserCheck() && se.state().getUser().getRole() == Role.HEAD_PHYSICIAN) {
                     Sistema.getInstance().setInterface("HPDF", HPComponent.HPTitle);
                 } else {
-                    userField.clear();
-                    passField.clear();
                     System.out.println("Invalid username and/or password");
                 }
             }

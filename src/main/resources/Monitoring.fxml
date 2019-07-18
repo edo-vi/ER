@@ -80,7 +80,7 @@
                   <Label layoutX="301.0" layoutY="141.0" prefHeight="21.0" prefWidth="17.0" text="°C" />
                   <Label layoutX="465.0" layoutY="141.0" style="-fx-font-size: 13;" text="mmHg" />
                   <Label layoutX="590.0" layoutY="141.0" style="-fx-font-size: 13;" text="mmHg" />
-                  <Label layoutX="523.0" layoutY="23.0" prefHeight="45.0" prefWidth="119.0" style="-fx-font-size: 30;" text="Room 10" />
+                  <Label layoutX="523.0" layoutY="23.0" prefHeight="45.0" prefWidth="119.0" style="-fx-font-size: 30;" text="Room 1" />
                </children>
             </AnchorPane>
             <VBox prefHeight="200.0" prefWidth="550.0">

@@ -32,7 +32,7 @@ public class MonitoringController {
     }
 
     @FXML protected void login() {
-        sys.setInterface("login", LoginComponent.loginTitle);
+        store.update(new StringCommand("GET_LOGIN"));
     }
 
     @FXML protected void close() {
