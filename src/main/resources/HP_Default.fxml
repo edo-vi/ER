@@ -72,7 +72,7 @@
                   <TextArea layoutX="247.0" layoutY="620.0" prefHeight="102.0" prefWidth="666.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="540.0" />
                   <Label layoutX="210.0" layoutY="397.0" style="-fx-font-size: 20; -fx-text-fill: #B0C4DE;" text="01/01/2000" AnchorPane.leftAnchor="210.0" AnchorPane.topAnchor="397.0" />
                   <Label layoutX="210.0" layoutY="437.0" style="-fx-font-size: 20; -fx-text-fill: #B0C4DE;" text="Attacco cardiaco notturno" AnchorPane.leftAnchor="210.0" AnchorPane.topAnchor="437.0" />
-                  <Label layoutX="210.0" layoutY="497.0" style="-fx-font-size: 20; -fx-text-fill: #B0C4DE;" text="18/07/2019" AnchorPane.leftAnchor="210.0" AnchorPane.topAnchor="497.0" />
+                  <Label layoutX="250.0" layoutY="497.0" style="-fx-font-size: 20; -fx-text-fill: #B0C4DE;" text="18/07/2019" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="497.0" />
                   <Button layoutX="762.0" layoutY="695.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" style="-fx-font-size: 18;" text="Salva" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="150.0" />
                </children></AnchorPane>
          </children>
