@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="810.0" prefWidth="1200.0" style="-fx-background-color: black;" stylesheets="@DarkTheme.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="810.0" prefWidth="1200.0" style="-fx-background-color: black;" stylesheets="@DarkThemeLabelFree.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <MenuBar>
             <menus>
@@ -48,7 +53,95 @@
                     </children>
                 </AnchorPane>
                 <AnchorPane prefHeight="773.0" prefWidth="3.0" style="-fx-background-color: grey;" />
-                <AnchorPane prefHeight="773.0" prefWidth="987.0" />
+                <AnchorPane prefHeight="773.0" prefWidth="987.0">
+               <children>
+                  <Label layoutX="29.0" layoutY="61.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" text="Ricerca paziente:" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="50.0" />
+                  <TextField layoutX="215.0" layoutY="65.0" prefHeight="37.0" prefWidth="333.0" AnchorPane.leftAnchor="220.0" AnchorPane.topAnchor="45.0" />
+                  <Button layoutX="576.0" layoutY="67.0" mnemonicParsing="false" text="Cerca" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="47.0" />
+                  <TableView fx:id="dataTable1" layoutX="22.0" layoutY="543.0" prefHeight="210.0" prefWidth="977.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="555.0">
+                     <columns>
+                        <TableColumn prefWidth="140.0" text="Data">
+                           <cellValueFactory>
+                              <PropertyValueFactory property="diastolicPressure" />
+                           </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="110.0" text="Ora">
+                           <cellValueFactory>
+                              <PropertyValueFactory property="heartRate" />
+                           </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="200.0" text="Farmaco">
+                           <cellValueFactory>
+                              <PropertyValueFactory property="temperature" />
+                           </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="150.0" text="Dose">
+                           <cellValueFactory>
+                              <PropertyValueFactory property="diastolicPressure" />
+                           </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="372.0" text="Note">
+                           <cellValueFactory>
+                              <PropertyValueFactory property="diastolicPressure" />
+                           </cellValueFactory>
+                        </TableColumn>
+                     </columns>
+                  </TableView>
+                  <Label layoutX="47.0" layoutY="504.0" style="-fx-text-fill: grey; -fx-font-size: 18;" text="Somministrazioni:" AnchorPane.leftAnchor="18.0" AnchorPane.topAnchor="525.0" />
+                  <Label layoutX="50.0" layoutY="156.0" style="-fx-text-fill: grey; -fx-font-size: 15;" text="Cognome:" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="130.0" />
+                  <Label layoutX="48.0" layoutY="198.0" style="-fx-text-fill: grey; -fx-font-size: 15;" text="Nome:" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="170.0" />
+                  <Label layoutX="383.0" layoutY="150.0" style="-fx-text-fill: grey; -fx-font-size: 15;" text="Data di nascita:" AnchorPane.leftAnchor="340.0" AnchorPane.topAnchor="130.0" />
+                  <Label layoutX="665.0" layoutY="150.0" style="-fx-text-fill: grey; -fx-font-size: 15;" text="Luogo di nascita:" AnchorPane.leftAnchor="640.0" AnchorPane.topAnchor="130.0" />
+                  <Label layoutX="383.0" layoutY="190.0" style="-fx-text-fill: grey; -fx-font-size: 15;" text="C.F.:" AnchorPane.leftAnchor="340.0" AnchorPane.topAnchor="170.0" />
+                  <Label layoutX="48.0" layoutY="342.0" style="-fx-text-fill: grey; -fx-font-size: 15;" text="Data ricovero:" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="210.0" />
+                  <Label layoutX="50.0" layoutY="387.0" style="-fx-text-fill: grey; -fx-font-size: 15;" text="Data dimissione:" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="250.0" />
+                  <Label layoutX="450.0" layoutY="241.0" style="-fx-text-fill: grey; -fx-font-size: 15;" text="Motivo:" AnchorPane.leftAnchor="340.0" AnchorPane.topAnchor="210.0" />
+                  <Label layoutX="298.0" layoutY="387.0" style="-fx-text-fill: grey; -fx-font-size: 15;" text="Esito:" AnchorPane.leftAnchor="340.0" AnchorPane.topAnchor="250.0" />
+                  <Label layoutX="47.0" layoutY="434.0" style="-fx-text-fill: grey; -fx-font-size: 18;" text="Prescrizioni:" AnchorPane.leftAnchor="18.0" AnchorPane.topAnchor="290.0" />
+                  <TableView fx:id="dataTable11" layoutX="15.0" layoutY="387.0" prefHeight="210.0" prefWidth="977.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="265.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="315.0">
+                     <columns>
+                        <TableColumn prefWidth="120.0" text="Data">
+                           <cellValueFactory>
+                              <PropertyValueFactory property="diastolicPressure" />
+                           </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="200.0" text="Medico Dr.">
+                           <cellValueFactory>
+                              <PropertyValueFactory property="heartRate" />
+                           </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="200.0" text="Farmaco">
+                           <cellValueFactory>
+                              <PropertyValueFactory property="temperature" />
+                           </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn text="Dosi">
+                           <cellValueFactory>
+                              <PropertyValueFactory property="diastolicPressure" />
+                           </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="180.0" text="Quantità">
+                           <cellValueFactory>
+                              <PropertyValueFactory property="diastolicPressure" />
+                           </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="190.0" text="Durata terapia">
+                           <cellValueFactory>
+                              <PropertyValueFactory property="diastolicPressure" />
+                           </cellValueFactory>
+                        </TableColumn>
+                     </columns>
+                  </TableView>
+                  <Label layoutX="148.0" layoutY="127.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" text="Roberti" AnchorPane.leftAnchor="150.0" />
+                  <Label layoutX="150.0" layoutY="167.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" text="Elisa" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="167.0" />
+                  <Label layoutX="494.0" layoutY="127.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" text="29/03/1995" AnchorPane.leftAnchor="470.0" />
+                  <Label layoutX="823.0" layoutY="127.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" text="Soave (VR)" AnchorPane.leftAnchor="780.0" />
+                  <Label layoutX="181.0" layoutY="247.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" text="18/07/2019" AnchorPane.leftAnchor="190.0" AnchorPane.topAnchor="247.0" />
+                  <Label layoutX="181.0" layoutY="207.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" text="01/01/2000" AnchorPane.leftAnchor="190.0" AnchorPane.topAnchor="207.0" />
+                  <Label layoutX="399.0" layoutY="167.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" text="LSSRBR95C29Z129U" AnchorPane.leftAnchor="420.0" />
+                  <Label layoutX="412.0" layoutY="207.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" text="Attacco cardiaco notturno" AnchorPane.leftAnchor="420.0" />
+                  <Label layoutX="412.0" layoutY="247.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" text="Decesso" AnchorPane.leftAnchor="420.0" />
+               </children></AnchorPane>
             </children>
         </HBox>
     </children>
