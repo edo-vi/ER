@@ -9,8 +9,9 @@
 \usepackage{tikz}
 \usepackage{pgfopts}
 \usepackage{./tikz-uml}
-\usepackage{babel}[italian]
 \usepackage[latin1]{inputenc}
+\usepackage[italian]{babel}
+\usepackage[T1]{fontenc}
 \begin{document}
 
 \maketitle
@@ -90,22 +91,30 @@ Ad Elia ed Edoardo invece è stato assegnato il compito di progettare e sviluppar
 \begin{centering}
 	\begin{tikzpicture}
 \begin{umlpackage}[ x=0, y=0]{State}
-\umlclass[x=6, template={C}]{Store} {+int  }{}
+\umlclass[x=5.5, template={C}]{Store} {- s: State\\- r: Reducer \\- m: Middleware}{+ poll(): State \\ + update()}
 
-\umlinterface[x=0, y=-3, template={C}]{Reducer}{}{}
-\umlclass[x=0, y=-6]{ReducerString}{}{}
+\umlinterface[x=0, y=-3, template={C}]{Reducer}{}{+ run(s: State, c: C): State \\+ with(s: String, f: Function) }
+\umlsimpleclass[x=0, y=-6]{ReducerString}{}{}
 
-\umlinterface[x=12, y=-3 , template={C}]{Middleware}{}{}
-\umlclass[x=12, y=-6]{MiddlewareString}{}{}
+\umlinterface[x=11, y=-3 , template={C}]{Middleware}{}{+ run(s: State, c: C) \\ + with(s: String, f: Function)}
+\umlsimpleclass[x=11, y=-6]{MiddlewareString}{}{}
 
-\umlclass[x=6, y=-3]{State} {}{}
-\umlclass[x=6, y=-6]{StateEvent}{}{}
+\umlsimpleclass[x=5.5, y=-3.5]{State} {}{}
+\umlclass[x=5.5, y=-6, template={C}]{StateEvent}{}{}
 
-\umlinterface[ y=-9, x=3]{Command}{}{}
-\umlclass[x=3, y=-12]{StringCommand}{}{}
+\umlinterface[ y=-9, x=3]{Command}{}{+ name(): String \\+ getArg(): Object}
+\umlsimpleclass[x=3, y=-12]{StringCommand}
 
 \umlclass[x=9, y=-9]{DatabaseService}{}{}
-\umlinterface[x=9, y=-12, template={T, W, S, R}]{TriFunction}{}{}
+
+\umlreal[]{MiddlewareString}{Middleware}
+\umlreal[]{ReducerString}{Reducer}
+\umlreal[]{StringCommand}{Command}
+\umldep[geometry=-|-]{Reducer}{Store}
+\umldep[geometry=-|-]{Middleware}{Store}
+\umldep[geometry=-|]{State}{Store}
+\umldep[]{State}{StateEvent}
+\umldep[]{Command}{StateEvent}
 \end{umlpackage}  
 	
 \end{tikzpicture}
