@@ -23,13 +23,13 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button mnemonicParsing="false" prefHeight="54.0" prefWidth="130.0" text="Aritmia" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-            <Button mnemonicParsing="false" prefHeight="54.0" prefWidth="130.0" text="Tachicardia" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-            <Button mnemonicParsing="false" prefHeight="54.0" prefWidth="130.0" text="Ipotensione" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-            <Button mnemonicParsing="false" prefHeight="54.0" prefWidth="130.0" text="Ipertensione" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-            <Button mnemonicParsing="false" prefHeight="54.0" prefWidth="130.0" text="Ipotermia" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-            <Button mnemonicParsing="false" prefHeight="54.0" prefWidth="130.0" text=" Ipertermia" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-            <Button mnemonicParsing="false" prefHeight="54.0" prefWidth="130.0" text="Flutter" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+            <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="130.0" text="Aritmia" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="130.0" text="Tachicardia" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="130.0" text="Ipotensione" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="130.0" text="Ipertensione" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="130.0" text="Ipotermia" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+            <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="130.0" text=" Ipertermia" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+            <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="130.0" text="Flutter" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
             <Label alignment="CENTER" prefHeight="30.0" prefWidth="53.0" style="-fx-text-fill: yellow; -fx-font-size: 20;" text="Liv. 1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
             <Label alignment="CENTER" prefHeight="30.0" prefWidth="53.0" style="-fx-text-fill: orange; -fx-font-size: 20;" text="Liv. 2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
             <Label alignment="CENTER" prefHeight="30.0" prefWidth="53.0" style="-fx-text-fill: orange; -fx-font-size: 20;" text="Liv. 2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
