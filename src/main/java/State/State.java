@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class State implements Serializable {
+public class State  {
     private User userCheck;
     private User user;
     private List<Patient> patients = new ArrayList<>();

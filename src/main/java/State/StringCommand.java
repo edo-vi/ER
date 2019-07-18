@@ -1,7 +1,5 @@
 package State;
 
-import java.util.UUID;
-
 public class StringCommand implements Command {
     private final String s;
     private final Object obj;

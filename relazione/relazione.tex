@@ -1,4 +1,4 @@
-\documentclass[final, smallextended]{svjour3}
+\documentclass[final]{svjour3}
 %opening
 \usepackage[11pt]{extsizes}
 \usepackage[top=2cm,bottom=3cm,left=2.3cm,right=2.3cm]{geometry}
@@ -18,11 +18,18 @@
 \newpage
 
 \section{Ingegneria e sviluppo}
-\subsection{Metodologia del processo di sviluppo}
+\subsection{Organizzazione del processo di sviluppo}
+
+\paragraph{Decisioni organizzative}
 La dimensione del team di sviluppo --- tre persone --- e i diversi livelli di interesse relativi agli `ambiti' di programmazione concernenti tale progetto, espressi inizialmente dai soggetti del team, hanno portato alla decisione di suddividere in modo moderatamente netto i compiti assegnati alle diverse persone, perlomeno nella fase iniziale, pre-design. 
 
-Specificatamente, la decisione è stata quella di assegnare a Marian il compito di creare e sviluppare la maggior parte delle interfacce grafiche di tutti i componenti costituenti il sistema nel suo complesso e quello di ideare e sviluppare la GUI generale, e in particolar modo di considerare i modi con cui gli utenti si aspettano di interagire con il sistema e quindi di sviluppare accordatamente le relative interfacce grafiche.
-Ad Elia ed Edoardo invece è stato assegnato il compito di ideare e sviluppare la back-end, l'architettura del sistema generale e le interfacce di comunicazione e interazione dei diversi componenti. Pur non avendo definito inizialmente la suddivisione specifica di questi compiti, nel corso dello sviluppo del sistema, a seguito della fase di progettazione dove si sono prese decisioni relative ai design patterns migliori da usare --- in particolare il pattern MVC e il pattern Observer --- le aree di progettazione sono state naturalmente divise nello sviluppo dei controllori e modelli dei componenti, assegnata ad Elia, e lo sviluppo e gestione dello stato centralizzato, secondo il pattern Observer, assegnata invece ad Edoardo. Data la fondamentale connessione tra tali due aree da un certo punto in poi lo sviluppo dell'architettura, e in particolar modo l'nterfaccia comune tra stato e controllori, è stata eseguita in modo unico dai i due soggetti che hanno seguito la tecnica di dual programming, secondo la quale il codice è stato scritto insieme, a turno, con l'input dell'altro: questo sia per coadiuvare la comprensione dell'architettura nel suo complesso, sia per permettere di sviluppare codice che sin da subito rispettasse i due diversi approcci di programmazione e che unisse nel modo più chiaro possibile le interfacce tra le due aree.
+Specificatamente, la decisione è stata quella di assegnare a Marian il compito di creare e sviluppare la interfacce grafiche di tutti i componenti costituenti il sistema nel suo complesso e quello di ideare e sviluppare la GUI generale, e in particolar modo di considerare i modi con cui gli utenti si aspettano di interagire con il sistema e quindi di sviluppare accordatamente le relative interfacce grafiche.
+
+Ad Elia ed Edoardo invece è stato assegnato il compito di progettare e sviluppare la back-end, l'architettura del sistema generale e le interfacce di comunicazione e interazione dei diversi componenti. Pur non avendo definito inizialmente la suddivisione specifica di questi compiti, nel corso del processo di sviluppo e programmazione del sistema, a seguito della fase di progettazione dove si sono prese decisioni relative ai design patterns adatti da usare --- in particolare il pattern MVC e il pattern Observer --- le aree di progettazione sono state a grandi linee divise nello sviluppo dei controllori e dei modelli dei componenti, assegnata ad Elia, e lo sviluppo e gestione dello stato centralizzato, propagato poi seguendo il pattern Observer, assegnata invece ad Edoardo. Data la fondamentale connessione tra tali due aree da un certo punto in poi lo sviluppo dell'architettura, e in particolar modo dell'interfaccia di comunicazione tra stato e controllori dei componenti, è stata eseguita in modo unico dai i due membri del team che hanno seguito quasi esclusivamente la tecnica di dual programming, il che ha portato a scrivere gran parte del codice insieme, a turno, con l'input dell'altro: questo sia per permettere di migliorare la comprensione dell'architettura e delle diverse interazioni nel suo complesso, sia per permettere di sviluppare codice che sin da subito rispettasse i due diversi approcci di programmazione e che unisse nel modo più chiaro possibile le interfacce tra le due aree.
+
+\paragraph{Gestione del codice} Per permettere, soprattutto inizialmente, a tutti i membri del team di contribuire al progetto in modo personale senza creare conflitti nel codice si è deciso sin da subito di utilizzare un sistema di versionamento: la scelta è ricaduta subito su \textit{Git}, data la sua ubiquità e portabilità, installato localmente sulle macchine dei membri del team e riferente una repository remota privata localizzata su \textit{Github}. Oltre che a permettere di evitare conflitti e di mantenere coerente lo stato del progetto per tutti i membri questa scelta è stata molto importante soprattutto per risolvere diversi problemi relativi all'installazione e utilizzo di un programma per la gestione del database: l'uso di diverse branch, utilizzate anche per lo sviluppo di parti sperimentali del sistema, ha permesso lo sviluppo in contemporanea, almeno fino alla risoluzione di tutti i problemi di installazione e configurazione, del codice concernente la gestione del database e di quello relativo alle interfacce grafiche e i loro controllori.
+
+\paragraph{Gestione dei dati} La chiara natura relazionale dei dati necessari per il funzionamento del sistema ha subito portato alla decisione di affidarsi ad un RDBMS per la loro gestione, e in particolare a PostgreSQL; tale scelta è stata motivata principalmente dalla previa esperienza di utilizzo di un membro del team. Oltre che ad utilizzare un RBDMS si è inoltre deciso di affidarsi ad un ORM --- Hibernate --- per il mapping tra entità nel database e oggetti in memoria: questa decisione è derivata soprattutto dalla volontà di mantenere semplice la logica del sistema che, per sua natura e limitata dimensione, non ha mai richiesto la maggior efficienza derivante dall'utilizzo di pure query SQL. 
 %
 %\subsubsection{Ingegneria dei requisiti}
 %
@@ -35,10 +42,11 @@ Ad Elia ed Edoardo invece è stato assegnato il compito di ideare e sviluppare la
 %
 %\section{Specifica del sistema}
 
+\section{Specifica}
 \subsection{Casi d'uso}
 \begin{figure}[b]
 \begin{tikzpicture}
-\begin{umlsystem}[x=-.5, fill=red!5]{Casi d'uso}
+\begin{umlsystem}[x=0, fill=red!5]{Casi d'uso}
 \umlusecase[x=1.9, y=-2.]{Inserisce dati anagrafici del paziente}
 \umlusecase[ x=.95]{Inserisce dati somministrazione}
 \umlusecase[x=5.8, y=-1,]{Inserisce note stato paziente}
@@ -52,7 +60,7 @@ Ad Elia ed Edoardo invece è stato assegnato il compito di ideare e sviluppare la
 
 \umlactor[x=-5.5]{Infermiere}
 \umlactor[x=-5.5, y=-9.7]{Primario}
-\umlactor[x=10.2, y=-5.7]{Medico}
+\umlactor[x=10.9, y=-5.7]{Medico}
 
 \umlassoc{Infermiere}{usecase-1}
 \umlassoc{Infermiere}{usecase-2}
@@ -74,8 +82,33 @@ Ad Elia ed Edoardo invece è stato assegnato il compito di ideare e sviluppare la
 %\umlinclude[name=incl]{usecase-3}{usecase-4}
 %
 %\umlnote[x=7, y=-7]{incl-1}{note on include dependency}
-\end{tikzpicture}
-
+\end{tikzpicture}\caption{Diagramma UML dei casi d'uso del sistema.}\label{useDiagram}
 \end{figure}
 
+\subsection{Diagrammi di classe}
+\begin{figure}[t]
+\begin{centering}
+	\begin{tikzpicture}
+\begin{umlpackage}[ x=0, y=0]{State}
+\umlclass[x=6, template={C}]{Store} {+int  }{}
+
+\umlinterface[x=0, y=-3, template={C}]{Reducer}{}{}
+\umlclass[x=0, y=-6]{ReducerString}{}{}
+
+\umlinterface[x=12, y=-3 , template={C}]{Middleware}{}{}
+\umlclass[x=12, y=-6]{MiddlewareString}{}{}
+
+\umlclass[x=6, y=-3]{State} {}{}
+\umlclass[x=6, y=-6]{StateEvent}{}{}
+
+\umlinterface[ y=-9, x=3]{Command}{}{}
+\umlclass[x=3, y=-12]{StringCommand}{}{}
+
+\umlclass[x=9, y=-9]{DatabaseService}{}{}
+\umlinterface[x=9, y=-12, template={T, W, S, R}]{TriFunction}{}{}
+\end{umlpackage}  
+	
+\end{tikzpicture}
+\end{centering}
+\end{figure}
 \end{document}
