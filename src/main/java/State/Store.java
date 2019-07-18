@@ -4,6 +4,7 @@ import Main.Tuple;
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 
+import java.io.*;
 import java.util.function.BiFunction;
 
 /**
@@ -14,17 +15,16 @@ public class Store<C extends Command> {
     private Reducer<C> reducer;
     private int counter = 0;
     private Middleware<C> middleware;
-
+    private Writer writer;
     //streams
     private PublishSubject<StateEvent> state$ = PublishSubject.create();
     private PublishSubject<String> commands$= PublishSubject.create();
 
     public Store(State state, Reducer<C> reducer, Middleware<C> middleware, Tuple<String, BiFunction<C, State,State>>...args) {
         //TODO remove -- logging
-        this.state$.subscribe(s -> {
-            System.out.println(String.valueOf(counter++) + " | " + s.command() + "\n" + s.state() + "\nMonitorings: " +
-                    s.state().getActiveMonitorings() + "\n");
-        });
+        this.state$.subscribe(s ->
+            System.out.println(String.valueOf(counter++) + " | " + s.command() + "\n" + s.state())
+        );
 
         this.middleware = middleware;
         this.state = state;

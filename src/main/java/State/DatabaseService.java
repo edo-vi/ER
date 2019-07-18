@@ -35,6 +35,9 @@ public class DatabaseService {
         Recovery rec1 = new Recovery(new GregorianCalendar(2019, Calendar.JUNE, 22).getTime(),
                 new GregorianCalendar(2019, Calendar.JULY, 13).getTime(), "Fractured Meniscus",
                 true, "Completely healed", patient1);
+        Recovery rec2 = new Recovery(new GregorianCalendar(2019, Calendar.JULY, 16).getTime(),
+                new GregorianCalendar(2019, Calendar.JULY, 25).getTime(), "Salmonella",
+                true, "", patient2);
         try {
             Administration adm1 = new Administration(new GregorianCalendar(2019, Calendar.JULY, 11).getTime(),
                     14, 75.76, "All good", patient1);
@@ -45,6 +48,7 @@ public class DatabaseService {
             /*adm1.setPrescription(pr1);
             patient1.addToAddministrations(adm1);*/
             session.save(rec1);
+            session.save(rec2);
             session.save(adm1);
             session.save(pr1);
             session.save(patient1);

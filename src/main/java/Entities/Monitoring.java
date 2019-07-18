@@ -118,25 +118,11 @@ public class Monitoring implements Entry {
     }
 
     public String toString() {
-        try (Writer writer = new BufferedWriter(new FileWriter("monitoring.log", true))) {
+        String s = String.format("{%s, %d, %d, %d, %fd", this.date, this.diastolicPressure, this.systolicPressure,
+                this.heartRate, this.temperature);
 
-            String s = String.format("{%s, %d, %d, %d, %fd", this.date, this.diastolicPressure, this.systolicPressure ,
-                    this.heartRate, this.temperature);
-
-            if (recovery != null) s += ", " + this.recovery.getId();
-            s += "}";
-
-            writer.write(s + "\n");
-
-            return s;
-        }
-        catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        catch (IOException e) {
-            System.out.println("Problema di I/O");
-        }
-
-        return null;
+        if (recovery != null) s += ", " + this.recovery.getId();
+        s += "}";
+        return s;
     }
 }
