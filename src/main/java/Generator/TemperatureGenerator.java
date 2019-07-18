@@ -13,16 +13,16 @@ public class TemperatureGenerator implements GeneratorInterface {
     public void evolve(Sickness sick) {
         if(sick == Sickness.IPERTERMIA) {
             mean = 38.75;
-            variance = 1.1;
+            variance = 0.0625;
         } else if(sick == Sickness.IPOTERMIA) {
             mean = 35.0;
-            variance = 1.0;
+            variance = 0.0625;
         }
     }
 
     public void reset() {
         mean = 36.75;
-        variance = 0.80;
+        variance = 0.0625;
     }
 
     public Double getValue() {

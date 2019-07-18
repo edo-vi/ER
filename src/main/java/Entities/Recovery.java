@@ -98,7 +98,7 @@ public class Recovery implements Entry{
 
                 if(ints.fst() < 60 || ints.fst() > 95)
                     throw new IllegalArgumentException("Diastolic OUT: " + ints.fst());
-                if(ints.snd() < 90 || ints.fst() > 150)
+                if(ints.snd() < 90 || ints.snd() > 150)
                     throw new IllegalArgumentException("Systolic OUT: " + ints.snd());
 
                 nm.setDiastolicPressure(ints.fst());
@@ -119,14 +119,14 @@ public class Recovery implements Entry{
             else {
                 nm.setTemperature(this.temperatureGenerator.getValue());
 
-                if(nm.getTemperature() < 36 || nm.getTemperature() > 37.5)
+                if(nm.getTemperature() > 37.5 || nm.getTemperature() < 36)
                     throw new IllegalArgumentException("Temperature OUT: " + nm.getTemperature());
 
                 nm.setDiastolicPressure(last.getDiastolicPressure());
                 nm.setSystolicPressure(last.getSystolicPressure());
                 nm.setHeartRate(last.getHeartRate());
             }
-        this.addToMonitorings(nm); //TODO: ? non manca di mandare i dati al db e allo stato per aggiornare l'interfaccia?
+        this.addToMonitorings(nm); //TODO: send info to db and component
         }
 
     }

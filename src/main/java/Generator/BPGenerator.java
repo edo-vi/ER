@@ -32,7 +32,7 @@ public class BPGenerator implements GeneratorInterface {
 
     public void reset() {
         meanS = 120;
-        varianceS = 5.3;
+        varianceS = 9.5;
         meanD = 77.5;
         varianceD = 4.0;
     }
