@@ -172,6 +172,7 @@ public class Sistema {
             this.controller = new InterfacesController(stage);
             this.controller.addInterface("login", new LoginComponent<StringCommand>().getLoader().load());
             this.controller.addInterface("HPS", new HPComponent<StringCommand>("search").getLoader().load());
+            this.controller.addInterface("HPSR", new HPComponent<StringCommand>("searchResult").getLoader().load());
             this.controller.addInterface("HPM", new HPComponent<StringCommand>("monitoring").getLoader().load());
             this.controller.addInterface("HPD", new HPComponent<StringCommand>("default").getLoader().load());
             this.controller.addInterface("MON", new MonitoringComponent<StringCommand>().getLoader().load());
