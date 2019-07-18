@@ -1,33 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="810.0" prefWidth="1200.0" style="-fx-background-color: black;" stylesheets="@DarkTheme.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="810.0" prefWidth="1200.0" style="-fx-background-color: black;" stylesheets="@DarkThemeLabelFree.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <MenuBar>
             <menus>
                 <Menu mnemonicParsing="false" text="File">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Monitoring" onAction="#showMonitoring"/>
+                        <MenuItem mnemonicParsing="false" onAction="#showMonitoring" text="Monitoring" />
                         <MenuItem mnemonicParsing="false" text="Last week report" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Log Out" onAction="#logout"/>
-                        <MenuItem mnemonicParsing="false" text="Close" onAction="#close"/>
+                        <MenuItem mnemonicParsing="false" onAction="#logout" text="Log Out" />
+                        <MenuItem mnemonicParsing="false" onAction="#close" text="Close" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="View">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Dimissione paziente" onAction="#dismissPatient"/>
+                        <MenuItem mnemonicParsing="false" onAction="#dismissPatient" text="Dimissione paziente" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Dati ultime 2 ore" onAction="#showLast2H"/>
-                        <MenuItem mnemonicParsing="false" text="Cartella clinica" onAction="#search"/>
+                        <MenuItem mnemonicParsing="false" onAction="#showLast2H" text="Dati ultime 2 ore" />
+                        <MenuItem mnemonicParsing="false" onAction="#search" text="Cartella clinica" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
@@ -41,14 +46,79 @@
             <children>
                 <AnchorPane prefHeight="773.0" prefWidth="210.0">
                     <children>
-                        <Button layoutY="40.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="Dimissione&#10;paziente" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" onAction="#dismissPatient"/>
-                        <Button layoutY="120.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="Dati ultime&#10;2 ore" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" onAction="#showLast2H"/>
-                        <Button layoutY="200.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="Cartella&#10;clinica" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" onAction="#search"/>
-                        <Button layoutY="695.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 20;" text="Log Out" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" onAction="#logout"/>
+                        <Button layoutY="40.0" mnemonicParsing="false" onAction="#dismissPatient" prefHeight="50.0" prefWidth="150.0" text="Dimissione&#10;paziente" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
+                        <Button layoutY="120.0" mnemonicParsing="false" onAction="#showLast2H" prefHeight="50.0" prefWidth="150.0" style="-fx-border-color: #87CEFA;" text="Dati ultime&#10;2 ore" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
+                        <Button layoutY="200.0" mnemonicParsing="false" onAction="#search" prefHeight="50.0" prefWidth="150.0" text="Cartella&#10;clinica" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
+                        <Button layoutY="695.0" mnemonicParsing="false" onAction="#logout" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 20;" text="Log Out" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
                     </children>
                 </AnchorPane>
                 <AnchorPane prefHeight="773.0" prefWidth="3.0" style="-fx-background-color: grey;" />
-                <AnchorPane prefHeight="773.0" prefWidth="987.0" />
+                <AnchorPane prefHeight="773.0" prefWidth="987.0">
+               <children>
+                  <Label layoutX="60.0" layoutY="248.0" style="-fx-font-size: 24; -fx-text-fill: #B0C4DE;" text="Parametri delle ultime 2 ore:" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="120.0" />
+                  <Label layoutX="68.0" layoutY="65.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" text="Scegliere il paziente:" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="40.0" />
+                  <ComboBox layoutX="250.0" layoutY="38.0" prefHeight="31.0" prefWidth="312.0" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="38.0" />
+                  <Label layoutX="40.0" layoutY="463.0" style="-fx-font-size: 24; -fx-text-fill: #B0C4DE;" text="Somministrazioni degli ultimi 2 giorni:" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="450.0" />
+                  <TableView fx:id="dataTable" layoutX="11.0" layoutY="-53.0" prefHeight="253.0" prefWidth="976.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="360.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="170.0">
+                     <columns>
+                        <TableColumn prefWidth="110.0" text="Ora">
+                           <cellValueFactory>
+                              <PropertyValueFactory property="diastolicPressure" />
+                           </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="240.0" text="Heart Rate (bpm)">
+                           <cellValueFactory>
+                              <PropertyValueFactory property="heartRate" />
+                           </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="240.0" text="Temperature (°C)">
+                           <cellValueFactory>
+                              <PropertyValueFactory property="temperature" />
+                           </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="191.0" text="DBP (mmHg)">
+                           <cellValueFactory>
+                              <PropertyValueFactory property="diastolicPressure" />
+                           </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="191.0" text="SBP (mmHg)">
+                           <cellValueFactory>
+                              <PropertyValueFactory property="diastolicPressure" />
+                           </cellValueFactory>
+                        </TableColumn>
+                     </columns>
+                  </TableView>
+                  <TableView fx:id="dataTable1" layoutX="11.0" layoutY="281.0" prefHeight="253.0" prefWidth="976.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="500.0">
+                     <columns>
+                        <TableColumn prefWidth="140.0" text="Data">
+                           <cellValueFactory>
+                              <PropertyValueFactory property="diastolicPressure" />
+                           </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="110.0" text="Ora">
+                           <cellValueFactory>
+                              <PropertyValueFactory property="heartRate" />
+                           </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="200.0" text="Farmaco">
+                           <cellValueFactory>
+                              <PropertyValueFactory property="temperature" />
+                           </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="150.0" text="Dose">
+                           <cellValueFactory>
+                              <PropertyValueFactory property="diastolicPressure" />
+                           </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="372.0" text="Note">
+                           <cellValueFactory>
+                              <PropertyValueFactory property="diastolicPressure" />
+                           </cellValueFactory>
+                        </TableColumn>
+                     </columns>
+                  </TableView>
+                  <AnchorPane layoutX="-24.0" layoutY="329.0" prefHeight="3.0" prefWidth="987.0" style="-fx-background-color: grey;" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="420.0" />
+               </children></AnchorPane>
             </children>
         </HBox>
     </children>
