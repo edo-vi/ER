@@ -1,6 +1,5 @@
 package InterfaceController;
 
-import Component.MonitoringComponent;
 import Entities.Role;
 import Entities.User;
 import State.StateEvent;
@@ -10,14 +9,11 @@ import System.Sistema;
 import io.reactivex.subjects.Subject;
 import javafx.fxml.FXML;
 import State.Store;
-import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
-import java.util.UUID;
 
 public class LoginController {
     private Sistema sys = Sistema.getInstance();
@@ -29,13 +25,16 @@ public class LoginController {
     public LoginController(Store store, Subject<StateEvent> stream) {
         this.store = store;
         stream.subscribe(se -> {
-            userField.clear();
-            passField.clear();
-            if (se.state().getUser() == se.state().getUserCheck() && se.state().getUser().getRole() == Role.HEAD_PHYSICIAN) {
-                Sistema.getInstance().setInterface("HPDF", HPComponent.HPTitle);
-            } else {
-                System.out.println("Invalid username and/or password");
+            if (se.command().name().equals("LOGIN_SUCCESS") || se.command().name().equals("LOGIN_FAILURE")) {
+                if (se.state().getUser() == se.state().getUserCheck() && se.state().getUser().getRole() == Role.HEAD_PHYSICIAN) {
+                    Sistema.getInstance().setInterface("HPDF", HPComponent.HPTitle);
+                } else {
+                    userField.clear();
+                    passField.clear();
+                    System.out.println("Invalid username and/or password");
+                }
             }
+
         });
     }
 
@@ -56,6 +55,6 @@ public class LoginController {
     }
 
     @FXML protected void startMonitoring() {
-        store.update(new StringCommand("START_MONITORING"));
+        store.update(new StringCommand("SHOW_MONITORING"));
     }
 }

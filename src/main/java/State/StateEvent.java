@@ -8,7 +8,7 @@ public class StateEvent<C extends Command> {
         this.sc = sc;
         this.s = s;
     }
-    C stateChange() {
+    public C command() {
         return this.sc;
     }
     public State state() {

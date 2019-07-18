@@ -1,11 +1,9 @@
 package State;
 
-import Main.Triple;
 import Main.Tuple;
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 
-import java.util.UUID;
 import java.util.function.BiFunction;
 
 /**
@@ -24,7 +22,8 @@ public class Store<C extends Command> {
     public Store(State state, Reducer<C> reducer, Middleware<C> middleware, Tuple<String, BiFunction<C, State,State>>...args) {
         //TODO remove -- logging
         this.state$.subscribe(s -> {
-            System.out.println(String.valueOf(counter++) + " | " + s.stateChange() + "\n" + s.state() + "\n");
+            System.out.println(String.valueOf(counter++) + " | " + s.command() + "\n" + s.state() + "\nMonitorings: " +
+                    s.state().getActiveMonitorings() + "\n");
         });
 
         this.middleware = middleware;

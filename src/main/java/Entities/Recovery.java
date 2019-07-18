@@ -1,5 +1,12 @@
 package Entities;
 
+import Generator.BPGenerator;
+import Generator.HeartRateGenerator;
+import Generator.TemperatureGenerator;
+import Generator.Value;
+import Main.Tuple;
+
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,6 +27,15 @@ public class Recovery implements Entry{
     private Date endDate;
     private String dischargeSummary;
 
+    @Transient
+    private final BPGenerator bpGenerator = new BPGenerator();
+
+    @Transient
+    private final HeartRateGenerator heartRateGenerator = new HeartRateGenerator();
+
+    @Transient
+    private final TemperatureGenerator temperatureGenerator = new TemperatureGenerator();
+
     @ManyToOne
     @JoinColumn(name = "patient_id")
     private Patient patient;
@@ -30,7 +46,6 @@ public class Recovery implements Entry{
     @OneToMany(mappedBy = "recovery")
     private List<Prescription> prescriptions = new ArrayList<>();
 
-    //TODO add constructors
 
     /**
     * GETTERS AND SETTERS
@@ -65,6 +80,60 @@ public class Recovery implements Entry{
         this.prescriptions.addAll(prescriptions);
     }
 
+    public Monitoring getLastMonitoring() {
+        if (this.monitorings.size() == 0) {
+            System.out.println("*** Recovery: trying to get the last monitoring when the array is empty ***");
+            return new Monitoring().defaultMonitoring();
+        }
+        return this.monitorings.get(this.monitorings.size()-1);
+    }
+
+    public void generateMonitoring(Value value) {
+        if (active) {
+            Monitoring last = this.getLastMonitoring();
+            Monitoring nm = new Monitoring();
+            nm.setDate(new Date());
+            if (value == Value.BP) {
+                Tuple<Integer, Integer> ints = this.bpGenerator.getValue();
+
+                if(ints.fst() < 60 || ints.fst() > 95)
+                    throw new IllegalArgumentException("Diastolic OUT: " + ints.fst());
+                if(ints.snd() < 90 || ints.snd() > 150)
+                    throw new IllegalArgumentException("Systolic OUT: " + ints.snd());
+
+                nm.setDiastolicPressure(ints.fst());
+                nm.setSystolicPressure(ints.snd());
+                nm.setHeartRate(last.getHeartRate());
+                nm.setTemperature(last.getTemperature());
+            }
+            else if (value == Value.HEART_RATE) {
+                nm.setHeartRate(this.heartRateGenerator.getValue());
+
+                if(nm.getHeartRate() < 60 || nm.getHeartRate() > 100)
+                    throw new IllegalArgumentException("Heart Rate OUT: " + nm.getHeartRate());
+
+                nm.setDiastolicPressure(last.getDiastolicPressure());
+                nm.setSystolicPressure(last.getSystolicPressure());
+                nm.setTemperature(last.getTemperature());
+            }
+            else {
+                nm.setTemperature(this.temperatureGenerator.getValue());
+
+                if(nm.getTemperature() > 37.5 || nm.getTemperature() < 36)
+                    throw new IllegalArgumentException("Temperature OUT: " + nm.getTemperature());
+
+                nm.setDiastolicPressure(last.getDiastolicPressure());
+                nm.setSystolicPressure(last.getSystolicPressure());
+                nm.setHeartRate(last.getHeartRate());
+            }
+        this.addToMonitorings(nm); //TODO: send info to db and component
+        }
+
+    }
+
+    /**
+     * GETTERS AND SETTERS
+     */
 
     public int getId() {
         return this.id;
