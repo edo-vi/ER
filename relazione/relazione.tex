@@ -1,8 +1,11 @@
-\documentclass{article}
-\usepackage[left=2cm, right=2cm]{geometry}
+\documentclass[draft, smallextended]{svjour3}
 %opening
-\title{}
-\author{}
+\usepackage[11pt]{extsizes}
+\usepackage[top=2cm,bottom=3cm,left=2.3cm,right=2.3cm, asymmetric]{geometry}
+
+\title{Relazione progetto di Ingegneria del software 2019}
+\author{***REMOVED***, Elia Piccoli, Marian Statache}
+\date{Luglio 2019}
 \usepackage{tikz}
 \usepackage{pgfopts}
 \usepackage{xstring}
@@ -13,14 +16,20 @@
 \begin{document}
 
 \maketitle
+\tableofcontents
+\newpage
 
+\section{Ingegneria e sviluppo}
+\subsection{Metodologia del processo di sviluppo}
+
+\subsection{Patterns usati}
 \section{Casi d'uso}
 
 \begin{tikzpicture}
-\begin{umlsystem}[x=0, fill=red!5]{Casi d'uso}
-\umlusecase[x=-.5]{Inserisce dati anagrafici}
-\umlusecase[y=-1.2, x=.35]{Inserisce dati somministrazione}
-\umlusecase[x=5.3, y=-2.2]{Inserisce note stato paziente}
+\begin{umlsystem}[x=-.5, fill=red!5]{Casi d'uso}
+\umlusecase[x=1.5]{Inserisce dati anagrafici del paziente}
+\umlusecase[y=-1.2, x=.95]{Inserisce dati somministrazione}
+\umlusecase[x=5.8, y=-2.2]{Inserisce note stato paziente}
 \umlusecase[y=-3.5, x =1.3]{Visualizza dati paziente (ultime due ore)}
 \umlusecase[x=3, y=-5]{Inserisce diagnosi d'ingresso}
 \umlusecase[x=3, y=-6.2]{Aggiunge prescrizioni}
@@ -48,7 +57,7 @@
 %\umlassoc{subuser}{usecase-3}
 %\umlassoc{admin}{usecase-5}
 %\umlassoc{admin}{usecase-6}
-%\umlinherit{usecase-2}{usecase-1}
+\umlinherit{usecase-5}{usecase-1}
 \umlVHextend{usecase-3}{usecase-2}
 %\umlinclude[name=incl]{usecase-3}{usecase-4}
 %
