@@ -9,8 +9,8 @@ public class DataThread extends Thread {
     private volatile boolean run = true;
     private final Store<StringCommand> store;
     private final int numTask = 3;
-    private final Long[] times = {5000L, 7000L, 10000L}; //5-5-7-10 (s)
-    private final Value[] taskJob = {Value.BP, Value.HEART_RATE, Value.TEMPERATURE};
+    private final Long[] times = {2000L, 3000L, 5000L}; //2-3-5 (s)
+    private final Value[] taskJob = {Value.BP, Value.TEMPERATURE, Value.HEART_RATE};
     private ArrayList<TimerTask> tasks = new ArrayList<>();
     private ArrayList<Timer> timers = new ArrayList<>();
 
