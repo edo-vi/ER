@@ -1,5 +1,6 @@
 package State;
 
+import Generator.DataThread;
 import Main.Tuple;
 import javafx.stage.Stage;
 
@@ -8,7 +9,7 @@ import java.util.HashMap;
 public class MiddlewareString implements Middleware<StringCommand> {
     private Stage stage;
 
-    private Thread monitoring;
+    private DataThread monitoring;
 
     public MiddlewareString(Stage stage) {
         this.stage = stage;
@@ -37,11 +38,11 @@ public class MiddlewareString implements Middleware<StringCommand> {
         return this.map.containsKey(s);
     }
 
-    public Thread getMonitoring() {
+    public DataThread getMonitoring() {
         return monitoring;
     }
 
-    public void setMonitoring(Thread monitoring) {
+    public void setMonitoring(DataThread monitoring) {
         this.monitoring = monitoring;
     }
 }

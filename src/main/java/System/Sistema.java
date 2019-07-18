@@ -18,11 +18,15 @@ import Component.HPComponent;
 import Component.AlarmsComponent;
 
 import Component.LoginComponent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import Main.Tuple;
+import javafx.stage.WindowEvent;
+
+import javax.xml.crypto.Data;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -111,13 +115,25 @@ public class Sistema {
                         monitoringStage.setScene(new Scene(getInterface("MON")));
                         monitoringStage.setTitle(MonitoringComponent.monitoringTitle);
                         monitoringStage.sizeToScene();
+                        monitoringStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                            public void handle(WindowEvent we) {
+                                store.update(new StringCommand("STOP_MONITORING"));
+                            }
+                        });
                     }
                     monitoringStage.show();
                     monitoringStage.toFront();
-                    return new Tuple<>((new StringCommand("OPEN_MONITORING")), s);
+                    return new Tuple<>((new StringCommand("SHOW_MONITORING")), s);
                 })
                 .with("START_MONITORING", (c,s,m) -> {
-                    new DataThread(store).start();
+                    MiddlewareString x = ((MiddlewareString) m);
+                    if(x.getMonitoring() != null) {
+                        x.getMonitoring().restart();
+                    } else {
+                        DataThread t = new DataThread(store);
+                        x.setMonitoring(t);
+                        t.start();
+                    }
                     return new Tuple<>(new StringCommand("MONITORING_HAS_STARTED"), s);
                 })
                 .with("STOP_MONITORING", (c,s,m) -> {
@@ -143,9 +159,11 @@ public class Sistema {
 
         store = new Store<StringCommand>(new State(), reducer, middleware);
         store.update(new StringCommand("LOAD"));
+        /*
         store.update(new StringCommand("START_MONITORING"));
-        /*store.update(new StringCommand("ADD_PATIENT", new Patient("Roberto", "Posenato", "PSNRBRA373UUS88I",
-                "Verona", new GregorianCalendar(1981, Calendar.FEBRUARY, 11).getTime())));*/
+        store.update(new StringCommand("ADD_PATIENT", new Patient("Roberto", "Posenato", "PSNRBRA373UUS88I",
+                "Verona", new GregorianCalendar(1981, Calendar.FEBRUARY, 11).getTime())));
+        */
     }
 
     public void setupUI(Stage stage){

@@ -34,6 +34,7 @@ public class DataThread extends Thread {
     public void restart() {
         if (!run) run = true;
     }
+
     private class DataTask extends TimerTask {
         private Value value;
 

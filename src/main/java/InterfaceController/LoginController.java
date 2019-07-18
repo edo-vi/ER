@@ -56,5 +56,6 @@ public class LoginController {
 
     @FXML protected void startMonitoring() {
         store.update(new StringCommand("SHOW_MONITORING"));
+        store.update(new StringCommand("START_MONITORING"));
     }
 }

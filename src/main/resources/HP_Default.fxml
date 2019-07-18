@@ -18,8 +18,8 @@
                   <MenuItem mnemonicParsing="false" text="Monitoring" />
                   <MenuItem mnemonicParsing="false" text="Last week report" />
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" text="Log Out" />
-              <MenuItem mnemonicParsing="false" text="Close" />
+                  <MenuItem mnemonicParsing="false" text="Log Out" onAction="#logout"/>
+              <MenuItem mnemonicParsing="false" text="Close"/>
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="View">

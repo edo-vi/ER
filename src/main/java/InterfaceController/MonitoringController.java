@@ -37,6 +37,7 @@ public class MonitoringController {
 
     @FXML protected void close() {
         store.update(new StringCommand("CLOSE_MONITORING"));
+        store.update(new StringCommand("STOP_MONITORING"));
     }
 
     @FXML protected void showAlarmController() {
