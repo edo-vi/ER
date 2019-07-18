@@ -54,9 +54,9 @@
                 <AnchorPane prefHeight="773.0" prefWidth="3.0" style="-fx-background-color: grey;" />
                 <AnchorPane prefHeight="773.0" prefWidth="987.0">
                <children>
-                  <Label layoutX="48.0" layoutY="65.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" text="Ricerca paziente:" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="70.0" />
-                  <TextField layoutX="252.0" layoutY="35.0" prefHeight="37.0" prefWidth="333.0" AnchorPane.leftAnchor="220.0" AnchorPane.topAnchor="65.0" />
-                  <TableView layoutX="287.0" layoutY="358.0" prefHeight="275.0" prefWidth="977.0" style="-fx-background-color: black;" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="200.0">
+                  <Label layoutX="48.0" layoutY="65.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" text="Ricerca paziente:" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="50.0" />
+                  <TextField layoutX="252.0" layoutY="35.0" prefHeight="37.0" prefWidth="333.0" AnchorPane.leftAnchor="220.0" AnchorPane.topAnchor="45.0" />
+                  <TableView layoutX="287.0" layoutY="358.0" prefHeight="332.0" prefWidth="977.0" style="-fx-background-color: black;" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="200.0">
                     <columns>
                       <TableColumn prefWidth="200.0" text="Data Ricovero" />
                         <TableColumn prefWidth="290.0" text="Motivo" />
@@ -64,7 +64,7 @@
                         <TableColumn prefWidth="282.0" text="Esito" />
                     </columns>
                   </TableView>
-                  <Button layoutX="580.0" layoutY="67.0" mnemonicParsing="false" text="Cerca" />
+                  <Button layoutX="580.0" layoutY="67.0" mnemonicParsing="false" text="Cerca" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="47.0" />
                </children></AnchorPane>
             </children>
         </HBox>
