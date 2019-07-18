@@ -37,7 +37,8 @@ public class MonitoringController {
     private Recovery activeRecovery;
     private Subject<StateEvent> stream;
     private Disposable dis;
-    private int counter = 1;
+    private int counterHR = 1;
+    private int counterBP = 1;
     private XYChart.Series seriesHR = new XYChart.Series();
     private XYChart.Series seriesS = new XYChart.Series();
     private XYChart.Series seriesD = new XYChart.Series();
@@ -64,41 +65,42 @@ public class MonitoringController {
                 Platform.runLater(() -> dbpLabel.setText(String.valueOf(lastMonitoring.getDiastolicPressure())));
                 Platform.runLater(() -> sbpLabel.setText(String.valueOf(lastMonitoring.getSystolicPressure())));
 
-                if (name.equals("GENERATE_BP") || name.equals("GENERATE_HEART_RATE")) {
+                if (name.equals("GENERATE_HEART_RATE")) {
                     Platform.runLater(() -> yhrAxis.setLabel("bpm"));
                     Platform.runLater(() -> seriesHR.setName("HR"));
                     Platform.runLater(() -> {
-                        xhrAxis.setLowerBound((counter - 11 > 0) ? counter - 11 : 0);
-                        xhrAxis.setUpperBound(counter + 1);
+                        xhrAxis.setLowerBound((counterHR - 11 > 0) ? counterHR - 11 : 0);
+                        xhrAxis.setUpperBound(counterHR + 1);
                     });
                     Platform.runLater(() -> {
-                        XYChart.Data elem = new XYChart.Data(counter, lastMonitoring.getHeartRate());
+                        XYChart.Data elem = new XYChart.Data(counterHR, lastMonitoring.getHeartRate());
                         ObservableList<XYChart.Data> s = seriesHR.getData();
                         if (s.size() > 10)
                             s.remove(0);
                         s.add(elem);
                         seriesHR.setData(s);
                         hrGraphic.getData().add(seriesHR);
+                        counterHR++;
                     });
-
+                } else if(name.equals("GENERATE_BP")) {
                     Platform.runLater(() -> ybpAxis.setLabel("mmHg"));
                     Platform.runLater(() -> {
                         seriesS.setName("SBP");
                         seriesD.setName("DBP");
                     });
                     Platform.runLater(() -> {
-                        xbpAxis.setLowerBound((counter - 11 > 0) ? counter - 11 : 0);
-                        xbpAxis.setUpperBound(counter + 1);
+                        xbpAxis.setLowerBound((counterBP - 11 > 0) ? counterBP - 11 : 0);
+                        xbpAxis.setUpperBound(counterBP + 1);
                     });
                     Platform.runLater(() -> {
-                        XYChart.Data elem = new XYChart.Data(counter, lastMonitoring.getSystolicPressure());
+                        XYChart.Data elem = new XYChart.Data(counterBP, lastMonitoring.getSystolicPressure());
                         ObservableList<XYChart.Data> s = seriesS.getData();
                         if (s.size() > 10)
                             s.remove(0);
                         s.add(elem);
                         seriesS.setData(s);
 
-                        elem = new XYChart.Data(counter, lastMonitoring.getDiastolicPressure());
+                        elem = new XYChart.Data(counterBP, lastMonitoring.getDiastolicPressure());
                         s = seriesD.getData();
                         if (s.size() > 10)
                             s.remove(0);
@@ -107,7 +109,7 @@ public class MonitoringController {
 
                         bpGraphic.getData().addAll(seriesS, seriesD);
 
-                        counter++;
+                        counterBP++;
                     });
                 }
             }
@@ -117,8 +119,8 @@ public class MonitoringController {
     @FXML public void initialize() {
         setInfo(0);
         xhrAxis.setAutoRanging(false);
-        xhrAxis.setLowerBound(counter-1);
-        xhrAxis.setUpperBound(counter+1);
+        xhrAxis.setLowerBound(0);
+        xhrAxis.setUpperBound(2);
         xhrAxis.setTickUnit(1.0);
         yhrAxis.setAutoRanging(false);
         yhrAxis.setLowerBound(40.0);
@@ -126,8 +128,8 @@ public class MonitoringController {
         yhrAxis.setTickUnit(40.0);
 
         xbpAxis.setAutoRanging(false);
-        xbpAxis.setLowerBound(counter-1);
-        xbpAxis.setUpperBound(counter+1);
+        xbpAxis.setLowerBound(0);
+        xbpAxis.setUpperBound(2);
         xbpAxis.setTickUnit(1.0);
         ybpAxis.setAutoRanging(false);
         ybpAxis.setLowerBound(40.0);
