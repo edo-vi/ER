@@ -1,5 +1,6 @@
 package Component;
 
+import InterfaceController.AlarmsController;
 import State.Command;
 import State.StateEvent;
 import System.Sistema;
@@ -11,9 +12,9 @@ public class AlarmsComponent<C extends Command> extends Component {
     public static final String AlarmsTitle = "ER - Alarms";
 
     public AlarmsComponent() {
-        //HPController hpctl = new HPController(sys.getStore(), sys.getStore().getEventStream());
+        AlarmsController almctl = new AlarmsController(sys.getStore(), sys.getStore().getEventStream());
         this.loader = new FXMLLoader(getClass().getResource("/Alarms.fxml"));
-        //loader.setController(hpctl);
+        loader.setController(almctl);
     }
 
 

@@ -48,9 +48,7 @@ public class LoginController {
     @FXML protected void buttonPressed(KeyEvent e)
     {
         if(e.getCode().toString().equals("ENTER"))
-        {
-            this.login();
-        }
+            login();
     }
 
     @FXML protected void startMonitoring() {

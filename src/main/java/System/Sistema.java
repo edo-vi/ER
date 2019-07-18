@@ -5,6 +5,7 @@ import Entities.Patient;
 import Entities.Recovery;
 import Entities.User;
 import Generator.DataThread;
+import Generator.Sickness;
 import Generator.Value;
 import State.Reducer;
 import State.ReducerString;
@@ -33,6 +34,8 @@ public class Sistema {
     private InterfacesController controller;
     private Stage monitoringStage = null;
     private Stage alarmStage = null;
+    private final Random random = new Random();
+    private int selecetedPatient;
 
     public static Sistema getInstance() {
         if (s == null)
@@ -73,6 +76,12 @@ public class Sistema {
                         controller.toFront();
                     else controller.activate("login", LoginComponent.loginTitle);
                     return s;
+                })
+                .with("EVOLVE_GENERATOR", (c,s) -> {
+                    Sickness sick = (Sickness) c.getArg();
+                    selecetedPatient = random.nextInt(s.getActiveRecoveries().size());
+                    s.getActiveRecoveries().get(selecetedPatient).evolveGenerator(sick);
+                    return s;
                 });
         Middleware<StringCommand> middleware = new MiddlewareString(monitoringStage)
                 .with("LOGIN", (c, s, m) -> {
@@ -112,6 +121,7 @@ public class Sistema {
                         monitoringStage.setScene(new Scene(getInterface("MON")));
                         monitoringStage.setTitle(MonitoringComponent.monitoringTitle);
                         monitoringStage.sizeToScene();
+                        monitoringStage.setResizable(false);
                         monitoringStage.setOnCloseRequest(e -> store.update(new StringCommand("STOP_MONITORING")));
                     }
                     monitoringStage.show();
@@ -143,6 +153,7 @@ public class Sistema {
                         alarmStage.getIcons().add(new Image("/logo.png"));
                         alarmStage.setScene(new Scene(getInterface("ALM")));
                         alarmStage.setTitle(AlarmsComponent.AlarmsTitle);
+                        alarmStage.setResizable(false);
                         alarmStage.sizeToScene();
                     }
                     alarmStage.show();

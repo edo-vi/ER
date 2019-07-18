@@ -1,9 +1,6 @@
 package Entities;
 
-import Generator.BPGenerator;
-import Generator.HeartRateGenerator;
-import Generator.TemperatureGenerator;
-import Generator.Value;
+import Generator.*;
 import Main.Tuple;
 
 
@@ -86,6 +83,18 @@ public class Recovery implements Entry{
             return new Monitoring().defaultMonitoring();
         }
         return this.monitorings.get(this.monitorings.size()-1);
+    }
+
+    public void evolveGenerator(Sickness s) {
+        bpGenerator.evolve(s);
+        heartRateGenerator.evolve(s);
+        temperatureGenerator.evolve(s);
+    }
+
+    public void resetGenerator() {
+        bpGenerator.reset();
+        heartRateGenerator.reset();
+        temperatureGenerator.reset();
     }
 
     public void generateMonitoring(Value value) {

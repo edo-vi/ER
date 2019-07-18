@@ -13,9 +13,9 @@ public class MonitoringComponent<C extends Command> extends Component {
     public static final String monitoringTitle = "ER - Monitoring";
 
     public MonitoringComponent() {
-        MonitoringController logctl = new MonitoringController(sys.getStore(), sys.getStore().getEventStream());
+        MonitoringController monctl = new MonitoringController(sys.getStore(), sys.getStore().getEventStream());
         loader = new FXMLLoader(getClass().getResource("/Monitoring.fxml"));
-        loader.setController(logctl);
+        loader.setController(monctl);
     }
 
     public MonitoringComponent(Store<C> store) {
