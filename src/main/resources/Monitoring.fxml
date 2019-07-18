@@ -30,7 +30,7 @@
             <items>
                   <MenuItem mnemonicParsing="false" text="Login" onAction="#login"/>
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" text="Alarms Test" />
+                  <MenuItem mnemonicParsing="false" text="Alarms Test" onAction="#showAlarmController"/>
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" text="Close" onAction="#close"/>
             </items>

@@ -1,12 +1,10 @@
 package System;
 
 import Component.MonitoringComponent;
-import Entities.Monitoring;
 import Entities.Patient;
 import Entities.Recovery;
 import Entities.User;
 import Generator.DataThread;
-import Generator.MonitoringEntry;
 import Generator.Value;
 import State.Reducer;
 import State.ReducerString;
@@ -33,7 +31,7 @@ public class Sistema {
     private Store<StringCommand> store;
     private InterfacesController controller;
     private Stage monitoringStage = null;
-    private Stage alarmStage;
+    private Stage alarmStage = null;
 
     public static Sistema getInstance() {
         if (s == null)
@@ -66,7 +64,9 @@ public class Sistema {
                 .with("ADD_PATIENT")
                 .with("START_MONITORING")               
                 .with("SHOW_MONITORING")
-                .with("STOP_MONITORING");
+                .with("STOP_MONITORING")
+                .with("CLOSE_MONITORING")
+                .with("SHOW_ALARMS");
         Middleware<StringCommand> middleware = new MiddlewareString(monitoringStage)
                 .with("LOGIN", (c, s, m) -> {
                     User u = (User) c.getArg();
@@ -108,17 +108,31 @@ public class Sistema {
                     }
                     monitoringStage.show();
                     monitoringStage.toFront();
-                    return new Tuple((new StringCommand("OPEN_MONITORING")), s);
+                    return new Tuple<>((new StringCommand("OPEN_MONITORING")), s);
                 })
                 .with("START_MONITORING", (c,s,m) -> {
-                    Thread t = new DataThread(store);
-
-                    ((MiddlewareString) m).setMonitoring(t);
-                    ((MiddlewareString) m).getMonitoring().start();
+                    new DataThread(store).start();
                     return new Tuple<>(new StringCommand("MONITORING_HAS_STARTED"), s);
-                }).with("STOP_MONITORING", (c,s,m) -> {
+                })
+                .with("STOP_MONITORING", (c,s,m) -> {
                     ((MiddlewareString) m).getMonitoring().interrupt();
                     return new Tuple<>(new StringCommand("STOPPED_MONITORING"), s);
+                })
+                .with("CLOSE_MONITORING", (s,c,m) -> {
+                    monitoringStage.close();
+                    return new Tuple<>(new StringCommand("CLOSE_MONITORING"), s);
+                })
+                .with("SHOW_ALARMS", (c,s,m) -> {
+                    if (alarmStage == null) {
+                        alarmStage = new Stage();
+                        alarmStage.getIcons().add(new Image("/logo.png"));
+                        alarmStage.setScene(new Scene(getInterface("ALM")));
+                        alarmStage.setTitle(AlarmsComponent.AlarmsTitle);
+                        alarmStage.sizeToScene();
+                    }
+                    alarmStage.show();
+                    alarmStage.toFront();
+                    return new Tuple<>(new StringCommand("SHOW_ALARMS"), s);
                 });
 
         store = new Store<StringCommand>(new State(), reducer, middleware);
