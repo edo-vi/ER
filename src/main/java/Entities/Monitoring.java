@@ -118,7 +118,7 @@ public class Monitoring implements Entry {
     }
 
     public String toString() {
-        try (Writer writer = new BufferedWriter(new FileWriter("Monitoring", true))) {
+        try (Writer writer = new BufferedWriter(new FileWriter("monitoring.log", true))) {
 
             String s = String.format("{%s, %d, %d, %d, %fd", this.date, this.diastolicPressure, this.systolicPressure ,
                     this.heartRate, this.temperature);
