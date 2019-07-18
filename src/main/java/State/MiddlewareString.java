@@ -8,6 +8,8 @@ import java.util.HashMap;
 public class MiddlewareString implements Middleware<StringCommand> {
     private Stage stage;
 
+    private Thread monitoring;
+
     public MiddlewareString(Stage stage) {
         this.stage = stage;
     }
@@ -33,5 +35,13 @@ public class MiddlewareString implements Middleware<StringCommand> {
     }
     public boolean check(String s) {
         return this.map.containsKey(s);
+    }
+
+    public Thread getMonitoring() {
+        return monitoring;
+    }
+
+    public void setMonitoring(Thread monitoring) {
+        this.monitoring = monitoring;
     }
 }

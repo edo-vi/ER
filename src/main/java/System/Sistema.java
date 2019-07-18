@@ -66,7 +66,7 @@ public class Sistema {
                 .with("ADD_PATIENT")
                 .with("START_MONITORING")               
                 .with("SHOW_MONITORING")
-                .with("CLOSE_MONITORING");
+                .with("STOP_MONITORING");
         Middleware<StringCommand> middleware = new MiddlewareString(monitoringStage)
                 .with("LOGIN", (c, s, m) -> {
                     User u = (User) c.getArg();
@@ -111,8 +111,14 @@ public class Sistema {
                     return new Tuple((new StringCommand("OPEN_MONITORING")), s);
                 })
                 .with("START_MONITORING", (c,s,m) -> {
-                    new DataThread(store).start();
+                    Thread t = new DataThread(store);
+
+                    ((MiddlewareString) m).setMonitoring(t);
+                    ((MiddlewareString) m).getMonitoring().start();
                     return new Tuple<>(new StringCommand("MONITORING_HAS_STARTED"), s);
+                }).with("STOP_MONITORING", (c,s,m) -> {
+                    ((MiddlewareString) m).getMonitoring().interrupt();
+                    return new Tuple<>(new StringCommand("STOPPED_MONITORING"), s);
                 });
 
         store = new Store<StringCommand>(new State(), reducer, middleware);

@@ -12,7 +12,7 @@ public class AlarmsComponent<C extends Command> extends Component {
 
     public AlarmsComponent() {
         //HPController hpctl = new HPController(sys.getStore(), sys.getStore().getEventStream());
-        this.loader = new FXMLLoader(getClass().getResource("Alarms.fxml"));
+        this.loader = new FXMLLoader(getClass().getResource("/Alarms.fxml"));
         //loader.setController(hpctl);
     }
 

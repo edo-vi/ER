@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane prefHeight="400.0" prefWidth="400.0" style="-fx-background-color: #1d1d1d;" stylesheets="@DarkTheme.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.resources.Alarms">
+<AnchorPane prefHeight="400.0" prefWidth="400.0" style="-fx-background-color: #1d1d1d;" stylesheets="@DarkTheme.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label layoutX="45.0" layoutY="29.0" style="-fx-font-size: 20;" text="Choose the alarm to be simulated:" AnchorPane.topAnchor="30.0" />
       <GridPane layoutY="80.0" prefHeight="300.0" prefWidth="400.0">
