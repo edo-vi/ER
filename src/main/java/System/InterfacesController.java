@@ -30,6 +30,8 @@ public class InterfacesController {
         main.setResizable(false);
         main.setTitle(title);
         main.sizeToScene();
+        main.toFront();
+        main.show();
     }
 
     public void deactivate() {

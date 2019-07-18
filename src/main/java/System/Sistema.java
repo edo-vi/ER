@@ -17,6 +17,7 @@ import State.DatabaseService;
 import State.MiddlewareString;
 import State.Middleware;
 import Component.HPComponent;
+import Component.AlarmsComponent;
 
 import Component.LoginComponent;
 import javafx.scene.Scene;
@@ -32,6 +33,7 @@ public class Sistema {
     private Store<StringCommand> store;
     private InterfacesController controller;
     private Stage monitoringStage = null;
+    private Stage alarmStage;
 
     public static Sistema getInstance() {
         if (s == null)
@@ -64,7 +66,7 @@ public class Sistema {
                 .with("ADD_PATIENT")
                 .with("START_MONITORING")               
                 .with("SHOW_MONITORING")
-                .with("ADD_MONITORING_ENTRY");
+                .with("CLOSE_MONITORING");
         Middleware<StringCommand> middleware = new MiddlewareString(monitoringStage)
                 .with("LOGIN", (c, s, m) -> {
                     User u = (User) c.getArg();
@@ -89,7 +91,8 @@ public class Sistema {
                     }*/
                     s.setMainRecoveryIndex(0);
                     return new Tuple<>(new StringCommand("LOADED"), s);
-                }).with("ADD_PATIENT" , (c, s, m) -> {
+                })
+                .with("ADD_PATIENT" , (c, s, m) -> {
                     Patient patient = (Patient) c.getArg();
                     s.addPatient(patient);
                     DatabaseService.addEntry(patient);
@@ -129,6 +132,7 @@ public class Sistema {
             this.controller.addInterface("HPM", new HPComponent<StringCommand>("monitoring").getLoader().load());
             this.controller.addInterface("HPD", new HPComponent<StringCommand>("dismiss").getLoader().load());
             this.controller.addInterface("MON", new MonitoringComponent<StringCommand>().getLoader().load());
+            this.controller.addInterface("ALM", new AlarmsComponent<StringCommand>().getLoader().load());
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error during interfaces setup");

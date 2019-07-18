@@ -1,5 +1,6 @@
 package InterfaceController;
 
+import Component.LoginComponent;
 import Entities.Monitoring;
 import State.StateEvent;
 import State.Store;
@@ -30,6 +31,17 @@ public class MonitoringController {
         // iscrizione
     }
 
+    @FXML protected void login() {
+        sys.setInterface("login", LoginComponent.loginTitle);
+    }
+
+    @FXML protected void close() {
+        store.update(new StringCommand("CLOSE_MONITORING"));
+    }
+
+    @FXML protected void showAlarmController() {
+        store.update(new StringCommand("SHOW_ALARMS"));
+    }
 
 
 }
