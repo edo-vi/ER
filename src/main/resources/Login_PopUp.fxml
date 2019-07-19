@@ -22,7 +22,7 @@
       </Label>
       <TextField id="userField" fx:id="userField" layoutX="170.0" layoutY="122.0" promptText="username" AnchorPane.leftAnchor="170.0" />
       <PasswordField id="passField" fx:id="passField" layoutX="170.0" layoutY="178.0" prefHeight="37.0" prefWidth="206.0" promptText="password" AnchorPane.leftAnchor="170.0" />
-      <Button fx:id="loginButton" layoutX="370.0" layoutY="194.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="151.0" text="Spegni Allarme" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0">
+      <Button fx:id="loginButton" onAction="#login" layoutX="370.0" layoutY="194.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="151.0" text="Spegni Allarme" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0">
          <font>
             <Font size="18.0" />
          </font>
