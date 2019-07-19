@@ -4,6 +4,7 @@ package InterfaceController;
 import Entities.Administration;
 import Entities.Monitoring;
 import Entities.Patient;
+import Entities.Recovery;
 import State.State;
 import State.StateEvent;
 import State.Store;
@@ -13,11 +14,15 @@ import Component.LoginComponent;
 import System.Sistema;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.Subject;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.util.Callback;
 import javafx.util.StringConverter;
 
 import java.util.List;
@@ -29,7 +34,8 @@ public class HPMController {
     private final Sistema sys = Sistema.getInstance();
     @FXML private TableView<Monitoring> tableMonitorings = new TableView<>();
     @FXML private TableView<Administration> tableAdministrations = new TableView<>();
-    @FXML private ComboBox<Patient> patientComboBox;
+    @FXML private ComboBox<Recovery> patientComboBox;
+    @FXML private TableColumn<Administration, String> drugColumn;
     private Disposable dis;
 
     public HPMController(Store<StringCommand> store, Subject<StateEvent> stream) {
@@ -47,21 +53,32 @@ public class HPMController {
     }
 
     @FXML protected void initialize() {
-        patientComboBox.setConverter(new StringConverter<Patient>() {
+        patientComboBox.setConverter(new StringConverter<Recovery>() {
             @Override
-            public String toString(Patient patient) {
+            public String toString(Recovery recovery) {
                 try {
-                    return patient.getName() + " " + patient.getSurname();
+                    return recovery.getPatient().getName() + " " + recovery.getPatient().getSurname();
                 } catch (Exception err) {
                     return "";
                 }
             }
 
             @Override
-            public Patient fromString(String s) {
+            public Recovery fromString(String s) {
                 return patientComboBox.getValue();
             }
         });
+
+        //todo this is wrong
+        drugColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Administration , String>, ObservableValue<String>>() {
+
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Administration , String> param) {
+                return new SimpleObjectProperty<>(param.getValue().getPrescription().getDrug());
+
+            }
+        });
+
         initialize(store.poll());
     }
 
@@ -72,13 +89,14 @@ public class HPMController {
     }
 
     @FXML protected void updatePatients(State state) {
-        List<Patient> patients = state.getActiveRecoveries().stream().map(r -> r.getPatient()).collect(Collectors.toList());
-        ObservableList<Patient> data = this.patientComboBox.getItems();
+        List<Recovery> rec = state.getActiveRecoveries();
+        ObservableList<Recovery> data = this.patientComboBox.getItems();
         int index = patientComboBox.getSelectionModel().getSelectedIndex();
         data.removeAll(data);
-        data.addAll(patients);
+        data.addAll(rec);
         patientComboBox.getSelectionModel().select(index);
     }
+
     @FXML protected void showMonitoring() {
         store.update(new StringCommand("SHOW_MONITORING"));
         store.update(new StringCommand("START_MONITORING"));
@@ -86,12 +104,12 @@ public class HPMController {
     @FXML protected void selectedPatient() {
         this.setData(patientComboBox.getValue());
     }
-    @FXML protected void setData(Patient p) {
-        if (p != null) {
-            List<Monitoring> monitorings = p.getRecoveries().stream().flatMap(re -> re.getMonitorings().stream()).collect(Collectors.toList());
-            List<Administration> administrations = p.getAdministrations();
+    @FXML protected void setData(Recovery r) {
+        if (r != null) {
+            List<Monitoring> monitorings = r.getMonitorings();
+            List<Administration> administrations = r.getPatient().getAdministrations();
             ObservableList<Monitoring> data1 = tableMonitorings.getItems();
-            data1.removeAll(data1);
+            data1.add(0,r.getLastMonitoring());
             data1.addAll(monitorings);
 
             ObservableList<Administration> data2 = tableAdministrations.getItems();

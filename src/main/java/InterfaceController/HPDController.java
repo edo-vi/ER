@@ -88,11 +88,12 @@ public class HPDController {
         int index = patientsChoice.getSelectionModel().getSelectedIndex();
         data.removeAll(data);
         data.addAll(recoveries);
-        try {
+        if (recoveries.size() > 0) {
             patientsChoice.getSelectionModel().select(index);
-        } catch (Exception e) {
-            patientsChoice.getSelectionModel().clearSelection();
-            patientsChoice.setPromptText("Nessuna scelta");
+        } else {
+            //todo it doesn't fucking work
+            patientsChoice.setValue(null);
+
         }
     }
 

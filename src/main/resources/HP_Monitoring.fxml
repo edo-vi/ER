@@ -101,11 +101,7 @@
                               <PropertyValueFactory property="hour" />
                            </cellValueFactory>
                         </TableColumn>
-                        <TableColumn prefWidth="200.0" text="Farmaco">
-                           <cellValueFactory>
-                              <PropertyValueFactory property="drug" />
-                           </cellValueFactory>
-                        </TableColumn>
+                        <TableColumn prefWidth="200.0" text="Farmaco" fx:id="drugColumn"/>
                         <TableColumn prefWidth="150.0" text="Dose">
                            <cellValueFactory>
                               <PropertyValueFactory property="dose" />
