@@ -27,10 +27,7 @@ public class Store<C extends Command> {
             if (!name.equals("GENERATE_BP") && !name.equals("GENERATE_HEART_RATE") && !name.equals("GENERATE_TEMPERATURE")) {
                 System.out.println(String.valueOf(counter++) + " | " + s.command() + "\n" + s.state());
             }
-        }
-
-
-        );
+        });
 
         this.middleware = middleware;
         this.state = state;

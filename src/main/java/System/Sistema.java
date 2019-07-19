@@ -157,33 +157,36 @@ public class Sistema {
                     return new Tuple<>(new StringCommand("SHOW_ALARMS"), s);
                 })
                 .with("ALARM_ACTIVATED", (c,s,m) -> {
-                    if(!alarmCtlIsShown) {
-                        boolean docAlreadyLog = s.getDocAlarm().isValid() && s.getDocAlarm().equals(s.getDocAlarmCheck());
-                        String filename = (docAlreadyLog) ? "ALMCTL" : "ALMCTLLOG";
-                        if (alarmControlStage == null) {
-                            alarmControlStage = createUI(filename, AlarmControlComponent.AlarmControlTitle);
-                            alarmControlStage.setAlwaysOnTop(true);
-                            alarmControlStage.initStyle(StageStyle.UNDECORATED);
+                    if(alarmStage == null || !alarmStage.isShowing()) {
+                        return new Tuple<>(new StringCommand("GENERATOR_ERROR_IGNORE"), s);
+                    }else {
+                        if(!alarmCtlIsShown) {
+                            boolean docAlreadyLog = s.getDocAlarm().isValid() && s.getDocAlarm().equals(s.getDocAlarmCheck());
+                            String filename = (docAlreadyLog) ? "ALMCTL" : "ALMCTLLOG";
+                            if (alarmControlStage == null) {
+                                alarmControlStage = createUI(filename, AlarmControlComponent.AlarmControlTitle);
+                                alarmControlStage.setAlwaysOnTop(true);
+                                alarmControlStage.initStyle(StageStyle.UNDECORATED);
+                            }
+                            switch (((Tuple<Integer, Sickness>) c.getArg()).fst()) {
+                                case 1:
+                                    alarmControlStage.getScene().getStylesheets().add(getClass().getResource("/ButtonAlarm1.css").toExternalForm());
+                                    break;
+                                case 2:
+                                    alarmControlStage.getScene().getStylesheets().add(getClass().getResource("/ButtonAlarm2.css").toExternalForm());
+                                    break;
+                                case 3:
+                                    alarmControlStage.getScene().getStylesheets().add(getClass().getResource("/ButtonAlarm3.css").toExternalForm());
+                                    break;
+                            }
+                            alarmControlStage.getScene().setRoot(getInterface(filename));
+                            alarmControlStage.sizeToScene();
+                            alarmControlStage.toFront();
+                            alarmControlStage.show();
+                            alarmCtlIsShown = true;
                         }
-                        switch (((Tuple<Integer, Sickness>) c.getArg()).fst()) {
-                            case 1:
-                                alarmControlStage.getScene().getStylesheets().add(getClass().getResource("/ButtonAlarm1.css").toExternalForm());
-                                break;
-                            case 2:
-                                alarmControlStage.getScene().getStylesheets().add(getClass().getResource("/ButtonAlarm2.css").toExternalForm());
-                                break;
-                            case 3:
-                                alarmControlStage.getScene().getStylesheets().add(getClass().getResource("/ButtonAlarm3.css").toExternalForm());
-                                break;
-                        }
-                        alarmControlStage.getScene().setRoot(getInterface(filename));
-                        alarmControlStage.sizeToScene();
-                        alarmControlStage.toFront();
-                        alarmControlStage.show();
-                        alarmCtlIsShown = true;
+                        return new Tuple<>(new StringCommand("ACTIVE_ALARM", c.getArg()), s);
                     }
-
-                    return new Tuple<>(new StringCommand("ACTIVE_ALARM", c.getArg()), s);
                 })
                 .with("RESET_ALARMS", (c,s,m) -> {
                     s.getActiveRecoveries().get(selectedPatient).resetGenerator();
