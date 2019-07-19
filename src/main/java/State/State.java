@@ -20,7 +20,7 @@ public class State  {
         this.userCheck = new User("eme", "pw", Role.HEAD_PHYSICIAN, true);
 
         this.docAlarm = new User();
-        this.docAlarmCheck = new User("doc", "pw", Role.DOCTOR, true);
+        this.docAlarmCheck = new User("warian", "pw", Role.DOCTOR, true);
         /*
         this.patients.add(new Patient("Carlo", "Combi", "CMBCBMWHATEVER291Z", "Verona",
                 new GregorianCalendar(1965, Calendar.APRIL, 11).getTime()));

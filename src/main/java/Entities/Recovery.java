@@ -106,10 +106,6 @@ public class Recovery implements Entry{
             nm.setDate(new Date());
             if (value == Value.BP) {
                 Tuple<Integer, Integer> ints = this.bpGenerator.getValue();
-
-                if(ints.fst() < 60 || ints.fst() > 95 || ints.snd() < 90 || ints.snd() > 150)
-                    Sistema.getInstance().getStore().update(new StringCommand("ALARM_ACTIVATED", 2));
-
                 nm.setDiastolicPressure(ints.fst());
                 nm.setSystolicPressure(ints.snd());
                 nm.setHeartRate(last.getHeartRate());
@@ -117,28 +113,25 @@ public class Recovery implements Entry{
             }
             else if (value == Value.HEART_RATE) {
                 nm.setHeartRate(this.heartRateGenerator.getValue());
-
-                if(nm.getHeartRate() < 60 || nm.getHeartRate() > 100)
-                    Sistema.getInstance().getStore().update(new StringCommand("ALARM_ACTIVATED", 1));
-
-
                 nm.setDiastolicPressure(last.getDiastolicPressure());
                 nm.setSystolicPressure(last.getSystolicPressure());
                 nm.setTemperature(last.getTemperature());
             }
             else {
                 nm.setTemperature(this.temperatureGenerator.getValue());
-
-                if(nm.getTemperature() > 37.5 || nm.getTemperature() < 36)
-                    Sistema.getInstance().getStore().update(new StringCommand("ALARM_ACTIVATED", 2));
-
                 nm.setDiastolicPressure(last.getDiastolicPressure());
                 nm.setSystolicPressure(last.getSystolicPressure());
                 nm.setHeartRate(last.getHeartRate());
             }
         this.addToMonitorings(nm);
-        }
 
+        if(nm.getDiastolicPressure() < 60 || nm.getDiastolicPressure() > 95 || nm.getSystolicPressure() < 90 || nm.getSystolicPressure() > 150)
+            Sistema.getInstance().getStore().update(new StringCommand("ALARM_ACTIVATED", 2));
+        else if(nm.getHeartRate() < 60 || nm.getHeartRate() > 100)
+            Sistema.getInstance().getStore().update(new StringCommand("ALARM_ACTIVATED", 1));
+        else if(nm.getTemperature() > 37.5 || nm.getTemperature() < 36)
+            Sistema.getInstance().getStore().update(new StringCommand("ALARM_ACTIVATED", 2));
+        }
     }
 
     /**
