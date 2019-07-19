@@ -210,6 +210,9 @@ public class Sistema {
                         Recovery re = s.getAllRecoveries().stream()
                                 .filter(r -> r.getId()==val.fst()).collect(Collectors.toList()).get(0);
                         re.setDischargeSummary(val.snd());
+                        Calendar cal = Calendar.getInstance();
+                        re.setEndDate(cal.getTime());
+                        re.setActive(false);
                         DatabaseService.addEntry(re);
                         return new Tuple<>(new StringCommand("DISCHARGED_A_PATIENT"), s);
                     } catch (Exception e) {
