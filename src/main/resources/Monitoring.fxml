@@ -47,7 +47,7 @@
                <children>
                   <Label id="nameLabel" fx:id="nameLabel" layoutX="24.0" layoutY="35.0" prefHeight="21.0" prefWidth="107.0" style="-fx-font-size: 20;" text="Nome" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="30.0" />
                   <Label id="surnameLabel" fx:id="surnameLabel" layoutX="24.0" layoutY="64.0" prefHeight="21.0" prefWidth="133.0" style="-fx-font-size: 20;" text="Cognome" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="70.0" />
-                  <TableView fx:id="table" layoutY="200.0" prefHeight="400.0" prefWidth="650.0" style="-fx-background-color: black;" fixedCellSize="31">
+                  <TableView fx:id="table" fixedCellSize="31" layoutY="200.0" prefHeight="400.0" prefWidth="650.0" style="-fx-background-color: black;">
                     <columns>
                       <TableColumn prefWidth="180.0" resizable="false" text="Heart Rate">
                           <cellValueFactory>
@@ -84,7 +84,7 @@
             </AnchorPane>
             <VBox prefHeight="200.0" prefWidth="550.0">
                <children>
-                  <LineChart fx:id="hrGraphic" prefHeight="300.0" prefWidth="440.0" title="Heart Rate">
+                  <LineChart fx:id="hrGraphic" prefHeight="300.0" prefWidth="440.0" style="-fx-background-color: black;" title="Heart Rate">
                      <xAxis>
                         <NumberAxis side="BOTTOM" tickLabelFill="WHITE" fx:id="xhrAxis" />
                      </xAxis>
@@ -102,7 +102,7 @@
                         </Lighting>
                      </effect>
                   </LineChart>
-                  <LineChart fx:id="bpGraphic" prefHeight="300.0" prefWidth="440.0" title="DBP / SBP">
+                  <LineChart fx:id="bpGraphic" prefHeight="300.0" prefWidth="440.0" style="-fx-background-color: black;" title="DBP / SBP">
                      <xAxis>
                         <NumberAxis side="BOTTOM" tickLabelFill="WHITE" fx:id="xbpAxis" />
                      </xAxis>
