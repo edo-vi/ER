@@ -21,6 +21,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import Main.Tuple;
+import javafx.stage.StageStyle;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -84,16 +85,13 @@ public class Sistema {
                     s.getActiveRecoveries().get(selectedPatient).evolveGenerator(sick);
                     return s;
                 })
-                .with("ALARM_ACTIVATED", (c, s) -> { //todo->(?) ignorare piu di un segnale di questo tipo?
+                .with("ALARM_ACTIVATED", (c, s) -> {
                     if(!alarmCtlIsShown) {
                         boolean docAlreadyLog = s.getDocAlarm().isValid() && s.getDocAlarm().equals(s.getDocAlarmCheck());
                         String filename = (docAlreadyLog) ? "ALMCTL" : "ALMCTLLOG";
                         if (alarmControlStage == null) {
                             alarmControlStage = createUI(filename, AlarmControlComponent.AlarmControlTitle);
-                            alarmControlStage.setOnCloseRequest(e -> {
-                                alarmCtlIsShown = false;
-                                store.update(new StringCommand("RESET_ALARMS"));
-                            });
+                            alarmControlStage.initStyle(StageStyle.UNDECORATED);
                         }
                         switch ((Integer) c.getArg()) {
                             case 1:
@@ -106,19 +104,16 @@ public class Sistema {
                                 alarmControlStage.getScene().getStylesheets().add(getClass().getResource("/ButtonAlarm3.css").toExternalForm());
                                 break;
                         }
+
                         alarmControlStage.sizeToScene();
-                        alarmControlStage.show();
                         alarmControlStage.toFront();
+                        alarmControlStage.show();
                         alarmCtlIsShown = true;
                     }
 
                     return s;
                 })
-                .with("RESET_ALARMS", (c,s) -> {
-                    s.getActiveRecoveries().get(selectedPatient).resetGenerator();
-                    selectedPatient = -1;
-                    return s;
-                })
+                .with("RESET_ALARMS")
                 .with("ALARM_LOGIN");
         Middleware<StringCommand> middleware = new MiddlewareString(monitoringStage)
                 .with("LOGIN", (c, s, m) -> {
@@ -177,10 +172,6 @@ public class Sistema {
                     return new Tuple<>(new StringCommand("STOPPED_MONITORING"), s);
                 })
                 .with("CLOSE_MONITORING", (c,s,m) -> {
-                    if(alarmStage.isShowing())
-                        alarmStage.close();
-                    if(alarmControlStage.isShowing())
-                        alarmControlStage.close();
                     monitoringStage.close();
                     return new Tuple<>(new StringCommand("CLOSE_MONITORING"), s);
                 })
@@ -193,6 +184,8 @@ public class Sistema {
                     return new Tuple<>(new StringCommand("SHOW_ALARMS"), s);
                 })
                 .with("RESET_ALARMS", (c,s,m) -> {
+                    s.getActiveRecoveries().get(selectedPatient).resetGenerator();
+                    selectedPatient = -1;
                     alarmControlStage.close();
                     alarmCtlIsShown = false;
                     return new Tuple<>(new StringCommand("CLOSED_ALARMS"), s);

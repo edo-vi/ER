@@ -2,7 +2,6 @@ package Entities;
 
 import Generator.*;
 import Main.Tuple;
-import State.StringCommand;
 import System.Sistema;
 
 
@@ -124,13 +123,6 @@ public class Recovery implements Entry{
                 nm.setHeartRate(last.getHeartRate());
             }
         this.addToMonitorings(nm);
-
-        if(nm.getDiastolicPressure() < 60 || nm.getDiastolicPressure() > 95 || nm.getSystolicPressure() < 90 || nm.getSystolicPressure() > 150)
-            Sistema.getInstance().getStore().update(new StringCommand("ALARM_ACTIVATED", 2));
-        else if(nm.getHeartRate() < 60 || nm.getHeartRate() > 100)
-            Sistema.getInstance().getStore().update(new StringCommand("ALARM_ACTIVATED", 1));
-        else if(nm.getTemperature() > 37.5 || nm.getTemperature() < 36)
-            Sistema.getInstance().getStore().update(new StringCommand("ALARM_ACTIVATED", 2));
         }
     }
 

@@ -1,7 +1,5 @@
 package InterfaceController;
 
-import Component.HPComponent;
-import Entities.Role;
 import Entities.User;
 import State.StateEvent;
 import State.Store;
