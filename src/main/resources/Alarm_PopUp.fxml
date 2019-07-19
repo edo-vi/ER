@@ -13,7 +13,7 @@
             <Font size="18.0" />
          </font>
       </Button>
-      <Label layoutX="40.0" layoutY="14.0" prefHeight="87.0" prefWidth="405.0" style="-fx-font-size: 16;" text="Attenzione! Allarme di livello 2:&#10;Ipertensione paziente Giacomo Rossi&#10;Richiesto l'intervento del dottor Paoletti." AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="14.0" />
+      <Label layoutX="40.0" layoutY="14.0" prefHeight="87.0" prefWidth="405.0" style="-fx-font-size: 16; -fx-text-fill: grey;" text="Attenzione! Allarme di livello 2:&#10;Ipertensione paziente Giacomo Rossi&#10;Richiesto l'intervento del dottor Paoletti." AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="14.0" />
    </children>
    <opaqueInsets>
       <Insets />

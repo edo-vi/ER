@@ -1,8 +1,12 @@
 package Generator;
 
+import State.StringCommand;
+import System.Sistema;
+
 import java.util.Random;
 
 public class TemperatureGenerator implements GeneratorInterface {
+    private boolean canGenerateAlarm = true;
     private final Random random = new Random();
     private double mean = 36.75;
     private double variance = 0.0625;
@@ -21,11 +25,18 @@ public class TemperatureGenerator implements GeneratorInterface {
     }
 
     public void reset() {
+        canGenerateAlarm = true;
         mean = 36.75;
         variance = 0.0625;
     }
 
     public Double getValue() {
-        return mean + random.nextGaussian()*variance;
+        double x =  mean + random.nextGaussian()*variance;
+        if((x > 37.5 || x < 36) && canGenerateAlarm) {
+            Sistema.getInstance().getStore().update(new StringCommand("ALARM_ACTIVATED", 2));
+            canGenerateAlarm = false;
+        }
+
+        return x;
     }
 }
