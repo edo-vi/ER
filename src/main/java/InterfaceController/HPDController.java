@@ -60,6 +60,14 @@ public class HPDController {
             data.setAll(nonActiveandNonDischargedRecoveries.stream().map(re -> new PatientRecovery(re)).collect(Collectors.toList()));
             patientsChoice.setPromptText(data.get(0).toString());
             patientsChoice.getSelectionModel().selectFirst();
+        } else {
+            patientsChoice.getSelectionModel().clearSelection();
+            try {
+                ObservableList<PatientRecovery> data = patientsChoice.getItems();
+                data.removeAll(data);
+            } catch (Exception e) {
+
+            }
         }
 
     }
@@ -101,15 +109,20 @@ public class HPDController {
     }
 
     @FXML protected void selectedItemFromCombobox(Event e) {
-        setLabels(((ComboBox<PatientRecovery>) e.getSource()).getValue().getRecovery());
+        try {
+            setLabels(((ComboBox<PatientRecovery>) e.getSource()).getValue().getRecovery());
+        } catch(Exception er) {}
     }
 
     @FXML protected void discharge() {
         String dt = dischargeText.getText();
         if (dt != null && !dt.equals("")) {
-            Recovery r = this.patientsChoice.getValue().getRecovery();
-            this.store.update(new StringCommand("DISCHARGE_PATIENT", new Tuple<>(r.getId(), dt)));
-            dischargeText.clear();
+            try {
+                Recovery r = this.patientsChoice.getValue().getRecovery();
+                this.store.update(new StringCommand("DISCHARGE_PATIENT", new Tuple<>(r.getId(), dt)));
+                dischargeText.clear();
+            } catch(Exception err) {}
+
         }
 
     }
