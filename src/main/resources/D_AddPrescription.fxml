@@ -16,13 +16,13 @@
             <menus>
                 <Menu mnemonicParsing="false" text="File">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#showMonitoring" text="Monitoring" />
+                        <MenuItem mnemonicParsing="false" onAction="#showMonitoring" text="Monitora" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" onAction="#logout" text="Log Out" />
-                        <MenuItem mnemonicParsing="false" onAction="#close" text="Close" />
+                        <MenuItem mnemonicParsing="false" onAction="#logout" text="Esci" />
+                        <MenuItem mnemonicParsing="false" onAction="#close" text="Chiudi" />
                     </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="View">
+                <Menu mnemonicParsing="false" text="Visualizza">
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#dismissPatient" text="Lista pazienti in attesa" />
                         <MenuItem mnemonicParsing="false" onAction="#dismissPatient" text="Nuova prescrizione" />
@@ -31,9 +31,9 @@
                         <MenuItem mnemonicParsing="false" onAction="#search" text="Cartella clinica" />
                     </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Help">
+                <Menu mnemonicParsing="false" text="Aiuto">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="About" />
+                        <MenuItem mnemonicParsing="false" text="Supporto" />
                     </items>
                 </Menu>
             </menus>

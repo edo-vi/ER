@@ -1,28 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="810.0" prefWidth="1200.0" style="-fx-background-color: black;" stylesheets="@DarkThemeLabelFree.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="810.0" prefWidth="1200.0" style="-fx-background-color: black;" stylesheets="@DarkThemeMonit.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <MenuBar>
             <menus>
                 <Menu mnemonicParsing="false" text="File">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#showMonitoring" text="Monitoring" />
+                        <MenuItem mnemonicParsing="false" onAction="#showMonitoring" text="Monitora" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" onAction="#logout" text="Log Out" />
-                        <MenuItem mnemonicParsing="false" onAction="#close" text="Close" />
+                        <MenuItem mnemonicParsing="false" onAction="#logout" text="Esci" />
+                        <MenuItem mnemonicParsing="false" onAction="#close" text="Chiudi" />
                     </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="View">
+                <Menu mnemonicParsing="false" text="Visualizza">
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#dismissPatient" text="Nuova somministrazione" />
                         <MenuItem mnemonicParsing="false" onAction="#dismissPatient" text="Nuovo paziente" />
@@ -31,9 +35,9 @@
                         <MenuItem mnemonicParsing="false" onAction="#search" text="Cartella clinica" />
                     </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Help">
+                <Menu mnemonicParsing="false" text="Aiuto">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="About" />
+                        <MenuItem mnemonicParsing="false" text="Supporto" />
                     </items>
                 </Menu>
             </menus>
@@ -52,7 +56,29 @@
                     </children>
                 </AnchorPane>
                 <AnchorPane prefHeight="773.0" prefWidth="3.0" style="-fx-background-color: grey;" />
-                <AnchorPane prefHeight="773.0" prefWidth="987.0" />
+                <AnchorPane prefHeight="773.0" prefWidth="987.0">
+               <children>
+                  <Label layoutX="59.0" layoutY="19.0" style="-fx-font-size: 24; -fx-text-fill: #B0C4DE;" text="Accettazione nuovo paziente" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="30.0" />
+                  <Label layoutX="50.0" layoutY="218.0" style="-fx-font-size: 18; -fx-text-fill: grey;" text="Nome :" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="240.0" />
+                  <Label layoutX="47.0" layoutY="158.0" style="-fx-font-size: 18; -fx-text-fill: grey;" text="Cognome :" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="160.0" />
+                  <Label layoutX="50.0" layoutY="288.0" style="-fx-font-size: 18; -fx-text-fill: grey;" text="Sesso :" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="320.0" />
+                  <Label layoutX="450.0" layoutY="288.0" style="-fx-font-size: 18; -fx-text-fill: grey;" text="Data di nascita :" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="400.0" />
+                  <Label layoutX="50.0" layoutY="430.0" style="-fx-font-size: 18; -fx-text-fill: grey;" text="C.F. :" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="560.0" />
+                  <Label layoutX="460.0" layoutY="298.0" style="-fx-font-size: 18; -fx-text-fill: grey;" text="Luogo di nascita :" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="480.0" />
+                  <Button layoutX="507.0" layoutY="557.0" mnemonicParsing="false" text="Calcola" AnchorPane.leftAnchor="510.0" />
+                  <Button layoutX="831.0" layoutY="697.0" mnemonicParsing="false" prefHeight="40.0" style="-fx-font-size: 18;" text="Aggiungi" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="150.0" />
+                  <TextField layoutX="180.0" layoutY="155.0" prefWidth="250.0" promptText="cognome..." />
+                  <TextField layoutX="180.0" layoutY="235.0" prefWidth="250.0" promptText="nome..." />
+                  <TextField layoutX="230.0" layoutY="475.0" prefWidth="250.0" promptText="luogo di nascita..." AnchorPane.leftAnchor="230.0" />
+                  <RadioButton layoutX="180.0" layoutY="323.0" mnemonicParsing="false" text="M" textFill="LIGHTSTEELBLUE">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="sesso" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton layoutX="305.0" layoutY="323.0" mnemonicParsing="false" text="F" textFill="LIGHTSTEELBLUE" toggleGroup="$sesso" />
+                  <DatePicker layoutX="230.0" layoutY="395.0" prefWidth="250.0" promptText="data di nascita..." style="-fx-background-color: black;" AnchorPane.leftAnchor="230.0" />
+                  <TextField layoutX="230.0" layoutY="555.0" prefWidth="250.0" promptText="codice fiscale..." AnchorPane.leftAnchor="230.0" />
+               </children></AnchorPane>
             </children>
         </HBox>
     </children>

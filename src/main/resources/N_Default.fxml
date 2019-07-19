@@ -12,32 +12,32 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="810.0" prefWidth="1200.0" style="-fx-background-color: black;" stylesheets="@DarkThemeLabelFree.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <MenuBar>
-            <menus>
-                <Menu mnemonicParsing="false" text="File">
-                    <items>
-                        <MenuItem mnemonicParsing="false" onAction="#showMonitoring" text="Monitoring" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" onAction="#logout" text="Log Out" />
-                        <MenuItem mnemonicParsing="false" onAction="#close" text="Close" />
-                    </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="View">
-                    <items>
-                        <MenuItem mnemonicParsing="false" onAction="#dismissPatient" text="Nuova somministrazione" />
-                        <MenuItem mnemonicParsing="false" onAction="#dismissPatient" text="Nuovo paziente" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" onAction="#showLast2H" text="Dati ultime 2 ore" />
-                        <MenuItem mnemonicParsing="false" onAction="#search" text="Cartella clinica" />
-                    </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Help">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="About" />
-                    </items>
-                </Menu>
-            </menus>
-        </MenuBar>
+      <MenuBar>
+         <menus>
+            <Menu mnemonicParsing="false" text="File">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#showMonitoring" text="Monitora" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" onAction="#logout" text="Esci" />
+                  <MenuItem mnemonicParsing="false" onAction="#close" text="Chiudi" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Visualizza">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#dismissPatient" text="Nuova somministrazione" />
+                  <MenuItem mnemonicParsing="false" onAction="#dismissPatient" text="Nuovo paziente" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" onAction="#showLast2H" text="Dati ultime 2 ore" />
+                  <MenuItem mnemonicParsing="false" onAction="#search" text="Cartella clinica" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Aiuto">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Supporto" />
+               </items>
+            </Menu>
+         </menus>
+      </MenuBar>
         <HBox prefHeight="773.0" prefWidth="1200.0">
             <children>
                 <AnchorPane prefHeight="773.0" prefWidth="210.0">
