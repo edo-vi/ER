@@ -1,7 +1,6 @@
 package InterfaceController;
 
 import Generator.Sickness;
-import Main.Triple;
 import Main.Tuple;
 import State.StateEvent;
 import State.Store;

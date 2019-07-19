@@ -19,7 +19,6 @@ import State.Middleware;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import Main.Tuple;
 import javafx.stage.StageStyle;
