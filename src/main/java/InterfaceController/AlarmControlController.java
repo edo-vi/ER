@@ -34,7 +34,8 @@ public class AlarmControlController {
         } catch(NullPointerException e) {}
 
         dis = this.stream.subscribe(se -> {
-            if (se.command().name().equals("ALM_LOGIN_SUCCESS") || se.command().name().equals("ALM_LOGIN_FAILURE")) {
+            String command = se.command().name();
+            if (command.equals("ALM_LOGIN_SUCCESS") || command.equals("ALM_LOGIN_FAILURE")) {
                 userField.clear();
                 passField.clear();
                 if (se.command().name().equals("ALM_LOGIN_SUCCESS")) {
@@ -42,14 +43,14 @@ public class AlarmControlController {
                 } else {
                     System.out.println("Invalid username and/or password");
                 }
-            }
-            if(se.command().equals("ALARM_ACTIVATED"))
+            } else if(command.equals("ACTIVE_ALARM")) {
                 Platform.runLater(() -> {
                     Tuple<Integer, Sickness> elem = (Tuple) se.command().getArg();
                     messageLabel.setText("Attenzione! Allarme di livello" + elem.fst() + "\n" +
                             elem.snd() + " paziente " + sys.getSickPatient().getName() + " " + sys.getSickPatient().getSurname() + "\n" +
-                            "Richiesto l'intervento del dottor " + se.state().getDocAlarm().getName());
+                            "Richiesto l'intervento di un dottore");
                 });
+            }
         });
     }
 

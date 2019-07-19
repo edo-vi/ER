@@ -30,7 +30,7 @@ public class AlarmLoggedControlController {
 
         dis = this.stream.subscribe(se -> {
            String command = se.command().name();
-            if(command.equals("ALARM_ACTIVATED"))
+            if(command.equals("ACTIVE_ALARM"))
                 Platform.runLater(() -> {
                     Tuple<Integer, Sickness> elem = (Tuple) se.command().getArg();
                     messageLabel.setText("Attenzione! Allarme di livello" + elem.fst() + "\n" +

@@ -14,8 +14,8 @@
             <Font size="18.0" />
          </font>
       </Button>
-      <Label fx:id="messageLabel" layoutX="40.0" layoutY="14.0" prefHeight="87.0" prefWidth="405.0" style="-fx-font-size: 16; -fx-text-fill: grey;" text="" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="14.0" />
-      <TextArea layoutX="71.0" layoutY="110.0" prefHeight="200.0" prefWidth="200.0" text="Nessuna." AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="140.0" />
+      <Label fx:id="messageLabel" layoutX="40.0" layoutY="14.0" prefHeight="87.0" prefWidth="405.0" style="-fx-font-size: 16; -fx-text-fill: grey;" text="text" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="14.0" />
+      <TextArea layoutX="71.0" layoutY="110.0" prefHeight="200.0" prefWidth="200.0" promptText="Inserire azione" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="140.0" />
       <Label layoutX="40.0" layoutY="109.0" style="-fx-text-fill: grey;" text="Note azioni intraprese:" AnchorPane.topAnchor="110.0" />
    </children>
    <opaqueInsets>
