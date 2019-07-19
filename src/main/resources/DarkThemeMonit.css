@@ -143,11 +143,3 @@
 .v-box {
     -fx-background-color: #1d1d1d;
 }
-
-.line-chart {
-    -fx-highlight-fill: black;
-    -fx-tick-label-fill: red;
-    -fx-highlight-text-fill: red;
-    -fx-progress-color: black;
-    -fx-color-label-visible: true;
-}
