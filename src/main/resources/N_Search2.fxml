@@ -42,10 +42,10 @@
             <children>
                 <AnchorPane prefHeight="773.0" prefWidth="210.0">
                     <children>
-                        <Button layoutX="16.0" layoutY="40.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="164.0" style="-fx-font-size: 13; -fx-border-color: #87CEFA;" text="Nuova&#10;somministrazione" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
+                        <Button layoutX="16.0" layoutY="40.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="164.0" style="-fx-font-size: 13;" text="Nuova&#10;somministrazione" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
                         <Button layoutY="120.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="Nuovo&#10;paziente" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
                         <Button layoutY="200.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="Dati ultime&#10;2 ore" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
-                        <Button layoutY="280.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="Cartella&#10;clinica" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
+                        <Button layoutY="280.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" style="-fx-border-color: #87CEFA;" text="Cartella&#10;clinica" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
                         <Button layoutY="695.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 20;" text="Log Out" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
                         <Label layoutX="30.0" layoutY="621.0" style="-fx-text-fill: grey;" text="id" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="650.0" />
                         <Label layoutX="40.0" layoutY="631.0" style="-fx-text-fill: grey;" text="Infermiere" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="630.0" />
