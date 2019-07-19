@@ -2,6 +2,7 @@ package State;
 
 import Generator.DataThread;
 import Main.Tuple;
+import System.Session.DoctorSessionThread;
 import javafx.stage.Stage;
 
 import java.util.HashMap;
@@ -10,6 +11,7 @@ public class MiddlewareString implements Middleware<StringCommand> {
     private Stage stage;
 
     private DataThread monitoring;
+    private DoctorSessionThread docSession;
 
     public MiddlewareString(Stage stage) {
         this.stage = stage;
@@ -45,4 +47,13 @@ public class MiddlewareString implements Middleware<StringCommand> {
     public void setMonitoring(DataThread monitoring) {
         this.monitoring = monitoring;
     }
+
+    public DoctorSessionThread getDocSession() {
+        return docSession;
+    }
+
+    public void setDocSession(DoctorSessionThread docSession) {
+        this.docSession = docSession;
+    }
+
 }
