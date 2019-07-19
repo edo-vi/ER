@@ -92,6 +92,7 @@ public class Sistema {
                         String filename = (docAlreadyLog) ? "ALMCTL" : "ALMCTLLOG";
                         if (alarmControlStage == null) {
                             alarmControlStage = createUI(filename, AlarmControlComponent.AlarmControlTitle);
+                            alarmControlStage.setAlwaysOnTop(true);
                             alarmControlStage.initStyle(StageStyle.UNDECORATED);
                         }
                         switch (((Tuple<Integer, Sickness>) c.getArg()).fst()) {
@@ -108,7 +109,6 @@ public class Sistema {
                         alarmControlStage.getScene().setRoot(getInterface(filename));
                         alarmControlStage.sizeToScene();
                         alarmControlStage.toFront();
-                        alarmControlStage.initModality(Modality.APPLICATION_MODAL);
                         alarmControlStage.show();
                         alarmCtlIsShown = true;
                     }
