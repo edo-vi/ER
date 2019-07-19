@@ -42,9 +42,9 @@ Ad Elia ed Edoardo invece è stato assegnato il compito di progettare e sviluppar
 \paragraph{Gestione del codice} Per permettere, soprattutto inizialmente, a tutti i membri del team di contribuire al progetto in modo personale senza creare conflitti nel codice si è deciso sin da subito di utilizzare un sistema di versionamento: la scelta è ricaduta subito su \textit{Git}, data la sua ubiquità e portabilità, installato localmente sulle macchine dei membri del team e riferente una repository remota privata localizzata su \textit{Github}. Oltre che a permettere di evitare conflitti e di mantenere coerente lo stato del progetto per tutti i membri questa scelta è stata molto importante soprattutto per risolvere diversi problemi relativi all'installazione e utilizzo di un programma per la gestione del database: l'uso di diverse \textit{branches}, utilizzate anche per lo sviluppo di parti sperimentali del sistema, ha permesso lo sviluppo in contemporanea, almeno fino alla risoluzione di tutti i problemi di installazione e configurazione, del codice concernente la gestione del database e di quello relativo alle interfacce grafiche e i loro controllori.
 
 \paragraph{Gestione dei dati} La chiara natura relazionale dei dati necessari per il funzionamento del sistema ha subito portato alla decisione di affidarsi ad un RDBMS per la loro gestione, e in particolare a PostgreSQL; tale scelta è stata motivata principalmente dalla previa esperienza di utilizzo di un membro del team. Oltre che ad utilizzare un RBDMS si è inoltre deciso di affidarsi ad un ORM --- Hibernate --- per il mapping tra entità nel database e oggetti in memoria: questa decisione è derivata soprattutto dalla volontà di mantenere semplice la logica del sistema che, per sua natura e limitata dimensione, non ha mai richiesto la maggior efficienza derivante dall'utilizzo di pure query SQL. 
-%
-%\subsubsection{Ingegneria dei requisiti}
-%
+
+\subsubsection{Ingegneria dei requisiti}
+Data la natura didattica del progetto non si sono seguite le classiche tecniche di elicitazione dei requisiti ma essi sono stati ricavati e studiati a partire dalla specifica di consegna. In paritcolare 
 %\subsubsection{Design del sistema}
 %
 %\subsubsection{Implementazione}
@@ -166,4 +166,14 @@ Ad Elia ed Edoardo invece è stato assegnato il compito di progettare e sviluppar
 	\end{center}
 	\caption{Schema \textit{Entity-Relationship} dei dati del sistema.}\label{ERdiagram}
 \end{figure}
+\begin{table}
+	\begin{tabular}{r | l}
+		Entità & Campi \\ \hline
+		Patient & \underline{Id}, Name, Surname, Fiscal code, Place of birth, Date of birth \\
+		Administration & \underline{Id}, Date, Hour, Dose, Notes, \textit{Patient}, \textit{Prescription} \\
+		Prescription & \underline{Id}, Drug, Duration, Daily dose, Number of doses, Doctor, \textit{Recovery} \\ 
+		Recovery & \underline{Id}, Start date, End date, Diagnosis, Active, Discharge summary, \textit{Patient}\\
+		Monitoring & \underline{Id}, Date, Diastolic pressure, Systolic pressure, Heart rate, Temperature, \textit{Recovery}
+	\end{tabular}\caption{Campi e relazioni delle entità del database. I campi sottolineati indicano le \textit{primary keys}, quelli in corsivo le \textit{foreign keys} (mappate sempre ai campi Id della rispettiva entità).}
+\end{table}
 \end{document}
