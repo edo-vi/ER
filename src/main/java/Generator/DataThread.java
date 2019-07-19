@@ -4,6 +4,7 @@ import java.util.*;
 
 import State.Store;
 import State.StringCommand;
+import javafx.application.Platform;
 
 public class DataThread extends Thread {
     private volatile boolean run = true;
@@ -42,18 +43,19 @@ public class DataThread extends Thread {
             this.value = v;
         }
         public void run() {
-            if (run) {
-                if (value == Value.BP) {
-                    store.update(new StringCommand("GENERATE_BP"));
+            Platform.runLater(() -> {
+                if (run) {
+                    if (value == Value.BP) {
+                        store.update(new StringCommand("GENERATE_BP"));
+                    }
+                    else if (value == Value.HEART_RATE) {
+                        store.update(new StringCommand("GENERATE_HEART_RATE"));
+                    }
+                    else {
+                        store.update(new StringCommand("GENERATE_TEMPERATURE"));
+                    }
                 }
-                else if (value == Value.HEART_RATE) {
-                    store.update(new StringCommand("GENERATE_HEART_RATE"));
-                }
-                else {
-                    store.update(new StringCommand("GENERATE_TEMPERATURE"));
-                }
-            }
-
+            });
         }
     }
 }

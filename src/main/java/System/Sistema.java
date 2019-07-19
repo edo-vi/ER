@@ -31,9 +31,10 @@ public class Sistema {
     private InterfacesController controller;
     private Stage monitoringStage = null;
     private Stage alarmStage = null;
+    private Stage alarmControlStage = null;
     private final Random random = new Random();
     private int selecetedPatient;
-    private Stage alarmControlStage = null;
+    private boolean alarmCtlIsShown = false;
 
     public static Sistema getInstance() {
         if (s == null)
@@ -82,13 +83,17 @@ public class Sistema {
                     return s;
                 })
                 .with("ALARM_ACTIVATED", (c, s) -> { //todo->(?) ignorare piu di un segnale di questo tipo?
-                    //TODO: ERRORE dice che è un thred a eseguire e quindi esplode javaFX
-                    if (alarmControlStage == null) {
-                        String filename = (s.getDocAlarm().isValid() && s.getDocAlarm().equals(s.getDocAlarmCheck())) ? "ALMCTL" : "ALMCTLLOG";
-                        alarmControlStage = createUI((filename), AlarmControlComponent.AlarmControlTitle);
-                        alarmControlStage.setOnCloseRequest(e -> store.update(new StringCommand("RESET")));
-
-                        switch((int)c.getArg()) {
+                    if(!alarmCtlIsShown) {
+                        boolean docAlreadyLog = s.getDocAlarm().isValid() && s.getDocAlarm().equals(s.getDocAlarmCheck());
+                        String filename = (docAlreadyLog) ? "ALMCTL" : "ALMCTLLOG";
+                        if (alarmControlStage == null) {
+                            alarmControlStage = createUI(filename, AlarmControlComponent.AlarmControlTitle);
+                            alarmControlStage.setOnCloseRequest(e -> {
+                                alarmCtlIsShown = false;
+                                store.update(new StringCommand("RESET"));
+                            });
+                        }
+                        switch ((Integer) c.getArg()) {
                             case 1:
                                 alarmControlStage.getScene().getStylesheets().add(getClass().getResource("/ButtonAlarm1.css").toExternalForm());
                                 break;
@@ -99,9 +104,11 @@ public class Sistema {
                                 alarmControlStage.getScene().getStylesheets().add(getClass().getResource("/ButtonAlarm3.css").toExternalForm());
                                 break;
                         }
+                        alarmControlStage.sizeToScene();
+                        alarmControlStage.show();
+                        alarmControlStage.toFront();
+                        alarmCtlIsShown = true;
                     }
-                    alarmControlStage.show();
-                    alarmControlStage.toFront();
 
                     return s;
                 });
@@ -137,10 +144,11 @@ public class Sistema {
                     return new Tuple<>(new StringCommand("ADDED_PATIENT"), s);
                     })
                 .with("SHOW_MONITORING", (c,s,m) -> {
-                    if (monitoringStage == null) {
+                    if(monitoringStage == null) {
                         monitoringStage = createUI("MON", MonitoringComponent.monitoringTitle);
                         monitoringStage.setOnCloseRequest(e -> store.update(new StringCommand("STOP_MONITORING")));
                     }
+                    monitoringStage.sizeToScene();
                     monitoringStage.show();
                     monitoringStage.toFront();
                     return new Tuple<>((new StringCommand("SHOW_MONITORING")), s);
@@ -167,9 +175,9 @@ public class Sistema {
                     return new Tuple<>(new StringCommand("CLOSE_MONITORING"), s);
                 })
                 .with("SHOW_ALARMS", (c,s,m) -> {
-                    if (alarmStage == null) {
+                    if(alarmStage == null)
                         alarmStage = createUI("ALM", AlarmsComponent.AlarmsTitle);
-                    }
+                    alarmStage.sizeToScene();
                     alarmStage.show();
                     alarmStage.toFront();
                     return new Tuple<>(new StringCommand("SHOW_ALARMS"), s);
@@ -229,7 +237,6 @@ public class Sistema {
         stage.setScene(new Scene(getInterface(filename)));
         stage.setTitle(title);
         stage.setResizable(false);
-        stage.sizeToScene();
 
         return stage;
     }
