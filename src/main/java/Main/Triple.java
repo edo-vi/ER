@@ -4,7 +4,7 @@ public class Triple<T,W,S> {
     private T first;
     private W second;
     private S third;
-    Triple (T fst, W snd ,S trd) {
+    public Triple (T fst, W snd ,S trd) {
         first=fst;
         second=snd;
         third=trd;

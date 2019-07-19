@@ -1,5 +1,7 @@
 package Generator;
 
+import Main.Tuple;
+import State.Store;
 import System.Sistema;
 import State.StringCommand;
 
@@ -7,7 +9,6 @@ import java.util.Random;
 
 public class HeartRateGenerator implements GeneratorInterface {
     private boolean canGenerateAlarm = true;
-
     private final Random random = new Random();
     private double mean = 80;
     private double variance = 4.4;
@@ -25,6 +26,7 @@ public class HeartRateGenerator implements GeneratorInterface {
         } else if(sick == Sickness.FLUTTER) {
             //TODO cambiare scheduling del task
         }
+        canGenerateAlarm = false;
     }
 
     public void reset() {
@@ -35,9 +37,15 @@ public class HeartRateGenerator implements GeneratorInterface {
 
     public Integer getValue() {
         int x =  (int) (mean + random.nextGaussian()*variance);
-        if((x < 60 || x > 100) && canGenerateAlarm) {
-            Sistema.getInstance().getStore().update(new StringCommand("ALARM_ACTIVATED", 1));
-            canGenerateAlarm = false;
+        if(canGenerateAlarm) {
+            Store<StringCommand> store = Sistema.getInstance().getStore();
+            if(x < 60) {
+                canGenerateAlarm = false;
+                store.update(new StringCommand("ALARM_ACTIVATED", new Tuple<>(1, Sickness.BRACHICARDIA)));
+            } else if(x > 100) {
+                canGenerateAlarm = false;
+                store.update(new StringCommand("ALARM_ACTIVATED", new Tuple<>(1, Sickness.TACHICARDIA)));
+            }
         }
 
         return x;

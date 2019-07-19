@@ -25,15 +25,6 @@ public class Recovery implements Entry{
     private Date endDate;
     private String dischargeSummary;
 
-    @Transient
-    private final BPGenerator bpGenerator = new BPGenerator();
-
-    @Transient
-    private final HeartRateGenerator heartRateGenerator = new HeartRateGenerator();
-
-    @Transient
-    private final TemperatureGenerator temperatureGenerator = new TemperatureGenerator();
-
     @ManyToOne
     @JoinColumn(name = "patient_id")
     private Patient patient;
@@ -44,6 +35,14 @@ public class Recovery implements Entry{
     @OneToMany(mappedBy = "recovery")
     private List<Prescription> prescriptions = new ArrayList<>();
 
+    @Transient
+    private final BPGenerator bpGenerator = new BPGenerator();
+
+    @Transient
+    private final HeartRateGenerator heartRateGenerator = new HeartRateGenerator();
+
+    @Transient
+    private final TemperatureGenerator temperatureGenerator = new TemperatureGenerator();
 
     /**
     * GETTERS AND SETTERS

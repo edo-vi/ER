@@ -1,5 +1,7 @@
 package Generator;
 
+import Main.Tuple;
+import State.Store;
 import State.StringCommand;
 import System.Sistema;
 
@@ -22,6 +24,7 @@ public class TemperatureGenerator implements GeneratorInterface {
             mean = 35.0;
             variance = 0.0625;
         }
+        canGenerateAlarm = false;
     }
 
     public void reset() {
@@ -32,9 +35,15 @@ public class TemperatureGenerator implements GeneratorInterface {
 
     public Double getValue() {
         double x =  mean + random.nextGaussian()*variance;
-        if((x > 37.5 || x < 36) && canGenerateAlarm) {
-            Sistema.getInstance().getStore().update(new StringCommand("ALARM_ACTIVATED", 2));
-            canGenerateAlarm = false;
+        if(canGenerateAlarm) {
+            Store<StringCommand> store = Sistema.getInstance().getStore();
+            if(x < 36) {
+                canGenerateAlarm = false;
+                store.update(new StringCommand("ALARM_ACTIVATED", new Tuple<>(2, Sickness.IPOTERMIA)));
+            } else if(x > 37.5) {
+                canGenerateAlarm = false;
+                store.update(new StringCommand("ALARM_ACTIVATED", new Tuple<>(2, Sickness.IPERTERMIA)));
+            }
         }
 
         return x;

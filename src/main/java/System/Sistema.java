@@ -19,6 +19,7 @@ import State.Middleware;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import Main.Tuple;
 import javafx.stage.StageStyle;
@@ -93,7 +94,7 @@ public class Sistema {
                             alarmControlStage = createUI(filename, AlarmControlComponent.AlarmControlTitle);
                             alarmControlStage.initStyle(StageStyle.UNDECORATED);
                         }
-                        switch ((Integer) c.getArg()) {
+                        switch (((Tuple<Integer, Sickness>) c.getArg()).fst()) {
                             case 1:
                                 alarmControlStage.getScene().getStylesheets().add(getClass().getResource("/ButtonAlarm1.css").toExternalForm());
                                 break;
@@ -104,9 +105,10 @@ public class Sistema {
                                 alarmControlStage.getScene().getStylesheets().add(getClass().getResource("/ButtonAlarm3.css").toExternalForm());
                                 break;
                         }
-
+                        alarmControlStage.getScene().setRoot(getInterface(filename));
                         alarmControlStage.sizeToScene();
                         alarmControlStage.toFront();
+                        alarmControlStage.initModality(Modality.APPLICATION_MODAL);
                         alarmControlStage.show();
                         alarmCtlIsShown = true;
                     }
@@ -193,7 +195,8 @@ public class Sistema {
                 .with("ALARM_LOGIN", (c,s,m) -> {
                     User u = (User) c.getArg();
                     if (s.getDocAlarmCheck().equals(u)) {
-                        s.setDocAlarm(s.getDocAlarmCheck());
+                        s.setDocAlarm(u);
+                        s.getDocAlarm().setValid(true);
                         return new Tuple<>(new StringCommand("ALM_LOGIN_SUCCESS"), s);
                     }
                     else {
@@ -222,7 +225,7 @@ public class Sistema {
             this.controller.addInterface("MON", new MonitoringComponent<StringCommand>().getLoader().load());
             this.controller.addInterface("ALM", new AlarmsComponent<StringCommand>().getLoader().load());
             this.controller.addInterface("ALMCTLLOG", new AlarmControlComponent<StringCommand>(false).getLoader().load());
-            this.controller.addInterface("ALMCT", new AlarmControlComponent<StringCommand>(true).getLoader().load());
+            this.controller.addInterface("ALMCTL", new AlarmControlComponent<StringCommand>(true).getLoader().load());
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error during interfaces setup");
@@ -257,5 +260,9 @@ public class Sistema {
         stage.setResizable(false);
 
         return stage;
+    }
+
+    public Patient getSickPatient() {
+        return store.getState().getActiveRecoveries().get(selectedPatient).getPatient();
     }
 }

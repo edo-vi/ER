@@ -85,4 +85,7 @@ public class Store<C extends Command> {
         return commands$;
     }
 
+    public State getState() {
+        return this.state;
+    }
 }

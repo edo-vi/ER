@@ -1,6 +1,7 @@
 package Component;
 
 import InterfaceController.AlarmControlController;
+import InterfaceController.AlarmLoggedControlController;
 import State.Command;
 import State.StateEvent;
 import System.Sistema;
@@ -13,7 +14,9 @@ public class AlarmControlComponent<C extends Command> extends Component {
 
     public AlarmControlComponent(boolean logged) {
         if(logged) {
+            AlarmLoggedControlController almctl = new AlarmLoggedControlController(sys.getStore(), sys.getStore().getEventStream());
             this.loader = new FXMLLoader(getClass().getResource("/Alarm_PopUp.fxml"));
+            loader.setController(almctl);
         } else {
             AlarmControlController almctl = new AlarmControlController(sys.getStore(), sys.getStore().getEventStream());
             this.loader = new FXMLLoader(getClass().getResource("/Login_PopUp.fxml"));

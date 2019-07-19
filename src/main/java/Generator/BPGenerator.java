@@ -1,6 +1,7 @@
 package Generator;
 
 import Main.Tuple;
+import State.Store;
 import State.StringCommand;
 import System.Sistema;
 
@@ -32,6 +33,7 @@ public class BPGenerator implements GeneratorInterface {
             meanD = 50;
             varianceD = 3;
         }
+        canGenerateAlarm = false;
     }
 
     public void reset() {
@@ -44,9 +46,15 @@ public class BPGenerator implements GeneratorInterface {
 
     public Tuple<Integer, Integer> getValue() {
         Tuple<Integer, Integer> data = new Tuple<>((int) (meanD + randomD.nextGaussian()*varianceD), (int) (meanS + randomS.nextGaussian()*varianceS));
-        if((data.fst() < 60 || data.fst() > 95 || data.snd() < 90 || data.snd() > 150) && canGenerateAlarm) {
-            Sistema.getInstance().getStore().update(new StringCommand("ALARM_ACTIVATED", 2));
-            canGenerateAlarm = false;
+        if(canGenerateAlarm) {
+            Store<StringCommand> store = Sistema.getInstance().getStore();
+            if(data.fst() < 60 || data.snd() < 90) {
+                canGenerateAlarm = false;
+                store.update(new StringCommand("ALARM_ACTIVATED", new Tuple<>(2, Sickness.IPOTENSIONE)));
+            } else if(data.fst() > 95 || data.snd() > 150) {
+                canGenerateAlarm = false;
+                store.update(new StringCommand("ALARM_ACTIVATED", new Tuple<>(2, Sickness.IPERTENSIONE)));
+            }
         }
 
         return data;
