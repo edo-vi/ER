@@ -19,6 +19,7 @@ import State.Middleware;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import Main.Tuple;
 import javafx.stage.StageStyle;
@@ -162,7 +163,7 @@ public class Sistema {
                         String filename = (docAlreadyLog) ? "ALMCTL" : "ALMCTLLOG";
                         if (alarmControlStage == null) {
                             alarmControlStage = createUI(filename, AlarmControlComponent.AlarmControlTitle);
-                            alarmControlStage.setAlwaysOnTop(true);
+                            alarmControlStage.initModality(Modality.APPLICATION_MODAL);
                             alarmControlStage.initStyle(StageStyle.UNDECORATED);
                         }
                         switch (((Tuple<Integer, Sickness>) c.getArg()).fst()) {
