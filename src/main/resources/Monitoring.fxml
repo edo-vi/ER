@@ -21,7 +21,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="810.0" prefWidth="1200.0" stylesheets="@DarkThemeM.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="810.0" prefWidth="1200.0" stylesheets="@DarkThemeMonit.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <MenuBar>
         <menus>
@@ -79,12 +79,12 @@
                   <Label layoutX="318.0" layoutY="141.0" prefHeight="21.0" prefWidth="17.0" style="-fx-text-fill: grey;" text="°C" />
                   <Label layoutX="465.0" layoutY="141.0" style="-fx-font-size: 13; -fx-text-fill: grey;" text="mmHg" />
                   <Label layoutX="590.0" layoutY="141.0" style="-fx-font-size: 13; -fx-text-fill: grey;" text="mmHg" />
-                  <Label layoutX="523.0" layoutY="23.0" prefHeight="45.0" prefWidth="119.0" style="-fx-font-size: 30; -fx-text-fill: grey;" text="Room 1" />
+                  <Label layoutX="523.0" layoutY="23.0" prefHeight="45.0" prefWidth="119.0" style="-fx-font-size: 30; -fx-text-fill: #B0C4DE;" text="Room 1" />
                </children>
             </AnchorPane>
             <VBox prefHeight="200.0" prefWidth="550.0">
                <children>
-                  <LineChart fx:id="hrGraphic" prefHeight="300.0" prefWidth="440.0" style="-fx-background-color: black;" title="Heart Rate">
+                  <LineChart fx:id="hrGraphic" prefHeight="290.0" prefWidth="440.0" style="-fx-background-color: black;">
                      <xAxis>
                         <NumberAxis side="BOTTOM" tickLabelFill="WHITE" fx:id="xhrAxis" />
                      </xAxis>
@@ -102,7 +102,8 @@
                         </Lighting>
                      </effect>
                   </LineChart>
-                  <LineChart fx:id="bpGraphic" prefHeight="300.0" prefWidth="440.0" title="DBP / SBP">
+                  <AnchorPane prefHeight="10.0" prefWidth="200.0" />
+                  <LineChart fx:id="bpGraphic" prefHeight="300.0" prefWidth="440.0">
                      <xAxis>
                         <NumberAxis side="BOTTOM" tickLabelFill="WHITE" fx:id="xbpAxis" />
                      </xAxis>
