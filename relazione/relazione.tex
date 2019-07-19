@@ -16,7 +16,7 @@
 \usetikzlibrary{automata ,shapes, er}
 \usepackage{dot2texi}
 \usepgfmodule{oo}
-
+\usepackage{./usecases}
 \tikzset{multi attribute/.style={attribute,double distance=1.5pt}} \tikzset{derived attribute/.style={attribute ,dashed}} \tikzset{total/.style={double distance=1.5pt}}
 \tikzset{every entity/.style={draw=orange, fill=orange!20}}
 \tikzset{every attribute/.style={draw=mediumpurple, fill=mediumpurple!20}} \tikzset{every relationship/.style={draw=Chartreuse2, fill=Chartreuse2!20}} \newcommand{\key}[1]{\underline{#1}}
@@ -44,7 +44,20 @@ Ad Elia ed Edoardo invece è stato assegnato il compito di progettare e sviluppar
 \paragraph{Gestione dei dati} La chiara natura relazionale dei dati necessari per il funzionamento del sistema ha subito portato alla decisione di affidarsi ad un RDBMS per la loro gestione, e in particolare a PostgreSQL; tale scelta è stata motivata principalmente dalla previa esperienza di utilizzo di un membro del team. Oltre che ad utilizzare un RBDMS si è inoltre deciso di affidarsi ad un ORM --- Hibernate --- per il mapping tra entità nel database e oggetti in memoria: questa decisione è derivata soprattutto dalla volontà di mantenere semplice la logica del sistema che, per sua natura e limitata dimensione, non ha mai richiesto la maggior efficienza derivante dall'utilizzo di pure query SQL. 
 
 \subsubsection{Ingegneria dei requisiti}
-Data la natura didattica del progetto non si sono seguite le classiche tecniche di elicitazione dei requisiti ma essi sono stati ricavati e studiati a partire dalla specifica di consegna. In paritcolare 
+Data la natura didattica del progetto non si sono seguite le classiche tecniche di elicitazione dei requisiti ma essi sono stati ricavati e studiati a partire dalla specifica di consegna, considerata, almeno in parte, come documento dei requisiti. La stesura iniziale delle principali funzionalità, sotto forma di un provvisorio schema dei casi d'uso, è stata eseguita nella fase di pre-design da parte di tutti i membri del team basandoci appunto su tale documento dei requisiti.
+
+Nel corso dello sviluppo del progetto, a seconda delle diverse funzionalità da implementare, sono anche stati stilati diversi casi d'uso per i vari utenti finali secondo un processo simile a quello adottato dai modelli agili: prima di implementare funzionalità specifiche del sistema si è pensato ad almeno un caso d'uso reale di tali funzionalità per permettere poi un'implementazione quanto più semplice, naturale e rispettante le aspettative e necessità degli utenti.
+
+Di seguito parte dei casi d'uso sviluppati.
+\begin{usecase}
+	\addtitle{Caso d'uso}{Inserimento dei dati anagrafici di un paziente}
+	\addfield{Utente:}{Infermiere}
+	\addfield{Precondizioni:}{L'infermiere deve essersi autenticato}
+	\additemizedfield{Passi}{\item cao 1 }
+	
+	\addfield{Postcondizioni:}{Il paziente deve essere inserito nel sistema, senza associato ricovero}
+\end{usecase}
+
 %\subsubsection{Design del sistema}
 %
 %\subsubsection{Implementazione}
@@ -176,4 +189,6 @@ Data la natura didattica del progetto non si sono seguite le classiche tecniche 
 		Monitoring & \underline{Id}, Date, Diastolic pressure, Systolic pressure, Heart rate, Temperature, \textit{Recovery}
 	\end{tabular}\caption{Campi e relazioni delle entità del database. I campi sottolineati indicano le \textit{primary keys}, quelli in corsivo le \textit{foreign keys} (mappate sempre ai campi Id della rispettiva entità).}
 \end{table}
+
+
 \end{document}
