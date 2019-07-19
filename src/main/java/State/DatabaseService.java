@@ -31,13 +31,18 @@ public class DatabaseService {
                 new GregorianCalendar(1965, Calendar.APRIL, 11).getTime());
         Patient patient2 = new Patient("Barbara", "Oliboni", "BRBLBIDONTKNOW329I", "Verona",
                 new GregorianCalendar(1973, Calendar.OCTOBER, 8).getTime());
-
-        Recovery rec1 = new Recovery(new GregorianCalendar(2019, Calendar.JUNE, 22).getTime(),
-                new GregorianCalendar(2019, Calendar.JULY, 13).getTime(), "Fractured Meniscus",
-                true, "Completely healed", patient1);
-        Recovery rec2 = new Recovery(new GregorianCalendar(2019, Calendar.JULY, 16).getTime(),
-                new GregorianCalendar(2019, Calendar.JULY, 25).getTime(), "Salmonella",
-                true, "", patient2);
+        Patient patient3 = new Patient("Roberto", "Posenato", "PSNRBRA373UUS88I",
+                "Verona", new GregorianCalendar(1981, Calendar.FEBRUARY, 11).getTime());
+        Recovery rec1 = new Recovery(new GregorianCalendar(2019, Calendar.JUNE, 22).getTime(),"Fractured Meniscus",
+                patient1);
+        Recovery rec2 = new Recovery(new GregorianCalendar(2019, Calendar.JULY, 16).getTime(), "Salmonella",
+                patient2);
+        Recovery rec3 = new Recovery(new GregorianCalendar(2019, Calendar.MAY, 3).getTime(),
+                new GregorianCalendar(2019, Calendar.JUNE, 30).getTime(), "Blunt Trauma",
+                false, patient3);
+        Recovery rec4 = new Recovery(new GregorianCalendar(2016, Calendar.OCTOBER, 24).getTime(),
+                new GregorianCalendar(2016, Calendar.DECEMBER, 2).getTime(), "Severe vertigo",
+                false, patient1);
         try {
             Administration adm1 = new Administration(new GregorianCalendar(2019, Calendar.JULY, 11).getTime(),
                     14, 75.76, "All good", patient1);
@@ -49,10 +54,13 @@ public class DatabaseService {
             patient1.addToAddministrations(adm1);*/
             session.save(rec1);
             session.save(rec2);
+            session.save(rec3);
+            session.save(rec4);
             session.save(adm1);
             session.save(pr1);
             session.save(patient1);
             session.save(patient2);
+            session.save(patient3);
             session.save(adm1);
 
         } catch (Exception e) {System.out.println(e);}

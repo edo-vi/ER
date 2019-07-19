@@ -22,6 +22,7 @@ public class Recovery implements Entry{
 
     private String diagnosis;
     private boolean active;
+    @Temporal(TemporalType.DATE)
     private Date endDate;
     private String dischargeSummary;
 
@@ -51,14 +52,35 @@ public class Recovery implements Entry{
     public Recovery () {}
     public Recovery(Date start, Date end, String diagnosis, boolean active, String dischargeSummary) {
         this.startDate = new java.sql.Date(start.getTime());
-        this.endDate = new java.sql.Date(end.getTime());
-        this.diagnosis = diagnosis;
         this.active = active;
-        this.dischargeSummary = dischargeSummary;
+        if (active) {
+            this.endDate = null;
+            this.dischargeSummary = "";
+        } else {
+            this.endDate = new java.sql.Date(end.getTime());
+            this.dischargeSummary = dischargeSummary;
+        }
+        this.diagnosis = diagnosis;
+
+    }
+
+    public Recovery(Date start, String diagnosis) {
+        this.startDate = new java.sql.Date(start.getTime());
+        this.diagnosis = diagnosis;
+        this.active = true;
     }
 
     public Recovery(Date start, Date end, String diagnosis, boolean active, String dischargeSummary, Patient patient) {
         this(start, end, diagnosis, active, dischargeSummary);
+        this.patient = patient;
+    }
+    public Recovery(Date start, Date end, String diagnosis, boolean active, Patient patient) {
+        this(start, end, diagnosis, active, "");
+        this.patient = patient;
+    }
+
+    public Recovery(Date start, String diagnosis, Patient patient) {
+        this(start, diagnosis);
         this.patient = patient;
     }
 
