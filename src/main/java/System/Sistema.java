@@ -88,7 +88,8 @@ public class Sistema {
                 })
                 .with("ALARM_ACTIVATED")
                 .with("RESET_ALARMS")
-                .with("ALARM_LOGIN");
+                .with("ALARM_LOGIN")
+                .with("DISCHARGE_PATIENT");
         Middleware<StringCommand> middleware = new MiddlewareString(monitoringStage)
                 .with("LOGIN", (c, s, m) -> {
                     User u = (User) c.getArg();
@@ -201,6 +202,19 @@ public class Sistema {
                     }
                     else {
                         return new Tuple<>(new StringCommand("ALM_LOGIN_FAILURE"), s);
+                    }
+                })
+                .with("DISCHARGE_PATIENT", (c,s,m) -> {
+                    Tuple<Integer, String> val = (Tuple<Integer, String>) c.getArg();
+                    try {
+                        Recovery re = s.getAllRecoveries().stream()
+                                .filter(r -> r.getId()==val.fst()).collect(Collectors.toList()).get(0);
+                        re.setDischargeSummary(val.snd());
+                        DatabaseService.addEntry(re);
+                        return new Tuple<>(new StringCommand("DISCHARGED_A_PATIENT"), s);
+                    } catch (Exception e) {
+                        System.out.println("Sistema, Discharge summary: " + e);
+                        return new Tuple<>(new StringCommand("COULD NOT_DISCHARGE_A_PATIENT"), s);
                     }
                 });
 

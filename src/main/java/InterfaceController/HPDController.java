@@ -3,6 +3,7 @@ package InterfaceController;
 
 import Entities.Patient;
 import Entities.Recovery;
+import Main.Tuple;
 import State.StateEvent;
 import State.Store;
 import State.StringCommand;
@@ -16,6 +17,8 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,6 +33,7 @@ public class HPDController {
     @FXML private Label patientRecoveryStartDate;
     @FXML private Label patientRecoveryEndDate;
     @FXML private Label patientRecoveryReasons;
+    @FXML private TextArea dischargeText;
     @FXML private ComboBox<PatientRecovery> patientsChoice= new ComboBox<PatientRecovery>();
     private Disposable dis;
 
@@ -42,18 +46,20 @@ public class HPDController {
 
         dis = stream.subscribe(se ->
         {
-
+            if (se.command().name().equals("DISCHARGED_A_PATIENT")) initialize();
         });
     }
 
     @FXML public void initialize() {
-        List<Recovery> nonActiveRecoveries = store.poll().getNonActiveRecoveries();
-        if (nonActiveRecoveries.size() > 0) {
-            Recovery r = nonActiveRecoveries.get(0);
+        List<Recovery> nonActiveandNonDischargedRecoveries = store.poll().getNonActiveRecoveries().stream()
+                .filter(r -> r.getDischargeSummary().equals("") || r.getDischargeSummary() == null).collect(Collectors.toList());
+        if (nonActiveandNonDischargedRecoveries.size() > 0) {
+            Recovery r = nonActiveandNonDischargedRecoveries.get(0);
             setLabels(r);
             ObservableList<PatientRecovery> data = patientsChoice.getItems();
-            data.setAll(nonActiveRecoveries.stream().map(re -> new PatientRecovery(re)).collect(Collectors.toList()));
+            data.setAll(nonActiveandNonDischargedRecoveries.stream().map(re -> new PatientRecovery(re)).collect(Collectors.toList()));
             patientsChoice.setPromptText(data.get(0).toString());
+            patientsChoice.getSelectionModel().selectFirst();
         }
 
     }
@@ -91,11 +97,21 @@ public class HPDController {
         patientRecoveryEndDate.setText(r.getEndDate().toString());
         patientRecoveryReasons.setText(r.getDiagnosis());
 
-        patientsChoice.setPromptText(new PatientRecovery(r).toString());
+        //patientsChoice.setPromptText(new PatientRecovery(r).toString());
     }
 
-    @FXML protected void clickComboBox(Event e) {
+    @FXML protected void selectedItemFromCombobox(Event e) {
         setLabels(((ComboBox<PatientRecovery>) e.getSource()).getValue().getRecovery());
+    }
+
+    @FXML protected void discharge() {
+        String dt = dischargeText.getText();
+        if (dt != null && !dt.equals("")) {
+            Recovery r = this.patientsChoice.getValue().getRecovery();
+            this.store.update(new StringCommand("DISCHARGE_PATIENT", new Tuple<>(r.getId(), dt)));
+            dischargeText.clear();
+        }
+
     }
     private class PatientRecovery {
         private Patient p;

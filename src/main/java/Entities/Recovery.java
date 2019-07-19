@@ -50,18 +50,16 @@ public class Recovery implements Entry{
     **/
 
     public Recovery () {}
-    public Recovery(Date start, Date end, String diagnosis, boolean active, String dischargeSummary) {
+    public Recovery(Date start, Date end, String diagnosis, boolean active) {
         this.startDate = new java.sql.Date(start.getTime());
         this.active = active;
         if (active) {
             this.endDate = null;
-            this.dischargeSummary = "";
         } else {
             this.endDate = new java.sql.Date(end.getTime());
-            this.dischargeSummary = dischargeSummary;
         }
         this.diagnosis = diagnosis;
-
+        this.dischargeSummary = "";
     }
 
     public Recovery(Date start, String diagnosis) {
@@ -71,11 +69,11 @@ public class Recovery implements Entry{
     }
 
     public Recovery(Date start, Date end, String diagnosis, boolean active, String dischargeSummary, Patient patient) {
-        this(start, end, diagnosis, active, dischargeSummary);
+        this(start, end, diagnosis, active);
         this.patient = patient;
     }
     public Recovery(Date start, Date end, String diagnosis, boolean active, Patient patient) {
-        this(start, end, diagnosis, active, "");
+        this(start, end, diagnosis, active);
         this.patient = patient;
     }
 
@@ -94,7 +92,7 @@ public class Recovery implements Entry{
 
     public Recovery(Date start, Date end, String diagnosis, boolean active, String dischargeSummary,
                     List<Monitoring> monitorings, List<Prescription> prescriptions) {
-        this(start, end, diagnosis, active, dischargeSummary);
+        this(start, end, diagnosis, active);
         this.monitorings.addAll(monitorings);
         this.prescriptions.addAll(prescriptions);
     }
