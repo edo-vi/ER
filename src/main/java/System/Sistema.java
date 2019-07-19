@@ -67,10 +67,10 @@ public class Sistema {
                 })
                 .with("LOAD")
                 .with("ADD_PATIENT")
-                .with("START_MONITORING")               
                 .with("SHOW_MONITORING")
-                .with("STOP_MONITORING")
                 .with("CLOSE_MONITORING")
+                .with("START_MONITORING")
+                .with("STOP_MONITORING")
                 .with("SHOW_ALARMS")
                 .with("GET_LOGIN", (c, s) -> {
                     if(s.getUser().isValid())

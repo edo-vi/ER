@@ -22,8 +22,14 @@ public class Store<C extends Command> {
 
     public Store(State state, Reducer<C> reducer, Middleware<C> middleware, Tuple<String, BiFunction<C, State,State>>...args) {
         //TODO remove -- logging
-        this.state$.subscribe(s ->
-            System.out.println(String.valueOf(counter++) + " | " + s.command() + "\n" + s.state())
+        this.state$.subscribe(s -> {
+            String name = s.command().name();
+            if (!name.equals("GENERATE_BP") && !name.equals("GENERATE_HEART_RATE") && !name.equals("GENERATE_TEMPERATURE")) {
+                System.out.println(String.valueOf(counter++) + " | " + s.command() + "\n" + s.state());
+            }
+        }
+
+
         );
 
         this.middleware = middleware;
