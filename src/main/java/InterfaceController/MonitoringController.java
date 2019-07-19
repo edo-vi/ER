@@ -73,7 +73,10 @@ public class MonitoringController {
                     Platform.runLater(() -> yhrAxis.setLabel("bpm"));
                     Platform.runLater(() -> seriesHR.setName("HR"));
                     Platform.runLater(() -> {
-                        xhrAxis.setLowerBound((counterHR - 11 > 0) ? counterHR - 11 : 0);
+                        if(seriesHR.getData().size() > 9) {
+                            xhrAxis.setLowerBound((counterHR - 11 > 0) ? counterHR - 11 : 0);
+                        } else xhrAxis.setLowerBound((counterHR - seriesHR.getData().size() > 0) ? counterHR - seriesHR.getData().size() - 1  : 0);
+
                         xhrAxis.setUpperBound(counterHR + 1);
                     });
                     Platform.runLater(() -> {
@@ -93,7 +96,10 @@ public class MonitoringController {
                         seriesD.setName("DBP");
                     });
                     Platform.runLater(() -> {
-                        xbpAxis.setLowerBound((counterBP - 11 > 0) ? counterBP - 11 : 0);
+                        if(seriesD.getData().size() > 9) {
+                            xbpAxis.setLowerBound((counterBP - 11 > 0) ? counterBP - 11 : 0);
+                        } else xbpAxis.setLowerBound((counterBP - seriesD.getData().size() > 0) ? counterBP - seriesD.getData().size() - 1  : 0);
+
                         xbpAxis.setUpperBound(counterBP + 1);
                     });
                     Platform.runLater(() -> {
@@ -176,7 +182,14 @@ public class MonitoringController {
                 Platform.runLater(() -> tempLabel.setText(String.valueOf(lastMonitoring.getTemperature()).substring(0, 4)));
                 Platform.runLater(() -> dbpLabel.setText(String.valueOf(lastMonitoring.getDiastolicPressure())));
                 Platform.runLater(() -> sbpLabel.setText(String.valueOf(lastMonitoring.getSystolicPressure())));
-                Platform.runLater(() -> roomLabel.setText("Room " + String.valueOf(index+1)));
+                Platform.runLater(() -> roomLabel.setText("Room " + (index + 1)));
+
+                Platform.runLater(() -> {
+                    xhrAxis.setLowerBound(counterHR - 1);
+                    xhrAxis.setUpperBound(counterHR + 1);
+                    xbpAxis.setLowerBound(counterBP - 1);
+                    xbpAxis.setUpperBound(counterBP + 1);
+                });
 
                 data.addAll(p.getRecoveries().stream().flatMap(r -> r.getMonitorings().stream()).collect(Collectors.toList()));
 
