@@ -33,7 +33,7 @@ public class Sistema {
     private Stage alarmStage = null;
     private Stage alarmControlStage = null;
     private final Random random = new Random();
-    private int selecetedPatient;
+    private int selectedPatient = -1;
     private boolean alarmCtlIsShown = false;
 
     public static Sistema getInstance() {
@@ -78,8 +78,10 @@ public class Sistema {
                 })
                 .with("EVOLVE_GENERATOR", (c, s) -> {
                     Sickness sick = (Sickness) c.getArg();
-                    selecetedPatient = random.nextInt(s.getActiveRecoveries().size());
-                    s.getActiveRecoveries().get(selecetedPatient).evolveGenerator(sick);
+                    if (selectedPatient == -1) {
+                        selectedPatient = random.nextInt(s.getActiveRecoveries().size());
+                    }
+                    s.getActiveRecoveries().get(selectedPatient).evolveGenerator(sick);
                     return s;
                 })
                 .with("ALARM_ACTIVATED", (c, s) -> { //todo->(?) ignorare piu di un segnale di questo tipo?
@@ -90,7 +92,7 @@ public class Sistema {
                             alarmControlStage = createUI(filename, AlarmControlComponent.AlarmControlTitle);
                             alarmControlStage.setOnCloseRequest(e -> {
                                 alarmCtlIsShown = false;
-                                store.update(new StringCommand("RESET"));
+                                store.update(new StringCommand("RESET_ALARMS"));
                             });
                         }
                         switch ((Integer) c.getArg()) {
@@ -110,6 +112,11 @@ public class Sistema {
                         alarmCtlIsShown = true;
                     }
 
+                    return s;
+                })
+                .with("RESET_ALARMS", (c,s) -> {
+                    s.getActiveRecoveries().get(selectedPatient).resetGenerator();
+                    selectedPatient = -1;
                     return s;
                 })
                 .with("ALARM_LOGIN");
@@ -184,6 +191,11 @@ public class Sistema {
                     alarmStage.show();
                     alarmStage.toFront();
                     return new Tuple<>(new StringCommand("SHOW_ALARMS"), s);
+                })
+                .with("RESET_ALARMS", (c,s,m) -> {
+                    alarmControlStage.close();
+                    alarmCtlIsShown = false;
+                    return new Tuple<>(new StringCommand("CLOSED_ALARMS"), s);
                 })
                 .with("ALARM_LOGIN", (c,s,m) -> {
                     User u = (User) c.getArg();
