@@ -10,12 +10,17 @@ public class State  {
     private User user;
     private List<Patient> patients = new ArrayList<>();
     private int mainRecoveryIndex;
+    private User docAlarm;
+    private User docAlarmCheck;
 
     // Must be the initial state
     public State() {
 
         this.user = new User();
         this.userCheck = new User("eme", "pw", Role.HEAD_PHYSICIAN, true);
+
+        this.docAlarm = new User();
+        this.docAlarmCheck = new User("doc", "pw", Role.DOCTOR, true);
         /*
         this.patients.add(new Patient("Carlo", "Combi", "CMBCBMWHATEVER291Z", "Verona",
                 new GregorianCalendar(1965, Calendar.APRIL, 11).getTime()));
@@ -125,6 +130,21 @@ public class State  {
                 .collect(Collectors.toList());
     }
 
+    public User getDocAlarm() {
+        return docAlarm;
+    }
+
+    public void setDocAlarm(User docAlarm) {
+        this.docAlarm = docAlarm;
+    }
+
+    public User getDocAlarmCheck() {
+        return docAlarmCheck;
+    }
+
+    public void setDocAlarmCheck(User docAlarmCheck) {
+        this.docAlarmCheck = docAlarmCheck;
+    }
 
     @Override
     public boolean equals(Object oth) {
