@@ -111,7 +111,8 @@ public class Sistema {
                     }
 
                     return s;
-                });
+                })
+                .with("ALARM_LOGIN");
         Middleware<StringCommand> middleware = new MiddlewareString(monitoringStage)
                 .with("LOGIN", (c, s, m) -> {
                     User u = (User) c.getArg();
@@ -169,9 +170,11 @@ public class Sistema {
                     return new Tuple<>(new StringCommand("STOPPED_MONITORING"), s);
                 })
                 .with("CLOSE_MONITORING", (c,s,m) -> {
+                    if(alarmStage.isShowing())
+                        alarmStage.close();
+                    if(alarmControlStage.isShowing())
+                        alarmControlStage.close();
                     monitoringStage.close();
-                    alarmStage.close();
-                    alarmControlStage.close();
                     return new Tuple<>(new StringCommand("CLOSE_MONITORING"), s);
                 })
                 .with("SHOW_ALARMS", (c,s,m) -> {
@@ -181,6 +184,16 @@ public class Sistema {
                     alarmStage.show();
                     alarmStage.toFront();
                     return new Tuple<>(new StringCommand("SHOW_ALARMS"), s);
+                })
+                .with("ALARM_LOGIN", (c,s,m) -> {
+                    User u = (User) c.getArg();
+                    if (s.getDocAlarmCheck().equals(u)) {
+                        s.setDocAlarm(s.getDocAlarmCheck());
+                        return new Tuple<>(new StringCommand("ALM_LOGIN_SUCCESS"), s);
+                    }
+                    else {
+                        return new Tuple<>(new StringCommand("ALM_LOGIN_FAILURE"), s);
+                    }
                 });
 
         store = new Store<StringCommand>(new State(), reducer, middleware);

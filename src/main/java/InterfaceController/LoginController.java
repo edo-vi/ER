@@ -33,7 +33,6 @@ public class LoginController {
                     System.out.println("Invalid username and/or password");
                 }
             }
-
         });
     }
 
