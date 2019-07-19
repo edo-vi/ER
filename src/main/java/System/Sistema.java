@@ -16,6 +16,7 @@ import State.DatabaseService;
 import State.MiddlewareString;
 import State.Middleware;
 
+import System.Session.DoctorSessionThread;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
@@ -89,7 +90,10 @@ public class Sistema {
                 .with("ALARM_ACTIVATED")
                 .with("RESET_ALARMS")
                 .with("ALARM_LOGIN")
-                .with("DISCHARGE_PATIENT");
+                .with("DISCHARGE_PATIENT")
+                .with("ALARM_LOGIN")
+                .with("SESSION_TERMINATED")
+                .with("SESSION_START");
         Middleware<StringCommand> middleware = new MiddlewareString(monitoringStage)
                 .with("LOGIN", (c, s, m) -> {
                     User u = (User) c.getArg();
@@ -167,17 +171,19 @@ public class Sistema {
                             alarmControlStage.initModality(Modality.APPLICATION_MODAL);
                             alarmControlStage.initStyle(StageStyle.UNDECORATED);
                         }
+                        String cssName = "";
                         switch (((Tuple<Integer, Sickness>) c.getArg()).fst()) {
                             case 1:
-                                alarmControlStage.getScene().getStylesheets().add(getClass().getResource("/ButtonAlarm1.css").toExternalForm());
+                                cssName = "/ButtonAlarm1.css";
                                 break;
                             case 2:
-                                alarmControlStage.getScene().getStylesheets().add(getClass().getResource("/ButtonAlarm2.css").toExternalForm());
+                                cssName = "/ButtonAlarm2.css";
                                 break;
                             case 3:
-                                alarmControlStage.getScene().getStylesheets().add(getClass().getResource("/ButtonAlarm3.css").toExternalForm());
+                                cssName = "/ButtonAlarm3.css";
                                 break;
                         }
+                        alarmControlStage.getScene().getStylesheets().add(getClass().getResource(cssName).toExternalForm());
                         alarmControlStage.getScene().setRoot(getInterface(filename));
                         alarmControlStage.sizeToScene();
                         alarmControlStage.toFront();
@@ -219,6 +225,24 @@ public class Sistema {
                         System.out.println("Sistema, Discharge summary: " + e);
                         return new Tuple<>(new StringCommand("COULD NOT_DISCHARGE_A_PATIENT"), s);
                     }
+                })
+                .with("SESSION_TERMINATED", (c,s,m) -> {
+                    ((MiddlewareString) m).getDocSession().interrupt();
+                    s.setDocAlarm(new User());
+
+                    return new Tuple<>(new StringCommand("DOC_SESSION_TERMINATED"), s);
+                })
+                .with("SESSION_START", (c,s,m) -> {
+                    MiddlewareString x = ((MiddlewareString) m);
+                    if(x.getDocSession() != null) {
+                        x.getDocSession().restart();
+                    } else {
+                        DoctorSessionThread t = new DoctorSessionThread(store);
+                        x.setDocSession(t);
+                        t.start();
+                    }
+
+                    return new Tuple<>(new StringCommand("DOC_SESSION_STARTED"), s);
                 });
 
         store = new Store<StringCommand>(new State(), reducer, middleware);
