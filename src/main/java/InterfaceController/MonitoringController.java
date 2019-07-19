@@ -200,6 +200,6 @@ public class MonitoringController {
     @FXML protected void buttonPressed(Event e)
     {
         String s = ((Button) e.getSource()).getText();
-        setInfo(Integer.valueOf(s.substring(5))-1);
+        setInfo(Integer.valueOf(s.split(" ")[1])-1);
     }
 }

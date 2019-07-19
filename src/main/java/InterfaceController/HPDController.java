@@ -48,7 +48,9 @@ public class HPDController {
 
         dis = stream.subscribe(se ->
         {
-            if (se.command().name().equals("DISCHARGED_A_PATIENT")) initialize(se.state());
+            /*if (se.command().name().equals("DISCHARGED_A_PATIENT"))*/ updateRecoveries(se.state());
+            setLabels(patientsChoice.getValue());
+
         });
     }
 
@@ -73,25 +75,25 @@ public class HPDController {
     }
 
     @FXML public void initialize(State state) {
-        List<Recovery> nonActiveandNonDischargedRecoveries = state.getNonActiveRecoveries().stream()
+        updateRecoveries(state);
+        patientsChoice.getSelectionModel().selectFirst();
+        setLabels(patientsChoice.getValue());
+
+    }
+
+    @FXML protected void updateRecoveries(State state) {
+        List<Recovery> recoveries = state.getNonActiveRecoveries().stream()
                 .filter(r -> r.getDischargeSummary().equals("") || r.getDischargeSummary() == null).collect(Collectors.toList());
-        if (nonActiveandNonDischargedRecoveries.size() > 0) {
-            Recovery r = nonActiveandNonDischargedRecoveries.get(0);
-            setLabels(r);
-            ObservableList<Recovery> data = patientsChoice.getItems();
-            data.setAll(nonActiveandNonDischargedRecoveries);
-            patientsChoice.setPromptText(data.get(0).toString());
-            patientsChoice.getSelectionModel().selectFirst();
-        } else {
+        ObservableList<Recovery> data = this.patientsChoice.getItems();
+        int index = patientsChoice.getSelectionModel().getSelectedIndex();
+        data.removeAll(data);
+        data.addAll(recoveries);
+        try {
+            patientsChoice.getSelectionModel().select(index);
+        } catch (Exception e) {
             patientsChoice.getSelectionModel().clearSelection();
-            try {
-                ObservableList<Recovery> data = patientsChoice.getItems();
-                data.removeAll(data);
-            } catch (Exception e) {
-
-            }
+            patientsChoice.setPromptText("Nessuna scelta");
         }
-
     }
 
     @FXML protected void showMonitoring() {
@@ -99,34 +101,26 @@ public class HPDController {
         store.update(new StringCommand("START_MONITORING"));
     }
 
-    @FXML protected void search() {
-        sys.setInterface("HPS", HPComponent.HPTitle);
-    }
-    @FXML protected void dismissPatient() {
-        sys.setInterface("HPD", HPComponent.HPTitle);
-    }
-    @FXML protected void showLast2H() {
-        sys.setInterface("HPM", HPComponent.HPTitle);
-    }
-
-    @FXML protected void logout() {
-        store.update(new StringCommand("LOGOUT"));
-        sys.setInterface("login", LoginComponent.loginTitle);
-    }
-
-    @FXML protected void close() {
-        sys.endSystem();
-    }
-
     @FXML protected void setLabels(Recovery r) {
-        Patient p = r.getPatient();
-        patientName.setText(p.getName());
-        patientSurname.setText(p.getSurname());
-        patientPlaceofBirth.setText(p.getPlaceOfBirth());
-        patientDateofBirth.setText(p.getDateofBirth().toString());
-        patientRecoveryStartDate.setText(r.getStartDate().toString());
-        patientRecoveryEndDate.setText(r.getEndDate().toString());
-        patientRecoveryReasons.setText(r.getDiagnosis());
+        if(r != null) {
+            Patient p = r.getPatient();
+            patientName.setText(p.getName());
+            patientSurname.setText(p.getSurname());
+            patientPlaceofBirth.setText(p.getPlaceOfBirth());
+            patientDateofBirth.setText(p.getDateofBirth().toString());
+            patientRecoveryStartDate.setText(r.getStartDate().toString());
+            patientRecoveryEndDate.setText(r.getEndDate().toString());
+            patientRecoveryReasons.setText(r.getDiagnosis());
+        } else {
+            patientName.setText("");
+            patientSurname.setText("");
+            patientPlaceofBirth.setText("");
+            patientDateofBirth.setText("");
+            patientRecoveryStartDate.setText("");
+            patientRecoveryEndDate.setText("");
+            patientRecoveryReasons.setText("");
+        }
+
 
     }
 
@@ -151,5 +145,24 @@ public class HPDController {
 
         }
 
+    }
+
+    @FXML protected void search() {
+        sys.setInterface("HPS", HPComponent.HPTitle);
+    }
+    @FXML protected void dismissPatient() {
+        sys.setInterface("HPD", HPComponent.HPTitle);
+    }
+    @FXML protected void showLast2H() {
+        sys.setInterface("HPM", HPComponent.HPTitle);
+    }
+
+    @FXML protected void logout() {
+        store.update(new StringCommand("LOGOUT"));
+        sys.setInterface("login", LoginComponent.loginTitle);
+    }
+
+    @FXML protected void close() {
+        sys.endSystem();
     }
 }
