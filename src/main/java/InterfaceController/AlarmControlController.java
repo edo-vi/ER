@@ -25,7 +25,7 @@ public class AlarmControlController {
                 userField.clear();
                 passField.clear();
                 if (se.command().name().equals("ALM_LOGIN_SUCCESS")) {
-                    store.update(new StringCommand("RESET"));
+                    store.update(new StringCommand("RESET_ALARMS"));
                 } else {
                     System.out.println("Invalid username and/or password");
                 }
