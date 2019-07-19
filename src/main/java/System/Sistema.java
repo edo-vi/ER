@@ -19,8 +19,10 @@ import State.Middleware;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import Main.Tuple;
+import javafx.stage.StageStyle;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -31,9 +33,10 @@ public class Sistema {
     private InterfacesController controller;
     private Stage monitoringStage = null;
     private Stage alarmStage = null;
-    private final Random random = new Random();
-    private int selecetedPatient;
     private Stage alarmControlStage = null;
+    private final Random random = new Random();
+    private int selectedPatient = -1;
+    private boolean alarmCtlIsShown = false;
 
     public static Sistema getInstance() {
         if (s == null)
@@ -77,18 +80,21 @@ public class Sistema {
                 })
                 .with("EVOLVE_GENERATOR", (c, s) -> {
                     Sickness sick = (Sickness) c.getArg();
-                    selecetedPatient = random.nextInt(s.getActiveRecoveries().size());
-                    s.getActiveRecoveries().get(selecetedPatient).evolveGenerator(sick);
+                    if (selectedPatient == -1) {
+                        selectedPatient = random.nextInt(s.getActiveRecoveries().size());
+                    }
+                    s.getActiveRecoveries().get(selectedPatient).evolveGenerator(sick);
                     return s;
                 })
-                .with("ALARM_ACTIVATED", (c, s) -> { //todo->(?) ignorare piu di un segnale di questo tipo?
-                    //TODO: ERRORE dice che è un thred a eseguire e quindi esplode javaFX
-                    if (alarmControlStage == null) {
-                        String filename = (s.getDocAlarm().isValid() && s.getDocAlarm().equals(s.getDocAlarmCheck())) ? "ALMCTL" : "ALMCTLLOG";
-                        alarmControlStage = createUI((filename), AlarmControlComponent.AlarmControlTitle);
-                        alarmControlStage.setOnCloseRequest(e -> store.update(new StringCommand("RESET")));
-
-                        switch((int)c.getArg()) {
+                .with("ALARM_ACTIVATED", (c, s) -> {
+                    if(!alarmCtlIsShown) {
+                        boolean docAlreadyLog = s.getDocAlarm().isValid() && s.getDocAlarm().equals(s.getDocAlarmCheck());
+                        String filename = (docAlreadyLog) ? "ALMCTL" : "ALMCTLLOG";
+                        if (alarmControlStage == null) {
+                            alarmControlStage = createUI(filename, AlarmControlComponent.AlarmControlTitle);
+                            alarmControlStage.initStyle(StageStyle.UNDECORATED);
+                        }
+                        switch (((Tuple<Integer, Sickness>) c.getArg()).fst()) {
                             case 1:
                                 alarmControlStage.getScene().getStylesheets().add(getClass().getResource("/ButtonAlarm1.css").toExternalForm());
                                 break;
@@ -99,12 +105,18 @@ public class Sistema {
                                 alarmControlStage.getScene().getStylesheets().add(getClass().getResource("/ButtonAlarm3.css").toExternalForm());
                                 break;
                         }
+                        alarmControlStage.getScene().setRoot(getInterface(filename));
+                        alarmControlStage.sizeToScene();
+                        alarmControlStage.toFront();
+                        alarmControlStage.initModality(Modality.APPLICATION_MODAL);
+                        alarmControlStage.show();
+                        alarmCtlIsShown = true;
                     }
-                    alarmControlStage.show();
-                    alarmControlStage.toFront();
 
                     return s;
-                });
+                })
+                .with("RESET_ALARMS")
+                .with("ALARM_LOGIN");
         Middleware<StringCommand> middleware = new MiddlewareString(monitoringStage)
                 .with("LOGIN", (c, s, m) -> {
                     User u = (User) c.getArg();
@@ -137,10 +149,11 @@ public class Sistema {
                     return new Tuple<>(new StringCommand("ADDED_PATIENT"), s);
                     })
                 .with("SHOW_MONITORING", (c,s,m) -> {
-                    if (monitoringStage == null) {
+                    if(monitoringStage == null) {
                         monitoringStage = createUI("MON", MonitoringComponent.monitoringTitle);
                         monitoringStage.setOnCloseRequest(e -> store.update(new StringCommand("STOP_MONITORING")));
                     }
+                    monitoringStage.sizeToScene();
                     monitoringStage.show();
                     monitoringStage.toFront();
                     return new Tuple<>((new StringCommand("SHOW_MONITORING")), s);
@@ -162,17 +175,33 @@ public class Sistema {
                 })
                 .with("CLOSE_MONITORING", (c,s,m) -> {
                     monitoringStage.close();
-                    alarmStage.close();
-                    alarmControlStage.close();
                     return new Tuple<>(new StringCommand("CLOSE_MONITORING"), s);
                 })
                 .with("SHOW_ALARMS", (c,s,m) -> {
-                    if (alarmStage == null) {
+                    if(alarmStage == null)
                         alarmStage = createUI("ALM", AlarmsComponent.AlarmsTitle);
-                    }
+                    alarmStage.sizeToScene();
                     alarmStage.show();
                     alarmStage.toFront();
                     return new Tuple<>(new StringCommand("SHOW_ALARMS"), s);
+                })
+                .with("RESET_ALARMS", (c,s,m) -> {
+                    s.getActiveRecoveries().get(selectedPatient).resetGenerator();
+                    selectedPatient = -1;
+                    alarmControlStage.close();
+                    alarmCtlIsShown = false;
+                    return new Tuple<>(new StringCommand("CLOSED_ALARMS"), s);
+                })
+                .with("ALARM_LOGIN", (c,s,m) -> {
+                    User u = (User) c.getArg();
+                    if (s.getDocAlarmCheck().equals(u)) {
+                        s.setDocAlarm(u);
+                        s.getDocAlarm().setValid(true);
+                        return new Tuple<>(new StringCommand("ALM_LOGIN_SUCCESS"), s);
+                    }
+                    else {
+                        return new Tuple<>(new StringCommand("ALM_LOGIN_FAILURE"), s);
+                    }
                 });
 
         store = new Store<StringCommand>(new State(), reducer, middleware);
@@ -196,7 +225,7 @@ public class Sistema {
             this.controller.addInterface("MON", new MonitoringComponent<StringCommand>().getLoader().load());
             this.controller.addInterface("ALM", new AlarmsComponent<StringCommand>().getLoader().load());
             this.controller.addInterface("ALMCTLLOG", new AlarmControlComponent<StringCommand>(false).getLoader().load());
-            this.controller.addInterface("ALMCT", new AlarmControlComponent<StringCommand>(true).getLoader().load());
+            this.controller.addInterface("ALMCTL", new AlarmControlComponent<StringCommand>(true).getLoader().load());
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error during interfaces setup");
@@ -229,8 +258,11 @@ public class Sistema {
         stage.setScene(new Scene(getInterface(filename)));
         stage.setTitle(title);
         stage.setResizable(false);
-        stage.sizeToScene();
 
         return stage;
+    }
+
+    public Patient getSickPatient() {
+        return store.getState().getActiveRecoveries().get(selectedPatient).getPatient();
     }
 }

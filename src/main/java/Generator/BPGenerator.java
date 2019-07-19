@@ -1,10 +1,15 @@
 package Generator;
 
 import Main.Tuple;
+import State.Store;
+import State.StringCommand;
+import System.Sistema;
 
 import java.util.Random;
 
 public class BPGenerator implements GeneratorInterface {
+    private boolean canGenerateAlarm = true;
+
     private final Random randomS = new Random();
     private double meanS = 120.0;
     private double varianceS = 9.25;
@@ -28,9 +33,11 @@ public class BPGenerator implements GeneratorInterface {
             meanD = 50;
             varianceD = 3;
         }
+        else canGenerateAlarm = false;
     }
 
     public void reset() {
+        canGenerateAlarm = true;
         meanS = 120;
         varianceS = 9.5;
         meanD = 77.5;
@@ -38,6 +45,18 @@ public class BPGenerator implements GeneratorInterface {
     }
 
     public Tuple<Integer, Integer> getValue() {
-        return new Tuple<>((int) (meanD + randomD.nextGaussian()*varianceD), (int) (meanS + randomS.nextGaussian()*varianceS));
+        Tuple<Integer, Integer> data = new Tuple<>((int) (meanD + randomD.nextGaussian()*varianceD), (int) (meanS + randomS.nextGaussian()*varianceS));
+        if(canGenerateAlarm) {
+            Store<StringCommand> store = Sistema.getInstance().getStore();
+            if(data.fst() < 60 || data.snd() < 90) {
+                canGenerateAlarm = false;
+                store.update(new StringCommand("ALARM_ACTIVATED", new Tuple<>(2, Sickness.IPOTENSIONE)));
+            } else if(data.fst() > 95 || data.snd() > 150) {
+                canGenerateAlarm = false;
+                store.update(new StringCommand("ALARM_ACTIVATED", new Tuple<>(2, Sickness.IPERTENSIONE)));
+            }
+        }
+
+        return data;
     }
 }

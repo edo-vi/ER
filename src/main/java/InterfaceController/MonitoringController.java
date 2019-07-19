@@ -55,10 +55,10 @@ public class MonitoringController {
             String name = se.command().name();
             if (name.equals("GENERATE_BP") || name.equals("GENERATE_HEART_RATE") || name.equals("GENERATE_TEMPERATURE")) {
                 ObservableList<Monitoring> data = table.getItems();
-                if(table.getItems().size() > 10)
-                    table.getItems().remove(9);
                 Monitoring lastMonitoring = activeRecovery.getLastMonitoring();
                 data.add(0, lastMonitoring);
+                if(table.getItems().size() > 11)
+                    table.getItems().remove(11);
 
                 Platform.runLater(() -> hrLabel.setText(String.valueOf(lastMonitoring.getHeartRate())));
                 Platform.runLater(() -> tempLabel.setText(String.valueOf(lastMonitoring.getTemperature()).substring(0, 4)));

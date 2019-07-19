@@ -118,8 +118,8 @@ public class Monitoring implements Entry {
     }
 
     public String toString() {
-        String s = String.format("{%s, %d, %d, %d, %fd", this.date, this.diastolicPressure, this.systolicPressure,
-                this.heartRate, this.temperature);
+        String s = String.format("{%s, %d, %d, %d, %s", this.date, this.diastolicPressure, this.systolicPressure,
+                this.heartRate, String.valueOf(this.temperature).substring(0,5));
 
         if (recovery != null) s += ", " + this.recovery.getId();
         s += "}";

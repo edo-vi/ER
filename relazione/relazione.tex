@@ -7,11 +7,22 @@
 \author{***REMOVED***, Elia Piccoli, Marian Statache}
 \date{Luglio 2019}
 \usepackage{tikz}
+\usepackage{xcolor}
 \usepackage{pgfopts}
 \usepackage{./tikz-uml}
 \usepackage[latin1]{inputenc}
 \usepackage[italian]{babel}
 \usepackage[T1]{fontenc}
+\usetikzlibrary{automata ,shapes, er}
+\usepackage{dot2texi}
+\usepgfmodule{oo}
+\usepackage{./usecases}
+\tikzset{multi attribute/.style={attribute,double distance=1.5pt}} \tikzset{derived attribute/.style={attribute ,dashed}} \tikzset{total/.style={double distance=1.5pt}}
+\tikzset{every entity/.style={draw=orange, fill=orange!20}}
+\tikzset{every attribute/.style={draw=mediumpurple, fill=mediumpurple!20}} \tikzset{every relationship/.style={draw=Chartreuse2, fill=Chartreuse2!20}} \newcommand{\key}[1]{\underline{#1}}
+
+\definecolor{mediumpurple}{rgb}{0.58, 0.44, 0.86}
+\definecolor{Chartreuse2}{rgb}{0.5, 1.0, 0.0}
 \begin{document}
 
 \maketitle
@@ -31,9 +42,22 @@ Ad Elia ed Edoardo invece è stato assegnato il compito di progettare e sviluppar
 \paragraph{Gestione del codice} Per permettere, soprattutto inizialmente, a tutti i membri del team di contribuire al progetto in modo personale senza creare conflitti nel codice si è deciso sin da subito di utilizzare un sistema di versionamento: la scelta è ricaduta subito su \textit{Git}, data la sua ubiquità e portabilità, installato localmente sulle macchine dei membri del team e riferente una repository remota privata localizzata su \textit{Github}. Oltre che a permettere di evitare conflitti e di mantenere coerente lo stato del progetto per tutti i membri questa scelta è stata molto importante soprattutto per risolvere diversi problemi relativi all'installazione e utilizzo di un programma per la gestione del database: l'uso di diverse \textit{branches}, utilizzate anche per lo sviluppo di parti sperimentali del sistema, ha permesso lo sviluppo in contemporanea, almeno fino alla risoluzione di tutti i problemi di installazione e configurazione, del codice concernente la gestione del database e di quello relativo alle interfacce grafiche e i loro controllori.
 
 \paragraph{Gestione dei dati} La chiara natura relazionale dei dati necessari per il funzionamento del sistema ha subito portato alla decisione di affidarsi ad un RDBMS per la loro gestione, e in particolare a PostgreSQL; tale scelta è stata motivata principalmente dalla previa esperienza di utilizzo di un membro del team. Oltre che ad utilizzare un RBDMS si è inoltre deciso di affidarsi ad un ORM --- Hibernate --- per il mapping tra entità nel database e oggetti in memoria: questa decisione è derivata soprattutto dalla volontà di mantenere semplice la logica del sistema che, per sua natura e limitata dimensione, non ha mai richiesto la maggior efficienza derivante dall'utilizzo di pure query SQL. 
-%
-%\subsubsection{Ingegneria dei requisiti}
-%
+
+\subsubsection{Ingegneria dei requisiti}
+Data la natura didattica del progetto non si sono seguite le classiche tecniche di elicitazione dei requisiti ma essi sono stati ricavati e studiati a partire dalla specifica di consegna, considerata, almeno in parte, come documento dei requisiti. La stesura iniziale delle principali funzionalità, sotto forma di un provvisorio schema dei casi d'uso, è stata eseguita nella fase di pre-design da parte di tutti i membri del team basandoci appunto su tale documento dei requisiti.
+
+Nel corso dello sviluppo del progetto, a seconda delle diverse funzionalità da implementare, sono anche stati stilati diversi casi d'uso per i vari utenti finali secondo un processo simile a quello adottato dai modelli agili: prima di implementare funzionalità specifiche del sistema si è pensato ad almeno un caso d'uso reale di tali funzionalità per permettere poi un'implementazione quanto più semplice, naturale e rispettante le aspettative e necessità degli utenti.
+
+Di seguito parte dei casi d'uso sviluppati.
+\begin{usecase}
+	\addtitle{Caso d'uso}{Inserimento dei dati anagrafici di un paziente}
+	\addfield{Utente:}{Infermiere}
+	\addfield{Precondizioni:}{L'infermiere deve essersi autenticato}
+	\additemizedfield{Passi}{\item cao 1 }
+	
+	\addfield{Postcondizioni:}{Il paziente deve essere inserito nel sistema, senza associato ricovero}
+\end{usecase}
+
 %\subsubsection{Design del sistema}
 %
 %\subsubsection{Implementazione}
@@ -88,7 +112,7 @@ Ad Elia ed Edoardo invece è stato assegnato il compito di progettare e sviluppar
 
 \subsection{Diagrammi di classe}
 \begin{figure}[t]
-\begin{centering}
+\begin{center}
 	\begin{tikzpicture}
 \begin{umlpackage}[ x=0, y=0]{State}
 \umlclass[x=5.5, template={C}]{Store} {- s: State\\- r: Reducer \\- m: Middleware}{+ poll(): State \\ + update(com: C)}
@@ -118,6 +142,53 @@ Ad Elia ed Edoardo invece è stato assegnato il compito di progettare e sviluppar
 \end{umlpackage}  
 	
 \end{tikzpicture}
-\end{centering}\caption{Diagramma di classe del \textit{package} State.}\label{StateClassDiagram}
+\end{center}\caption{Diagramma di classe del \textit{package} State.}\label{StateClassDiagram}
 \end{figure}
+
+\newpage
+\begin{figure}
+	\begin{center}
+\begin{tikzpicture}[node distance=7em]
+\node[entity] at (0,0) (patient) {Patient};
+\node[relationship] (riceve) at(3.2,0) {receives} edge (patient); 
+\node[entity] (administration) at (6.7,0) {Administration} edge (riceve); 
+\node[relationship] (has) [below of=administration] {has} edge(administration);
+\node[entity] (prescription) [below of=has] {Prescription} edge(has);
+\node[relationship] (comprehends) at (3.2,-5) {includes} edge(prescription);
+\node[entity] (recovery) at (0, -5) {Recovery} edge(comprehends);
+\node[relationship] (getput) [below of=patient] {gets put} edge(patient) edge(recovery);
+\node[relationship] (includes) [below of=recovery] {includes} edge(recovery);
+\node[entity] (monitoring) [below of=includes] {Monitoring} edge(includes);
+
+\node at (1.1,0.25) {1};
+\node at (5.1,0.25) {n};
+
+\node at (6.95,-0.8) {n};
+\node at (6.95,-4.1) {1};
+
+\node at (0.3,-0.8) {1};
+\node at (0.3,-4.2) {n};
+
+\node at (1.2,-4.7) {1};
+\node at (5.3,-4.7) {n};
+
+\node at (0.3,-5.8) {1};
+\node at (0.3,-9.2) {n};
+
+\end{tikzpicture}
+	\end{center}
+	\caption{Schema \textit{Entity-Relationship} dei dati del sistema.}\label{ERdiagram}
+\end{figure}
+\begin{table}
+	\begin{tabular}{r | l}
+		Entità & Campi \\ \hline
+		Patient & \underline{Id}, Name, Surname, Fiscal code, Place of birth, Date of birth \\
+		Administration & \underline{Id}, Date, Hour, Dose, Notes, \textit{Patient}, \textit{Prescription} \\
+		Prescription & \underline{Id}, Drug, Duration, Daily dose, Number of doses, Doctor, \textit{Recovery} \\ 
+		Recovery & \underline{Id}, Start date, End date, Diagnosis, Active, Discharge summary, \textit{Patient}\\
+		Monitoring & \underline{Id}, Date, Diastolic pressure, Systolic pressure, Heart rate, Temperature, \textit{Recovery}
+	\end{tabular}\caption{Campi e relazioni delle entità del database. I campi sottolineati indicano le \textit{primary keys}, quelli in corsivo le \textit{foreign keys} (mappate sempre ai campi Id della rispettiva entità).}
+\end{table}
+
+
 \end{document}
