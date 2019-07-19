@@ -10,24 +10,24 @@
 
 <AnchorPane fx:id="mainAnchor11" maxHeight="-1.0" maxWidth="-1.0" prefHeight="300.0" prefWidth="450.0" style="-fx-background-color: #1d1d1d;" styleClass="column-header" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label alignment="CENTER" layoutX="42.0" layoutY="186.0" style="&#10;" text="Password" textAlignment="CENTER" AnchorPane.leftAnchor="40.0">
+      <Label alignment="CENTER" layoutX="42.0" layoutY="186.0" style="-fx-text-fill: grey;" text="Password" textAlignment="CENTER" AnchorPane.leftAnchor="40.0">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Label layoutX="40.0" layoutY="130.0" text="Username" AnchorPane.leftAnchor="40.0">
+      <Label layoutX="40.0" layoutY="130.0" style="-fx-text-fill: grey;" text="Username" AnchorPane.leftAnchor="40.0">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <TextField id="userField" fx:id="userField" layoutX="170.0" layoutY="122.0" promptText="username" AnchorPane.leftAnchor="170.0" />
+      <TextField id="userField" fx:id="userField" layoutX="170.0" layoutY="122.0" prefHeight="37.0" prefWidth="206.0" promptText="username" AnchorPane.leftAnchor="170.0" />
       <PasswordField id="passField" fx:id="passField" layoutX="170.0" layoutY="178.0" prefHeight="37.0" prefWidth="206.0" promptText="password" AnchorPane.leftAnchor="170.0" />
-      <Button fx:id="loginButton" onAction="#login" layoutX="370.0" layoutY="194.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="151.0" text="Spegni Allarme" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0">
+      <Button fx:id="loginButton" layoutX="370.0" layoutY="194.0" mnemonicParsing="false" onAction="#login" prefHeight="33.0" prefWidth="151.0" text="Spegni Allarme" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <Label layoutX="42.0" layoutY="14.0" prefHeight="87.0" prefWidth="405.0" style="-fx-font-size: 16;" text="Attenzione! Allarme di livello 2:&#10;Ipertensione paziente Giacomo Rossi&#10;Richiesto l'intervento di un medico." AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="14.0" />
+      <Label layoutX="42.0" layoutY="14.0" prefHeight="87.0" prefWidth="405.0" style="-fx-font-size: 16; -fx-text-fill: grey;" text="Attenzione! Allarme di livello 2:&#10;Ipertensione paziente Giacomo Rossi&#10;Richiesto l'intervento di un medico." AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="14.0" />
    </children>
    <opaqueInsets>
       <Insets />
