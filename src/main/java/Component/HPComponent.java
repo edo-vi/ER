@@ -1,6 +1,9 @@
 package Component;
 
-import InterfaceController.HPController;
+import InterfaceController.HPMController;
+import InterfaceController.HPSController;
+import InterfaceController.HPDController;
+import InterfaceController.HPSRController;
 import State.Command;
 import State.StateEvent;
 import System.HP.HPFactory;
@@ -13,9 +16,24 @@ public class HPComponent<C extends Command> extends Component {
     public static final String HPTitle = "ER - HeadPhysician";
 
     public HPComponent(String type) {
-        HPController hpctl = new HPController(sys.getStore(), sys.getStore().getEventStream());
-        this.loader = new FXMLLoader(getClass().getResource(new HPFactory().getHPInterface(type)));
-        loader.setController(hpctl);
+        if (type.equals("default")) {
+            HPDController hpctl = new HPDController(sys.getStore(), sys.getStore().getEventStream());
+            this.loader = new FXMLLoader(getClass().getResource(new HPFactory().getHPInterface(type)));
+            loader.setController(hpctl);
+        } else if (type.equals("search")) {
+            HPSController hpctl = new HPSController(sys.getStore(), sys.getStore().getEventStream());
+            this.loader = new FXMLLoader(getClass().getResource(new HPFactory().getHPInterface(type)));
+            loader.setController(hpctl);
+        } else if (type.equals("searchResult")) {
+            HPSRController hpctl = new HPSRController(sys.getStore(), sys.getStore().getEventStream());
+            this.loader = new FXMLLoader(getClass().getResource(new HPFactory().getHPInterface(type)));
+            loader.setController(hpctl);
+        } else if (type.equals("monitoring")) {
+            HPMController hpctl = new HPMController(sys.getStore(), sys.getStore().getEventStream());
+            this.loader = new FXMLLoader(getClass().getResource(new HPFactory().getHPInterface(type)));
+            loader.setController(hpctl);
+        }
+
     }
 
 

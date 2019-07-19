@@ -17,6 +17,7 @@
 \usepackage{dot2texi}
 \usepgfmodule{oo}
 \usepackage{./usecases}
+
 \tikzset{multi attribute/.style={attribute,double distance=1.5pt}} \tikzset{derived attribute/.style={attribute ,dashed}} \tikzset{total/.style={double distance=1.5pt}}
 \tikzset{every entity/.style={draw=orange, fill=orange!20}}
 \tikzset{every attribute/.style={draw=mediumpurple, fill=mediumpurple!20}} \tikzset{every relationship/.style={draw=Chartreuse2, fill=Chartreuse2!20}} \newcommand{\key}[1]{\underline{#1}}
@@ -48,14 +49,21 @@ Data la natura didattica del progetto non si sono seguite le classiche tecniche 
 
 Nel corso dello sviluppo del progetto, a seconda delle diverse funzionalità da implementare, sono anche stati stilati diversi casi d'uso per i vari utenti finali secondo un processo simile a quello adottato dai modelli agili: prima di implementare funzionalità specifiche del sistema si è pensato ad almeno un caso d'uso reale di tali funzionalità per permettere poi un'implementazione quanto più semplice, naturale e rispettante le aspettative e necessità degli utenti.
 
-Di seguito parte dei casi d'uso sviluppati.
+Di seguito parte dei casi d'uso utilizzati.
 \begin{usecase}
-	\addtitle{Caso d'uso}{Inserimento dei dati anagrafici di un paziente}
-	\addfield{Utente:}{Infermiere}
-	\addfield{Precondizioni:}{L'infermiere deve essersi autenticato}
-	\additemizedfield{Passi}{\item cao 1 }
-	
-	\addfield{Postcondizioni:}{Il paziente deve essere inserito nel sistema, senza associato ricovero}
+	\addtitle{Caso d'uso}{Spegnimento allarme}
+	\addfield{Utente:}{Medico}
+	\addfield{Precondizioni:}{Deve essere partito un allarme}
+	\additemizedfield{Passi}{
+\item Prende atto della patologia segnalata e del paziente in questione, indicato 
+\item Indica le attività svolte per portare il paziente alla normalità
+\item \begin{enumerate}
+	\item se è gia autenticato, spegne l'allarme
+	\item se non è autenticato, spegne l'allarme indicando le proprie credenziali
+\end{enumerate}
+}
+\addfield{Postcondizioni:}{L'allarme viene spento. Se il medico non era autenticato e ha inserito correttamente le sue credenziali, rimane autenticato per un certo periodo di tempo}
+
 \end{usecase}
 
 %\subsubsection{Design del sistema}
@@ -126,10 +134,10 @@ Di seguito parte dei casi d'uso sviluppati.
 \umlsimpleclass[x=5.5, y=-3.5]{State} {}{}
 \umlsimpleclass[x=5.5, y=-6, template={C}]{StateEvent}{}{}
 
-\umlinterface[ y=-9, x=3]{Command}{}{+ name(): String \\+ getArg(): Object}
-\umlsimpleclass[x=3, y=-12]{StringCommand}
+\umlinterface[ y=-9, x=5.5]{Command}{}{+ name(): String \\+ getArg(): Object}
+\umlsimpleclass[x=0.2, y=-9]{StringCommand}
 
-\umlsimpleclass[x=9, y=-9]{DatabaseService}{}{}
+\umlsimpleclass[x=11.8, y=0]{DatabaseService}{}{}
 
 \umlreal[]{MiddlewareString}{Middleware}
 \umlreal[]{ReducerString}{Reducer}

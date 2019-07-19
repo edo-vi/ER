@@ -11,17 +11,20 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.Subject;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 
 import java.util.UUID;
 
-public class HPController {
+public class HPSController {
     private final Store<StringCommand> store;
     private final Sistema sys = Sistema.getInstance();
     @FXML private TableView<Patient> table = new TableView<>();
+
+
     private Disposable dis;
 
-    public HPController(Store<StringCommand> store, Subject<StateEvent> stream) {
+    public HPSController(Store<StringCommand> store, Subject<StateEvent> stream) {
         this.store = store;
         ObservableList<Patient> data  = table.getItems();
         data.addAll(store.poll().getPatients());
@@ -37,6 +40,7 @@ public class HPController {
             data2.addAll(se.state().getPatients());
         });
     }
+
 
     @FXML protected void showMonitoring() {
         store.update(new StringCommand("SHOW_MONITORING"));

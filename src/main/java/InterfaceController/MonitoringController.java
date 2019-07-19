@@ -178,20 +178,18 @@ public class MonitoringController {
                 data1= seriesS.getData();
                 data1.removeAll(data1);
 
-                Platform.runLater(() -> hrLabel.setText(String.valueOf(lastMonitoring.getHeartRate())));
-                Platform.runLater(() -> tempLabel.setText(String.valueOf(lastMonitoring.getTemperature()).substring(0, 4)));
-                Platform.runLater(() -> dbpLabel.setText(String.valueOf(lastMonitoring.getDiastolicPressure())));
-                Platform.runLater(() -> sbpLabel.setText(String.valueOf(lastMonitoring.getSystolicPressure())));
-                Platform.runLater(() -> roomLabel.setText("Room " + (index + 1)));
+                hrLabel.setText(String.valueOf(lastMonitoring.getHeartRate()));
+                tempLabel.setText(String.valueOf(lastMonitoring.getTemperature()).substring(0, 4));
+                dbpLabel.setText(String.valueOf(lastMonitoring.getDiastolicPressure()));
+                sbpLabel.setText(String.valueOf(lastMonitoring.getSystolicPressure()));
+                roomLabel.setText("Room " + (index + 1));
 
-                Platform.runLater(() -> {
-                    xhrAxis.setLowerBound(counterHR - 1);
-                    xhrAxis.setUpperBound(counterHR + 1);
-                    xbpAxis.setLowerBound(counterBP - 1);
-                    xbpAxis.setUpperBound(counterBP + 1);
-                });
+                xhrAxis.setLowerBound(counterHR - 1);
+                xhrAxis.setUpperBound(counterHR + 1);
+                xbpAxis.setLowerBound(counterBP - 1);
+                xbpAxis.setUpperBound(counterBP + 1);
 
-                data.addAll(p.getRecoveries().stream().flatMap(r -> r.getMonitorings().stream()).collect(Collectors.toList()));
+                data.addAll(p.getRecoveries().stream().flatMap(r -> r.getMonitorings().stream().limit(11)).collect(Collectors.toList()));
 
             } catch (Exception e) {
                 System.out.println("Some error occured");

@@ -106,11 +106,11 @@ public class Patient implements Entry{
         this.placeOfBirth = placeOfBirth;
     }
 
-    public Date getBirthDay() {
+    public Date getDateofBirth() {
         return birthDay;
     }
 
-    public void setBirthDay(Date birthDay) {
+    public void setDateofBirth(Date birthDay) {
         this.birthDay = new java.sql.Date(birthDay.getTime());
     }
 

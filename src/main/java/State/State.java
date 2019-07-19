@@ -118,6 +118,12 @@ public class State  {
                 .collect(Collectors.toList());
     }
 
+    public List<Recovery> getNonActiveRecoveries() {
+        return patients.stream()
+                .flatMap(p -> p.getRecoveries().stream().filter(a->!a.isActive()))
+                .collect(Collectors.toList());
+    }
+
     public List<Monitoring> getActiveMonitorings() {
         return this.getActiveRecoveries().stream()
                 .flatMap(r -> r.getMonitorings().stream())
