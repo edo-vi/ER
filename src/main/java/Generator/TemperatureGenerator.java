@@ -24,7 +24,6 @@ public class TemperatureGenerator implements GeneratorInterface {
             mean = 35.0;
             variance = 0.0625;
         }
-        else canGenerateAlarm = false;
     }
 
     public void reset() {

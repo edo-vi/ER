@@ -26,7 +26,6 @@ public class HeartRateGenerator implements GeneratorInterface {
         } else if(sick == Sickness.FLUTTER) {
             //TODO cambiare scheduling del task
         }
-        else canGenerateAlarm = false;
     }
 
     public void reset() {

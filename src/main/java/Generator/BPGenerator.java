@@ -33,7 +33,6 @@ public class BPGenerator implements GeneratorInterface {
             meanD = 50;
             varianceD = 3;
         }
-        else canGenerateAlarm = false;
     }
 
     public void reset() {
