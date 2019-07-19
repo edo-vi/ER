@@ -11,11 +11,14 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.Subject;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.chart.*;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class MonitoringController {
@@ -28,6 +31,7 @@ public class MonitoringController {
     @FXML private Label tempLabel;
     @FXML private Label dbpLabel;
     @FXML private Label sbpLabel;
+    @FXML private Label roomLabel;
     @FXML private LineChart hrGraphic;
     @FXML private LineChart bpGraphic;
     @FXML private NumberAxis xhrAxis;
@@ -151,16 +155,40 @@ public class MonitoringController {
     }
 
     @FXML private void setInfo(int index) {
-        try {
-            this.activeRecovery = store.poll().getAllRecoveries().get(index);
-            Patient p = activeRecovery.getPatient();
-            nameLabel.setText(p.getName());
-            surnameLabel.setText(p.getSurname());
-            ObservableList<Monitoring> data  = table.getItems();
-            data.addAll(p.getRecoveries().stream().flatMap(r -> r.getMonitorings().stream()).collect(Collectors.toList()));
+        List<Recovery> allActiveRecoveries = store.poll().getAllRecoveries();
+        if (index < allActiveRecoveries.size()) {
+            try {
+                this.activeRecovery = allActiveRecoveries.get(index);
+                Monitoring lastMonitoring = activeRecovery.getLastMonitoring();
+                Patient p = activeRecovery.getPatient();
+                nameLabel.setText(p.getName());
+                surnameLabel.setText(p.getSurname());
+                ObservableList<Monitoring> data  = table.getItems();
+                data.removeAll(data);
+                ObservableList<XYChart.Data> data1 = seriesHR.getData();
+                data1.removeAll(data1);
+                data1= seriesD.getData();
+                data1.removeAll(data1);
+                data1= seriesS.getData();
+                data1.removeAll(data1);
 
-        } catch (Exception e) {
-            System.out.println("Some error occured");
+                Platform.runLater(() -> hrLabel.setText(String.valueOf(lastMonitoring.getHeartRate())));
+                Platform.runLater(() -> tempLabel.setText(String.valueOf(lastMonitoring.getTemperature()).substring(0, 4)));
+                Platform.runLater(() -> dbpLabel.setText(String.valueOf(lastMonitoring.getDiastolicPressure())));
+                Platform.runLater(() -> sbpLabel.setText(String.valueOf(lastMonitoring.getSystolicPressure())));
+                Platform.runLater(() -> roomLabel.setText("Room " + String.valueOf(index+1)));
+
+                data.addAll(p.getRecoveries().stream().flatMap(r -> r.getMonitorings().stream()).collect(Collectors.toList()));
+
+            } catch (Exception e) {
+                System.out.println("Some error occured");
+            }
         }
-     }
+    }
+
+    @FXML protected void buttonPressed(Event e)
+    {
+        String s = ((Button) e.getSource()).getText();
+        setInfo(Integer.valueOf(s.substring(5))-1);
+    }
 }
