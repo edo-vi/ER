@@ -1,6 +1,6 @@
 package System;
 
-import Component.MonitoringComponent;
+import Component.*;
 import Entities.Patient;
 import Entities.Recovery;
 import Entities.User;
@@ -15,10 +15,7 @@ import State.Store;
 import State.DatabaseService;
 import State.MiddlewareString;
 import State.Middleware;
-import Component.HPComponent;
-import Component.AlarmsComponent;
 
-import Component.LoginComponent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
@@ -36,6 +33,7 @@ public class Sistema {
     private Stage alarmStage = null;
     private final Random random = new Random();
     private int selecetedPatient;
+    private Stage alarmControlStage = null;
 
     public static Sistema getInstance() {
         if (s == null)
@@ -77,10 +75,34 @@ public class Sistema {
                     else controller.activate("login", LoginComponent.loginTitle);
                     return s;
                 })
-                .with("EVOLVE_GENERATOR", (c,s) -> {
+                .with("EVOLVE_GENERATOR", (c, s) -> {
                     Sickness sick = (Sickness) c.getArg();
                     selecetedPatient = random.nextInt(s.getActiveRecoveries().size());
                     s.getActiveRecoveries().get(selecetedPatient).evolveGenerator(sick);
+                    return s;
+                })
+                .with("ALARM_ACTIVATED", (c, s) -> { //todo->(?) ignorare piu di un segnale di questo tipo?
+                    //TODO: ERRORE dice che è un thred a eseguire e quindi esplode javaFX
+                    if (alarmControlStage == null) {
+                        String filename = (s.getDocAlarm().isValid() && s.getDocAlarm().equals(s.getDocAlarmCheck())) ? "ALMCTL" : "ALMCTLLOG";
+                        alarmControlStage = createUI((filename), AlarmControlComponent.AlarmControlTitle);
+                        alarmControlStage.setOnCloseRequest(e -> store.update(new StringCommand("RESET")));
+
+                        switch((int)c.getArg()) {
+                            case 1:
+                                alarmControlStage.getScene().getStylesheets().add(getClass().getResource("/ButtonAlarm1.css").toExternalForm());
+                                break;
+                            case 2:
+                                alarmControlStage.getScene().getStylesheets().add(getClass().getResource("/ButtonAlarm2.css").toExternalForm());
+                                break;
+                            case 3:
+                                alarmControlStage.getScene().getStylesheets().add(getClass().getResource("/ButtonAlarm3.css").toExternalForm());
+                                break;
+                        }
+                    }
+                    alarmControlStage.show();
+                    alarmControlStage.toFront();
+
                     return s;
                 });
         Middleware<StringCommand> middleware = new MiddlewareString(monitoringStage)
@@ -116,12 +138,7 @@ public class Sistema {
                     })
                 .with("SHOW_MONITORING", (c,s,m) -> {
                     if (monitoringStage == null) {
-                        monitoringStage = new Stage();
-                        monitoringStage.getIcons().add(new Image("/logo.png"));
-                        monitoringStage.setScene(new Scene(getInterface("MON")));
-                        monitoringStage.setTitle(MonitoringComponent.monitoringTitle);
-                        monitoringStage.sizeToScene();
-                        monitoringStage.setResizable(false);
+                        monitoringStage = createUI("MON", MonitoringComponent.monitoringTitle);
                         monitoringStage.setOnCloseRequest(e -> store.update(new StringCommand("STOP_MONITORING")));
                     }
                     monitoringStage.show();
@@ -145,16 +162,13 @@ public class Sistema {
                 })
                 .with("CLOSE_MONITORING", (c,s,m) -> {
                     monitoringStage.close();
+                    alarmStage.close();
+                    alarmControlStage.close();
                     return new Tuple<>(new StringCommand("CLOSE_MONITORING"), s);
                 })
                 .with("SHOW_ALARMS", (c,s,m) -> {
                     if (alarmStage == null) {
-                        alarmStage = new Stage();
-                        alarmStage.getIcons().add(new Image("/logo.png"));
-                        alarmStage.setScene(new Scene(getInterface("ALM")));
-                        alarmStage.setTitle(AlarmsComponent.AlarmsTitle);
-                        alarmStage.setResizable(false);
-                        alarmStage.sizeToScene();
+                        alarmStage = createUI("ALM", AlarmsComponent.AlarmsTitle);
                     }
                     alarmStage.show();
                     alarmStage.toFront();
@@ -181,6 +195,8 @@ public class Sistema {
             this.controller.addInterface("HPD", new HPComponent<StringCommand>("default").getLoader().load());
             this.controller.addInterface("MON", new MonitoringComponent<StringCommand>().getLoader().load());
             this.controller.addInterface("ALM", new AlarmsComponent<StringCommand>().getLoader().load());
+            this.controller.addInterface("ALMCTLLOG", new AlarmControlComponent<StringCommand>(false).getLoader().load());
+            this.controller.addInterface("ALMCT", new AlarmControlComponent<StringCommand>(true).getLoader().load());
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error during interfaces setup");
@@ -205,5 +221,16 @@ public class Sistema {
 
     public Stage getMonitoringStage() {
         return monitoringStage;
+    }
+
+    private Stage createUI(String filename, String title) {
+        Stage stage = new Stage();
+        stage.getIcons().add(new Image("/logo.png"));
+        stage.setScene(new Scene(getInterface(filename)));
+        stage.setTitle(title);
+        stage.setResizable(false);
+        stage.sizeToScene();
+
+        return stage;
     }
 }

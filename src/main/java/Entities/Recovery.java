@@ -2,6 +2,8 @@ package Entities;
 
 import Generator.*;
 import Main.Tuple;
+import State.StringCommand;
+import System.Sistema;
 
 
 import javax.persistence.*;
@@ -105,10 +107,8 @@ public class Recovery implements Entry{
             if (value == Value.BP) {
                 Tuple<Integer, Integer> ints = this.bpGenerator.getValue();
 
-                if(ints.fst() < 60 || ints.fst() > 95)
-                    throw new IllegalArgumentException("Diastolic OUT: " + ints.fst());
-                if(ints.snd() < 90 || ints.snd() > 150)
-                    throw new IllegalArgumentException("Systolic OUT: " + ints.snd());
+                if(ints.fst() < 60 || ints.fst() > 95 || ints.snd() < 90 || ints.snd() > 150)
+                    Sistema.getInstance().getStore().update(new StringCommand("ALARM_ACTIVATED", 2));
 
                 nm.setDiastolicPressure(ints.fst());
                 nm.setSystolicPressure(ints.snd());
@@ -119,7 +119,8 @@ public class Recovery implements Entry{
                 nm.setHeartRate(this.heartRateGenerator.getValue());
 
                 if(nm.getHeartRate() < 60 || nm.getHeartRate() > 100)
-                    throw new IllegalArgumentException("Heart Rate OUT: " + nm.getHeartRate());
+                    Sistema.getInstance().getStore().update(new StringCommand("ALARM_ACTIVATED", 1));
+
 
                 nm.setDiastolicPressure(last.getDiastolicPressure());
                 nm.setSystolicPressure(last.getSystolicPressure());
@@ -129,13 +130,13 @@ public class Recovery implements Entry{
                 nm.setTemperature(this.temperatureGenerator.getValue());
 
                 if(nm.getTemperature() > 37.5 || nm.getTemperature() < 36)
-                    throw new IllegalArgumentException("Temperature OUT: " + nm.getTemperature());
+                    Sistema.getInstance().getStore().update(new StringCommand("ALARM_ACTIVATED", 2));
 
                 nm.setDiastolicPressure(last.getDiastolicPressure());
                 nm.setSystolicPressure(last.getSystolicPressure());
                 nm.setHeartRate(last.getHeartRate());
             }
-        this.addToMonitorings(nm); //TODO: send info to db and component
+        this.addToMonitorings(nm);
         }
 
     }

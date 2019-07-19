@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 
-<AnchorPane prefHeight="180.0" prefWidth="420.0" style="-fx-background-color: #1d1d1d;" stylesheets="@DarkTheme.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ErrorPopUp">
+<AnchorPane prefHeight="180.0" prefWidth="420.0" style="-fx-background-color: #1d1d1d;" stylesheets="@DarkTheme.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" >
    <children>
       <Button layoutX="258.0" layoutY="123.0" mnemonicParsing="false" prefWidth="80.0" text="Ok" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="30.0" />
       <Label layoutX="31.0" layoutY="38.0" style="-fx-font-size: 15;" text="Errore! Il paziente cercato non esiste." AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="35.0" />
