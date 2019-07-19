@@ -9,6 +9,7 @@ import java.util.Random;
 
 public class HeartRateGenerator implements GeneratorInterface {
     private boolean canGenerateAlarm = true;
+    private Sistema sys = null;
     private final Random random = new Random();
     private double mean = 80;
     private double variance = 4.4;
@@ -35,9 +36,12 @@ public class HeartRateGenerator implements GeneratorInterface {
     }
 
     public Integer getValue() {
+        if(sys == null)
+            sys = Sistema.getInstance();
+
         int x =  (int) (mean + random.nextGaussian()*variance);
-        if(canGenerateAlarm) {
-            Store<StringCommand> store = Sistema.getInstance().getStore();
+        if(canGenerateAlarm && sys.getSickPatient() != null) {
+            Store<StringCommand> store = sys.getStore();
             if(x < 60) {
                 canGenerateAlarm = false;
                 store.update(new StringCommand("ALARM_ACTIVATED", new Tuple<>(1, Sickness.BRACHICARDIA)));

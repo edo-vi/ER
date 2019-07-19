@@ -9,7 +9,7 @@ import java.util.Random;
 
 public class BPGenerator implements GeneratorInterface {
     private boolean canGenerateAlarm = true;
-
+    private Sistema sys = null;
     private final Random randomS = new Random();
     private double meanS = 120.0;
     private double varianceS = 9.25;
@@ -37,16 +37,19 @@ public class BPGenerator implements GeneratorInterface {
 
     public void reset() {
         canGenerateAlarm = true;
-        meanS = 120;
+        meanS = 120.0;
         varianceS = 9.5;
         meanD = 77.5;
         varianceD = 4.0;
     }
 
     public Tuple<Integer, Integer> getValue() {
+        if(sys == null)
+            sys = Sistema.getInstance();
+
         Tuple<Integer, Integer> data = new Tuple<>((int) (meanD + randomD.nextGaussian()*varianceD), (int) (meanS + randomS.nextGaussian()*varianceS));
-        if(canGenerateAlarm) {
-            Store<StringCommand> store = Sistema.getInstance().getStore();
+        if(canGenerateAlarm && sys.getSickPatient() != null) {
+            Store<StringCommand> store = sys.getStore();
             if(data.fst() < 60 || data.snd() < 90) {
                 canGenerateAlarm = false;
                 store.update(new StringCommand("ALARM_ACTIVATED", new Tuple<>(2, Sickness.IPOTENSIONE)));

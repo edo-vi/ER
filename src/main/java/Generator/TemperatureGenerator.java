@@ -9,6 +9,7 @@ import java.util.Random;
 
 public class TemperatureGenerator implements GeneratorInterface {
     private boolean canGenerateAlarm = true;
+    private Sistema sys = null;
     private final Random random = new Random();
     private double mean = 36.75;
     private double variance = 0.0625;
@@ -33,9 +34,12 @@ public class TemperatureGenerator implements GeneratorInterface {
     }
 
     public Double getValue() {
+        if(sys == null)
+            sys = Sistema.getInstance();
+
         double x =  mean + random.nextGaussian()*variance;
-        if(canGenerateAlarm) {
-            Store<StringCommand> store = Sistema.getInstance().getStore();
+        if(canGenerateAlarm && sys.getSickPatient() != null) {
+            Store<StringCommand> store = sys.getStore();
             if(x < 36) {
                 canGenerateAlarm = false;
                 store.update(new StringCommand("ALARM_ACTIVATED", new Tuple<>(2, Sickness.IPOTERMIA)));
