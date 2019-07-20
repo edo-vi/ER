@@ -54,6 +54,7 @@ public class MonitoringController {
         try {
             dis.dispose();
         } catch (NullPointerException e) {
+
         }
         dis = this.stream.subscribe(se -> {
             String name = se.command().name();
@@ -161,7 +162,7 @@ public class MonitoringController {
     }
 
     @FXML private void setInfo(int index) {
-        List<Recovery> allActiveRecoveries = store.poll().getAllRecoveries();
+        List<Recovery> allActiveRecoveries = store.poll().getActiveRecoveries();
         if (index < allActiveRecoveries.size()) {
             try {
                 this.activeRecovery = allActiveRecoveries.get(index);
