@@ -112,14 +112,14 @@ public class Sistema {
                 .with("SEARCH_PATIENT_HP");
         Middleware<StringCommand> middleware = new MiddlewareString(monitoringStage)
                 .with("LOGIN", (c, s, m) -> {
-                    User u = (User) c.getArg();
-                    if (s.getUserCheck().equals(u)) {
-                        s.setUser(s.getUserCheck());
-                        return new Tuple<>(new StringCommand("LOGIN_SUCCESS"), s);
+                    User x = (User) c.getArg();
+                    for(User u : s.getSystemUsers()) {
+                        if (u.equals(x)) {
+                            s.setUser(u);
+                            return new Tuple<>(new StringCommand("LOGIN_SUCCESS"), s);
+                        }
                     }
-                    else {
-                        return new Tuple<>(new StringCommand("LOGIN_FAILURE"), s);
-                    }
+                    return new Tuple<>(new StringCommand("LOGIN_FAILURE"), s);
                 })
                 .with("LOAD", (c, s, m) -> {
                     List<Patient> ps = DatabaseService.getEntries("Patient").stream()
