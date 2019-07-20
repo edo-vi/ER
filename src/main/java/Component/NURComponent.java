@@ -2,16 +2,16 @@ package Component;
 
 import State.Command;
 import State.StateEvent;
-import System.DOCInterfaceFactory.DOCInterface;
-import System.Sistema;
+import System.NURInterfaceFactory.NURInterface;
 import javafx.fxml.FXMLLoader;
+import System.Sistema;
 
-public class DOCComponent<C extends Command> extends Component {
+public class NURComponent<C extends Command> extends Component {
     private FXMLLoader loader;
     private final Sistema sys = Sistema.getInstance();
-    public static final String DOCTitle = "ER - Doctor";
+    public static final String NURTitle = "ER - Nurse";
 
-    public DOCComponent(DOCInterface ui) {
+    public NURComponent(NURInterface ui) {
         this.loader = new FXMLLoader(getClass().getResource(ui.getFile()));
         //loader.setController(ctl);
     }
@@ -22,7 +22,7 @@ public class DOCComponent<C extends Command> extends Component {
     }
 
     protected final void draw() {
-        sys.setInterface("DOCD", DOCTitle);
+        sys.setInterface("NURD", NURTitle);
     }
 
     public final FXMLLoader getLoader() {

@@ -19,19 +19,19 @@
          <menus>
             <Menu mnemonicParsing="false" text="File">
                <items>
-                  <MenuItem mnemonicParsing="false" onAction="#showMonitoring" text="Monitora" />
+                  <MenuItem mnemonicParsing="false" text="Monitora" />
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" onAction="#logout" text="Esci" />
-                  <MenuItem mnemonicParsing="false" onAction="#close" text="Chiudi" />
+                  <MenuItem mnemonicParsing="false" text="Esci" />
+                  <MenuItem mnemonicParsing="false" text="Chiudi" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Visualizza">
                <items>
-                  <MenuItem mnemonicParsing="false" onAction="#dismissPatient" text="Nuova somministrazione" />
-                  <MenuItem mnemonicParsing="false" onAction="#dismissPatient" text="Nuovo paziente" />
+                  <MenuItem mnemonicParsing="false" text="Nuova somministrazione" />
+                  <MenuItem mnemonicParsing="false" text="Nuovo paziente" />
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" onAction="#showLast2H" text="Dati ultime 2 ore" />
-                  <MenuItem mnemonicParsing="false" onAction="#search" text="Cartella clinica" />
+                  <MenuItem mnemonicParsing="false" text="Dati ultime 2 ore" />
+                  <MenuItem mnemonicParsing="false" text="Cartella clinica" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Aiuto">

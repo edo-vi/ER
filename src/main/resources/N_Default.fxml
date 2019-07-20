@@ -18,19 +18,19 @@
          <menus>
             <Menu mnemonicParsing="false" text="File">
                <items>
-                  <MenuItem mnemonicParsing="false" onAction="#showMonitoring" text="Monitora" />
+                  <MenuItem mnemonicParsing="false" text="Monitora" />
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" onAction="#logout" text="Esci" />
-                  <MenuItem mnemonicParsing="false" onAction="#close" text="Chiudi" />
+                  <MenuItem mnemonicParsing="false" text="Esci" />
+                  <MenuItem mnemonicParsing="false" text="Chiudi" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Visualizza">
                <items>
-                  <MenuItem mnemonicParsing="false" onAction="#dismissPatient" text="Nuova somministrazione" />
-                  <MenuItem mnemonicParsing="false" onAction="#dismissPatient" text="Nuovo paziente" />
+                  <MenuItem mnemonicParsing="false" text="Nuova somministrazione" />
+                  <MenuItem mnemonicParsing="false" text="Nuovo paziente" />
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" onAction="#showLast2H" text="Dati ultime 2 ore" />
-                  <MenuItem mnemonicParsing="false" onAction="#search" text="Cartella clinica" />
+                  <MenuItem mnemonicParsing="false" text="Dati ultime 2 ore" />
+                  <MenuItem mnemonicParsing="false" text="Cartella clinica" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Aiuto">
@@ -57,9 +57,9 @@
                 <AnchorPane prefHeight="773.0" prefWidth="987.0">
                <children>
                   <Label layoutX="61.0" layoutY="65.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" text="Scegliere il paziente:" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="140.0" />
-                  <ComboBox fx:id="patientComboBox" layoutX="228.0" layoutY="63.0" onAction="#selectedPatient" prefHeight="31.0" prefWidth="312.0" promptText="nessuna scelta" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="138.0" />
+                  <ComboBox fx:id="patientComboBox" layoutX="228.0" layoutY="63.0" prefHeight="31.0" prefWidth="312.0" promptText="nessuna scelta" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="138.0" />
                   <Label layoutX="50.0" layoutY="126.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" text="Scegliere il farmaco:" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="230.0" />
-                  <ComboBox fx:id="patientComboBox1" layoutX="250.0" layoutY="124.0" onAction="#selectedPatient" prefHeight="31.0" prefWidth="312.0" promptText="nessuna scelta" AnchorPane.topAnchor="228.0" />
+                  <ComboBox fx:id="patientComboBox1" layoutX="250.0" layoutY="124.0"  prefHeight="31.0" prefWidth="312.0" promptText="nessuna scelta" AnchorPane.topAnchor="228.0" />
                   <Label layoutX="50.0" layoutY="45.0" style="-fx-font-size: 24; -fx-text-fill: #B0C4DE;" text="Nuova somministrazione" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="40.0" />
                   <Label layoutX="91.0" layoutY="395.0" style="-fx-font-size: 15; -fx-text-fill: grey;" text="Cognome:" AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="330.0" />
                   <Label layoutX="674.0" layoutY="360.0" style="-fx-font-size: 15; -fx-text-fill: grey;" text="Data di nascita:" AnchorPane.leftAnchor="640.0" AnchorPane.topAnchor="330.0" />
@@ -68,7 +68,7 @@
                   <Label layoutX="360.0" layoutY="380.0" style="-fx-font-size: 15; -fx-text-fill: grey;" text="N° dose:" AnchorPane.leftAnchor="360.0" AnchorPane.topAnchor="380.0" />
                   <Label layoutX="640.0" layoutY="380.0" style="-fx-font-size: 15; -fx-text-fill: grey;" text="Quantità:" AnchorPane.leftAnchor="640.0" AnchorPane.topAnchor="380.0" />
                   <Label layoutX="60.0" layoutY="438.0" style="-fx-font-size: 15; -fx-text-fill: grey;" text="Data somministrazione:" AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="430.0" />
-                  <Button layoutX="793.0" layoutY="657.0" mnemonicParsing="false" onAction="#discharge" prefHeight="40.0" prefWidth="150.0" style="-fx-font-size: 18;" text="Conferma" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="100.0" />
+                  <Button layoutX="793.0" layoutY="657.0" mnemonicParsing="false"  prefHeight="40.0" prefWidth="150.0" style="-fx-font-size: 18;" text="Conferma" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="100.0" />
                   <Label layoutX="176.0" layoutY="357.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" text="Roberti" AnchorPane.leftAnchor="170.0" AnchorPane.topAnchor="327.0" />
                   <Label layoutX="458.0" layoutY="357.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" text="Elisa" AnchorPane.leftAnchor="440.0" AnchorPane.topAnchor="327.0" />
                   <Label layoutX="812.0" layoutY="357.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" text="29/03/1995" AnchorPane.leftAnchor="770.0" AnchorPane.topAnchor="327.0" />
