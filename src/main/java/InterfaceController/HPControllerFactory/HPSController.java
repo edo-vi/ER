@@ -81,11 +81,18 @@ public class HPSController implements HPController {
         if (p != null) {
             ObservableList<Recovery> data = recoveryTable.getItems();
             data.removeAll(data);
+            //todo check
             data.addAll(p.getRecoveries()
-                    .stream().filter(r -> !r.isActive()
+                    .stream().filter(r -> {try {
+                        return !r.isActive()
                             && r.getDischargeSummary() != null
-                            && !r.getDischargeSummary().equals("")
-                            ).collect(Collectors.toList()));
+                            && !r.getDischargeSummary().equals("");
+                    } catch (Recovery.RecoveryNullFieldException e) {
+                        return false;
+                    }
+
+
+                    }).collect(Collectors.toList()));
         }
     }
 
