@@ -1,5 +1,3 @@
-package test.java;
-
 import Entities.Role;
 import Main.Tuple;
 import Entities.Patient;
@@ -36,14 +34,13 @@ public class StoreTest {
                 .with("ADD_PATIENT");
     private Middleware<StringCommand> middleware = new MiddlewareString(Sistema.getInstance().getMonitoringStage())
                 .with("LOGIN", (c, s, m) -> {
-                    User u = (User) c.getArg();
-                    if (s.getUserCheck().equals(u)) {
-                        s.setUser(s.getUserCheck());
-                        return new Tuple<>(new StringCommand("LOGIN_SUCCESS"), s);
-                    }
-                    else {
-                        return new Tuple<>(new StringCommand("LOGIN_FAILURE"), s);
-                    }
+                    User x = (User) c.getArg();
+                    for(User u : s.getSystemUsers())
+                        if(x.equals(u)) {
+                            s.setUser(x);
+                            return new Tuple<>(new StringCommand("LOGIN_SUCCESS"), s);
+                        }
+                    return new Tuple<>(new StringCommand("LOGIN_FAILURE"), s);
                 })
                 .with("LOAD", (c, s, m) -> {
                     List<Patient> ps = DatabaseService.getEntries("Patient").stream()
@@ -76,7 +73,7 @@ public class StoreTest {
         });
         store.update(new StringCommand("LOGIN",
                 new User("eme", "pw", Role.HEAD_PHYSICIAN, false)));
-        assertEquals(store.poll().getUser(), store.poll().getUserCheck());
+        assertEquals(store.poll().getUser(), store.poll().getSystemUsers().get(Role.HEAD_PHYSICIAN.ordinal()));
         dis.dispose();
 
 

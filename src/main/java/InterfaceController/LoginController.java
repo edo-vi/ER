@@ -1,5 +1,7 @@
 package InterfaceController;
 
+import Component.DOCComponent;
+import Component.NURComponent;
 import Entities.Role;
 import Entities.User;
 import State.StateEvent;
@@ -23,11 +25,17 @@ public class LoginController {
     public LoginController(Store store, Subject<StateEvent> stream) {
         this.store = store;
         stream.subscribe(se -> {
-            if (se.command().name().equals("LOGIN_SUCCESS") || se.command().name().equals("LOGIN_FAILURE")) {
+            String command = se.command().name();
+            if (command.equals("LOGIN_SUCCESS") || command.equals("LOGIN_FAILURE")) {
                 userField.clear();
                 passField.clear();
-                if (se.state().getUser() == se.state().getUserCheck() && se.state().getUser().getRole() == Role.HEAD_PHYSICIAN) {
-                    Sistema.getInstance().setInterface("HPD", HPComponent.HPTitle);
+                if (command.equals("LOGIN_SUCCESS")) {
+                    Role role = se.state().getUser().getRole();
+                    if(role == Role.HEAD_PHYSICIAN)
+                        sys.setInterface("HPD", HPComponent.HPTitle);
+                    else if(role == Role.DOCTOR)
+                        sys.setInterface("DOCD", DOCComponent.DOCTitle);
+                    else sys.setInterface("NURD", NURComponent.NURTitle);
                 } else {
                     System.out.println("Invalid username and/or password");
                 }

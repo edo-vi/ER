@@ -6,22 +6,23 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class State  {
-    private User userCheck;
+    private ArrayList<User> systemUsers;
     private User user;
     private List<Patient> patients = new ArrayList<>();
     private int mainRecoveryIndex;
     private Recovery chosenRecovery;
     private User docAlarm;
-    private User docAlarmCheck;
 
     // Must be the initial state
     public State() {
+        systemUsers = new ArrayList<>();
+        systemUsers.add(new User("nan", "pw", Role.NURSE, true));
+        systemUsers.add(new User("warian", "pw", Role.DOCTOR, true));
+        systemUsers.add(new User("null", "pw", Role.HEAD_PHYSICIAN, true));
 
         this.user = new User("default");
-        this.userCheck = new User("null", "pw", Role.HEAD_PHYSICIAN, true);
-
         this.docAlarm = new User("default");
-        this.docAlarmCheck = new User("warian", "pw", Role.DOCTOR, true);
+
         /*
         this.patients.add(new Patient("Carlo", "Combi", "CMBCBMWHATEVER291Z", "Verona",
                 new GregorianCalendar(1965, Calendar.APRIL, 11).getTime()));
@@ -38,19 +39,7 @@ public class State  {
     }
 
     public String toString() {
-        StringBuilder sb = new StringBuilder("{");
-        if(this.user != null) {
-            sb.append(user.toString()).append(", ");
-        } else {
-            sb.append("null, ");
-        }
-
-        if(!this.patients.isEmpty()) {
-            sb.append(this.patients);
-        } else {
-            sb.append("null");
-        }
-        return sb.toString();
+        return "Hello I'm State";
     }
 
     /*
@@ -58,14 +47,6 @@ public class State  {
     *               Getters and setters                 *
     *****************************************************
     */
-
-    public User getUserCheck() {
-        return userCheck;
-    }
-
-    public void setUserCheck(User userCheck) {
-        this.userCheck = userCheck;
-    }
 
     public User getUser() {
         return user;
@@ -145,15 +126,6 @@ public class State  {
         this.docAlarm = docAlarm;
     }
 
-    public User getDocAlarmCheck() {
-        return docAlarmCheck;
-    }
-
-    public void setDocAlarmCheck(User docAlarmCheck) {
-        this.docAlarmCheck = docAlarmCheck;
-    }
-
-
     public Recovery getChosenRecovery() {
         return chosenRecovery;
     }
@@ -162,12 +134,23 @@ public class State  {
         this.chosenRecovery = chosenRecovery;
     }
 
+    public ArrayList<User> getSystemUsers() {
+        return systemUsers;
+    }
+
+    public void setSystemUsers(ArrayList<User> systemUsers) {
+        this.systemUsers = systemUsers;
+    }
+
+    public User getDocAlarmCheck() {
+        return systemUsers.get(Role.DOCTOR.ordinal());
+    }
 
     @Override
     public boolean equals(Object oth) {
         return (oth instanceof State) && ((State) oth).getPatients().equals(this.patients)
                 && ((State) oth).getUser().equals(this.user)
-                && ((State) oth).getUserCheck().equals(this.userCheck)
-                && ((State) oth).getMainRecoveryIndex() == this.mainRecoveryIndex;
+                && ((State) oth).getMainRecoveryIndex() == this.mainRecoveryIndex
+                && ((State) oth).getSystemUsers().equals(this.getSystemUsers());
     }
 }
