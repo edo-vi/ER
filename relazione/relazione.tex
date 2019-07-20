@@ -1,4 +1,4 @@
-\documentclass[final]{svjour3}
+\documentclass[final, smallexted]{svjour3}
 %opening
 \usepackage[11pt]{extsizes}
 \usepackage[top=2cm,bottom=3cm,left=2.3cm,right=2.3cm]{geometry}
@@ -49,23 +49,50 @@ Data la natura didattica del progetto non si sono seguite le classiche tecniche 
 
 Nel corso dello sviluppo del progetto, a seconda delle diverse funzionalità da implementare, sono anche stati stilati diversi casi d'uso per i vari utenti finali secondo un processo simile a quello adottato dai modelli agili: prima di implementare funzionalità specifiche del sistema si è pensato ad almeno un caso d'uso reale di tali funzionalità per permettere poi un'implementazione quanto più semplice, naturale e rispettante le aspettative e necessità degli utenti.
 
-Di seguito parte dei casi d'uso utilizzati.
+Di seguito parte dei casi d'uso utilizzati, aggregati per chiarezza nei vari utenti finali.
+
+\begin{usecase}
+	\addtitle{Caso d'uso}{Compilazione lettera di dimissioni}
+	\addfield{Utente:}{Primario}
+	\addfield{Precondizioni:}{Il primario deve essersi autenticato}
+	\additemizedfield{Passi}{
+		\item Nel propria dashboard seleziona la finestra per compilare le lettere di dimissione
+		\item Seleziona da un menù a tendina i ricoveri dei pazienti in attesa di essere dimessi
+		\item Visualizza nella schermata i dati sommari del ricovero e compila la lettera di dimissione
+	}
+	\addfield{Postcondizioni:}{Il paziente viene dimesso e il suo ricovero non compare più nel menù}
+	
+\end{usecase}
+
+
+\begin{usecase}
+\addtitle{Caso d'uso}{Visualizzazione e stampa dei reports dei ricoveri}
+\addfield{Utente:}{Primario}
+\addfield{Precondizioni:}{Il primario deve essersi autenticato}
+\additemizedfield{Passi}{
+	\item Nel propria dashboard seleziona la finestra per visualizzare i reports dei ricoveri settimanali
+	\item Seleziona da un menù a tendina, o tramite ricerca, i ricoveri settimanali, attivi o non attivi 
+	\item Visualizza nella schermata i dati sommari dei ricoveri e dei pazienti. Eventualmente può stampare tali report cliccando su un bottone che genera un documento pdf
+}
+\addfield{Postcondizioni:}{Vengono visualizzati i reports dei ricoveri settimanali. Se il primario ha premuto il bottone per stamparli, viene generato un documento pdf con i dati richiesti}
+
+\end{usecase}
+
 \begin{usecase}
 	\addtitle{Caso d'uso}{Spegnimento allarme}
 	\addfield{Utente:}{Medico}
 	\addfield{Precondizioni:}{Deve essere partito un allarme}
 	\additemizedfield{Passi}{
-\item Prende atto della patologia segnalata e del paziente in questione, indicato 
-\item Indica le attività svolte per portare il paziente alla normalità
-\item \begin{enumerate}
-	\item se è gia autenticato, spegne l'allarme
-	\item se non è autenticato, spegne l'allarme indicando le proprie credenziali
-\end{enumerate}
-}
-\addfield{Postcondizioni:}{L'allarme viene spento. Se il medico non era autenticato e ha inserito correttamente le sue credenziali, rimane autenticato per un certo periodo di tempo}
-
+		\item Prende atto della patologia segnalata e del paziente in questione
+		\item Indica le attività svolte per portare il paziente alla normalità
+		\item \begin{enumerate}
+			\item se è gia autenticato, spegne l'allarme
+			\item se non è autenticato, spegne l'allarme indicando le proprie credenziali
+		\end{enumerate}
+	}
+	\addfield{Postcondizioni:}{L'allarme viene spento. Se il medico non era autenticato e ha inserito correttamente le sue credenziali rimarrà autenticato per un certo periodo di tempo}
+	
 \end{usecase}
-
 %\subsubsection{Design del sistema}
 %
 %\subsubsection{Implementazione}
