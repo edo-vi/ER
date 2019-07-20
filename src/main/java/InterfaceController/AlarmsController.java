@@ -1,6 +1,7 @@
 package InterfaceController;
 
 import Generator.Sickness;
+import Main.Tuple;
 import State.StateEvent;
 import State.Store;
 import State.StringCommand;
@@ -41,6 +42,6 @@ public class AlarmsController {
     }
 
     @FXML protected void flutter(){
-        store.update(new StringCommand("EVOLVE_GENERATOR", Sickness.FLUTTER));
+        store.update(new StringCommand("ALARM_ACTIVATED", new Tuple<>(3, Sickness.FLUTTER)));
     }
 }

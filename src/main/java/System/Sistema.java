@@ -193,8 +193,10 @@ public class Sistema {
                     return new Tuple<>(new StringCommand("ACTIVE_ALARM", c.getArg()), s);
                 })
                 .with("RESET_ALARMS", (c,s,m) -> {
-                    s.getActiveRecoveries().get(selectedPatient).resetGenerator();
-                    selectedPatient = -1;
+                    if(selectedPatient != -1) {
+                        s.getActiveRecoveries().get(selectedPatient).resetGenerator();
+                        selectedPatient = -1;
+                    }
                     alarmControlStage.close();
                     alarmCtlIsShown = false;
                     return new Tuple<>(new StringCommand("CLOSED_ALARMS"), s);
