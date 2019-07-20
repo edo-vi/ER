@@ -1,6 +1,6 @@
 package Main;
 
-import System.Login.LoginDemoMain;
+import LoginDemoMain;
 
 public class EntryPoint {
 

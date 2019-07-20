@@ -1,11 +1,11 @@
-package System.Login;
+package System;
 
 import Component.LoginComponent;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import System.Sistema;
 
-public class LoginDemoMain extends Application {
+public class Main extends Application {
     public static void main(String... args) {
         launch(args);
     }
