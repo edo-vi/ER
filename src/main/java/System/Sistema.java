@@ -17,6 +17,7 @@ import State.DatabaseService;
 import State.MiddlewareString;
 import State.Middleware;
 
+import System.DOCInterfaceFactory.DOCFactory;
 import System.HPInterfaceFactory.HPFactory;
 import System.Session.DoctorSessionThread;
 import javafx.scene.Scene;
@@ -275,14 +276,21 @@ public class Sistema {
             stage.getIcons().add(new Image("/logo.png"));
             this.controller = new InterfacesController(stage);
             this.controller.addInterface("login", new LoginComponent<StringCommand>().getLoader().load());
-            this.controller.addInterface("HPD", new HPComponent<StringCommand>(new HPFactory().getHPInterface("default"), new HPControllerFactory().getController("default")).getLoader().load());
-            this.controller.addInterface("HPS", new HPComponent<StringCommand>(new HPFactory().getHPInterface("search"), new HPControllerFactory().getController("search")).getLoader().load());
-            this.controller.addInterface("HPSR", new HPComponent<StringCommand>(new HPFactory().getHPInterface("searchResult"), new HPControllerFactory().getController("searchResult")).getLoader().load());
-            this.controller.addInterface("HPM", new HPComponent<StringCommand>(new HPFactory().getHPInterface("monitoring"), new HPControllerFactory().getController("monitoring")).getLoader().load());
             this.controller.addInterface("MON", new MonitoringComponent<StringCommand>().getLoader().load());
             this.controller.addInterface("ALM", new AlarmsComponent<StringCommand>().getLoader().load());
             this.controller.addInterface("ALMCTLLOG", new AlarmControlComponent<StringCommand>(false).getLoader().load());
             this.controller.addInterface("ALMCTL", new AlarmControlComponent<StringCommand>(true).getLoader().load());
+
+            this.controller.addInterface("HPD", new HPComponent<StringCommand>(new HPFactory().getHPInterface("default"), new HPControllerFactory().getController("default")).getLoader().load());
+            this.controller.addInterface("HPS", new HPComponent<StringCommand>(new HPFactory().getHPInterface("search"), new HPControllerFactory().getController("search")).getLoader().load());
+            this.controller.addInterface("HPSR", new HPComponent<StringCommand>(new HPFactory().getHPInterface("searchResult"), new HPControllerFactory().getController("searchResult")).getLoader().load());
+            this.controller.addInterface("HPM", new HPComponent<StringCommand>(new HPFactory().getHPInterface("monitoring"), new HPControllerFactory().getController("monitoring")).getLoader().load());
+
+            this.controller.addInterface("DOCD", new DOCComponent<StringCommand>(new DOCFactory().getInterface("default")).getLoader().load());
+            this.controller.addInterface("DOCAP", new DOCComponent<StringCommand>(new DOCFactory().getInterface("addPrescription")).getLoader().load());
+            this.controller.addInterface("DOCM", new DOCComponent<StringCommand>(new DOCFactory().getInterface("monitoring")).getLoader().load());
+            this.controller.addInterface("DOCS", new DOCComponent<StringCommand>(new DOCFactory().getInterface("search")).getLoader().load());
+            this.controller.addInterface("DOCSR", new DOCComponent<StringCommand>(new DOCFactory().getInterface("searchResult")).getLoader().load());
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error during interfaces setup");

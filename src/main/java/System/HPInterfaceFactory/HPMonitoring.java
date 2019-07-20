@@ -1,8 +1,6 @@
 package System.HPInterfaceFactory;
 
-import State.Command;
-
-public class HPMonitoring<C extends Command> implements HPInterface{
+public class HPMonitoring implements HPInterface{
     private String file;
 
     public HPMonitoring() {
