@@ -1,4 +1,4 @@
-package InterfaceController;
+package InterfaceController.HPControllerFactory;
 
 
 import Entities.Administration;
@@ -28,7 +28,7 @@ import javafx.util.Callback;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class HPSRController {
+public class HPSRController implements HPController {
     private final Store<StringCommand> store;
     private final Sistema sys = Sistema.getInstance();
     @FXML private TableView<Administration> administrations = new TableView<>();

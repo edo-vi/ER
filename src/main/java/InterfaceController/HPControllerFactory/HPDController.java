@@ -1,4 +1,4 @@
-package InterfaceController;
+package InterfaceController.HPControllerFactory;
 
 
 import Entities.Patient;
@@ -26,7 +26,7 @@ import javafx.util.StringConverter;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class HPDController {
+public class HPDController implements HPController{
     private final Store<StringCommand> store;
     private final Sistema sys = Sistema.getInstance();
     @FXML private Label patientName;

@@ -1,4 +1,4 @@
-package InterfaceController;
+package InterfaceController.HPControllerFactory;
 
 
 import Entities.Administration;
@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class HPSController {
+public class HPSController implements HPController {
     private final Store<StringCommand> store;
     private final Sistema sys = Sistema.getInstance();
     @FXML private TableView<Recovery> recoveryTable = new TableView<>();

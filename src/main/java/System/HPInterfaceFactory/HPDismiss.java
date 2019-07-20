@@ -1,4 +1,4 @@
-package System.HP;
+package System.HPInterfaceFactory;
 
 import State.Command;
 

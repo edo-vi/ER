@@ -1,4 +1,4 @@
-package InterfaceController;
+package InterfaceController.HPControllerFactory;
 
 
 import Entities.Administration;
@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class HPMController {
+public class HPMController implements HPController {
     private final Store<StringCommand> store;
     private final Sistema sys = Sistema.getInstance();
     @FXML private TableView<Monitoring> tableMonitorings = new TableView<>();
@@ -72,7 +72,6 @@ public class HPMController {
             }
         });
 
-        //todo this is wrong
         drugColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Administration , String>, ObservableValue<String>>() {
 
             @Override
