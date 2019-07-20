@@ -128,7 +128,7 @@ public class MonitoringController {
     }
 
     @FXML public void initialize() {
-        setInfo(0);
+
         xhrAxis.setAutoRanging(false);
         xhrAxis.setLowerBound(0);
         xhrAxis.setUpperBound(2);
@@ -146,6 +146,7 @@ public class MonitoringController {
         ybpAxis.setLowerBound(40.0);
         ybpAxis.setUpperBound(220);
         ybpAxis.setTickUnit(40.0);
+        setInfo(0);
     }
 
     @FXML protected void login() {
@@ -183,7 +184,7 @@ public class MonitoringController {
                 tempLabel.setText(String.valueOf(lastMonitoring.getTemperature()).substring(0, 4));
                 dbpLabel.setText(String.valueOf(lastMonitoring.getDiastolicPressure()));
                 sbpLabel.setText(String.valueOf(lastMonitoring.getSystolicPressure()));
-                roomLabel.setText("Room " + (index + 1));
+                roomLabel.setText("Letto " + (index + 1));
 
                 xhrAxis.setLowerBound(counterHR - 1);
                 xhrAxis.setUpperBound(counterHR + 1);
