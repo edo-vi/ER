@@ -1,8 +1,6 @@
 package System.HPInterfaceFactory;
 
-import State.Command;
-
-public class HPSearch<C extends Command> implements HPInterface{
+public class HPSearch implements HPInterface{
     private String file;
 
     public HPSearch() {

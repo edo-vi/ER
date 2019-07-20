@@ -283,6 +283,8 @@ public class Sistema {
             this.controller.addInterface("ALM", new AlarmsComponent<StringCommand>().getLoader().load());
             this.controller.addInterface("ALMCTLLOG", new AlarmControlComponent<StringCommand>(false).getLoader().load());
             this.controller.addInterface("ALMCTL", new AlarmControlComponent<StringCommand>(true).getLoader().load());
+
+
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error during interfaces setup");

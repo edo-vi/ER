@@ -1,8 +1,6 @@
 package System.HPInterfaceFactory;
 
-import State.Command;
-
-public class HPDismiss<C extends Command> implements HPInterface{
+public class HPDismiss implements HPInterface{
     private String file;
 
     public HPDismiss() {

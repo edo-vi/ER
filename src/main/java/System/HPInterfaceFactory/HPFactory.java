@@ -7,13 +7,13 @@ public class HPFactory {
         if(type.isEmpty())
             throw new IllegalArgumentException();
         else if(type.equals("search"))
-            return new HPSearch<StringCommand>();
+            return new HPSearch();
         else if(type.equals("searchResult"))
-            return new HPSearchResult<StringCommand>();
+            return new HPSearchResult();
         else if(type.equals("default"))
-            return new HPDismiss<StringCommand>();
+            return new HPDismiss();
         else if(type.equals("monitoring"))
-            return new HPMonitoring<StringCommand>();
+            return new HPMonitoring();
 
         return null;
     }
