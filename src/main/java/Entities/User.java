@@ -33,7 +33,7 @@ public class User implements Entry {
     }
 
     public String toString() {
-        return "{Username: " + this.name + ", password: " + this.password + ", role: " + this.role+"}";
+            return Character.toUpperCase(this.name.charAt(0)) + this.name.substring(1);
     }
 
     @Override

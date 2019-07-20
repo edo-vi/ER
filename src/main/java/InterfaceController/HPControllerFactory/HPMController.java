@@ -1,4 +1,4 @@
-package InterfaceController;
+package InterfaceController.HPControllerFactory;
 
 
 import Entities.Administration;
@@ -14,6 +14,7 @@ import Component.LoginComponent;
 import System.Sistema;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.Subject;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -29,13 +30,14 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class HPMController {
+public class HPMController implements HPController {
     private final Store<StringCommand> store;
     private final Sistema sys = Sistema.getInstance();
     @FXML private TableView<Monitoring> tableMonitorings = new TableView<>();
     @FXML private TableView<Administration> tableAdministrations = new TableView<>();
     @FXML private ComboBox<Recovery> patientComboBox;
     @FXML private TableColumn<Administration, String> drugColumn;
+    @FXML private Label nameLabel;
     private Disposable dis;
 
     public HPMController(Store<StringCommand> store, Subject<StateEvent> stream) {
@@ -47,6 +49,7 @@ public class HPMController {
 
         dis = stream.subscribe(se ->
         {
+            Platform.runLater(() -> nameLabel.setText("Primario Dr. " + se.state().getUser().toString()));
             updatePatients(se.state());
             setData(patientComboBox.getValue());
         });
@@ -69,7 +72,6 @@ public class HPMController {
             }
         });
 
-        //todo this is wrong
         drugColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Administration , String>, ObservableValue<String>>() {
 
             @Override

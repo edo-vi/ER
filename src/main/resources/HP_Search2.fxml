@@ -48,9 +48,9 @@
                     <children>
                         <Button layoutY="40.0" mnemonicParsing="false" onAction="#dismissPatient" prefHeight="50.0" prefWidth="150.0" text="Dimissione&#10;paziente" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
                         <Button layoutY="120.0" mnemonicParsing="false" onAction="#showLast2H" prefHeight="50.0" prefWidth="150.0" text="Dati ultime&#10;2 ore" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
-                        <Button layoutY="200.0" mnemonicParsing="false" onAction="#search" prefHeight="50.0" prefWidth="150.0" style="-fx-border-color: #87CEFA;" text="Cartella&#10;clinica" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
+                        <Button layoutY="200.0" mnemonicParsing="false" onAction="#search" prefHeight="50.0" prefWidth="150.0" style="-fx-border-color: #00BFFF;" text="Cartella&#10;clinica" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
                         <Button layoutY="695.0" mnemonicParsing="false" onAction="#logout" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 20;" text="Log Out" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
-                  <Label layoutX="30.0" layoutY="651.0" style="-fx-text-fill: grey;" text="Primario Dr. Rossi" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="650.0" />
+                  <Label fx:id="nameLabel" layoutX="30.0" layoutY="651.0" style="-fx-text-fill: grey;" text="Primario Dr. Rossi" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="650.0" />
                     </children>
                 </AnchorPane>
                 <AnchorPane prefHeight="773.0" prefWidth="3.0" style="-fx-background-color: grey;" />
@@ -58,7 +58,7 @@
                <children>
                   <Label layoutX="29.0" layoutY="61.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" text="Ricerca paziente:" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="50.0" />
                   <TextField fx:id="patientText" cache="true" layoutX="215.0" layoutY="65.0" prefHeight="37.0" prefWidth="333.0" promptText="cerca..." AnchorPane.leftAnchor="220.0" AnchorPane.topAnchor="45.0" />
-                  <Button onAction="#searchPatient" layoutX="576.0" layoutY="67.0" mnemonicParsing="false" text="Cerca" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="47.0" />
+                  <Button layoutX="576.0" layoutY="67.0" mnemonicParsing="false" onAction="#searchPatient" text="Cerca" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="47.0" />
                   <TableView fx:id="administrations" layoutX="22.0" layoutY="543.0" prefHeight="210.0" prefWidth="977.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="550.0">
                      <columns>
                         <TableColumn prefWidth="140.0" text="Data">
@@ -71,14 +71,14 @@
                               <PropertyValueFactory property="hour" />
                            </cellValueFactory>
                         </TableColumn>
-                        <TableColumn prefWidth="200.0" text="Farmaco" fx:id="drugColumn"/>
+                        <TableColumn fx:id="drugColumn" prefWidth="200.0" text="Farmaco" />
 
                         <TableColumn prefWidth="150.0" text="Dose">
                            <cellValueFactory>
                               <PropertyValueFactory property="dose" />
                            </cellValueFactory>
                         </TableColumn>
-                        <TableColumn prefWidth="372.0" text="Note">
+                        <TableColumn prefWidth="367.0" text="Note">
                            <cellValueFactory>
                               <PropertyValueFactory property="notes" />
                            </cellValueFactory>
@@ -119,25 +119,26 @@
                               <PropertyValueFactory property="totalNumberofDoses" />
                            </cellValueFactory>
                         </TableColumn>
-                        <TableColumn prefWidth="180.0" text="Quantità" fx:id="quantityColumn"/>
+                        <TableColumn fx:id="quantityColumn" prefWidth="180.0" text="Quantità" />
 
-                        <TableColumn prefWidth="190.0" text="Durata terapia">
+                        <TableColumn prefWidth="187.0" text="Durata terapia">
                            <cellValueFactory>
                               <PropertyValueFactory property="duration" />
                            </cellValueFactory>
                         </TableColumn>
                      </columns>
                   </TableView>
-                  <Label layoutX="148.0" layoutY="127.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;"  AnchorPane.leftAnchor="150.0" fx:id="patientSurname"/>
-                  <Label layoutX="150.0" layoutY="167.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;"  AnchorPane.leftAnchor="150.0" fx:id="patientName" AnchorPane.topAnchor="167.0" />
-                  <Label layoutX="494.0" layoutY="127.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;"  AnchorPane.leftAnchor="470.0" fx:id="patientDateofBirth"/>
-                  <Label layoutX="823.0" layoutY="127.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" AnchorPane.leftAnchor="780.0" fx:id="patientPlaceofBirth"/>
-                  <Label layoutX="181.0" layoutY="247.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;"  AnchorPane.leftAnchor="190.0" fx:id="patientRecoveryEndDate" AnchorPane.topAnchor="247.0" />
-                  <Label layoutX="181.0" layoutY="207.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;"  AnchorPane.leftAnchor="190.0" fx:id="patientRecoveryStartDate" AnchorPane.topAnchor="207.0" />
-                  <Label layoutX="399.0" layoutY="167.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;"  fx:id="patientFiscalCode" AnchorPane.leftAnchor="420.0" />
-                  <Label layoutX="412.0" layoutY="207.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;"  fx:id="patientRecoveryReasons" AnchorPane.leftAnchor="420.0" />
-                  <Label layoutX="412.0" layoutY="247.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;"  fx:id="patientRecoveryDischarge" AnchorPane.leftAnchor="420.0" />
-               </children></AnchorPane>
+                  <Label fx:id="patientSurname" layoutX="148.0" layoutY="127.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" AnchorPane.leftAnchor="150.0" />
+                  <Label fx:id="patientName" layoutX="150.0" layoutY="167.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="167.0" />
+                  <Label fx:id="patientDateofBirth" layoutX="494.0" layoutY="127.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" AnchorPane.leftAnchor="470.0" />
+                  <Label fx:id="patientPlaceofBirth" layoutX="823.0" layoutY="127.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" AnchorPane.leftAnchor="780.0" />
+                  <Label fx:id="patientRecoveryEndDate" layoutX="181.0" layoutY="247.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" AnchorPane.leftAnchor="190.0" AnchorPane.topAnchor="247.0" />
+                  <Label fx:id="patientRecoveryStartDate" layoutX="181.0" layoutY="207.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" AnchorPane.leftAnchor="190.0" AnchorPane.topAnchor="207.0" />
+                  <Label fx:id="patientFiscalCode" layoutX="399.0" layoutY="167.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" AnchorPane.leftAnchor="420.0" />
+                  <Label fx:id="patientRecoveryReasons" layoutX="412.0" layoutY="207.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" AnchorPane.leftAnchor="420.0" />
+                  <Label fx:id="patientRecoveryDischarge" layoutX="412.0" layoutY="247.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" AnchorPane.leftAnchor="420.0" />
+               </children>
+               </AnchorPane>
             </children>
         </HBox>
     </children>

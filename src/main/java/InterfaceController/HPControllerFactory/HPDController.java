@@ -1,4 +1,4 @@
-package InterfaceController;
+package InterfaceController.HPControllerFactory;
 
 
 import Entities.Patient;
@@ -13,6 +13,7 @@ import Component.LoginComponent;
 import System.Sistema;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.Subject;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -25,7 +26,7 @@ import javafx.util.StringConverter;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class HPDController {
+public class HPDController implements HPController{
     private final Store<StringCommand> store;
     private final Sistema sys = Sistema.getInstance();
     @FXML private Label patientName;
@@ -37,6 +38,7 @@ public class HPDController {
     @FXML private Label patientRecoveryReasons;
     @FXML private TextArea dischargeText;
     @FXML private ComboBox<Recovery> patientsChoice= new ComboBox<Recovery>();
+    @FXML private Label nameLabel;
     private Disposable dis;
 
     public HPDController(Store<StringCommand> store, Subject<StateEvent> stream) {
@@ -48,6 +50,7 @@ public class HPDController {
 
         dis = stream.subscribe(se ->
         {
+            Platform.runLater(() -> nameLabel.setText("Primario Dr. " + se.state().getUser().toString()));
             /*if (se.command().name().equals("DISCHARGED_A_PATIENT"))*/ updateRecoveries(se.state());
             setLabels(patientsChoice.getValue());
 

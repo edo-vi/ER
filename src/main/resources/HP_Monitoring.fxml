@@ -47,10 +47,10 @@
                 <AnchorPane prefHeight="773.0" prefWidth="210.0">
                     <children>
                         <Button layoutY="40.0" mnemonicParsing="false" onAction="#dismissPatient" prefHeight="50.0" prefWidth="150.0" text="Dimissione&#10;paziente" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
-                        <Button layoutY="120.0" mnemonicParsing="false" onAction="#showLast2H" prefHeight="50.0" prefWidth="150.0" style="-fx-border-color: #87CEFA;" text="Dati ultime&#10;2 ore" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
+                        <Button layoutY="120.0" mnemonicParsing="false" onAction="#showLast2H" prefHeight="50.0" prefWidth="150.0" style="-fx-border-color: #00BFFF;" text="Dati ultime&#10;2 ore" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
                         <Button layoutY="200.0" mnemonicParsing="false" onAction="#search" prefHeight="50.0" prefWidth="150.0" text="Cartella&#10;clinica" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
                         <Button layoutY="695.0" mnemonicParsing="false" onAction="#logout" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 20;" text="Log Out" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
-                  <Label layoutX="30.0" layoutY="646.0" style="-fx-text-fill: grey;" text="Primario Dr. Rossi" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="650.0" />
+                  <Label fx:id="nameLabel" layoutX="30.0" layoutY="646.0" style="-fx-text-fill: grey;" text="Primario Dr. Rossi" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="650.0" />
                     </children>
                 </AnchorPane>
                 <AnchorPane prefHeight="773.0" prefWidth="3.0" style="-fx-background-color: grey;" />
@@ -58,9 +58,9 @@
                <children>
                   <Label layoutX="60.0" layoutY="248.0" style="-fx-font-size: 24; -fx-text-fill: #B0C4DE;" text="Parametri delle ultime 2 ore:" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="120.0" />
                   <Label layoutX="68.0" layoutY="65.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" text="Scegliere il paziente:" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="40.0" />
-                  <ComboBox onAction="#selectedPatient" fx:id="patientComboBox" layoutX="250.0" layoutY="38.0" prefHeight="31.0" prefWidth="312.0" promptText="nessuna scelta" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="38.0" />
+                  <ComboBox fx:id="patientComboBox" layoutX="250.0" layoutY="38.0" onAction="#selectedPatient" prefHeight="31.0" prefWidth="312.0" promptText="nessuna scelta" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="38.0" />
                   <Label layoutX="40.0" layoutY="463.0" style="-fx-font-size: 24; -fx-text-fill: #B0C4DE;" text="Somministrazioni degli ultimi 2 giorni:" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="450.0" />
-                  <TableView fx:id="tableMonitorings" layoutX="11.0" layoutY="-53.0" prefHeight="253.0" prefWidth="976.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="360.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="170.0" >
+                  <TableView fx:id="tableMonitorings" layoutX="11.0" layoutY="-53.0" prefHeight="253.0" prefWidth="976.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="360.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="170.0">
                      <columns>
                         <TableColumn prefWidth="110.0" text="Ora">
                            <cellValueFactory>
@@ -77,12 +77,12 @@
                               <PropertyValueFactory property="temperature" />
                            </cellValueFactory>
                         </TableColumn>
-                        <TableColumn prefWidth="166.0" text="DBP (mmHg)">
+                        <TableColumn prefWidth="165.0" text="DBP (mmHg)">
                            <cellValueFactory>
                               <PropertyValueFactory property="diastolicPressure" />
                            </cellValueFactory>
                         </TableColumn>
-                        <TableColumn prefWidth="166.0" text="SBP (mmHg)">
+                        <TableColumn prefWidth="162.0" text="SBP (mmHg)">
                            <cellValueFactory>
                               <PropertyValueFactory property="systolicPressure" />
                            </cellValueFactory>
@@ -101,13 +101,13 @@
                               <PropertyValueFactory property="hour" />
                            </cellValueFactory>
                         </TableColumn>
-                        <TableColumn prefWidth="200.0" text="Farmaco" fx:id="drugColumn"/>
+                        <TableColumn fx:id="drugColumn" prefWidth="200.0" text="Farmaco" />
                         <TableColumn prefWidth="150.0" text="Dose">
                            <cellValueFactory>
                               <PropertyValueFactory property="dose" />
                            </cellValueFactory>
                         </TableColumn>
-                        <TableColumn prefWidth="372.0" text="Note">
+                        <TableColumn prefWidth="367.0" text="Note">
                            <cellValueFactory>
                               <PropertyValueFactory property="notes" />
                            </cellValueFactory>
