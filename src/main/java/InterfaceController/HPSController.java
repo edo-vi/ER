@@ -1,6 +1,11 @@
 package InterfaceController;
 
+
+import Entities.Administration;
+import Entities.Monitoring;
 import Entities.Patient;
+import Entities.Recovery;
+import State.State;
 import State.StateEvent;
 import State.Store;
 import State.StringCommand;
@@ -9,25 +14,27 @@ import Component.LoginComponent;
 import System.Sistema;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.Subject;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
+import javafx.util.Callback;
+import javafx.util.StringConverter;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class HPSController {
     private final Store<StringCommand> store;
     private final Sistema sys = Sistema.getInstance();
-    @FXML private TableView<Patient> table = new TableView<>();
-
-
+    @FXML private TableView<Recovery> recoveryTable = new TableView<>();
+    @FXML private TextField searchPatient;
     private Disposable dis;
 
     public HPSController(Store<StringCommand> store, Subject<StateEvent> stream) {
         this.store = store;
-        ObservableList<Patient> data  = table.getItems();
-        data.addAll(store.poll().getPatients());
 
         try {
             dis.dispose();
@@ -35,18 +42,62 @@ public class HPSController {
 
         dis = stream.subscribe(se ->
         {
-            ObservableList<Patient> data2  = table.getItems();
-            data2.removeAll(table.getItems());
-            data2.addAll(se.state().getPatients());
+
         });
     }
 
+    @FXML protected void initialize() {
 
+
+        //todo this is wrong
+        /*drugColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Administration , String>, ObservableValue<String>>() {
+
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Administration , String> param) {
+                return new SimpleObjectProperty<>(param.getValue().getPrescription().getDrug());
+
+            }
+        });*/
+
+        initialize(store.poll());
+    }
+
+    @FXML protected void initialize(State state) {
+
+    }
+
+    @FXML protected void updateRecoveries(String nameandsurname) {
+        String[] arr = nameandsurname.split(" ");
+        String name = arr[0];
+        String surname = arr[1];
+        Patient p = store.poll().getPatients().stream()
+                .filter(pa -> pa.getName().equals(name) && pa.getSurname().equals(surname)).findFirst().orElse(null);
+
+        if (p != null) {
+            ObservableList<Recovery> data = recoveryTable.getItems();
+            data.removeAll(data);
+            data.addAll(p.getRecoveries()
+                    .stream().filter(r -> !r.isActive()
+                            && r.getDischargeSummary() != null
+                            && !r.getDischargeSummary().equals("")
+                            ).collect(Collectors.toList()));
+        }
+    }
+
+    @FXML protected void searchPatient() {
+        this.updateRecoveries(searchPatient.getText());
+        this.searchPatient.clear();
+    }
     @FXML protected void showMonitoring() {
         store.update(new StringCommand("SHOW_MONITORING"));
         store.update(new StringCommand("START_MONITORING"));
     }
+    @FXML protected void selectedPatient() {
 
+    }
+    @FXML protected void setData(Recovery r) {
+
+    }
     @FXML protected void search() {
         sys.setInterface("HPS", HPComponent.HPTitle);
     }
