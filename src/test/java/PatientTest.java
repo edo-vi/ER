@@ -1,5 +1,5 @@
-package Entities;
-
+import Entities.Administration;
+import Entities.Patient;
 import org.junit.Test;
 
 import java.util.ArrayList;
