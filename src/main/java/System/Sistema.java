@@ -104,7 +104,8 @@ public class Sistema {
                 .with("DISCHARGE_PATIENT")
                 .with("ALARM_LOGIN")
                 .with("SESSION_TERMINATED")
-                .with("SESSION_START");
+                .with("SESSION_START")
+                .with("SEARCH_PATIENT_HP");
         Middleware<StringCommand> middleware = new MiddlewareString(monitoringStage)
                 .with("LOGIN", (c, s, m) -> {
                     User u = (User) c.getArg();

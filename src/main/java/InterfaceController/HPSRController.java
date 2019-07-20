@@ -13,6 +13,7 @@ import Component.LoginComponent;
 import System.Sistema;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.Subject;
+import javafx.application.Platform;
 import javafx.beans.Observable;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
@@ -43,6 +44,7 @@ public class HPSRController {
     @FXML private Label patientRecoveryReasons;
     @FXML private Label patientRecoveryDischarge;
     @FXML private TextField patientText;
+    @FXML private Label nameLabel;
 
     @FXML private TableColumn<Administration, String> drugColumn;
     @FXML private TableColumn<Prescription, Integer> quantityColumn;
@@ -58,9 +60,9 @@ public class HPSRController {
 
         dis = stream.subscribe(se ->
         {
+            Platform.runLater(() -> nameLabel.setText("Primario Dr. " + se.state().getUser().toString()));
             if(se.command().name().equals("CHOSEN_RECOVERY_TO_SHOW")) {
                 setData(se.state().getChosenRecovery());
-
             }
         });
     }
@@ -138,8 +140,8 @@ public class HPSRController {
                 .filter(pa -> pa.getName().equals(name) && pa.getSurname().equals(surname)).findFirst().orElse(null);
 
         if (p != null) {
-        store.update(new StringCommand("CHOSEN_RECOVERY_TO_SHOW", p.getRecoveries().stream()
-                .filter(Recovery::isActive).findFirst().orElse(null)));
+        store.update(new StringCommand("SEARCH_PATIENT_HP", patientText.getText()));
+        sys.setInterface("HPS", HPComponent.HPTitle);
         }
 
     }

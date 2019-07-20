@@ -14,6 +14,7 @@ import Component.LoginComponent;
 import System.Sistema;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.Subject;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -36,6 +37,7 @@ public class HPMController {
     @FXML private TableView<Administration> tableAdministrations = new TableView<>();
     @FXML private ComboBox<Recovery> patientComboBox;
     @FXML private TableColumn<Administration, String> drugColumn;
+    @FXML private Label nameLabel;
     private Disposable dis;
 
     public HPMController(Store<StringCommand> store, Subject<StateEvent> stream) {
@@ -47,6 +49,7 @@ public class HPMController {
 
         dis = stream.subscribe(se ->
         {
+            Platform.runLater(() -> nameLabel.setText("Primario Dr. " + se.state().getUser().toString()));
             updatePatients(se.state());
             setData(patientComboBox.getValue());
         });

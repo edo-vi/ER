@@ -18,7 +18,7 @@ public class State  {
     public State() {
 
         this.user = new User();
-        this.userCheck = new User("eme", "pw", Role.HEAD_PHYSICIAN, true);
+        this.userCheck = new User("null", "pw", Role.HEAD_PHYSICIAN, true);
 
         this.docAlarm = new User();
         this.docAlarmCheck = new User("warian", "pw", Role.DOCTOR, true);

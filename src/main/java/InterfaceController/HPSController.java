@@ -14,6 +14,7 @@ import Component.LoginComponent;
 import System.Sistema;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.Subject;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -31,6 +32,7 @@ public class HPSController {
     private final Sistema sys = Sistema.getInstance();
     @FXML private TableView<Recovery> recoveryTable = new TableView<>();
     @FXML private TextField searchPatient;
+    @FXML private Label nameLabel;
     private Disposable dis;
 
     public HPSController(Store<StringCommand> store, Subject<StateEvent> stream) {
@@ -40,9 +42,10 @@ public class HPSController {
             dis.dispose();
         } catch (NullPointerException e) {}
 
-        dis = stream.subscribe(se ->
-        {
-
+        dis = stream.subscribe(se -> {
+            Platform.runLater(() -> nameLabel.setText("Primario Dr. " + se.state().getUser().toString()));
+            if(se.command().name().equals("SEARCH_PATIENT_HP"))
+                updateRecoveries((String) se.command().getArg());
         });
     }
 
