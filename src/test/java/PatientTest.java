@@ -11,7 +11,8 @@ public class PatientTest {
     @Test
     public void getAdministrations() {
         Patient patient = new Patient();
-        assertEquals(patient.getAdministrations(), new ArrayList<Administration>().add(new Administration()));
+        ArrayList<Administration> l = new ArrayList<>();
+        assertEquals(patient.getAdministrations(), l);
     }
 
     @Test

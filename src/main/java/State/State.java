@@ -17,10 +17,10 @@ public class State  {
     // Must be the initial state
     public State() {
 
-        this.user = new User();
+        this.user = new User("default");
         this.userCheck = new User("null", "pw", Role.HEAD_PHYSICIAN, true);
 
-        this.docAlarm = new User();
+        this.docAlarm = new User("default");
         this.docAlarmCheck = new User("warian", "pw", Role.DOCTOR, true);
         /*
         this.patients.add(new Patient("Carlo", "Combi", "CMBCBMWHATEVER291Z", "Verona",

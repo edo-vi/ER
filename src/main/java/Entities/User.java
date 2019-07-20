@@ -21,6 +21,10 @@ public class User implements Entry {
 
     }
 
+    public User(String s) {
+        this("NaN", "1234");
+    }
+
     public User(String username, String password, Role role, boolean valid) {
         this.name = username;
         this.password = password;

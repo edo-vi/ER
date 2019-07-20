@@ -53,7 +53,7 @@ public class Sistema {
         Reducer<StringCommand> reducer = new ReducerString()
                 .with("LOGIN")
                 .with("LOGOUT", (c, s) -> {
-                    s.setUser(new User());
+                    s.setUser(new User("default"));
                     return s;
                 })
                 .with("GENERATE_BP", (c, s) -> {
@@ -244,7 +244,7 @@ public class Sistema {
                 })
                 .with("SESSION_TERMINATED", (c,s,m) -> {
                     ((MiddlewareString) m).getDocSession().interrupt();
-                    s.setDocAlarm(new User());
+                    s.setDocAlarm(new User("default"));
 
                     return new Tuple<>(new StringCommand("DOC_SESSION_TERMINATED"), s);
                 })
