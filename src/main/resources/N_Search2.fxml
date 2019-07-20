@@ -83,7 +83,7 @@
                               <PropertyValueFactory property="diastolicPressure" />
                            </cellValueFactory>
                         </TableColumn>
-                        <TableColumn prefWidth="372.0" text="Note">
+                        <TableColumn prefWidth="367.0" text="Note">
                            <cellValueFactory>
                               <PropertyValueFactory property="diastolicPressure" />
                            </cellValueFactory>
@@ -128,7 +128,7 @@
                               <PropertyValueFactory property="diastolicPressure" />
                            </cellValueFactory>
                         </TableColumn>
-                        <TableColumn prefWidth="190.0" text="Giorni terapia">
+                        <TableColumn prefWidth="187.0" text="Giorni terapia">
                            <cellValueFactory>
                               <PropertyValueFactory property="diastolicPressure" />
                            </cellValueFactory>

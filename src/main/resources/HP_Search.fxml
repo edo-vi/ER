@@ -75,7 +75,7 @@
                                 <PropertyValueFactory property="endDate" />
                             </cellValueFactory>
                         </TableColumn>
-                        <TableColumn prefWidth="282.0" text="Esito">
+                        <TableColumn prefWidth="277.0" text="Esito">
                             <cellValueFactory>
                                 <PropertyValueFactory property="dischargeSummary" />
                             </cellValueFactory>

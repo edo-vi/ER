@@ -64,7 +64,7 @@
                         <TableColumn prefWidth="200.0" text="Data Ricovero" />
                         <TableColumn prefWidth="290.0" text="Motivo" />
                         <TableColumn prefWidth="200.0" text="Data dimissione" />
-                        <TableColumn prefWidth="282.0" text="Esito" />
+                        <TableColumn prefWidth="277.0" text="Esito" />
                      </columns>
                   </TableView>
                   <Button layoutX="580.0" layoutY="67.0" mnemonicParsing="false" text="Cerca" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="47.0" />

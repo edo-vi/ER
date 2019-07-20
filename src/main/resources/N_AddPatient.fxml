@@ -66,7 +66,7 @@
                   <Label layoutX="50.0" layoutY="430.0" style="-fx-font-size: 18; -fx-text-fill: grey;" text="C.F. :" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="560.0" />
                   <Label layoutX="460.0" layoutY="298.0" style="-fx-font-size: 18; -fx-text-fill: grey;" text="Luogo di nascita :" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="480.0" />
                   <Button layoutX="507.0" layoutY="557.0" mnemonicParsing="false" text="Calcola" AnchorPane.leftAnchor="510.0" />
-                  <Button layoutX="831.0" layoutY="697.0" mnemonicParsing="false" prefHeight="40.0" style="-fx-font-size: 18;" text="Aggiungi" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="100.0" />
+                  <Button layoutX="831.0" layoutY="697.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="150.0" style="-fx-font-size: 18;" text="Aggiungi" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="100.0" />
                   <TextField layoutX="180.0" layoutY="155.0" prefWidth="250.0" promptText="cognome..." AnchorPane.leftAnchor="230.0" />
                   <TextField layoutX="180.0" layoutY="235.0" prefWidth="250.0" promptText="nome..." AnchorPane.leftAnchor="230.0" />
                   <TextField layoutX="230.0" layoutY="475.0" prefWidth="250.0" promptText="luogo di nascita..." AnchorPane.leftAnchor="230.0" />

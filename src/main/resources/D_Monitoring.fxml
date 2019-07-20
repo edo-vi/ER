@@ -79,12 +79,12 @@
                               <PropertyValueFactory property="temperature" />
                            </cellValueFactory>
                         </TableColumn>
-                        <TableColumn prefWidth="166.0" text="DBP (mmHg)">
+                        <TableColumn prefWidth="165.0" text="DBP (mmHg)">
                            <cellValueFactory>
                               <PropertyValueFactory property="diastolicPressure" />
                            </cellValueFactory>
                         </TableColumn>
-                        <TableColumn prefWidth="166.0" text="SBP (mmHg)">
+                        <TableColumn prefWidth="162.0" text="SBP (mmHg)">
                            <cellValueFactory>
                               <PropertyValueFactory property="diastolicPressure" />
                            </cellValueFactory>
@@ -113,7 +113,7 @@
                               <PropertyValueFactory property="diastolicPressure" />
                            </cellValueFactory>
                         </TableColumn>
-                        <TableColumn prefWidth="372.0" text="Note">
+                        <TableColumn prefWidth="367.0" text="Note">
                            <cellValueFactory>
                               <PropertyValueFactory property="diastolicPressure" />
                            </cellValueFactory>
