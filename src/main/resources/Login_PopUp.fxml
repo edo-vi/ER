@@ -21,7 +21,7 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <TextField id="userField" fx:id="userField" cache="true" layoutX="170.0" layoutY="125.0" prefHeight="37.0" prefWidth="206.0" promptText="username..." AnchorPane.leftAnchor="170.0" />
+      <TextField id="userField" fx:id="userField" layoutX="170.0" layoutY="125.0" prefHeight="37.0" prefWidth="206.0" promptText="username..." AnchorPane.leftAnchor="170.0" />
       <PasswordField id="passField" fx:id="passField" layoutX="170.0" layoutY="181.0" prefHeight="37.0" prefWidth="206.0" promptText="password..." AnchorPane.leftAnchor="170.0" />
       <Button fx:id="loginButton" layoutX="370.0" layoutY="194.0" mnemonicParsing="false" onAction="#login" prefHeight="33.0" prefWidth="151.0" text="Spegni Allarme" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0">
          <font>
