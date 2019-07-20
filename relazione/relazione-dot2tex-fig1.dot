@@ -1,0 +1,29 @@
+ digraph G {
+edge [style="simple relation"];
+// nodes
+Person [style="entity"];
+pid [style="attribute",label="\underline{ID}"];
+Attribute [style="attribute"];
+Name [style="attribute"];
+Phone [style="multi attribute"];
+Address [style="attribute"];
+Street [style="attribute"];
+City [style="attribute"];
+Age [style="derived attribute"];
+Uses [style="relationship"];
+Tool [style="entity"];
+tid [style="attribute",label="\underline{ID}"];
+tname [style="attribute",label="Name"];
+// edges
+Person -> pid;
+Person -> Attribute;
+Person -> Name;
+Person -> Phone;
+Person -> Address -> Street;
+Person -> City;
+Person -> Age;
+Person -> Uses;
+Tool -> tid;
+Tool -> tname;
+Tool -> Uses[style="total relation"];
+}
