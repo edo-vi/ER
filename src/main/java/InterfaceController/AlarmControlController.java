@@ -46,8 +46,12 @@ public class AlarmControlController {
             } else if(command.equals("ACTIVE_ALARM")) {
                 Platform.runLater(() -> {
                     Tuple<Integer, Sickness> elem = (Tuple) se.command().getArg();
-                    messageLabel.setText("Attenzione! Allarme di livello" + elem.fst() + "\n" +
-                            elem.snd() + " paziente " + sys.getSickPatient().getName() + " " + sys.getSickPatient().getSurname() + "\n" +
+                    messageLabel.setText("Attenzione! Allarme di livello " + elem.fst() + "\n" +
+                            elem.snd() + " paziente " +
+                            ((elem.snd().equals(Sickness.FLUTTER)) ? se.state().getActiveRecoveries().get(0).getPatient().getName() : sys.getSickPatient().getName()) +
+                            " " +
+                            ((elem.snd().equals(Sickness.FLUTTER)) ? se.state().getActiveRecoveries().get(0).getPatient().getSurname() : sys.getSickPatient().getSurname()) +
+                            "\n" +
                             "Richiesto l'intervento di un dottore");
                 });
             }

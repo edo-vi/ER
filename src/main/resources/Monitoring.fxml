@@ -54,7 +54,7 @@
                               <PropertyValueFactory property="heartRate" />
                           </cellValueFactory>
                       </TableColumn>
-                      <TableColumn prefWidth="198.0" resizable="false" text="Temperature">
+                      <TableColumn prefWidth="200.0" resizable="false" text="Temperature">
                         <cellValueFactory>
                             <PropertyValueFactory property="temperature" />
                         </cellValueFactory>

@@ -177,16 +177,24 @@ public class Recovery implements Entry{
         this.active = active;
     }
 
-    public Date getEndDate() {
-        return endDate;
+    public Date getEndDate() throws RecoveryNullFieldException {
+        if(endDate == null) {
+            throw new RecoveryNullFieldException();
+        } else {
+            return endDate;
+        }
     }
 
     public void setEndDate(Date endDate) {
         this.endDate = new java.sql.Date(endDate.getTime());
     }
 
-    public String getDischargeSummary() {
-        return dischargeSummary;
+    public String getDischargeSummary() throws RecoveryNullFieldException {
+        if(dischargeSummary == null) {
+            throw new RecoveryNullFieldException();
+        } else {
+            return dischargeSummary;
+        }
     }
 
     public void setDischargeSummary(String dischargeSummary) {
@@ -220,4 +228,9 @@ public class Recovery implements Entry{
     }
 
     public void addToMonitorings(Monitoring monitoring) {this.monitorings.add(monitoring);}
+
+    public class RecoveryNullFieldException extends Exception {
+
+    }
+
 }

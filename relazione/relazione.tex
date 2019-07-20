@@ -70,12 +70,23 @@ Di seguito parte dei casi d'uso utilizzati, aggregati per chiarezza nei vari ute
 \addfield{Utente:}{Primario}
 \addfield{Precondizioni:}{Il primario deve essersi autenticato}
 \additemizedfield{Passi}{
-	\item Nel propria dashboard seleziona la finestra per visualizzare i reports dei ricoveri settimanali
+	\item Nella propria dashboard seleziona la finestra per visualizzare i reports dei ricoveri settimanali
 	\item Seleziona da un menù a tendina, o tramite ricerca, i ricoveri settimanali, attivi o non attivi 
 	\item Visualizza nella schermata i dati sommari dei ricoveri e dei pazienti. Eventualmente può stampare tali report cliccando su un bottone che genera un documento pdf
 }
 \addfield{Postcondizioni:}{Vengono visualizzati i reports dei ricoveri settimanali. Se il primario ha premuto il bottone per stamparli, viene generato un documento pdf con i dati richiesti}
 
+\end{usecase}
+
+\begin{usecase}
+	\addtitle{Caso d'uso}{Visualizzazione dati dei pazienti ricoverati (ultime due ore)}
+	\addfield{Utente:}{Primario, medico, infermiere}
+	\addfield{Precondizioni:}{L'utente deve essersi autenticato}
+	\additemizedfield{Passi}{
+		\item Nella propria dashboard l'utente seleziona la finestra per visualizzare i dati dei pazienti ricoverati
+		\item L'utente visualizza, in una tabella, i dati aggiornati in tempo reale, ed esclusivi delle ultime due ore, di tutti i pazienti ricoverati attualmente
+	}
+	\addfield{Postcondizioni:}{L'utente visualizza le informazioni, non più vecchie di due ore, sui parametri vitali dei pazienti ricoverati}
 \end{usecase}
 
 \begin{usecase}
@@ -107,20 +118,20 @@ Di seguito parte dei casi d'uso utilizzati, aggregati per chiarezza nei vari ute
 \begin{figure}[b]
 \begin{tikzpicture}
 \begin{umlsystem}[x=0, fill=red!5]{Casi d'uso}
-\umlusecase[x=1.9, y=-2.]{Inserisce dati anagrafici del paziente}
-\umlusecase[ x=.95]{Inserisce dati somministrazione}
-\umlusecase[x=5.8, y=-1,]{Inserisce note stato paziente}
-\umlusecase[y=-5, x =1.3]{Visualizza dati paziente (ultime due ore)}
-\umlusecase[x=3.9, y=-4]{Inserisce diagnosi d'ingresso}
-\umlusecase[x=3.5, y=-6.3]{Aggiunge prescrizioni}
-\umlusecase[x=3.5,  y=-7.5]{Spegne allarmi}
+\umlusecase[x=1, y=-2.5]{Inserisce dati anagrafici del paziente}
+\umlusecase[ x=.95, y=-1]{Inserisce dati somministrazione}
+\umlusecase[x=4.8, ]{Inserisce note stato paziente}
+\umlusecase[y=-6.2, x =2.6]{Visualizza dati paziente (ultime due ore)}
+\umlusecase[x=5, y=-5]{Inserisce diagnosi d'ingresso}
+\umlusecase[x=5.7, y=-3.7]{Aggiunge prescrizioni}
+\umlusecase[x=6,  y=-7.5]{Spegne allarmi}
 \umlusecase[x=.6, y=-9.4]{Visualizza/stampa reports pazienti}
 \umlusecase[x=0, y=-10.8]{Compila lettera di dimissioni}
 \end{umlsystem}
 
-\umlactor[x=-5.5]{Infermiere}
+\umlactor[x=-5.5, y=-1.6]{Infermiere}
 \umlactor[x=-5.5, y=-9.7]{Primario}
-\umlactor[x=10.9, y=-5.7]{Medico}
+\umlactor[x=10.4, y=-5.7]{Medico}
 
 \umlassoc{Infermiere}{usecase-1}
 \umlassoc{Infermiere}{usecase-2}
@@ -134,10 +145,12 @@ Di seguito parte dei casi d'uso utilizzati, aggregati per chiarezza nei vari ute
 \umlassoc{Primario}{usecase-4}
 \umlassoc{Primario}{usecase-8}
 \umlassoc{Primario}{usecase-9}
+\umlVHinclude{usecase-1}{usecase-5}
 %\umlassoc{subuser}{usecase-3}
 %\umlassoc{admin}{usecase-5}
 %\umlassoc{admin}{usecase-6}
-\umlinherit{usecase-5}{usecase-1}
+\umlinclude{usecase-2}{usecase-6}
+\node at(4.1, -3.05) {$\ll$include$\gg$};
 \umlVHextend{usecase-3}{usecase-2}
 %\umlinclude[name=incl]{usecase-3}{usecase-4}
 %
@@ -146,41 +159,82 @@ Di seguito parte dei casi d'uso utilizzati, aggregati per chiarezza nei vari ute
 \end{figure}
 
 \subsection{Diagrammi di classe}
-\begin{figure}[t]
-\begin{center}
-	\begin{tikzpicture}
-\begin{umlpackage}[ x=0, y=0]{State}
-\umlclass[x=5.5, template={C}]{Store} {- s: State\\- r: Reducer \\- m: Middleware}{+ poll(): State \\ + update(com: C)}
-
-\umlinterface[x=0, y=-3, template={C}]{Reducer}{}{+ run(s: State, c: C): State \\+ with(s: String, f: Function) }
-\umlsimpleclass[x=0, y=-6]{ReducerString}{}{}
-
-\umlinterface[x=11, y=-3 , template={C}]{Middleware}{}{+ run(s: State, c: C) \\ + with(s: String, f: Function)}
-\umlsimpleclass[x=11, y=-6]{MiddlewareString}{}{}
-
-\umlsimpleclass[x=5.5, y=-3.5]{State} {}{}
-\umlsimpleclass[x=5.5, y=-6, template={C}]{StateEvent}{}{}
-
-\umlinterface[ y=-9, x=5.5]{Command}{}{+ name(): String \\+ getArg(): Object}
-\umlsimpleclass[x=0.2, y=-9]{StringCommand}
-
-\umlsimpleclass[x=11.8, y=0]{DatabaseService}{}{}
-
-\umlreal[]{MiddlewareString}{Middleware}
-\umlreal[]{ReducerString}{Reducer}
-\umlreal[]{StringCommand}{Command}
-\umldep[geometry=-|-]{Reducer}{Store}
-\umldep[geometry=-|-]{Middleware}{Store}
-\umldep[geometry=-|]{State}{Store}
-\umldep[]{State}{StateEvent}
-\umldep[]{Command}{StateEvent}
-\end{umlpackage}  
-	
-\end{tikzpicture}
-\end{center}\caption{Diagramma di classe del \textit{package} State.}\label{StateClassDiagram}
+\begin{figure}
+	\begin{center}
+		\begin{tikzpicture}
+		\begin{umlpackage}[ x=0, y=0]{State}
+		\umlclass[x=5.5, template={C}]{Store} {- s: State\\- r: Reducer \\- m: Middleware}{+ poll(): State \\ + update(com: C)}
+		
+		\umlinterface[x=0, y=-3, template={C}]{Reducer}{}{+ run(s: State, c: C): State \\+ with(s: String, f: Function) }
+		\umlsimpleclass[x=0, y=-6]{ReducerString}{}{}
+		
+		\umlinterface[x=11, y=-3 , template={C}]{Middleware}{}{+ run(s: State, c: C) \\ + with(s: String, f: Function)}
+		\umlsimpleclass[x=11, y=-6]{MiddlewareString}{}{}
+		
+		\umlsimpleclass[x=5.5, y=-3.5]{State} {}{}
+		\umlsimpleclass[x=5.5, y=-6, template={C}]{StateEvent}{}{}
+		
+		\umlinterface[ y=-9, x=5.5]{Command}{}{+ name(): String \\+ getArg(): Object}
+		\umlsimpleclass[x=0.2, y=-9]{StringCommand}
+		
+		\umlsimpleclass[x=11.8, y=0]{DatabaseService}{}{}
+		
+		\umlreal[]{MiddlewareString}{Middleware}
+		\umlreal[]{ReducerString}{Reducer}
+		\umlreal[]{StringCommand}{Command}
+		\umldep[geometry=-|-]{Reducer}{Store}
+		\umldep[geometry=-|-]{Middleware}{Store}
+		\umldep[geometry=-|]{State}{Store}
+		\umldep[]{State}{StateEvent}
+		\umldep[]{Command}{StateEvent}
+		\end{umlpackage}  
+		
+		\end{tikzpicture}
+	\end{center}\caption{Diagramma di classe del \textit{package} State.}\label{StateClassDiagram}
 \end{figure}
 
-\newpage
+\begin{figure}
+	\begin{center}
+		\begin{tikzpicture}
+		\begin{umlpackage}[ x=0, y=0]{Generator}
+		
+		\umlinterface[x=6.25, y=0]{GeneratorInterface}{}{+ reset() \\ + evolve(sick: Sickness) \\ + getValue(): Object}
+	
+		
+		\umlclass[x=0, y=-4]{BPGenerator}{- canGenerateAlarm \\ - meanS \\ - meanD \\ - varianceS \\ - varianceD}{}
+		\umlclass[x=6.25, y=-4]{TemperatureGenerator}{- canGenerateAlarm \\ - mean \\ - variance}{}
+		\umlclass[x=12.5, y=-4]{HeartrateGenerator}{- canGenerateAlarm \\ - mean \\ - variance}{}
+		\umlreal[geometry=|-]{BPGenerator}{GeneratorInterface}
+		\umlreal[geometry=|-]{HeartrateGenerator}{GeneratorInterface}
+		\umlreal[]{TemperatureGenerator}{GeneratorInterface}
+		\end{umlpackage}  
+		
+		\end{tikzpicture}
+	\end{center}\caption{Diagramma di classe del \textit{package} Generator.}\label{GeneratorClassDiagram}
+\end{figure}
+
+\begin{figure}
+	\begin{center}
+		\begin{tikzpicture}
+		\begin{umlpackage}[ x=0, y=0]{HPInterfaceFactory}
+		\umlclass[x=7, y=3.5]{HPFactory}{}{+ getHPFactory(s: String)}
+		\umlinterface[x=7, y=0]{HPInterface}{}{+ getFile() : String }
+		
+		\umlsimpleclass[x=0, y=-3]{HPDefault}
+		\umlsimpleclass[x=4.4, y=-3]{HPMonitoring}
+		\umlsimpleclass[x=9.2, y=-3]{HPSearch}
+		\umlsimpleclass[x=13.2, y=-3]{HPSearchResult}
+		
+		\umlimpl[geometry=|-]{HPDefault}{HPInterface}
+		\umlimpl{HPMonitoring}{HPInterface}
+		\umlimpl{HPSearch}{HPInterface}
+		\umlimpl[geometry=|-]{HPSearchResult}{HPInterface}
+		\end{umlpackage}  
+		
+		\end{tikzpicture}
+	\end{center}\caption{Diagramma di classe del \textit{package} HPInterfaceFactory.}\label{HpInterfaceFactoryClassDiagram}
+\end{figure}
+
 \begin{figure}
 	\begin{center}
 \begin{tikzpicture}[node distance=7em]

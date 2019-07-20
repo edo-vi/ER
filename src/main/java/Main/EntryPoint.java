@@ -1,10 +1,9 @@
 package Main;
 
-import System.Login.LoginDemoMain;
+import System.Main;
 
 public class EntryPoint {
 
-    public static void main(String[] args) {
-        LoginDemoMain.main(args);
+    public static void main(String[] args) {Main.main(args);
     }
 }

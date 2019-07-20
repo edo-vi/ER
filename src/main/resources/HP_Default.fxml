@@ -44,11 +44,11 @@
          <children>
             <AnchorPane prefHeight="773.0" prefWidth="210.0">
                <children>
-                  <Button layoutY="40.0" mnemonicParsing="false" onAction="#dismissPatient" prefHeight="50.0" prefWidth="150.0" style="-fx-border-color: #87CEFA;" text="Dimissione&#10;paziente" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
+                  <Button layoutY="40.0" mnemonicParsing="false" onAction="#dismissPatient" prefHeight="50.0" prefWidth="150.0" style="-fx-border-color: #00BFFF;" text="Dimissione&#10;paziente" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
                   <Button layoutY="120.0" mnemonicParsing="false" onAction="#showLast2H" prefHeight="50.0" prefWidth="150.0" text="Dati ultime&#10;2 ore" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
                   <Button layoutY="200.0" mnemonicParsing="false" onAction="#search" prefHeight="50.0" prefWidth="150.0" text="Cartella&#10;clinica" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
                   <Button layoutY="695.0" mnemonicParsing="false" onAction="#logout" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 20;" text="Log Out" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
-                  <Label layoutX="30.0" layoutY="648.0" style="-fx-text-fill: grey;" text="Primario Dr. Rossi" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="650.0" />
+                  <Label fx:id="nameLabel" layoutX="30.0" layoutY="648.0" style="-fx-text-fill: grey;" text="Primario Dr. Rossi" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="650.0" />
                </children>
             </AnchorPane>
             <AnchorPane prefHeight="773.0" prefWidth="3.0" style="-fx-background-color: grey;" />
@@ -56,25 +56,25 @@
                <children>
                   <Label layoutX="40.0" layoutY="30.0" style="-fx-font-size: 24; -fx-text-fill: #B0C4DE;" text="Compilazione lettera di dimissione paziente" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="30.0" />
                   <Label layoutX="50.0" layoutY="120.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" text="Scegliere il paziente:" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="120.0" />
-                  <ComboBox layoutX="250.0" layoutY="118.0" prefHeight="31.0" prefWidth="312.0" promptText="nessuna scelta" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="118.0" fx:id="patientsChoice" onAction="#selectedItemFromCombobox"/>
+                  <ComboBox fx:id="patientsChoice" layoutX="250.0" layoutY="118.0" onAction="#selectedItemFromCombobox" prefHeight="31.0" prefWidth="312.0" promptText="nessuna scelta" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="118.0" />
                   <Label layoutX="40.0" layoutY="220.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" text="DATI:" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="220.0" />
                   <Label layoutX="40.0" layoutY="270.0" style="-fx-font-size: 18; -fx-text-fill: grey;" text="Cognome:" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="270.0" />
                   <Label layoutX="40.0" layoutY="320.0" style="-fx-font-size: 18; -fx-text-fill: grey;" text="Nome:" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="320.0" />
-                  <Label layoutX="150.0" layoutY="267.0" style="-fx-font-size: 20; -fx-text-fill: #B0C4DE;" text="" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="267.0" fx:id="patientName"/>
-                  <Label layoutX="150.0" layoutY="317.0" style="-fx-font-size: 20; -fx-text-fill: #B0C4DE;" text="" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="317.0" fx:id="patientSurname"/>
+                  <Label fx:id="patientSurname" layoutX="150.0" layoutY="267.0" style="-fx-font-size: 20; -fx-text-fill: #B0C4DE;" text="" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="267.0" />
+                  <Label fx:id="patientName" layoutX="150.0" layoutY="317.0" style="-fx-font-size: 20; -fx-text-fill: #B0C4DE;" text="" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="317.0" />
                   <Label layoutX="450.0" layoutY="320.0" style="-fx-font-size: 18; -fx-text-fill: grey;" text="Luogo di nascita:" AnchorPane.leftAnchor="450.0" AnchorPane.topAnchor="320.0" />
                   <Label layoutX="450.0" layoutY="270.0" style="-fx-font-size: 18; -fx-text-fill: grey;" text="Data di nascita:" AnchorPane.leftAnchor="450.0" AnchorPane.topAnchor="270.0" />
                   <Label layoutX="40.0" layoutY="400.0" style="-fx-font-size: 18; -fx-text-fill: grey;" text="Data ricovero:" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="400.0" />
                   <Label layoutX="40.0" layoutY="500.0" style="-fx-font-size: 18; -fx-text-fill: grey;" text="Data dimissione:" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="500.0" />
                   <Label layoutX="40.0" layoutY="440.0" style="-fx-font-size: 18; -fx-text-fill: grey;" text="Motivo ricovero:" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="440.0" />
                   <Label layoutX="40.0" layoutY="540.0" style="-fx-font-size: 18; -fx-text-fill: grey;" text="Diagnosi di dimissione:" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="540.0" />
-                  <Label layoutX="620.0" layoutY="267.0" style="-fx-font-size: 20; -fx-text-fill: #B0C4DE;" text="" AnchorPane.leftAnchor="620.0" AnchorPane.topAnchor="267.0" fx:id="patientDateofBirth"/>
-                  <Label layoutX="620.0" layoutY="317.0" style="-fx-font-size: 20; -fx-text-fill: #B0C4DE;" text="" AnchorPane.leftAnchor="620.0" AnchorPane.topAnchor="317.0" fx:id="patientPlaceofBirth"/>
-                  <TextArea layoutX="247.0" layoutY="620.0" prefHeight="102.0" prefWidth="666.0" promptText="Scrivere qui..." AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="540.0" fx:id="dischargeText"/>
-                  <Label layoutX="210.0" layoutY="397.0" style="-fx-font-size: 20; -fx-text-fill: #B0C4DE;" text="" AnchorPane.leftAnchor="210.0" AnchorPane.topAnchor="397.0" fx:id="patientRecoveryStartDate"/>
-                  <Label layoutX="210.0" layoutY="437.0" style="-fx-font-size: 20; -fx-text-fill: #B0C4DE;" text="" AnchorPane.leftAnchor="210.0" AnchorPane.topAnchor="437.0" fx:id="patientRecoveryReasons"/>
-                  <Label layoutX="250.0" layoutY="497.0" style="-fx-font-size: 20; -fx-text-fill: #B0C4DE;" text="" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="497.0" fx:id="patientRecoveryEndDate" />
-                  <Button layoutX="762.0" layoutY="695.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" style="-fx-font-size: 18;" text="Salva" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="150.0" onAction="#discharge"/>
+                  <Label fx:id="patientDateofBirth" layoutX="620.0" layoutY="267.0" style="-fx-font-size: 20; -fx-text-fill: #B0C4DE;" text="" AnchorPane.leftAnchor="620.0" AnchorPane.topAnchor="267.0" />
+                  <Label fx:id="patientPlaceofBirth" layoutX="620.0" layoutY="317.0" style="-fx-font-size: 20; -fx-text-fill: #B0C4DE;" text="" AnchorPane.leftAnchor="620.0" AnchorPane.topAnchor="317.0" />
+                  <TextArea fx:id="dischargeText" layoutX="247.0" layoutY="620.0" prefHeight="102.0" prefWidth="666.0" promptText="Scrivere qui..." AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="540.0" />
+                  <Label fx:id="patientRecoveryStartDate" layoutX="210.0" layoutY="397.0" style="-fx-font-size: 20; -fx-text-fill: #B0C4DE;" text="" AnchorPane.leftAnchor="210.0" AnchorPane.topAnchor="397.0" />
+                  <Label fx:id="patientRecoveryReasons" layoutX="210.0" layoutY="437.0" style="-fx-font-size: 20; -fx-text-fill: #B0C4DE;" text="" AnchorPane.leftAnchor="210.0" AnchorPane.topAnchor="437.0" />
+                  <Label fx:id="patientRecoveryEndDate" layoutX="250.0" layoutY="497.0" style="-fx-font-size: 20; -fx-text-fill: #B0C4DE;" text="" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="497.0" />
+                  <Button layoutX="762.0" layoutY="695.0" mnemonicParsing="false" onAction="#discharge" prefHeight="40.0" prefWidth="100.0" style="-fx-font-size: 18;" text="Salva" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="100.0" />
                </children>
             </AnchorPane>
          </children>

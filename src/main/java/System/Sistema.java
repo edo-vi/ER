@@ -7,6 +7,7 @@ import Entities.User;
 import Generator.DataThread;
 import Generator.Sickness;
 import Generator.Value;
+import InterfaceController.HPControllerFactory.HPControllerFactory;
 import State.Reducer;
 import State.ReducerString;
 import State.StringCommand;
@@ -16,6 +17,7 @@ import State.DatabaseService;
 import State.MiddlewareString;
 import State.Middleware;
 
+import System.HPInterfaceFactory.HPFactory;
 import System.Session.DoctorSessionThread;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -51,7 +53,7 @@ public class Sistema {
         Reducer<StringCommand> reducer = new ReducerString()
                 .with("LOGIN")
                 .with("LOGOUT", (c, s) -> {
-                    s.setUser(new User());
+                    s.setUser(new User("default"));
                     return s;
                 })
                 .with("GENERATE_BP", (c, s) -> {
@@ -87,13 +89,25 @@ public class Sistema {
                     s.getActiveRecoveries().get(selectedPatient).evolveGenerator(sick);
                     return s;
                 })
+                .with("CHOSEN_RECOVERY_TO_SHOW", (c,s) -> {
+                    Recovery r = (Recovery) c.getArg();
+                    if (r != null) {
+                        s.setChosenRecovery(r);
+                    }
+                    return s;
+                })
+                .with("CLEAR_CHOSEN_RECOVERY", (c,s) -> {
+                    s.setChosenRecovery(null);
+                    return s;
+                })
                 .with("ALARM_ACTIVATED")
                 .with("RESET_ALARMS")
                 .with("ALARM_LOGIN")
                 .with("DISCHARGE_PATIENT")
                 .with("ALARM_LOGIN")
                 .with("SESSION_TERMINATED")
-                .with("SESSION_START");
+                .with("SESSION_START")
+                .with("SEARCH_PATIENT_HP");
         Middleware<StringCommand> middleware = new MiddlewareString(monitoringStage)
                 .with("LOGIN", (c, s, m) -> {
                     User u = (User) c.getArg();
@@ -230,7 +244,7 @@ public class Sistema {
                 })
                 .with("SESSION_TERMINATED", (c,s,m) -> {
                     ((MiddlewareString) m).getDocSession().interrupt();
-                    s.setDocAlarm(new User());
+                    s.setDocAlarm(new User("default"));
 
                     return new Tuple<>(new StringCommand("DOC_SESSION_TERMINATED"), s);
                 })
@@ -261,10 +275,10 @@ public class Sistema {
             stage.getIcons().add(new Image("/logo.png"));
             this.controller = new InterfacesController(stage);
             this.controller.addInterface("login", new LoginComponent<StringCommand>().getLoader().load());
-            this.controller.addInterface("HPD", new HPComponent<StringCommand>("default").getLoader().load());
-            this.controller.addInterface("HPS", new HPComponent<StringCommand>("search").getLoader().load());
-            this.controller.addInterface("HPSR", new HPComponent<StringCommand>("searchResult").getLoader().load());
-            this.controller.addInterface("HPM", new HPComponent<StringCommand>("monitoring").getLoader().load());
+            this.controller.addInterface("HPD", new HPComponent<StringCommand>(new HPFactory().getHPInterface("default"), new HPControllerFactory().getController("default")).getLoader().load());
+            this.controller.addInterface("HPS", new HPComponent<StringCommand>(new HPFactory().getHPInterface("search"), new HPControllerFactory().getController("search")).getLoader().load());
+            this.controller.addInterface("HPSR", new HPComponent<StringCommand>(new HPFactory().getHPInterface("searchResult"), new HPControllerFactory().getController("searchResult")).getLoader().load());
+            this.controller.addInterface("HPM", new HPComponent<StringCommand>(new HPFactory().getHPInterface("monitoring"), new HPControllerFactory().getController("monitoring")).getLoader().load());
             this.controller.addInterface("MON", new MonitoringComponent<StringCommand>().getLoader().load());
             this.controller.addInterface("ALM", new AlarmsComponent<StringCommand>().getLoader().load());
             this.controller.addInterface("ALMCTLLOG", new AlarmControlComponent<StringCommand>(false).getLoader().load());

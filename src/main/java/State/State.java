@@ -10,16 +10,17 @@ public class State  {
     private User user;
     private List<Patient> patients = new ArrayList<>();
     private int mainRecoveryIndex;
+    private Recovery chosenRecovery;
     private User docAlarm;
     private User docAlarmCheck;
 
     // Must be the initial state
     public State() {
 
-        this.user = new User();
-        this.userCheck = new User("eme", "pw", Role.HEAD_PHYSICIAN, true);
+        this.user = new User("default");
+        this.userCheck = new User("null", "pw", Role.HEAD_PHYSICIAN, true);
 
-        this.docAlarm = new User();
+        this.docAlarm = new User("default");
         this.docAlarmCheck = new User("warian", "pw", Role.DOCTOR, true);
         /*
         this.patients.add(new Patient("Carlo", "Combi", "CMBCBMWHATEVER291Z", "Verona",
@@ -151,6 +152,16 @@ public class State  {
     public void setDocAlarmCheck(User docAlarmCheck) {
         this.docAlarmCheck = docAlarmCheck;
     }
+
+
+    public Recovery getChosenRecovery() {
+        return chosenRecovery;
+    }
+
+    public void setChosenRecovery(Recovery chosenRecovery) {
+        this.chosenRecovery = chosenRecovery;
+    }
+
 
     @Override
     public boolean equals(Object oth) {

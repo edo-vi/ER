@@ -21,6 +21,10 @@ public class User implements Entry {
 
     }
 
+    public User(String s) {
+        this("NaN", "1234");
+    }
+
     public User(String username, String password, Role role, boolean valid) {
         this.name = username;
         this.password = password;
@@ -33,7 +37,7 @@ public class User implements Entry {
     }
 
     public String toString() {
-        return "{Username: " + this.name + ", password: " + this.password + ", role: " + this.role+"}";
+            return Character.toUpperCase(this.name.charAt(0)) + this.name.substring(1);
     }
 
     @Override

@@ -44,7 +44,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <TextField id="userField" fx:id="userField" cache="true" layoutX="174.0" layoutY="56.0" promptText="username..." />
+            <TextField id="userField" fx:id="userField" layoutX="174.0" layoutY="56.0" promptText="username..." />
             <PasswordField id="passField" fx:id="passField" layoutX="174.0" layoutY="130.0" promptText="password..." />
             <Button fx:id="loginButton" layoutX="71.0" layoutY="208.0" mnemonicParsing="false" onAction="#login" prefHeight="27.0" prefWidth="103.0" text="Login">
                <font>
@@ -61,7 +61,4 @@
          </opaqueInsets>
       </AnchorPane>
     </children>
-   <effect>
-      <Reflection fraction="0.22" topOpacity="0.66" />
-   </effect>
 </VBox>

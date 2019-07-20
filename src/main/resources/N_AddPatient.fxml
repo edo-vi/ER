@@ -46,8 +46,8 @@
             <children>
                 <AnchorPane prefHeight="773.0" prefWidth="210.0">
                     <children>
-                        <Button layoutX="16.0" layoutY="40.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="164.0" style="-fx-font-size: 13;" text="Nuova&#10;somministrazione" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
-                        <Button layoutY="120.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" style="-fx-border-color: #87CEFA;" text="Nuovo&#10;paziente" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
+                        <Button layoutY="40.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="164.0" style="-fx-font-size: 13;" text="Nuova&#10;somministrazione" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
+                        <Button layoutY="120.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" style="-fx-border-color: #00BFFF;" text="Nuovo&#10;paziente" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
                         <Button layoutY="200.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="Dati ultime&#10;2 ore" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
                         <Button layoutY="280.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="Cartella&#10;clinica" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
                         <Button layoutY="695.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 20;" text="Log Out" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
@@ -66,16 +66,16 @@
                   <Label layoutX="50.0" layoutY="430.0" style="-fx-font-size: 18; -fx-text-fill: grey;" text="C.F. :" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="560.0" />
                   <Label layoutX="460.0" layoutY="298.0" style="-fx-font-size: 18; -fx-text-fill: grey;" text="Luogo di nascita :" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="480.0" />
                   <Button layoutX="507.0" layoutY="557.0" mnemonicParsing="false" text="Calcola" AnchorPane.leftAnchor="510.0" />
-                  <Button layoutX="831.0" layoutY="697.0" mnemonicParsing="false" prefHeight="40.0" style="-fx-font-size: 18;" text="Aggiungi" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="150.0" />
-                  <TextField layoutX="180.0" layoutY="155.0" prefWidth="250.0" promptText="cognome..." />
-                  <TextField layoutX="180.0" layoutY="235.0" prefWidth="250.0" promptText="nome..." />
+                  <Button layoutX="831.0" layoutY="697.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="150.0" style="-fx-font-size: 18;" text="Aggiungi" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="100.0" />
+                  <TextField layoutX="180.0" layoutY="155.0" prefWidth="250.0" promptText="cognome..." AnchorPane.leftAnchor="230.0" />
+                  <TextField layoutX="180.0" layoutY="235.0" prefWidth="250.0" promptText="nome..." AnchorPane.leftAnchor="230.0" />
                   <TextField layoutX="230.0" layoutY="475.0" prefWidth="250.0" promptText="luogo di nascita..." AnchorPane.leftAnchor="230.0" />
-                  <RadioButton layoutX="180.0" layoutY="323.0" mnemonicParsing="false" text="M" textFill="LIGHTSTEELBLUE">
+                  <RadioButton layoutX="180.0" layoutY="323.0" mnemonicParsing="false" text="M" textFill="LIGHTSTEELBLUE" AnchorPane.leftAnchor="230.0">
                      <toggleGroup>
                         <ToggleGroup fx:id="sesso" />
                      </toggleGroup>
                   </RadioButton>
-                  <RadioButton layoutX="305.0" layoutY="323.0" mnemonicParsing="false" text="F" textFill="LIGHTSTEELBLUE" toggleGroup="$sesso" />
+                  <RadioButton layoutX="355.0" layoutY="323.0" mnemonicParsing="false" text="F" textFill="LIGHTSTEELBLUE" toggleGroup="$sesso" />
                   <DatePicker layoutX="230.0" layoutY="395.0" prefWidth="250.0" promptText="data di nascita..." style="-fx-background-color: black;" AnchorPane.leftAnchor="230.0" />
                   <TextField layoutX="230.0" layoutY="555.0" prefWidth="250.0" promptText="codice fiscale..." AnchorPane.leftAnchor="230.0" />
                </children></AnchorPane>
