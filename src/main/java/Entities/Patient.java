@@ -1,10 +1,12 @@
 package Entities;
 
+import com.sun.marlin.stats.Monitor;
+
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 public class Patient implements Entry{
@@ -69,7 +71,6 @@ public class Patient implements Entry{
      * GETTERS AND SETTERS
      */
 
-
     public int getId() {
         return id;
     }
@@ -126,7 +127,7 @@ public class Patient implements Entry{
         this.administrations.add(administration);
     }
 
-    public List<Recovery> getRecoveries() {
+    public List<Recovery> getAllRecoveries() {
         return recoveries;
     }
 
@@ -138,4 +139,25 @@ public class Patient implements Entry{
         this.recoveries.add(recovery);
     }
 
+    public boolean isRecovered() {
+        return this.getActiveRecoveries().size() > 0;
+    }
+
+    public List<Recovery> getActiveRecoveries() {
+        return this.getAllRecoveries().stream().filter(Recovery::isActive).collect(Collectors.toList());
+    }
+
+    public List<Recovery> getDischargedRecovery() {
+        return this.getAllRecoveries().stream().filter(a -> !a.isActive()).collect(Collectors.toList());
+    }
+
+    public List<Monitoring> getActiveMonitorings() {
+        return this.getActiveRecoveries().stream().filter(Recovery::isActive).flatMap(re -> re.getMonitorings().stream())
+                .collect(Collectors.toList());
+    }
+
+    public List<Monitoring> getAllMonitorings() {
+        return this.getAllRecoveries().stream().filter(Recovery::isActive).flatMap(re -> re.getMonitorings().stream())
+                .collect(Collectors.toList());
+    }
 }

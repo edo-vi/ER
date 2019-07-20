@@ -12,6 +12,7 @@ import State.StringCommand;
 import Component.HPComponent;
 import Component.LoginComponent;
 import System.Sistema;
+import com.sun.marlin.stats.Monitor;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.Subject;
 import javafx.application.Platform;
@@ -27,8 +28,7 @@ import javafx.util.Callback;
 import javafx.util.StringConverter;
 
 import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
+
 
 public class HPMController implements HPController {
     private final Store<StringCommand> store;
@@ -37,6 +37,7 @@ public class HPMController implements HPController {
     @FXML private TableView<Administration> tableAdministrations = new TableView<>();
     @FXML private ComboBox<Recovery> patientComboBox;
     @FXML private TableColumn<Administration, String> drugColumn;
+    @FXML private TableColumn<Monitoring, String> temperatureColumn;
     @FXML private Label nameLabel;
     private Disposable dis;
 
@@ -78,6 +79,13 @@ public class HPMController implements HPController {
             public ObservableValue<String> call(TableColumn.CellDataFeatures<Administration , String> param) {
                 return new SimpleObjectProperty<>(param.getValue().getPrescription().getDrug());
 
+            }
+        });
+
+        temperatureColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Monitoring, String>, ObservableValue<String>>() {
+
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Monitoring , String> param) {
+                return new SimpleObjectProperty<>(String.format("%.2f", param.getValue().getTemperature()));
             }
         });
 

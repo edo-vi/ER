@@ -3,15 +3,18 @@ package Entities;
 import Generator.*;
 import Main.Tuple;
 import System.Sistema;
+import com.sun.istack.NotNull;
+import com.sun.istack.Nullable;
 
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 @Entity
-public class Recovery implements Entry{
+public class Recovery implements Entry {
     @Id
     @GeneratedValue
     @Column(name = "recovery_id")
@@ -26,7 +29,7 @@ public class Recovery implements Entry{
     private Date endDate;
     private String dischargeSummary;
 
-    @ManyToOne
+    @ManyToOne @NotNull
     @JoinColumn(name = "patient_id")
     private Patient patient;
 
@@ -50,52 +53,26 @@ public class Recovery implements Entry{
     **/
 
     public Recovery () {}
-    public Recovery(Date start, Date end, String diagnosis, boolean active) {
-        this.startDate = new java.sql.Date(start.getTime());
-        this.active = active;
-        if (active) {
-            this.endDate = null;
-        } else {
-            this.endDate = new java.sql.Date(end.getTime());
-        }
-        this.diagnosis = diagnosis;
-        this.dischargeSummary = "";
-    }
 
-    public Recovery(Date start, String diagnosis) {
+
+    public Recovery(Date start, String diagnosis, Patient patient) {
         this.startDate = new java.sql.Date(start.getTime());
         this.diagnosis = diagnosis;
+        this.patient = patient;
         this.active = true;
     }
 
-    public Recovery(Date start, Date end, String diagnosis, boolean active, String dischargeSummary, Patient patient) {
-        this(start, end, diagnosis, active);
-        this.patient = patient;
-    }
-    public Recovery(Date start, Date end, String diagnosis, boolean active, Patient patient) {
-        this(start, end, diagnosis, active);
-        this.patient = patient;
+    public Recovery(Date start, String diagnosis, Patient patient, List<Prescription> prescriptions) {
+        this(start, diagnosis, patient);
+        this.prescriptions.addAll(prescriptions);
     }
 
-    public Recovery(Date start, String diagnosis, Patient patient) {
-        this(start, diagnosis);
-        this.patient = patient;
-    }
-
-    public Recovery(Date start, Date end, String diagnosis, boolean active, String dischargeSummary, Patient patient,
-                    List<Monitoring> monitorings, List<Prescription> prescriptions) {
-        this(start, end, diagnosis, active, dischargeSummary, patient);
+    public Recovery(Date start, String diagnosis, Patient patient, List<Monitoring> monitorings, List<Prescription> prescriptions) {
+        this(start, diagnosis, patient);
         this.monitorings.addAll(monitorings);
         this.prescriptions.addAll(prescriptions);
     }
 
-
-    public Recovery(Date start, Date end, String diagnosis, boolean active, String dischargeSummary,
-                    List<Monitoring> monitorings, List<Prescription> prescriptions) {
-        this(start, end, diagnosis, active);
-        this.monitorings.addAll(monitorings);
-        this.prescriptions.addAll(prescriptions);
-    }
 
     public Monitoring getLastMonitoring() {
         if (this.monitorings.size() == 0) {
@@ -170,9 +147,18 @@ public class Recovery implements Entry{
     }
 
     public boolean isActive() {
-        return active;
+        return active && (this.dischargeSummary == null || this.dischargeSummary.equals("")) && this.endDate == null;
     }
 
+    public void discharge(String dischargeSummary) {
+        this.discharge(dischargeSummary, Calendar.getInstance().getTime());
+    }
+
+    public void discharge(String dischargeSummary, Date endDate) {
+        this.dischargeSummary = dischargeSummary;
+        this.setEndDate(endDate);
+        this.active = false;
+    }
     public void setActive(boolean active) {
         this.active = active;
     }

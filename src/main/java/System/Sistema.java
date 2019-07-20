@@ -126,7 +126,7 @@ public class Sistema {
                             .map(e -> (Patient) e)
                             .collect(Collectors.toList());
                     s.setPatients(ps);
-                    List<Recovery> rec = ps.stream().flatMap(p -> p.getRecoveries().stream()).filter(Recovery::isActive)
+                    List<Recovery> rec = ps.stream().flatMap(p -> p.getAllRecoveries().stream()).filter(Recovery::isActive)
                             .collect(Collectors.toList());
                     //TODO add
                     /*if (rec.size() == 0) {
@@ -232,11 +232,8 @@ public class Sistema {
                     Tuple<Integer, String> val = (Tuple<Integer, String>) c.getArg();
                     try {
                         Recovery re = s.getAllRecoveries().stream()
-                                .filter(r -> r.getId()==val.fst()).collect(Collectors.toList()).get(0);
-                        re.setDischargeSummary(val.snd());
-                        Calendar cal = Calendar.getInstance();
-                        re.setEndDate(cal.getTime());
-                        re.setActive(false);
+                                .filter(r -> r.getId()==val.fst()).findFirst().orElse(null);
+                        re.discharge(val.snd());
                         DatabaseService.addEntry(re);
                         return new Tuple<>(new StringCommand("DISCHARGED_A_PATIENT"), s);
                     } catch (Exception e) {

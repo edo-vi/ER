@@ -1,7 +1,6 @@
 package State;
 import Entities.*;
 
-import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -90,19 +89,19 @@ public class State  {
 
     public List<Recovery> getAllRecoveries() {
         return patients.stream()
-                .flatMap(p -> p.getRecoveries().stream())
+                .flatMap(p -> p.getAllRecoveries().stream())
                 .collect(Collectors.toList());
     }
 
     public List<Recovery> getActiveRecoveries() {
         return patients.stream()
-                .flatMap(p -> p.getRecoveries().stream().filter(Recovery::isActive))
+                .flatMap(p -> p.getAllRecoveries().stream().filter(Recovery::isActive))
                 .collect(Collectors.toList());
     }
 
     public List<Recovery> getNonActiveRecoveries() {
         return patients.stream()
-                .flatMap(p -> p.getRecoveries().stream().filter(a->!a.isActive()))
+                .flatMap(p -> p.getAllRecoveries().stream().filter(a->!a.isActive()))
                 .collect(Collectors.toList());
     }
 

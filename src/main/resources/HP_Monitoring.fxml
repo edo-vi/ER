@@ -72,11 +72,8 @@
                               <PropertyValueFactory property="heartRate" />
                            </cellValueFactory>
                         </TableColumn>
-                        <TableColumn prefWidth="220.0" text="Temperatura (°C)">
-                           <cellValueFactory>
-                              <PropertyValueFactory property="temperature" />
-                           </cellValueFactory>
-                        </TableColumn>
+                        <TableColumn prefWidth="220.0" text="Temperatura (°C)" fx:id="temperatureColumn"/>
+
                         <TableColumn prefWidth="165.0" text="DBP (mmHg)">
                            <cellValueFactory>
                               <PropertyValueFactory property="diastolicPressure" />

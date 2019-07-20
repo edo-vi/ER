@@ -1,8 +1,6 @@
 package InterfaceController.HPControllerFactory;
 
 
-import Entities.Administration;
-import Entities.Monitoring;
 import Entities.Patient;
 import Entities.Recovery;
 import State.State;
@@ -15,16 +13,10 @@ import System.Sistema;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.Subject;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.util.Callback;
-import javafx.util.StringConverter;
 
-import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class HPSController implements HPController {
@@ -82,7 +74,7 @@ public class HPSController implements HPController {
             ObservableList<Recovery> data = recoveryTable.getItems();
             data.removeAll(data);
             //todo check
-            data.addAll(p.getRecoveries()
+            data.addAll(p.getAllRecoveries()
                     .stream().filter(r -> {try {
                         return !r.isActive()
                             && r.getDischargeSummary() != null

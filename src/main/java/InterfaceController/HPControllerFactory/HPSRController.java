@@ -47,7 +47,7 @@ public class HPSRController implements HPController {
     @FXML private Label nameLabel;
 
     @FXML private TableColumn<Administration, String> drugColumn;
-    @FXML private TableColumn<Prescription, Integer> quantityColumn;
+    @FXML private TableColumn<Prescription, String> quantityColumn;
 
     private Disposable dis;
 
@@ -76,12 +76,13 @@ public class HPSRController implements HPController {
             }
         });
 
-        quantityColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Prescription , Integer>, ObservableValue<Integer>>() {
+        quantityColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Prescription , String>, ObservableValue<String>>() {
 
             @Override
-            public ObservableValue<Integer> call(TableColumn.CellDataFeatures<Prescription , Integer> param) {
-                int a = param.getValue().getTotalNumberofDoses() *param.getValue().getDailyDose();
-                return new SimpleObjectProperty<Integer>(a);
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Prescription, String> param) {
+                int a = param.getValue().getTotalNumberofDoses() * param.getValue().getDailyDose();
+                String s = String.format("%d mg/mm", a);
+                return new SimpleObjectProperty<String>(s);
             }
         });
     }

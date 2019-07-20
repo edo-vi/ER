@@ -54,11 +54,8 @@
                               <PropertyValueFactory property="heartRate" />
                           </cellValueFactory>
                       </TableColumn>
-                      <TableColumn prefWidth="200.0" resizable="false" text="Temperature">
-                        <cellValueFactory>
-                            <PropertyValueFactory property="temperature" />
-                        </cellValueFactory>
-                      </TableColumn>
+                      <TableColumn prefWidth="200.0" resizable="false" text="Temperature" fx:id="temperatureColumn"/>
+
                       <TableColumn prefWidth="130.0" resizable="false" text="DBP">
                         <cellValueFactory>
                             <PropertyValueFactory property="diastolicPressure" />
