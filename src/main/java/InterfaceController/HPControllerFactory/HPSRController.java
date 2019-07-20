@@ -95,9 +95,18 @@ public class HPSRController implements HPController {
             patientPlaceofBirth.setText(p.getPlaceOfBirth());
             patientDateofBirth.setText(p.getDateofBirth().toString());
             patientRecoveryStartDate.setText(r.getStartDate().toString());
-            patientRecoveryEndDate.setText(r.getEndDate().toString());
+            try {
+                patientRecoveryEndDate.setText(r.getEndDate().toString());
+            } catch(Recovery.RecoveryNullFieldException e) {
+                patientRecoveryEndDate.setText("");
+            }
+            try {
+                patientRecoveryDischarge.setText(r.getDischargeSummary());
+            } catch(Recovery.RecoveryNullFieldException e) {
+                patientRecoveryDischarge.setText("");
+            }
             patientRecoveryReasons.setText(r.getDiagnosis());
-            patientRecoveryDischarge.setText(r.getDischargeSummary());
+
 
             ObservableList<Prescription> data = prescriptions.getItems();
             data.removeAll(data);

@@ -85,8 +85,7 @@ public class HPDController implements HPController{
     }
 
     @FXML protected void updateRecoveries(State state) {
-        List<Recovery> recoveries = state.getNonActiveRecoveries().stream()
-                .filter(r -> r.getDischargeSummary().equals("") || r.getDischargeSummary() == null).collect(Collectors.toList());
+        List<Recovery> recoveries = state.getActiveRecoveries();
         ObservableList<Recovery> data = this.patientsChoice.getItems();
         int index = patientsChoice.getSelectionModel().getSelectedIndex();
         data.removeAll(data);
@@ -113,7 +112,11 @@ public class HPDController implements HPController{
             patientPlaceofBirth.setText(p.getPlaceOfBirth());
             patientDateofBirth.setText(p.getDateofBirth().toString());
             patientRecoveryStartDate.setText(r.getStartDate().toString());
-            patientRecoveryEndDate.setText(r.getEndDate().toString());
+            try {
+                patientRecoveryEndDate.setText(r.getEndDate().toString());
+            } catch (Recovery.RecoveryNullFieldException e) {
+                patientRecoveryEndDate.setText("");
+            }
             patientRecoveryReasons.setText(r.getDiagnosis());
         } else {
             patientName.setText("");
