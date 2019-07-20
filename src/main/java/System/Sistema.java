@@ -87,6 +87,17 @@ public class Sistema {
                     s.getActiveRecoveries().get(selectedPatient).evolveGenerator(sick);
                     return s;
                 })
+                .with("CHOSEN_RECOVERY_TO_SHOW", (c,s) -> {
+                    Recovery r = (Recovery) c.getArg();
+                    if (r != null) {
+                        s.setChosenRecovery(r);
+                    }
+                    return s;
+                })
+                .with("CLEAR_CHOSEN_RECOVERY", (c,s) -> {
+                    s.setChosenRecovery(null);
+                    return s;
+                })
                 .with("ALARM_ACTIVATED")
                 .with("RESET_ALARMS")
                 .with("ALARM_LOGIN")

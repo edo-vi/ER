@@ -48,16 +48,18 @@ public class HPSController {
 
     @FXML protected void initialize() {
 
+        recoveryTable.setRowFactory( tv -> {
+            TableRow<Recovery> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
+                    Recovery rowData = row.getItem();
+                    store.update(new StringCommand("CHOSEN_RECOVERY_TO_SHOW", rowData));
+                    searchResult();
+                }
+            });
+            return row ;
+        });
 
-        //todo this is wrong
-        /*drugColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Administration , String>, ObservableValue<String>>() {
-
-            @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<Administration , String> param) {
-                return new SimpleObjectProperty<>(param.getValue().getPrescription().getDrug());
-
-            }
-        });*/
 
         initialize(store.poll());
     }
@@ -107,7 +109,9 @@ public class HPSController {
     @FXML protected void showLast2H() {
         sys.setInterface("HPM", HPComponent.HPTitle);
     }
-
+    @FXML protected void searchResult() {
+        sys.setInterface("HPSR", HPComponent.HPTitle);
+    }
     @FXML protected void logout() {
         store.update(new StringCommand("LOGOUT"));
         sys.setInterface("login", LoginComponent.loginTitle);

@@ -16,8 +16,8 @@ public class Prescription implements Entry{
     private Date date;
 
     private int duration;
-    private double dailyDose;
-    private int numberOfDoses;
+    private int dailyDose;
+    private int totalNumberofDoses;
     private String doctor;
 
     @OneToMany(mappedBy = "prescription")
@@ -27,47 +27,21 @@ public class Prescription implements Entry{
     @JoinColumn(name = "recovery_id")
     private Recovery recovery;
 
-    public Prescription(String drug, Date date, int duration, double dailyDose, int numberOfDoses, String doctor)
+    public Prescription(String drug, Date date, int duration, int dailyDose, int totalNumberofDoses, String doctor)
             throws Exception {
-        if(duration <= 0 || dailyDose <= 0 || numberOfDoses <= 0) throw new IllegalArgumentException("Prescription: invalid arguments");
+        if(duration <= 0 || dailyDose <= 0 || totalNumberofDoses <= 0) throw new IllegalArgumentException("Prescription: invalid arguments");
         this.date = new java.sql.Date(date.getTime());
         this.drug = drug;
         this.duration = duration;
         this.dailyDose = dailyDose;
-        this.numberOfDoses = numberOfDoses;
+        this.totalNumberofDoses = totalNumberofDoses;
         this.doctor = doctor;
     }
 
-    public Prescription(String drug, Date date, int duration, double dailyDose, int numberOfDoses, String doctor,
+    public Prescription(String drug, Date date, int duration, int dailyDose, int totalNumberofDoses, String doctor,
                         Recovery recovery) throws Exception{
-        this(drug, date, duration, dailyDose, numberOfDoses, doctor);
+        this(drug, date, duration, dailyDose, totalNumberofDoses, doctor);
         this.recovery = recovery;
-    }
-
-    public Prescription(String drug, Date date, int duration, double dailyDose, int numberOfDoses, String doctor,
-                        Recovery recovery, List<Administration> administration) throws Exception {
-        this(drug, date, duration, dailyDose, numberOfDoses, doctor);
-        this.recovery = recovery;
-        this.administrations = administration;
-    }
-
-    public Prescription(String drug, Date date, int duration, double dailyDose, int numberOfDoses, String doctor,
-                        Recovery recovery, Administration ...administrations) throws Exception{
-        this(drug, date, duration, dailyDose, numberOfDoses, doctor, recovery, Arrays.asList(administrations));
-    }
-
-
-
-    public Prescription(String drug, Date date, int duration, double dailyDose, int numberOfDoses, String doctor,
-                        List<Administration> administration) throws Exception{
-        this(drug, date, duration, dailyDose, numberOfDoses, doctor);
-        this.administrations = administration;
-    }
-
-    public Prescription(String drug, Date date, int duration, double dailyDose, int numberOfDoses, String doctor,
-                        Administration ...administrations) throws Exception{
-        this(drug, date, duration, dailyDose, numberOfDoses, doctor);
-        this.administrations = Arrays.asList(administrations);
     }
 
 
@@ -75,7 +49,7 @@ public class Prescription implements Entry{
 
     public String toString() {
         return String.format("{%s, %s, %d, %fd, %d, %s, rec_id: %s, adms_is: %s}", drug, date, duration, dailyDose,
-                numberOfDoses, dailyDose, recovery, administrations);
+                totalNumberofDoses, dailyDose, recovery, administrations);
     }
     /**
      * GETTERS AND SETTERS
@@ -107,20 +81,20 @@ public class Prescription implements Entry{
         this.duration = duration;
     }
 
-    public double getDailyDose() {
+    public int getDailyDose() {
         return dailyDose;
     }
 
-    public void setDailyDose(double dailyDose) {
+    public void setDailyDose(int dailyDose) {
         this.dailyDose = dailyDose;
     }
 
-    public int getNumberOfDoses() {
-        return numberOfDoses;
+    public int getTotalNumberofDoses() {
+        return totalNumberofDoses;
     }
 
-    public void setNumberOfDoses(int numberOfDoses) {
-        this.numberOfDoses = numberOfDoses;
+    public void setTotalNumberofDoses(int numberOfDoses) {
+        this.totalNumberofDoses = numberOfDoses;
     }
 
     public String getDoctor() {

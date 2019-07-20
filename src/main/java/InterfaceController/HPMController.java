@@ -70,14 +70,14 @@ public class HPMController {
         });
 
         //todo this is wrong
-        /*drugColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Administration , String>, ObservableValue<String>>() {
+        drugColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Administration , String>, ObservableValue<String>>() {
 
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<Administration , String> param) {
                 return new SimpleObjectProperty<>(param.getValue().getPrescription().getDrug());
 
             }
-        });*/
+        });
 
         initialize(store.poll());
     }

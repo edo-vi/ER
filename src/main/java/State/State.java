@@ -10,6 +10,7 @@ public class State  {
     private User user;
     private List<Patient> patients = new ArrayList<>();
     private int mainRecoveryIndex;
+    private Recovery chosenRecovery;
     private User docAlarm;
     private User docAlarmCheck;
 
@@ -151,6 +152,16 @@ public class State  {
     public void setDocAlarmCheck(User docAlarmCheck) {
         this.docAlarmCheck = docAlarmCheck;
     }
+
+
+    public Recovery getChosenRecovery() {
+        return chosenRecovery;
+    }
+
+    public void setChosenRecovery(Recovery chosenRecovery) {
+        this.chosenRecovery = chosenRecovery;
+    }
+
 
     @Override
     public boolean equals(Object oth) {
