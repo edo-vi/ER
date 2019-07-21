@@ -15,6 +15,7 @@ import System.Sistema;
 import io.reactivex.disposables.Disposable;
 
 import io.reactivex.subjects.Subject;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -38,6 +39,7 @@ public class DOCDController implements DOCController{
     @FXML private TableView<Patient> waitingPatients;
     @FXML private TableColumn<Patient, String> sexColumn;
     @FXML private TextField diagnosisTextField;
+    @FXML private Label nameLabel;
     private int selectedRow = 0;
 
     public DOCDController(Store store, Subject<StateEvent> stream) {
@@ -52,6 +54,7 @@ public class DOCDController implements DOCController{
             if (se.command().name().equals("PATIENT_SUCCESSFULLY_ADMITTED")) {
                 selectedRow = 0;
             }
+            Platform.runLater(() -> nameLabel.setText(se.state().getUser().toString()));
             initialize(se.state());
         });
     }

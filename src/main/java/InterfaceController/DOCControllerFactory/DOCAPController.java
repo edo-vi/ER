@@ -12,6 +12,7 @@ import System.Sistema;
 import State.StringCommand;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.Subject;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
@@ -40,6 +41,7 @@ public class DOCAPController implements DOCController {
     @FXML private TextField prescriptionDuration;
     @FXML private TextField prescriptionTotalNumberofDoses;
     @FXML private TextField prescriptionDose;
+    @FXML private Label nameLabel;
 
     public DOCAPController(Store store, Subject<StateEvent> stream) {
         this.store = store;
@@ -51,6 +53,7 @@ public class DOCAPController implements DOCController {
 
         }
         dis = stream.subscribe(se -> {
+            Platform.runLater(() -> nameLabel.setText(se.state().getUser().toString()));
             fillPatientsMantainSelection(se.state());
         });
     }

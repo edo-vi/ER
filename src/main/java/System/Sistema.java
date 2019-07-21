@@ -301,7 +301,7 @@ public class Sistema {
                     DatabaseService.addEntry(pr);
                     //TODO check
                     try {
-                        s.getActiveRecoveries().stream().filter(rec -> rec == pr.getRecovery()).findFirst().get().addToPrescriptions(pr);
+                        pr.getRecovery().addToPrescriptions(pr);
                         return new Tuple<>(new StringCommand("ADDED_PRESCRIPTION"), s);
                     } catch(Exception err) {
                         return new Tuple<>(new StringCommand("FAILURE_TO_ADD_PRESCRIPTION"), s);
