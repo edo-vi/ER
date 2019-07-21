@@ -1,36 +1,151 @@
 package InterfaceController.DOCControllerFactory;
 
 import Component.DOCComponent;
+import Component.HPComponent;
 import Component.LoginComponent;
+import Entities.Administration;
+import Entities.Patient;
+import Entities.Prescription;
+import Entities.Recovery;
 import State.StateEvent;
 import State.Store;
 import System.Sistema;
 import State.StringCommand;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.Subject;
+import javafx.application.Platform;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.util.Callback;
+
+import java.util.stream.Collectors;
 
 public class DOCSRController implements DOCController {
-    private Sistema sys = Sistema.getInstance();
-    private Store<StringCommand> store;
-    private Subject<StateEvent> stream;
+    private final Store<StringCommand> store;
+    private final Sistema sys = Sistema.getInstance();
+    @FXML private TableView<Administration> administrations = new TableView<>();
+    @FXML private TableView<Prescription> prescriptions = new TableView<>();
+
+    @FXML private Label patientName;
+    @FXML private Label patientSurname;
+    @FXML private Label patientDateofBirth;
+    @FXML private Label patientFiscalCode;
+    @FXML private Label patientPlaceofBirth;
+    @FXML private Label patientRecoveryStartDate;
+    @FXML private Label patientRecoveryEndDate;
+    @FXML private Label patientRecoveryReasons;
+    @FXML private Label patientRecoveryDischarge;
+    @FXML private TextField patientText;
+    @FXML private Label nameLabel;
+
+    @FXML private TableColumn<Administration, String> drugColumn;
+    @FXML private TableColumn<Prescription, String> quantityColumn;
+
     private Disposable dis;
 
-    public DOCSRController(Store store, Subject<StateEvent> stream) {
+    public DOCSRController(Store<StringCommand> store, Subject<StateEvent> stream) {
         this.store = store;
-        this.stream = stream;
+
         try {
             dis.dispose();
-        } catch (NullPointerException e) {
+        } catch (NullPointerException e) {}
 
-        }
-        dis = stream.subscribe(se -> {
-
+        dis = stream.subscribe(se ->
+        {
+            Platform.runLater(() -> nameLabel.setText(se.state().getUser().toString()));
+            if(se.command().name().equals("CHOSEN_RECOVERY_TO_SHOW")) {
+                setData(se.state().getChosenRecovery());
+            }
         });
     }
 
-    @FXML
-    public void initialize() {
+    @FXML protected void initialize() {
+        drugColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Administration , String>, ObservableValue<String>>() {
+
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Administration , String> param) {
+                return new SimpleObjectProperty<>(param.getValue().getPrescription().getDrug());
+            }
+        });
+
+        quantityColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Prescription , String>, ObservableValue<String>>() {
+
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Prescription, String> param) {
+                int a = param.getValue().getTotalNumberofDoses() * param.getValue().getDailyDose();
+                String s = String.format("%d mg/mm", a);
+                return new SimpleObjectProperty<String>(s);
+            }
+        });
+    }
+
+    @FXML protected void setData(Recovery r) {
+        if (r != null) {
+            Patient p = r.getPatient();
+            patientName.setText(p.getName());
+            patientSurname.setText(p.getSurname());
+            patientFiscalCode.setText(p.getFiscalCode());
+            patientPlaceofBirth.setText(p.getPlaceOfBirth());
+            patientDateofBirth.setText(p.getDateofBirth().toString());
+            patientRecoveryStartDate.setText(r.getStartDate().toString());
+            try {
+                patientRecoveryEndDate.setText(r.getEndDate().toString());
+            } catch(Recovery.RecoveryNullFieldException e) {
+                patientRecoveryEndDate.setText("");
+            }
+            try {
+                patientRecoveryDischarge.setText(r.getDischargeSummary());
+            } catch(Recovery.RecoveryNullFieldException e) {
+                patientRecoveryDischarge.setText("");
+            }
+            patientRecoveryReasons.setText(r.getDiagnosis());
+
+
+            ObservableList<Prescription> data = prescriptions.getItems();
+            data.removeAll(data);
+            data.addAll(r.getPrescriptions());
+
+            ObservableList<Administration> data1 = administrations.getItems();
+            data.removeAll(data1);
+            data1.addAll(r.getPrescriptions().stream().flatMap(pr -> pr.getAdministrations().stream())
+                    .collect(Collectors.toList()));
+        } else {
+            patientName.setText("");
+            patientSurname.setText("");
+            patientFiscalCode.setText("");
+            patientPlaceofBirth.setText("");
+            patientDateofBirth.setText("");
+            patientRecoveryStartDate.setText("");
+            patientRecoveryEndDate.setText("");
+            patientRecoveryReasons.setText("");
+            patientRecoveryDischarge.setText("");
+
+            ObservableList<Prescription> data = prescriptions.getItems();
+            data.removeAll(data);
+
+            ObservableList<Administration> data1 = administrations.getItems();
+            data.removeAll(data1);
+        }
+
+    }
+
+    @FXML protected void searchPatient() {
+        String[] arr = patientText.getText().split(" ");
+        String name = arr[0];
+        String surname = arr[1];
+        Patient p = store.poll().getPatients().stream()
+                .filter(pa -> pa.getName().equals(name) && pa.getSurname().equals(surname)).findFirst().orElse(null);
+
+        if (p != null) {
+            store.update(new StringCommand("SEARCH_PATIENT", patientText.getText()));
+            sys.setInterface("DOCS", HPComponent.HPTitle);
+        }
 
     }
 

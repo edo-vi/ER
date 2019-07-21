@@ -55,7 +55,7 @@ public class HPMController implements HPController {
         });
     }
 
-    @FXML protected void initialize() {
+    @FXML public void initialize() {
         patientComboBox.setConverter(new StringConverter<Recovery>() {
             @Override
             public String toString(Recovery recovery) {
@@ -91,13 +91,13 @@ public class HPMController implements HPController {
         initialize(store.poll());
     }
 
-    @FXML protected void initialize(State state) {
+    @FXML public void initialize(State state) {
         updatePatients(state);
         patientComboBox.getSelectionModel().selectFirst();
         setData(patientComboBox.getValue());
     }
 
-    @FXML protected void updatePatients(State state) {
+    @FXML public void updatePatients(State state) {
         List<Recovery> rec = state.getActiveRecoveries();
         ObservableList<Recovery> data = this.patientComboBox.getItems();
         int index = patientComboBox.getSelectionModel().getSelectedIndex();
@@ -106,14 +106,10 @@ public class HPMController implements HPController {
         patientComboBox.getSelectionModel().select(index);
     }
 
-    @FXML protected void showMonitoring() {
-        store.update(new StringCommand("SHOW_MONITORING"));
-        store.update(new StringCommand("START_MONITORING"));
-    }
-    @FXML protected void selectedPatient() {
+    @FXML public void selectedPatient() {
         this.setData(patientComboBox.getValue());
     }
-    @FXML protected void setData(Recovery r) {
+    @FXML public void setData(Recovery r) {
         if (r != null) {
             List<Monitoring> monitorings = r.getMonitorings();
             List<Administration> administrations = r.getPatient().getAdministrations();
@@ -125,6 +121,11 @@ public class HPMController implements HPController {
             data2.removeAll(data2);
             data2.addAll(administrations);
         }
+    }
+
+    @FXML protected void showMonitoring() {
+        store.update(new StringCommand("SHOW_MONITORING"));
+        store.update(new StringCommand("START_MONITORING"));
     }
     @FXML protected void search() {
         sys.setInterface("HPS", HPComponent.HPTitle);

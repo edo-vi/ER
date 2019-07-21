@@ -36,7 +36,7 @@ public class HPSController implements HPController {
 
         dis = stream.subscribe(se -> {
             Platform.runLater(() -> nameLabel.setText("Primario Dr. " + se.state().getUser().toString()));
-            if(se.command().name().equals("SEARCH_PATIENT_HP"))
+            if(se.command().name().equals("SEARCH_PATIENT"))
                 updateRecoveries((String) se.command().getArg());
         });
     }
@@ -56,12 +56,8 @@ public class HPSController implements HPController {
         });
 
 
-        initialize(store.poll());
     }
 
-    @FXML protected void initialize(State state) {
-
-    }
 
     @FXML protected void updateRecoveries(String nameandsurname) {
         String[] arr = nameandsurname.split(" ");
@@ -96,12 +92,7 @@ public class HPSController implements HPController {
         store.update(new StringCommand("SHOW_MONITORING"));
         store.update(new StringCommand("START_MONITORING"));
     }
-    @FXML protected void selectedPatient() {
 
-    }
-    @FXML protected void setData(Recovery r) {
-
-    }
     @FXML protected void search() {
         sys.setInterface("HPS", HPComponent.HPTitle);
     }

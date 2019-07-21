@@ -137,11 +137,6 @@ public class HPSRController implements HPController {
 
     }
 
-    @FXML protected void showMonitoring() {
-        store.update(new StringCommand("SHOW_MONITORING"));
-        store.update(new StringCommand("START_MONITORING"));
-    }
-
     @FXML protected void searchPatient() {
         String[] arr = patientText.getText().split(" ");
         String name = arr[0];
@@ -150,11 +145,17 @@ public class HPSRController implements HPController {
                 .filter(pa -> pa.getName().equals(name) && pa.getSurname().equals(surname)).findFirst().orElse(null);
 
         if (p != null) {
-        store.update(new StringCommand("SEARCH_PATIENT_HP", patientText.getText()));
-        sys.setInterface("HPS", HPComponent.HPTitle);
+            store.update(new StringCommand("SEARCH_PATIENT", patientText.getText()));
+            sys.setInterface("HPS", HPComponent.HPTitle);
         }
 
     }
+
+    @FXML protected void showMonitoring() {
+        store.update(new StringCommand("SHOW_MONITORING"));
+        store.update(new StringCommand("START_MONITORING"));
+    }
+
     @FXML protected void search() {
         sys.setInterface("HPS", HPComponent.HPTitle);
     }

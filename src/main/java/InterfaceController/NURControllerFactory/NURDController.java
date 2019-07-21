@@ -120,13 +120,17 @@ public class NURDController implements NURController {
         ObservableList<String> data = this.drugComboBox.getItems();
         int index = drugComboBox.getSelectionModel().getSelectedIndex();
         data.removeAll(data);
-        patientComboBox.getSelectionModel().getSelectedItem().getActiveRecoveries().forEach(r -> r.getPrescriptions().forEach(p -> data.add(p.getDrug())));
-        if (data.size() > 0) {
-            drugComboBox.getSelectionModel().select(index);
-        } else {
-            //todo it doesn't fucking work
-            drugComboBox.setValue(null);
+        Patient pat = patientComboBox.getSelectionModel().getSelectedItem();
+        if (pat != null) {
+            pat.getActiveRecoveries().forEach(r -> r.getPrescriptions().forEach(p -> data.add(p.getDrug())));
+            if (data.size() > 0) {
+                drugComboBox.getSelectionModel().select(index);
+            } else {
+                //todo it doesn't fucking work
+                drugComboBox.setValue(null);
+            }
         }
+
     }
 
     @FXML protected void setPatientLabel(Patient p) {
