@@ -143,3 +143,7 @@
 .v-box {
     -fx-background-color: #1d1d1d;
 }
+
+.combo-box {
+    -fx-font-size: 13pt;
+}

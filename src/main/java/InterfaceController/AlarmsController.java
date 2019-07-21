@@ -19,25 +19,28 @@ public class AlarmsController {
 
     public AlarmsController(Store store, Subject<StateEvent> stream) {
         this.store = store;
-        Media sound = new Media(new File("Cicalino retromarcia.mp3").toURI().toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(sound);
-        mediaPlayer.play();
+
     }
+
 
     @FXML protected void aritmia(){
         store.update(new StringCommand("EVOLVE_GENERATOR", Sickness.BRACHICARDIA));
+
     }
 
     @FXML protected void tachicardia(){
         store.update(new StringCommand("EVOLVE_GENERATOR", Sickness.TACHICARDIA));
+
     }
 
     @FXML protected void ipotermia(){
         store.update(new StringCommand("EVOLVE_GENERATOR", Sickness.IPOTERMIA));
+
     }
 
     @FXML protected void ipertermia(){
         store.update(new StringCommand("EVOLVE_GENERATOR", Sickness.IPERTERMIA));
+
     }
 
     @FXML protected void ipotensione(){
@@ -50,5 +53,6 @@ public class AlarmsController {
 
     @FXML protected void flutter(){
         store.update(new StringCommand("ALARM_ACTIVATED", new Tuple<>(3, Sickness.FLUTTER)));
+
     }
 }
