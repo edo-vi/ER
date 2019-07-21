@@ -8,6 +8,7 @@ import Generator.DataThread;
 import Generator.Sickness;
 import Generator.Value;
 import InterfaceController.HPControllerFactory.HPControllerFactory;
+import InterfaceController.NURControllerFactory.NURControllerFactory;
 import State.Reducer;
 import State.ReducerString;
 import State.StringCommand;
@@ -291,11 +292,11 @@ public class Sistema {
             this.controller.addInterface("DOCS", new DOCComponent<StringCommand>(new DOCFactory().getInterface("search")).getLoader().load());
             this.controller.addInterface("DOCSR", new DOCComponent<StringCommand>(new DOCFactory().getInterface("searchResult")).getLoader().load());
             System.out.println("---- NUR Interfaces ----");
-            this.controller.addInterface("NURD", new NURComponent<StringCommand>(new NURFactory().getInterface("default")).getLoader().load());
-            this.controller.addInterface("NURAP", new NURComponent<StringCommand>(new NURFactory().getInterface("addPatient")).getLoader().load());
-            this.controller.addInterface("NURM", new NURComponent<StringCommand>(new NURFactory().getInterface("monitoring")).getLoader().load());
-            this.controller.addInterface("NURS", new NURComponent<StringCommand>(new NURFactory().getInterface("search")).getLoader().load());
-            this.controller.addInterface("NURSR", new NURComponent<StringCommand>(new NURFactory().getInterface("searchResult")).getLoader().load());
+            this.controller.addInterface("NURD", new NURComponent<StringCommand>(new NURFactory().getInterface("default"), new NURControllerFactory().getController("default")).getLoader().load());
+            this.controller.addInterface("NURAP", new NURComponent<StringCommand>(new NURFactory().getInterface("addPatient"), new NURControllerFactory().getController("addPatient")).getLoader().load());
+            this.controller.addInterface("NURM", new NURComponent<StringCommand>(new NURFactory().getInterface("monitoring"), new NURControllerFactory().getController("monitoring")).getLoader().load());
+            this.controller.addInterface("NURS", new NURComponent<StringCommand>(new NURFactory().getInterface("search"), new NURControllerFactory().getController("search")).getLoader().load());
+            this.controller.addInterface("NURSR", new NURComponent<StringCommand>(new NURFactory().getInterface("searchResult"), new NURControllerFactory().getController("searchResult")).getLoader().load());
             System.out.println("---- Interfaces Loaded Successfully----");
         } catch (Exception e) {
             e.printStackTrace();
