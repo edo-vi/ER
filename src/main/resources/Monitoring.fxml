@@ -49,12 +49,12 @@
                   <Label id="surnameLabel" fx:id="surnameLabel" layoutX="24.0" layoutY="64.0" prefHeight="21.0" prefWidth="133.0" style="-fx-font-size: 20; -fx-text-fill: grey;" text="Cognome" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="70.0" />
                   <TableView fx:id="table" fixedCellSize="31" layoutY="200.0" prefHeight="400.0" prefWidth="650.0" style="-fx-background-color: black;" AnchorPane.leftAnchor="5.0">
                     <columns>
-                      <TableColumn prefWidth="180.0" resizable="false" text="Heart Rate">
+                      <TableColumn prefWidth="175.0" resizable="false" text="Heart Rate">
                           <cellValueFactory>
                               <PropertyValueFactory property="heartRate" />
                           </cellValueFactory>
                       </TableColumn>
-                      <TableColumn fx:id="temperatureColumn" prefWidth="200.0" resizable="false" text="Temperature" />
+                      <TableColumn fx:id="temperatureColumn" prefWidth="195.0" resizable="false" text="Temperature" />
 
                       <TableColumn prefWidth="130.0" resizable="false" text="DBP">
                         <cellValueFactory>
