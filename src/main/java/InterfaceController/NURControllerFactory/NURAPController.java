@@ -9,12 +9,11 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.Subject;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
+import javafx.scene.control.*;
 import System.Sistema;
-import javafx.scene.control.TextField;
+import javafx.util.Callback;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class NURAPController implements NURController {
@@ -42,17 +41,34 @@ public class NURAPController implements NURController {
         });
     }
 
+    @FXML public void initialize() {
+        final Callback<DatePicker, DateCell> dayCellFactory = new Callback<DatePicker, DateCell>() {
+            @Override
+            public DateCell call(final DatePicker datePicker) {
+                return new DateCell() {
+                    @Override
+                    public void updateItem(LocalDate item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (item.isAfter(LocalDate.now())) {
+                            setDisable(true);
+                            setStyle("-fx-background-color: #ffc0cb;");
+                        }
+                    }
+                };
+            }
+        };
+        bDayDate.setDayCellFactory(dayCellFactory);
+    }
+
     @FXML protected void submit() {
         try {
-            if(surnameLabel.getText() != null &&
-                    nameLabel.getText() != null &&
-                    (male.isSelected() || female.isSelected()) &&
-                    new java.sql.Date(new Date().getTime()).before(new java.sql.Date(bDayDate.getValue().toEpochDay())) &&
-                    placeLabel.getText() != null &&
-                    cfLabel.getText() != null)
+            if(!surnameLabel.getText().equals("") && !nameLabel.getText().equals("") && (male.isSelected() || female.isSelected()) && bDayDate.getValue() != null && !placeLabel.getText().equals("") && !cfLabel.getText().equals("")) {
+                System.out.println("\n\n" + new FiscalCodeCalculator().calculateFC(nameLabel.getText(), surnameLabel.getText(), (male.isSelected()) ? 'M' : 'F', bDayDate.getValue().toString()));
                 System.out.println("ALL DATA IS CORRECT");
-            else throw new IllegalArgumentException();
+            } else throw new IllegalArgumentException();
         } catch (Exception e) {
+            System.out.println("NOT ALL DATA IS CORRECT OR INSERTED");
+        } finally {
             nameLabel.clear();
             surnameLabel.clear();
             if(male.isSelected())
@@ -62,8 +78,13 @@ public class NURAPController implements NURController {
             bDayDate.setValue(null);
             placeLabel.clear();
             cfLabel.clear();
-            System.out.println("NOT ALL DATA IS CORRECT OR INSERTED");
         }
+    }
+
+    @FXML protected void calcolateCF() {
+        if(!surnameLabel.getText().equals("") && !nameLabel.getText().equals("") && (male.isSelected() || female.isSelected()) && bDayDate.getValue() != null)
+            cfLabel.setText(new FiscalCodeCalculator().calculateFC(nameLabel.getText(), surnameLabel.getText(), (male.isSelected()) ? 'M' : 'F', bDayDate.getValue().toString()));
+        else System.out.println("NOT ALL FIELD TO CALCULATE CF WERE SET");
     }
 
     @FXML protected void showMonitoring() {
