@@ -62,6 +62,10 @@ public class Recovery implements Entry {
         this.active = true;
     }
 
+    public Recovery(String diagnosis, Patient patient) {
+        this(Calendar.getInstance().getTime(), diagnosis, patient);
+    }
+
     public Recovery(Date start, String diagnosis, Patient patient, List<Prescription> prescriptions) {
         this(start, diagnosis, patient);
         this.prescriptions.addAll(prescriptions);
