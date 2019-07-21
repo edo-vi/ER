@@ -60,9 +60,9 @@
                <children>
                   <Label layoutX="48.0" layoutY="65.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" text="Ricerca paziente:" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="50.0" />
                   <TextField fx:id="searchPatient" layoutX="252.0" layoutY="35.0" prefHeight="37.0" prefWidth="333.0" promptText="cerca..." AnchorPane.leftAnchor="220.0" AnchorPane.topAnchor="45.0" />
-                  <TableView fx:id="recoveryTable" layoutX="287.0" layoutY="358.0" prefHeight="332.0" prefWidth="977.0" style="-fx-background-color: black;" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="200.0">
+                  <TableView fx:id="recoveryTable" layoutX="287.0" layoutY="358.0" prefHeight="332.0" prefWidth="977.0" style="-fx-background-color: black;" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="200.0">
                      <columns>
-                        <TableColumn prefWidth="200.0" text="Data Ricovero" >
+                        <TableColumn prefWidth="195.0" text="Data Ricovero" >
                             <cellValueFactory>
                                 <PropertyValueFactory property="startDate" />
                             </cellValueFactory>

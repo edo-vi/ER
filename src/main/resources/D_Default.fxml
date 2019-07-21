@@ -68,12 +68,12 @@
                   <Label layoutX="812.0" layoutY="357.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" text="29/03/1995" AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="507.0" />
                   <Label layoutX="394.0" layoutY="300.0" style="-fx-font-size: 15; -fx-text-fill: grey;" text="Luogo di nascita:" AnchorPane.leftAnchor="400.0" AnchorPane.topAnchor="510.0" />
                   <Label layoutX="576.0" layoutY="297.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" text="Soave (VR)" AnchorPane.leftAnchor="550.0" AnchorPane.topAnchor="507.0" />
-                  <TableView layoutX="152.0" layoutY="161.0" prefHeight="250.0" prefWidth="977.0" style="-fx-background-color: black;" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="160.0">
+                  <TableView layoutX="152.0" layoutY="161.0" prefHeight="250.0" prefWidth="977.0" style="-fx-background-color: black;" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="160.0">
                     <columns>
                       <TableColumn prefWidth="300.0" text="Cognome" />
                       <TableColumn prefWidth="300.0" text="Nome" />
                         <TableColumn prefWidth="200.0" text="Data di nascita" />
-                        <TableColumn prefWidth="167.0" text="Sesso" />
+                        <TableColumn prefWidth="162.0" text="Sesso" />
                     </columns>
                   </TableView>
                   <Label layoutX="60.0" layoutY="584.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" text="Diagnosi:" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="580.0" />

@@ -6,6 +6,7 @@ import State.StateEvent;
 import System.Sistema;
 import javafx.fxml.FXMLLoader;
 
+
 public class AlarmsComponent<C extends Command> extends Component {
     private FXMLLoader loader;
     private final Sistema sys = Sistema.getInstance();

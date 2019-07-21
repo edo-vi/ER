@@ -8,6 +8,10 @@ import State.StringCommand;
 import System.Sistema;
 import io.reactivex.subjects.Subject;
 import javafx.fxml.FXML;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+
+import java.io.File;
 
 public class AlarmsController {
     private final Sistema sys = Sistema.getInstance();
@@ -15,6 +19,9 @@ public class AlarmsController {
 
     public AlarmsController(Store store, Subject<StateEvent> stream) {
         this.store = store;
+        Media sound = new Media(new File("Cicalino retromarcia.mp3").toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.play();
     }
 
     @FXML protected void aritmia(){

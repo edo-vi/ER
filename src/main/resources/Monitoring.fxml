@@ -21,7 +21,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="810.0" prefWidth="1200.0" stylesheets="@DarkThemeGreyLabel.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="813.0" prefWidth="1200.0" style="-fx-background-color: black;" stylesheets="@DarkThemeGreyLabel.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <MenuBar>
         <menus>
@@ -47,14 +47,14 @@
                <children>
                   <Label id="nameLabel" fx:id="nameLabel" layoutX="24.0" layoutY="35.0" prefHeight="21.0" prefWidth="107.0" style="-fx-font-size: 20; -fx-text-fill: grey;" text="Nome" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="30.0" />
                   <Label id="surnameLabel" fx:id="surnameLabel" layoutX="24.0" layoutY="64.0" prefHeight="21.0" prefWidth="133.0" style="-fx-font-size: 20; -fx-text-fill: grey;" text="Cognome" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="70.0" />
-                  <TableView fx:id="table" fixedCellSize="31" layoutY="200.0" prefHeight="400.0" prefWidth="650.0" style="-fx-background-color: black;">
+                  <TableView fx:id="table" fixedCellSize="31" layoutY="200.0" prefHeight="400.0" prefWidth="650.0" style="-fx-background-color: black;" AnchorPane.leftAnchor="5.0">
                     <columns>
                       <TableColumn prefWidth="180.0" resizable="false" text="Heart Rate">
                           <cellValueFactory>
                               <PropertyValueFactory property="heartRate" />
                           </cellValueFactory>
                       </TableColumn>
-                      <TableColumn prefWidth="200.0" resizable="false" text="Temperature" fx:id="temperatureColumn"/>
+                      <TableColumn fx:id="temperatureColumn" prefWidth="200.0" resizable="false" text="Temperature" />
 
                       <TableColumn prefWidth="130.0" resizable="false" text="DBP">
                         <cellValueFactory>
@@ -68,14 +68,14 @@
                     </TableColumn>
                     </columns>
                   </TableView>
-                  <Label fx:id="hrLabel" layoutX="43.0" layoutY="133.0" style="-fx-font-size: 40; -fx-text-fill: grey;" text="150" AnchorPane.topAnchor="133.0" />
-                  <Label fx:id="tempLabel" layoutX="232.0" layoutY="133.0" style="-fx-font-size: 40; -fx-text-fill: grey;" text="32.7" AnchorPane.topAnchor="133.0" />
-                  <Label fx:id="dbpLabel" layoutX="386.0" layoutY="133.0" style="-fx-font-size: 40; -fx-text-fill: grey;" text="150" AnchorPane.topAnchor="133.0" />
-                  <Label fx:id="sbpLabel" layoutX="515.0" layoutY="133.0" style="-fx-font-size: 40; -fx-text-fill: grey;" text="150" AnchorPane.topAnchor="133.0" />
-                  <Label layoutX="112.0" layoutY="141.0" style="-fx-text-fill: grey;" text="bpm" />
-                  <Label layoutX="317.0" layoutY="141.0" prefHeight="21.0" prefWidth="17.0" style="-fx-text-fill: grey;" text="°C" />
-                  <Label layoutX="454.0" layoutY="142.0" style="-fx-font-size: 13; -fx-text-fill: grey;" text="mmHg" />
-                  <Label layoutX="583.0" layoutY="142.0" style="-fx-font-size: 13; -fx-text-fill: grey;" text="mmHg" />
+                  <Label fx:id="hrLabel" layoutX="53.0" layoutY="133.0" style="-fx-font-size: 40; -fx-text-fill: grey;" text="150" AnchorPane.topAnchor="133.0" />
+                  <Label fx:id="tempLabel" layoutX="242.0" layoutY="133.0" style="-fx-font-size: 40; -fx-text-fill: grey;" text="32.7" AnchorPane.topAnchor="133.0" />
+                  <Label fx:id="dbpLabel" layoutX="396.0" layoutY="133.0" style="-fx-font-size: 40; -fx-text-fill: grey;" text="150" AnchorPane.topAnchor="133.0" />
+                  <Label fx:id="sbpLabel" layoutX="525.0" layoutY="133.0" style="-fx-font-size: 40; -fx-text-fill: grey;" text="150" AnchorPane.topAnchor="133.0" />
+                  <Label layoutX="122.0" layoutY="141.0" style="-fx-text-fill: grey;" text="bpm" />
+                  <Label layoutX="327.0" layoutY="141.0" prefHeight="21.0" prefWidth="17.0" style="-fx-text-fill: grey;" text="°C" />
+                  <Label layoutX="464.0" layoutY="142.0" style="-fx-font-size: 13; -fx-text-fill: grey;" text="mmHg" />
+                  <Label layoutX="593.0" layoutY="142.0" style="-fx-font-size: 13; -fx-text-fill: grey;" text="mmHg" />
                   <Label fx:id="roomLabel" layoutX="523.0" layoutY="23.0" prefHeight="45.0" prefWidth="119.0" style="-fx-font-size: 30; -fx-text-fill: #B0C4DE;" text="Letto 1" />
                </children>
             </AnchorPane>
@@ -122,6 +122,7 @@
             </VBox>
          </children>
       </HBox>
+      <AnchorPane prefHeight="3.0" prefWidth="1000.0" style="-fx-background-color: black;" />
       <AnchorPane prefHeight="3.0" prefWidth="1000.0" style="-fx-background-color: grey;" />
       <GridPane prefHeight="170.0" prefWidth="1000.0" style="-fx-background-color: black;">
         <columnConstraints>

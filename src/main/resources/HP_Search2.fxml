@@ -59,7 +59,7 @@
                   <Label layoutX="29.0" layoutY="61.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" text="Ricerca paziente:" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="50.0" />
                   <TextField fx:id="patientText" cache="true" layoutX="215.0" layoutY="65.0" prefHeight="37.0" prefWidth="333.0" promptText="cerca..." AnchorPane.leftAnchor="220.0" AnchorPane.topAnchor="45.0" />
                   <Button layoutX="576.0" layoutY="67.0" mnemonicParsing="false" onAction="#searchPatient" text="Cerca" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="47.0" />
-                  <TableView fx:id="administrations" layoutX="22.0" layoutY="543.0" prefHeight="210.0" prefWidth="977.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="550.0">
+                  <TableView fx:id="administrations" layoutX="22.0" layoutY="543.0" prefHeight="210.0" prefWidth="977.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="550.0">
                      <columns>
                         <TableColumn prefWidth="140.0" text="Data">
                            <cellValueFactory>
@@ -73,7 +73,7 @@
                         </TableColumn>
                         <TableColumn fx:id="drugColumn" prefWidth="200.0" text="Farmaco" />
 
-                        <TableColumn prefWidth="150.0" text="Dose">
+                        <TableColumn prefWidth="145.0" text="Dose">
                            <cellValueFactory>
                               <PropertyValueFactory property="dose" />
                            </cellValueFactory>
@@ -96,7 +96,7 @@
                   <Label layoutX="450.0" layoutY="241.0" style="-fx-text-fill: grey; -fx-font-size: 15;" text="Motivo:" AnchorPane.leftAnchor="340.0" AnchorPane.topAnchor="210.0" />
                   <Label layoutX="298.0" layoutY="387.0" style="-fx-text-fill: grey; -fx-font-size: 15;" text="Esito:" AnchorPane.leftAnchor="340.0" AnchorPane.topAnchor="250.0" />
                   <Label layoutX="47.0" layoutY="434.0" style="-fx-text-fill: grey; -fx-font-size: 18;" text="Prescrizioni:" AnchorPane.leftAnchor="18.0" AnchorPane.topAnchor="290.0" />
-                  <TableView fx:id="prescriptions" layoutX="15.0" layoutY="387.0" prefHeight="210.0" prefWidth="977.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="265.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="315.0">
+                  <TableView fx:id="prescriptions" layoutX="15.0" layoutY="387.0" prefHeight="210.0" prefWidth="977.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="265.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="315.0">
                      <columns>
                         <TableColumn prefWidth="120.0" text="Data">
                            <cellValueFactory>
@@ -119,7 +119,7 @@
                               <PropertyValueFactory property="totalNumberofDoses" />
                            </cellValueFactory>
                         </TableColumn>
-                        <TableColumn fx:id="quantityColumn" prefWidth="180.0" text="Quantità" />
+                        <TableColumn fx:id="quantityColumn" prefWidth="175.0" text="Quantità" />
 
                         <TableColumn prefWidth="187.0" text="Durata terapia">
                            <cellValueFactory>

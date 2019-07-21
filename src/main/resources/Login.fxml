@@ -51,7 +51,7 @@
                   <Font size="18.0" />
                </font>
             </Button>
-            <Button layoutX="431.0" layoutY="75.0" mnemonicParsing="false" onAction="#startMonitoring" prefHeight="72.0" prefWidth="162.0" style="-fx-border-color: yellow; -fx-font-size: 18;" text="Apri&#10;Monitoraggio" textAlignment="CENTER">
+            <Button layoutX="432.0" layoutY="57.0" mnemonicParsing="false" onAction="#startMonitoring" prefHeight="72.0" prefWidth="162.0" style="-fx-border-color: yellow; -fx-font-size: 18;" text="Apri&#10;Monitoraggio" textAlignment="CENTER">
                <effect>
                   <Reflection fraction="0.51" />
                </effect></Button>
