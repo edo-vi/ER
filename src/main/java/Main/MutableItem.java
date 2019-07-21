@@ -83,7 +83,7 @@ public class MutableItem<T> {
             for (int i = 0; i < size && i < bufferSize; i++) {
                 try {
                     arr.add(Optional.of(history.get(i)));
-                } catch (ArrayIndexOutOfBoundsException err) {
+                } catch (IndexOutOfBoundsException err) {
                     arr.add(Optional.empty());
                 }
             }
