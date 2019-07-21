@@ -2,6 +2,7 @@ package System;
 
 import Component.*;
 import Entities.Patient;
+import Entities.Prescription;
 import Entities.Recovery;
 import Entities.User;
 import Generator.DataThread;
@@ -123,7 +124,8 @@ public class Sistema {
                 .with("SESSION_TERMINATED")
                 .with("SESSION_START")
                 .with("SEARCH_PATIENT")
-                .with("TRY_ADMISSION");
+                .with("TRY_ADMISSION")
+                .with("ADD_PRESCRIPTION");
         Middleware<StringCommand> middleware = new MiddlewareString(monitoringStage)
                 .with("LOGIN", (c, s, m) -> {
                     User x = (User) c.getArg();
@@ -293,6 +295,18 @@ public class Sistema {
                         System.out.println("Sistema, admission summary: " + e);
                         return new Tuple<>(new StringCommand("COULD_NOT_ADMIT_A_PATIENT"), s);
                     }
+                })
+                .with("ADD_PRESCRIPTION", (c,s,m) -> {
+                    Prescription pr = (Prescription) c.getArg();
+                    DatabaseService.addEntry(pr);
+                    //TODO check
+                    try {
+                        s.getActiveRecoveries().stream().filter(rec -> rec == pr.getRecovery()).findFirst().get().addToPrescriptions(pr);
+                        return new Tuple<>(new StringCommand("ADDED_PRESCRIPTION"), s);
+                    } catch(Exception err) {
+                        return new Tuple<>(new StringCommand("FAILURE_TO_ADD_PRESCRIPTION"), s);
+                    }
+
                 });
 
         store = new Store<StringCommand>(new State(), reducer, middleware);
