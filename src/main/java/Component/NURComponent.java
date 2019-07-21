@@ -1,5 +1,6 @@
 package Component;
 
+import InterfaceController.NURControllerFactory.NURController;
 import State.Command;
 import State.StateEvent;
 import System.NURInterfaceFactory.NURInterface;
@@ -11,9 +12,9 @@ public class NURComponent<C extends Command> extends Component {
     private final Sistema sys = Sistema.getInstance();
     public static final String NURTitle = "ER - Nurse";
 
-    public NURComponent(NURInterface ui) {
+    public NURComponent(NURInterface ui, NURController ctl) {
         this.loader = new FXMLLoader(getClass().getResource(ui.getFile()));
-        //loader.setController(ctl);
+        loader.setController(ctl);
     }
 
 

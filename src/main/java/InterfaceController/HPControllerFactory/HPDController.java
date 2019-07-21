@@ -95,7 +95,6 @@ public class HPDController implements HPController{
         } else {
             //todo it doesn't fucking work
             patientsChoice.setValue(null);
-
         }
     }
 
