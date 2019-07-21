@@ -64,9 +64,9 @@ public class DOCDController implements DOCController{
                 try {
                     int s = Integer.valueOf(param.getValue().getFiscalCode().substring(9, 11));
                     return
-                            s <= 0 || s > 62 ?
+                            s <= 0 || s > 71 ?
                                     new SimpleObjectProperty<>("BOTH")
-                                    : s > 31 ?
+                                    : s > 41 ?
                                     new SimpleObjectProperty<>("F")
                                     : new SimpleObjectProperty<>("M");
 

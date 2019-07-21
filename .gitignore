@@ -10,3 +10,4 @@ lib/
 *.aux
 *.synctex*
 *.toc
+META-INF/*
