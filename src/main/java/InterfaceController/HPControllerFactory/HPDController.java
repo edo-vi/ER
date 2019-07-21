@@ -37,7 +37,7 @@ public class HPDController implements HPController{
     @FXML private Label patientRecoveryEndDate;
     @FXML private Label patientRecoveryReasons;
     @FXML private TextArea dischargeText;
-    @FXML private ComboBox<Recovery> patientsChoice= new ComboBox<Recovery>();
+    @FXML private ComboBox<Recovery> patientsChoice = new ComboBox<Recovery>();
     @FXML private Label nameLabel;
     private Disposable dis;
 
@@ -51,13 +51,14 @@ public class HPDController implements HPController{
         dis = stream.subscribe(se ->
         {
             Platform.runLater(() -> nameLabel.setText("Primario Dr. " + se.state().getUser().toString()));
-            /*if (se.command().name().equals("DISCHARGED_A_PATIENT"))*/ updateRecoveries(se.state());
+            /*if (se.command().name().equals("DISCHARGED_A_PATIENT"))*/
+            updateRecoveries(se.state());
             setLabels(patientsChoice.getValue());
 
         });
     }
 
-    @FXML public void initialize() {
+    @FXML protected void initialize() {
         patientsChoice.setConverter(new StringConverter<Recovery>() {
             @Override
             public String toString(Recovery recovery) {
@@ -77,7 +78,10 @@ public class HPDController implements HPController{
         initialize(store.poll());
     }
 
-    @FXML public void initialize(State state) {
+    @FXML protected void show() {
+        patientsChoice.getSelectionModel().selectFirst();
+    }
+    @FXML protected void initialize(State state) {
         updateRecoveries(state);
         patientsChoice.getSelectionModel().selectFirst();
         setLabels(patientsChoice.getValue());
@@ -90,11 +94,10 @@ public class HPDController implements HPController{
         int index = patientsChoice.getSelectionModel().getSelectedIndex();
         data.removeAll(data);
         data.addAll(recoveries);
-        if (recoveries.size() > 0) {
+        if (recoveries.size() > index) {
             patientsChoice.getSelectionModel().select(index);
         } else {
-            //todo it doesn't fucking work
-            patientsChoice.setValue(null);
+            patientsChoice.getSelectionModel().select(0);
         }
     }
 

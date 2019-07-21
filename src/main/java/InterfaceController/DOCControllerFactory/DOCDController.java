@@ -4,9 +4,7 @@ import Component.DOCComponent;
 
 import Component.LoginComponent;
 
-import Entities.Administration;
 import Entities.Patient;
-import Entities.Recovery;
 import Main.Tuple;
 import State.State;
 import State.StateEvent;
