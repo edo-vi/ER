@@ -12,16 +12,13 @@ import System.Sistema;
 import State.StringCommand;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.Subject;
-import javafx.beans.Observable;
 import javafx.collections.ObservableList;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.util.StringConverter;
 
-import javax.swing.text.html.Option;
 import java.util.Calendar;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -77,13 +74,11 @@ public class DOCAPController implements DOCController {
 
         prescriptionDate.setText(Calendar.getInstance().getTime().toString());
         fillPatients(store.poll());
-        selectedPatient = store.poll().getPatients().stream().filter(Patient::isRecovered).findFirst();
-
-        initialize(store.poll());
-    }
-
-    @FXML public void initialize(State state) {
-
+        try {
+            setSelectedPatient(this.patientComboBox.getItems().get(0));
+        } catch(IndexOutOfBoundsException er) {
+            setSelectedPatient(null);
+        }
     }
 
     @FXML protected void fillPatients(State state) {
@@ -92,9 +87,9 @@ public class DOCAPController implements DOCController {
         data.addAll(state.getPatients().stream().filter(Patient::isRecovered).collect(Collectors.toList()));
     }
 
-    @FXML protected void setLabels(Optional<Patient> p) {
-        if (p.isPresent()) {
-            Patient pat = p.get();
+    @FXML protected void setLabels() {
+        if (selectedPatient.isPresent()) {
+            Patient pat = selectedPatient.get();
             patientName.setText(pat.getName());
             patientSurname.setText(pat.getSurname());
             patientPlaceofBirth.setText(pat.getPlaceOfBirth());
@@ -106,39 +101,35 @@ public class DOCAPController implements DOCController {
             patientDateofBirth.setText("");
         }
     }
+
     @FXML protected void fillPatientsMantainSelection(State state) {
         fillPatients(state);
         selectedPatient.ifPresent(val -> {
             if (patientComboBox.getItems().contains(val)) {
-                setSelection(selectedPatient);
+                setSelectedPatient(selectedPatient.get());
             } else {
-                setSelection(Optional.empty());
+                setSelectedPatient(null);
             }
         });
     }
 
-    @FXML protected void setSelection(Optional<Patient> p) {
-        setLabels(p);
-        if (p.isPresent()) {
-            patientComboBox.getSelectionModel().select(p.get());
+    @FXML protected void setSelectedPatient(Patient p) {
+        if (p != null) {
+            patientComboBox.getSelectionModel().select(p);
+            this.selectedPatient = Optional.of(p);
         } else {
             patientComboBox.getSelectionModel().selectFirst();
+            try {
+                this.selectedPatient = Optional.of(patientComboBox.getItems().get(0));
+            } catch (IndexOutOfBoundsException err) {
+                this.selectedPatient = Optional.empty();
+            }
         }
-
-    }
-
-    @FXML protected void setSelection(int index) {
-        patientComboBox.getSelectionModel().selectFirst();
+        setLabels();
     }
 
     @FXML protected void selectedItemFromCombobox() {
-        Optional<Patient> p;
-        if (patientComboBox.getValue() != null) {
-            p = Optional.of(patientComboBox.getValue());
-        } else {
-            p = Optional.empty();
-        }
-        this.setSelection(p);
+        this.setSelectedPatient(patientComboBox.getSelectionModel().getSelectedItem());
     }
 
     @FXML protected void tryAddPrescription() {
