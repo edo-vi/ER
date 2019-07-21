@@ -35,6 +35,8 @@ public class InterfacesController {
         main.sizeToScene();
         main.toFront();
         main.show();
+        main.setX(100);
+        main.setY(100);
 
         main.setOnCloseRequest(new EventHandler<WindowEvent>() {
             public void handle(WindowEvent we) {
