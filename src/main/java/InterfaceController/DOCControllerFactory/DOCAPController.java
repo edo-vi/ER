@@ -53,7 +53,7 @@ public class DOCAPController implements DOCController {
 
         }
         dis = stream.subscribe(se -> {
-            Platform.runLater(() -> nameLabel.setText(se.state().getUser().toString()));
+            Platform.runLater(() -> nameLabel.setText("Dr. " + se.state().getUser().toString()));
             fillPatientsMantainSelection(se.state());
         });
     }

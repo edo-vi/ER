@@ -50,7 +50,7 @@ public class DOCMController implements DOCController {
 
     dis = stream.subscribe(se ->
     {
-        Platform.runLater(() -> nameLabel.setText(se.state().getUser().toString()));
+        Platform.runLater(() -> nameLabel.setText("Dr. " + se.state().getUser().toString()));
         updatePatients(se.state());
         setData(patientComboBox.getValue());
     });

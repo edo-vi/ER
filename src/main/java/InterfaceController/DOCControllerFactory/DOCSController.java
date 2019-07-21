@@ -37,7 +37,7 @@ public class DOCSController implements DOCController {
         } catch (NullPointerException e) {}
 
         dis = stream.subscribe(se -> {
-            Platform.runLater(() -> nameLabel.setText(se.state().getUser().toString()));
+            Platform.runLater(() -> nameLabel.setText("Dr. " + se.state().getUser().toString()));
             if(se.command().name().equals("SEARCH_PATIENT"))
                 updateRecoveries((String) se.command().getArg());
         });

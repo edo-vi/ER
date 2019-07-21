@@ -54,7 +54,7 @@ public class DOCDController implements DOCController{
             if (se.command().name().equals("PATIENT_SUCCESSFULLY_ADMITTED")) {
                 selectedRow = 0;
             }
-            Platform.runLater(() -> nameLabel.setText(se.state().getUser().toString()));
+            Platform.runLater(() -> nameLabel.setText("Dr. " + se.state().getUser().toString()));
             initialize(se.state());
         });
     }
