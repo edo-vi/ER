@@ -42,12 +42,17 @@ public class Prescription implements Entry{
         this.doctor = doctor;
     }
 
+    public Prescription(String drug, int duration, int dailyDose, int totalNumberofDoses, String doctor,
+                        Recovery recovery) throws Exception{
+        this(drug, Calendar.getInstance().getTime(), duration, dailyDose, totalNumberofDoses, doctor);
+        this.recovery = recovery;
+    }
+
     public Prescription(String drug, Date date, int duration, int dailyDose, int totalNumberofDoses, String doctor,
                         Recovery recovery) throws Exception{
         this(drug, date, duration, dailyDose, totalNumberofDoses, doctor);
         this.recovery = recovery;
     }
-
 
     public Prescription() {}
 
