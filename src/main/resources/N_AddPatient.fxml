@@ -76,7 +76,7 @@
                   <DatePicker fx:id="bDayDate" layoutX="230.0" layoutY="395.0" prefWidth="250.0" promptText="data di nascita..." style="-fx-background-color: black;" AnchorPane.leftAnchor="230.0" />
                    <TextField fx:id="placeLabel" layoutX="230.0" layoutY="475.0" prefWidth="250.0" promptText="luogo di nascita..." AnchorPane.leftAnchor="230.0" />
                   <TextField fx:id="cfLabel" layoutX="230.0" layoutY="555.0" prefWidth="250.0" promptText="codice fiscale..." AnchorPane.leftAnchor="230.0" />
-                   <Button fx:id="cfCalculate" onAction="#calculateCF" layoutX="507.0" layoutY="557.0" mnemonicParsing="false" text="Calcola" AnchorPane.leftAnchor="510.0" />
+                   <Button fx:id="cfCalculate" onAction="#calcolateCF" layoutX="507.0" layoutY="557.0" mnemonicParsing="false" text="Calcola" AnchorPane.leftAnchor="510.0" />
                    <Button layoutX="831.0" layoutY="697.0" mnemonicParsing="false" onAction="#submit" prefHeight="40.0" prefWidth="150.0" style="-fx-font-size: 18;" text="Aggiungi" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="100.0" />
                </children></AnchorPane>
             </children>
