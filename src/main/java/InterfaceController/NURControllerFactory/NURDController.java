@@ -4,6 +4,7 @@ import Component.LoginComponent;
 import Component.NURComponent;
 import Entities.Patient;
 import Entities.Recovery;
+import Main.Tuple;
 import State.State;
 import State.StateEvent;
 import State.Store;
@@ -172,16 +173,19 @@ public class NURDController implements NURController {
             drugLabel.setVisible(true);
             dose.setVisible(true);
             patientComboBox.getSelectionModel().getSelectedItem().getActiveRecoveries().forEach(r -> r.getPrescriptions().forEach(p -> {
-                if(d.equals(p.getDrug())) {
-                    doseLabel.setText("SOME_COUNTER");
-                    quantityLabel.setText(String.valueOf(p.getDailyDose()));
+                if(p.getDrug().equals(d)) {
+                    Tuple<java.sql.Date, String> drugToBeAdministrated = new Tuple<>(new java.sql.Date(new Date().getTime()), d);
+                    if(p.isAdministrable(drugToBeAdministrated)) {
+                        doseLabel.setText(String.valueOf(p.getAdministrationNumber(drugToBeAdministrated)));
+                    }
+                    quantityLabel.setText(String.valueOf(p.getDailyDose()) + " mg/mL");
                 }
             }));
             doseLabel.setVisible(true);
             quantity.setVisible(true);
             quantityLabel.setVisible(true);
             admDate.setVisible(true);
-            admDateLabel.setText(new Date().toString());
+            admDateLabel.setText(new java.sql.Date(new Date().getTime()).toString());
             admDateLabel.setVisible(true);
             note.setVisible(true);
             noteTextArea.setVisible(true);

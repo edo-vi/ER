@@ -1,5 +1,6 @@
 package Entities;
 
+import Main.Tuple;
 import javax.persistence.*;
 import java.util.*;
 
@@ -27,6 +28,9 @@ public class Prescription implements Entry{
     @JoinColumn(name = "recovery_id")
     private Recovery recovery;
 
+    @Transient
+    private HashMap<Tuple<java.sql.Date, String>, Integer> dailyAdministrationCounter = new HashMap<>();
+
     public Prescription(String drug, Date date, int duration, int dailyDose, int totalNumberofDoses, String doctor)
             throws Exception {
         if(duration <= 0 || dailyDose <= 0 || totalNumberofDoses <= 0) throw new IllegalArgumentException("Prescription: invalid arguments");
@@ -48,7 +52,7 @@ public class Prescription implements Entry{
     public Prescription() {}
 
     public String toString() {
-        return String.format("{%s, %s, %d, %fd, %d, %s, rec_id: %s, adms_is: %s}", drug, date, duration, dailyDose,
+        return String.format("{%s, %s, %d, %d, %d, %s, rec_id: %s, adms_is: %s}", drug, date, duration, dailyDose,
                 totalNumberofDoses, dailyDose, recovery, administrations);
     }
     /**
@@ -125,4 +129,18 @@ public class Prescription implements Entry{
         this.administrations.add(administration);
     }
 
+    public Integer getAdministrationNumber(Tuple<java.sql.Date, String> drug) {
+        return dailyAdministrationCounter.get(drug) + 1;
+    }
+
+    public boolean isAdministrable(Tuple<java.sql.Date, String> drug) {
+        if(dailyAdministrationCounter.size() == 0) {
+            dailyAdministrationCounter.put(drug, 0);
+        }
+        return dailyAdministrationCounter.get(drug) < totalNumberofDoses;
+    }
+
+    public void addAdministration(Tuple<java.sql.Date, String> drug) {
+        dailyAdministrationCounter.replace(drug, dailyAdministrationCounter.get(drug) + 1);
+    }
 }
