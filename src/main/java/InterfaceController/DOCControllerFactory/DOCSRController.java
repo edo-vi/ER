@@ -58,7 +58,7 @@ public class DOCSRController implements DOCController {
 
         dis = stream.subscribe(se ->
         {
-            Platform.runLater(() -> nameLabel.setText(se.state().getUser().toString()));
+            Platform.runLater(() -> nameLabel.setText("Dr. " + se.state().getUser().toString()));
             if(se.command().name().equals("CHOSEN_RECOVERY_TO_SHOW")) {
                 setData(se.state().getChosenRecovery());
             }
