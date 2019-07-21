@@ -56,7 +56,7 @@
                <children>
                   <Label layoutX="40.0" layoutY="30.0" style="-fx-font-size: 24; -fx-text-fill: #B0C4DE;" text="Compilazione lettera di dimissione paziente" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="30.0" />
                   <Label layoutX="50.0" layoutY="120.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" text="Scegliere il paziente:" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="120.0" />
-                  <ComboBox fx:id="patientsChoice" layoutX="250.0" layoutY="112.0" onAction="#selectedItemFromCombobox" prefHeight="31.0" prefWidth="312.0" promptText="nessuna scelta" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="112.0" />
+                  <ComboBox fx:id="patientsChoice" layoutX="250.0" layoutY="112.0" onAction="#selectedItemFromCombobox" prefHeight="44.0" prefWidth="500.0" promptText="nessuna scelta" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="112.0" />
                   <Label layoutX="40.0" layoutY="220.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" text="DATI:" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="220.0" />
                   <Label layoutX="40.0" layoutY="270.0" style="-fx-font-size: 18; -fx-text-fill: grey;" text="Cognome:" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="270.0" />
                   <Label layoutX="40.0" layoutY="320.0" style="-fx-font-size: 18; -fx-text-fill: grey;" text="Nome:" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="320.0" />

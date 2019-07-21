@@ -18,19 +18,19 @@
             <menus>
                 <Menu mnemonicParsing="false" text="File">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Monitora" onAction="#showMonitoring" />
+                        <MenuItem mnemonicParsing="false" onAction="#showMonitoring" text="Monitora" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Esci" onAction="#logout"/>
-                        <MenuItem mnemonicParsing="false" text="Chiudi" onAction="#close"/>
+                        <MenuItem mnemonicParsing="false" onAction="#logout" text="Esci" />
+                        <MenuItem mnemonicParsing="false" onAction="#close" text="Chiudi" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Visualizza">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Lista pazienti in attesa" onAction="#defaultDoc"/>
+                        <MenuItem mnemonicParsing="false" onAction="#defaultDoc" text="Lista pazienti in attesa" />
                         <MenuItem mnemonicParsing="false" text="Nuova prescrizione" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Dati ultime 2 ore" onAction="#monitoringDoc"/>
-                        <MenuItem mnemonicParsing="false" text="Cartella clinica" onAction="#searchDoc" />
+                        <MenuItem mnemonicParsing="false" onAction="#monitoringDoc" text="Dati ultime 2 ore" />
+                        <MenuItem mnemonicParsing="false" onAction="#searchDoc" text="Cartella clinica" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Aiuto">
@@ -44,12 +44,12 @@
             <children>
                 <AnchorPane prefHeight="773.0" prefWidth="210.0">
                     <children>
-                        <Button layoutX="16.0" layoutY="40.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="164.0" text="Lista pazienti&#10;in attesa" onAction="#defaultDoc" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
+                        <Button layoutX="16.0" layoutY="40.0" mnemonicParsing="false" onAction="#defaultDoc" prefHeight="50.0" prefWidth="164.0" text="Lista pazienti&#10;in attesa" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
                         <Button layoutY="120.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" style="-fx-border-color: #00BFFF;" text="Nuova&#10;prescrizione" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
-                        <Button layoutY="200.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="Dati ultime&#10;2 ore" textAlignment="CENTER" onAction="#monitoringDoc" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
-                        <Button layoutY="280.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="Cartella&#10;clinica" textAlignment="CENTER" onAction="#searchDoc" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
-                        <Button layoutY="695.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 20;" text="Log Out" AnchorPane.leftAnchor="30.0" onAction="#logout" AnchorPane.rightAnchor="30.0" />
-                        <Label layoutX="30.0" fx:id="nameLabel" layoutY="621.0" style="-fx-text-fill: grey;" text="Francesco Setti" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="650.0" />
+                        <Button layoutY="200.0" mnemonicParsing="false" onAction="#monitoringDoc" prefHeight="50.0" prefWidth="150.0" text="Dati ultime&#10;2 ore" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
+                        <Button layoutY="280.0" mnemonicParsing="false" onAction="#searchDoc" prefHeight="50.0" prefWidth="150.0" text="Cartella&#10;clinica" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
+                        <Button layoutY="695.0" mnemonicParsing="false" onAction="#logout" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 20;" text="Log Out" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
+                        <Label fx:id="nameLabel" layoutX="30.0" layoutY="621.0" style="-fx-text-fill: grey;" text="Francesco Setti" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="650.0" />
                         <Label layoutX="40.0" layoutY="631.0" style="-fx-text-fill: grey;" text="Dr." AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="630.0" />
                     </children>
                 </AnchorPane>
@@ -57,7 +57,7 @@
             <AnchorPane prefHeight="773.0" prefWidth="987.0">
                <children>
                   <Label layoutX="61.0" layoutY="65.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" text="Scegliere il paziente:" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="140.0" />
-                  <ComboBox fx:id="patientComboBox" layoutX="228.0" layoutY="63.0" prefHeight="31.0" prefWidth="312.0" promptText="nessuna scelta" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="138.0" />
+                  <ComboBox fx:id="patientComboBox" layoutX="228.0" layoutY="63.0" prefHeight="31.0" prefWidth="312.0" promptText="nessuna scelta" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="135.0" />
                   <Label layoutX="51.0" layoutY="357.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" text="Farmaco:" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="360.0" />
                   <Label layoutX="50.0" layoutY="45.0" style="-fx-font-size: 24; -fx-text-fill: #B0C4DE;" text="Nuova prescrizione" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="40.0" />
                   <Label layoutX="91.0" layoutY="395.0" style="-fx-font-size: 15; -fx-text-fill: grey;" text="Cognome:" AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="220.0" />
