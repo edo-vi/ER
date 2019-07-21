@@ -24,18 +24,25 @@ import System.DOCInterfaceFactory.DOCFactory;
 import System.HPInterfaceFactory.HPFactory;
 import System.NURInterfaceFactory.NURFactory;
 import System.Session.DoctorSessionThread;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import Main.Tuple;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
+
+import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class Sistema {
+
     private static Sistema s;
     private Store<StringCommand> store;
     private InterfacesController controller;
@@ -45,6 +52,9 @@ public class Sistema {
     private final Random random = new Random();
     private int selectedPatient = -1;
     private boolean alarmCtlIsShown = false;
+    private Media sound = new Media(new File("Cicalino retromarcia.mp3").toURI().toString());
+    private MediaPlayer mediaPlayer = new MediaPlayer(sound);
+    private MediaThread mt = new MediaThread();
 
     public static Sistema getInstance() {
         if (s == null)
@@ -55,6 +65,7 @@ public class Sistema {
     //will have all the information into the state and iterate over them
     //NB. This is just demo environment
     private Sistema() {
+
         Reducer<StringCommand> reducer = new ReducerString()
                 .with("LOGIN")
                 .with("LOGOUT", (c, s) -> {
@@ -109,7 +120,6 @@ public class Sistema {
                 .with("RESET_ALARMS")
                 .with("ALARM_LOGIN")
                 .with("DISCHARGE_PATIENT")
-                .with("ALARM_LOGIN")
                 .with("SESSION_TERMINATED")
                 .with("SESSION_START")
                 .with("SEARCH_PATIENT")
@@ -183,6 +193,7 @@ public class Sistema {
                     return new Tuple<>(new StringCommand("SHOW_ALARMS"), s);
                 })
                 .with("ALARM_ACTIVATED", (c,s,m) -> {
+
                     if(!alarmCtlIsShown) {
                         boolean docAlreadyLog = s.getDocAlarm().isValid() && s.getDocAlarm().equals(s.getDocAlarmCheck());
                         String filename = (docAlreadyLog) ? "ALMCTL" : "ALMCTLLOG";
@@ -209,10 +220,14 @@ public class Sistema {
                         alarmControlStage.toFront();
                         alarmControlStage.show();
                         alarmCtlIsShown = true;
+
                     }
+                    mt = new MediaThread();
+                    mt.start();
                     return new Tuple<>(new StringCommand("ACTIVE_ALARM", c.getArg()), s);
                 })
                 .with("RESET_ALARMS", (c,s,m) -> {
+                    mt.interruptSound();
                     if(selectedPatient != -1) {
                         s.getActiveRecoveries().get(selectedPatient).resetGenerator();
                         selectedPatient = -1;
@@ -290,6 +305,7 @@ public class Sistema {
     }
 
     public void setupUI(Stage stage){
+
         try {
             stage.getIcons().add(new Image("/logo.png"));
             System.out.println("---- System Interfaces ----");
@@ -357,5 +373,19 @@ public class Sistema {
         if(selectedPatient == -1)
             return null;
         else return store.getState().getActiveRecoveries().get(selectedPatient).getPatient();
+    }
+
+
+    private class MediaThread extends Thread {
+
+        private void interruptSound() {
+            mediaPlayer.stop();
+        }
+
+        public void run() {
+            mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+            mediaPlayer.seek(Duration.ZERO);
+            mediaPlayer.play();
+        }
     }
 }
