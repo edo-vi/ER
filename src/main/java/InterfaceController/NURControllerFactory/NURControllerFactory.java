@@ -16,6 +16,8 @@ public class NURControllerFactory {
             return new NURDController(sys.getStore(), sys.getStore().getEventStream());
         else if(type.equals("monitoring"))
             return null;
+        else if(type.equals("addPatient"))
+            return new NURAPController(sys.getStore(), sys.getStore().getEventStream());
 
         return null;
     }
