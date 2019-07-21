@@ -71,6 +71,7 @@
                               <PropertyValueFactory property="hour" />
                            </cellValueFactory>
                         </TableColumn>
+
                         <TableColumn fx:id="drugColumn" prefWidth="200.0" text="Farmaco" />
 
                         <TableColumn prefWidth="145.0" text="Dose">
@@ -119,6 +120,7 @@
                               <PropertyValueFactory property="totalNumberofDoses" />
                            </cellValueFactory>
                         </TableColumn>
+
                         <TableColumn fx:id="quantityColumn" prefWidth="175.0" text="Quantità" />
 
                         <TableColumn prefWidth="187.0" text="Durata terapia">

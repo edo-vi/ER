@@ -13,25 +13,26 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="810.0" prefWidth="1200.0" style="-fx-background-color: black;" stylesheets="@DarkThemeWhiteLabel.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
     <children>
       <MenuBar>
          <menus>
             <Menu mnemonicParsing="false" text="File">
                <items>
-                  <MenuItem mnemonicParsing="false" text="Monitora" />
+                  <MenuItem mnemonicParsing="false" text="Monitora" onAction="#showMonitoring"/>
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" text="Esci" />
-                  <MenuItem mnemonicParsing="false" text="Chiudi" />
+                  <MenuItem mnemonicParsing="false" text="Esci" onAction="#logout"/>
+                  <MenuItem mnemonicParsing="false" text="Chiudi" onAction="#close"/>
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Visualizza">
                <items>
-                  <MenuItem mnemonicParsing="false" text="Nuova somministrazione" />
-                  <MenuItem mnemonicParsing="false" text="Nuovo paziente" />
+                  <MenuItem mnemonicParsing="false" text="Nuova somministrazione" onAction="#addAdministration"/>
+                  <MenuItem mnemonicParsing="false" text="Nuovo paziente" onAction="#addPatient"/>
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" text="Dati ultime 2 ore" />
-                  <MenuItem mnemonicParsing="false" text="Cartella clinica" />
+                  <MenuItem mnemonicParsing="false" text="Dati ultime 2 ore" onAction="#showLast2H"/>
+                  <MenuItem mnemonicParsing="false" text="Cartella clinica" onAction="#search"/>
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Aiuto">
@@ -45,30 +46,46 @@
             <children>
                 <AnchorPane prefHeight="773.0" prefWidth="210.0">
                     <children>
-                        <Button layoutX="16.0" layoutY="40.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="164.0" style="-fx-font-size: 13;" text="Nuova&#10;somministrazione" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
-                        <Button layoutY="120.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="Nuovo&#10;paziente" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
-                        <Button layoutY="200.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="Dati ultime&#10;2 ore" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
-                        <Button layoutY="280.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" style="-fx-border-color: #00BFFF, #00BFFF;" text="Cartella&#10;clinica" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
-                        <Button layoutY="695.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 20;" text="Log Out" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
-                        <Label fx:id="nurseNameLabel" layoutX="30.0" layoutY="621.0" style="-fx-text-fill: grey;" text="id" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="650.0" />
+                        <Button layoutX="16.0" layoutY="40.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="164.0" style="-fx-font-size: 13;" text="Nuova&#10;somministrazione" onAction="#addAdministration" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
+                        <Button layoutY="120.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="Nuovo&#10;paziente" onAction="#addPatient" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
+                        <Button layoutY="200.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="Dati ultime&#10;2 ore" onAction="#showLast2H" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
+                        <Button layoutY="280.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" style="-fx-border-color: #00BFFF, #00BFFF;" text="Cartella&#10;clinica" onAction="#search" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
+                        <Button layoutY="695.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 20;" text="Log Out" onAction="#logout" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
+                        <Label fx:id="nameLabel" layoutX="30.0" layoutY="621.0" style="-fx-text-fill: grey;" text="id" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="650.0" />
                         <Label layoutX="40.0" layoutY="631.0" style="-fx-text-fill: grey;" text="Infermiere" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="630.0" />
                     </children>
                 </AnchorPane>
                 <AnchorPane prefHeight="773.0" prefWidth="3.0" style="-fx-background-color: grey;" />
             <AnchorPane prefHeight="773.0" prefWidth="987.0">
-               <children>
-                  <Label layoutX="48.0" layoutY="65.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" text="Ricerca paziente:" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="50.0" />
-                  <TextField layoutX="252.0" layoutY="35.0" prefHeight="37.0" prefWidth="333.0" promptText="cerca..." AnchorPane.leftAnchor="220.0" AnchorPane.topAnchor="45.0" />
-                  <TableView layoutX="287.0" layoutY="358.0" prefHeight="332.0" prefWidth="977.0" style="-fx-background-color: black;" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="200.0">
-                     <columns>
-                        <TableColumn prefWidth="195.0" text="Data Ricovero" />
-                        <TableColumn prefWidth="290.0" text="Motivo" />
-                        <TableColumn prefWidth="200.0" text="Data dimissione" />
-                        <TableColumn prefWidth="277.0" text="Esito" />
-                     </columns>
-                  </TableView>
-                  <Button layoutX="580.0" layoutY="67.0" mnemonicParsing="false" text="Cerca" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="47.0" />
-               </children>
+                <children>
+                    <Label layoutX="48.0" layoutY="65.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" text="Ricerca paziente:" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="50.0" />
+                    <TextField fx:id="searchPatient" layoutX="252.0" layoutY="35.0" prefHeight="37.0" prefWidth="333.0" promptText="cerca..." AnchorPane.leftAnchor="220.0" AnchorPane.topAnchor="45.0" />
+                    <TableView fx:id="recoveryTable" layoutX="287.0" layoutY="358.0" prefHeight="332.0" prefWidth="977.0" style="-fx-background-color: black;" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="200.0">
+                        <columns>
+                            <TableColumn prefWidth="195.0" text="Data Ricovero">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="startDate" />
+                                </cellValueFactory>
+                            </TableColumn>
+                            <TableColumn prefWidth="290.0" text="Motivo">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="diagnosis" />
+                                </cellValueFactory>
+                            </TableColumn>
+                            <TableColumn prefWidth="200.0" text="Data dimissione">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="endDate" />
+                                </cellValueFactory>
+                            </TableColumn>
+                            <TableColumn prefWidth="277.0" text="Esito">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="dischargeSummary" />
+                                </cellValueFactory>
+                            </TableColumn>
+                        </columns>
+                    </TableView>
+                    <Button layoutX="580.0" layoutY="67.0" mnemonicParsing="false" onAction="#searchPatient" text="Cerca" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="47.0" />
+                </children>
             </AnchorPane>
             </children>
         </HBox>

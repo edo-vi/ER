@@ -9,13 +9,13 @@ public class NURControllerFactory {
         if(type.isEmpty())
             throw new IllegalArgumentException();
         else if(type.equals("search"))
-            return null;
+            return new NURSController(sys.getStore(), sys.getStore().getEventStream());
         else if(type.equals("searchResult"))
-            return null;
+            return new NURSRController(sys.getStore(), sys.getStore().getEventStream());
         else if(type.equals("default"))
             return new NURDController(sys.getStore(), sys.getStore().getEventStream());
         else if(type.equals("monitoring"))
-            return null;
+            return new NURMController(sys.getStore(), sys.getStore().getEventStream());
         else if(type.equals("addPatient"))
             return new NURAPController(sys.getStore(), sys.getStore().getEventStream());
 

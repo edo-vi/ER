@@ -83,7 +83,8 @@
                     </columns>
                   </TableView>
                   <Button layoutX="580.0" layoutY="67.0" mnemonicParsing="false" onAction="#searchPatient" text="Cerca" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="47.0" />
-               </children></AnchorPane>
+               </children>
+               </AnchorPane>
             </children>
         </HBox>
     </children>
