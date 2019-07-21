@@ -57,9 +57,9 @@
                 <AnchorPane prefHeight="773.0" prefWidth="987.0">
                <children>
                   <Label layoutX="61.0" layoutY="65.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" text="Scegliere il paziente:" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="140.0" />
-                  <ComboBox fx:id="patientComboBox" onAction="#selectedPatientFromCombobox" layoutX="228.0" layoutY="63.0" prefHeight="31.0" prefWidth="312.0" promptText="nessuna scelta" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="138.0" />
+                  <ComboBox fx:id="patientComboBox" layoutX="228.0" layoutY="63.0" onAction="#selectedPatientFromCombobox" prefHeight="31.0" prefWidth="312.0" promptText="nessuna scelta" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="138.0" />
                   <Label layoutX="50.0" layoutY="126.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" text="Scegliere il farmaco:" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="230.0" />
-                  <ComboBox fx:id="drugComboBox" onAction="#selectedDrugFromCombobox" layoutX="250.0" layoutY="124.0" prefHeight="31.0" prefWidth="312.0" promptText="nessuna scelta" AnchorPane.topAnchor="228.0" />
+                  <ComboBox fx:id="drugComboBox" layoutX="250.0" layoutY="124.0" onAction="#selectedDrugFromCombobox" prefHeight="31.0" prefWidth="312.0" promptText="nessuna scelta" AnchorPane.topAnchor="228.0" />
                   <Label layoutX="50.0" layoutY="45.0" style="-fx-font-size: 24; -fx-text-fill: #B0C4DE;" text="Nuova somministrazione" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="40.0" />
                   <Label fx:id="surname" layoutX="91.0" layoutY="395.0" style="-fx-font-size: 15; -fx-text-fill: grey;" text="Cognome:" AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="330.0" />
                   <Label fx:id="bDay" layoutX="674.0" layoutY="360.0" style="-fx-font-size: 15; -fx-text-fill: grey;" text="Data di nascita:" AnchorPane.leftAnchor="640.0" AnchorPane.topAnchor="330.0" />
@@ -77,7 +77,7 @@
                   <Label fx:id="admDateLabel" layoutX="265.0" layoutY="435.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" text="20/07/2019" AnchorPane.leftAnchor="265.0" AnchorPane.topAnchor="427.0" />
                   <Label fx:id="quantityLabel" layoutX="770.0" layoutY="377.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" text="20gr" AnchorPane.leftAnchor="770.0" AnchorPane.topAnchor="377.0" />
                   <Label fx:id="note" layoutX="60.0" layoutY="506.0" style="-fx-font-size: 15; -fx-text-fill: grey;" text="Note:" AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="490.0" />
-                  <TextArea fx:id="noteTextArea" layoutX="122.0" layoutY="506.0" prefHeight="120.0" prefWidth="700.0" promptText="Eventuali annotazioni sullo stato del paziente..." AnchorPane.leftAnchor="120.0" AnchorPane.topAnchor="487.0" />
+                  <TextArea fx:id="noteTextArea" layoutX="122.0" layoutY="506.0" prefHeight="120.0" prefWidth="700.0" promptText="Eventuali annotazioni sullo stato del paziente..." style="-fx-font-size: 15;" AnchorPane.leftAnchor="120.0" AnchorPane.topAnchor="485.0" />
                </children></AnchorPane>
             </children>
         </HBox>
