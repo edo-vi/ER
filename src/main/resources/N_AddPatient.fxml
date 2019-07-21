@@ -70,7 +70,7 @@
                   <TextField fx:id="surnameLabel" layoutX="180.0" layoutY="155.0" prefWidth="250.0" promptText="cognome..." AnchorPane.leftAnchor="230.0" />
                   <TextField fx:id="nameLabel" layoutX="180.0" layoutY="235.0" prefWidth="250.0" promptText="nome..." AnchorPane.leftAnchor="230.0" />
                   <TextField fx:id="placeLabel" layoutX="230.0" layoutY="475.0" prefWidth="250.0" promptText="luogo di nascita..." AnchorPane.leftAnchor="230.0" />
-                  <RadioButton fx:id="Male" layoutX="180.0" layoutY="323.0" mnemonicParsing="false" text="M" textFill="LIGHTSTEELBLUE" AnchorPane.leftAnchor="230.0">
+                  <RadioButton fx:id="male" layoutX="180.0" layoutY="323.0" mnemonicParsing="false" text="M" textFill="LIGHTSTEELBLUE" AnchorPane.leftAnchor="230.0">
                      <toggleGroup>
                         <ToggleGroup fx:id="sesso" />
                      </toggleGroup>
