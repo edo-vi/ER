@@ -112,7 +112,8 @@ public class Sistema {
                 .with("ALARM_LOGIN")
                 .with("SESSION_TERMINATED")
                 .with("SESSION_START")
-                .with("SEARCH_PATIENT");
+                .with("SEARCH_PATIENT")
+                .with("TRY_ADMISSION");
         Middleware<StringCommand> middleware = new MiddlewareString(monitoringStage)
                 .with("LOGIN", (c, s, m) -> {
                     User x = (User) c.getArg();
@@ -261,6 +262,22 @@ public class Sistema {
                     }
 
                     return new Tuple<>(new StringCommand("DOC_SESSION_STARTED"), s);
+                })
+                .with("TRY_ADMISSION", (c,s,m) -> {
+                    Tuple<Patient, String> p = (Tuple<Patient, String>) c.getArg();
+                    try {
+                        if(s.getActiveRecoveries().size() < 9) {
+                            Recovery rec = new Recovery(p.snd(),p.fst());
+                            DatabaseService.addEntry(rec);
+                            p.fst().addToRecoveries(rec);
+                            return new Tuple<>(new StringCommand("PATIENT_SUCCESSFULLY_ADMITTED"), s);
+                        } else {
+                            return new Tuple<>(new StringCommand("COULD_NOT_ADMIT_A_PATIENT"), s);
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Sistema, admission summary: " + e);
+                        return new Tuple<>(new StringCommand("COULD_NOT_ADMIT_A_PATIENT"), s);
+                    }
                 });
 
         store = new Store<StringCommand>(new State(), reducer, middleware);

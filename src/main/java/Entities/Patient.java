@@ -158,4 +158,5 @@ public class Patient implements Entry{
         return this.getAllRecoveries().stream().filter(Recovery::isActive).flatMap(re -> re.getMonitorings().stream())
                 .collect(Collectors.toList());
     }
+
 }
