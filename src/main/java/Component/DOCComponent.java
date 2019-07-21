@@ -1,5 +1,7 @@
 package Component;
 
+import InterfaceController.DOCControllerFactory.DOCController;
+import InterfaceController.HPControllerFactory.HPController;
 import State.Command;
 import State.StateEvent;
 import System.DOCInterfaceFactory.DOCInterface;
@@ -11,9 +13,9 @@ public class DOCComponent<C extends Command> extends Component {
     private final Sistema sys = Sistema.getInstance();
     public static final String DOCTitle = "ER - Doctor";
 
-    public DOCComponent(DOCInterface ui) {
+    public DOCComponent(DOCInterface ui, DOCController ctl) {
         this.loader = new FXMLLoader(getClass().getResource(ui.getFile()));
-        //loader.setController(ctl);
+        loader.setController(ctl);
     }
 
 
