@@ -2,7 +2,9 @@ package InterfaceController.NURControllerFactory;
 
 import Component.LoginComponent;
 import Component.NURComponent;
+import Entities.Administration;
 import Entities.Patient;
+import Entities.Prescription;
 import Entities.Recovery;
 import Main.Tuple;
 import State.State;
@@ -49,6 +51,8 @@ public class NURDController implements NURController {
     @FXML private Label admDateLabel;
     @FXML private TextArea noteTextArea;
     @FXML private Button confirm;
+    private Prescription prescriptionOfThisAdm = null;
+    private Date admDateValue;
 
 
     public NURDController(Store<StringCommand> store, Subject<StateEvent> stream) {
@@ -123,7 +127,11 @@ public class NURDController implements NURController {
         data.removeAll(data);
         Patient pat = patientComboBox.getSelectionModel().getSelectedItem();
         if (pat != null) {
-            pat.getActiveRecoveries().forEach(r -> r.getPrescriptions().forEach(p -> data.add(p.getDrug())));
+            pat.getActiveRecoveries().forEach(r -> r.getPrescriptions().forEach(p -> {
+                if(data.size() == 0)
+                    prescriptionOfThisAdm = p;
+                data.add(p.getDrug());
+            }));
             if (data.size() > 0) {
                 drugComboBox.getSelectionModel().select(index);
             } else {
@@ -178,14 +186,15 @@ public class NURDController implements NURController {
                     if(p.isAdministrable(drugToBeAdministrated)) {
                         doseLabel.setText(String.valueOf(p.getAdministrationNumber(drugToBeAdministrated)));
                     }
-                    quantityLabel.setText(String.valueOf(p.getDailyDose()) + " mg/mL");
+                    quantityLabel.setText(p.getDailyDose() + " mg/mL");
                 }
             }));
             doseLabel.setVisible(true);
             quantity.setVisible(true);
             quantityLabel.setVisible(true);
             admDate.setVisible(true);
-            admDateLabel.setText(new java.sql.Date(new Date().getTime()).toString());
+            admDateValue = new Date();
+            admDateLabel.setText(admDateValue.toString());
             admDateLabel.setVisible(true);
             note.setVisible(true);
             noteTextArea.setVisible(true);
@@ -218,6 +227,14 @@ public class NURDController implements NURController {
         try {
             setAdministrationLabel(((ComboBox<String>) e.getSource()).getValue());
         } catch(Exception er) {}
+    }
+
+    @FXML protected void administrate() {
+        String notes = (noteTextArea.getText().equals("")) ? "NONE" : noteTextArea.getText();
+        Integer hour = new Integer(admDateValue.toString().substring(11, 13));
+        Administration adm = new Administration(admDateValue, hour, prescriptionOfThisAdm.getDailyDose(), notes, patientComboBox.getValue(), prescriptionOfThisAdm);
+        store.update(new StringCommand("ADD_ADMINISTRATION", adm));
+        prescriptionOfThisAdm.addAdministration(new Tuple<>(new java.sql.Date(admDateValue.getTime()), drugComboBox.getValue()));
     }
 
     @FXML protected void showMonitoring() {

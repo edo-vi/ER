@@ -27,8 +27,7 @@ public class Administration implements Entry {
 
     public Administration() { }
 
-    public Administration(Date date, int hour, double dose, String notes)
-            throws Exception {
+    public Administration(Date date, int hour, double dose, String notes) {
         if (hour < 0 || hour > 23 || dose <= 0) throw new IllegalArgumentException("Administration: invalid arguments");
         this.date = new java.sql.Date(date.getTime());
         this.hour = hour;
@@ -36,21 +35,18 @@ public class Administration implements Entry {
         this.notes = notes;
     }
 
-    public Administration(Date date, int hour, double dose, String notes, Patient patient, Prescription prescription)
-            throws Exception {
+    public Administration(Date date, int hour, double dose, String notes, Patient patient, Prescription prescription) {
         this(date, hour, dose, notes);
         this.patient = patient;
         this.prescription = prescription;
     }
 
-    public Administration(Date date, int hour, double dose, String notes, Patient patient)
-            throws Exception {
+    public Administration(Date date, int hour, double dose, String notes, Patient patient) {
         this(date, hour, dose, notes);
         this.patient = patient;
     }
 
-    public Administration(Date date, int hour, double dose, String notes, Prescription prescription)
-            throws Exception {
+    public Administration(Date date, int hour, double dose, String notes, Prescription prescription) {
         this(date, hour, dose, notes);
         this.prescription = prescription;
     }

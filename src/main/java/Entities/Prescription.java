@@ -142,10 +142,10 @@ public class Prescription implements Entry{
         if(dailyAdministrationCounter.size() == 0) {
             dailyAdministrationCounter.put(drug, 0);
         }
-        return dailyAdministrationCounter.get(drug) < totalNumberofDoses;
+        return dailyAdministrationCounter.get(drug) < totalNumberofDoses && drug.fst().before(new Date(date.getTime() + duration*24*60*60*1000));
     }
 
-    public void addAdministration(Tuple<java.sql.Date, String> drug) {
+    public void addAdministration(Tuple<java.sql.Date, String> drug) { //todo: null pointer -> equals of Tuple need to be modified!
         dailyAdministrationCounter.replace(drug, dailyAdministrationCounter.get(drug) + 1);
     }
 }

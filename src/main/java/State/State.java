@@ -7,10 +7,10 @@ import java.util.stream.Collectors;
 public class State  {
     private ArrayList<User> systemUsers;
     private User user;
+    private User docAlarm;
     private List<Patient> patients = new ArrayList<>();
     private int mainRecoveryIndex;
     private Recovery chosenRecovery;
-    private User docAlarm;
 
     // Must be the initial state
     public State() {

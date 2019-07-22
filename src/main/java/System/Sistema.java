@@ -1,10 +1,7 @@
 package System;
 
 import Component.*;
-import Entities.Patient;
-import Entities.Prescription;
-import Entities.Recovery;
-import Entities.User;
+import Entities.*;
 import Generator.DataThread;
 import Generator.Sickness;
 import Generator.Value;
@@ -125,7 +122,8 @@ public class Sistema {
                 .with("SESSION_START")
                 .with("SEARCH_PATIENT")
                 .with("TRY_ADMISSION")
-                .with("ADD_PRESCRIPTION");
+                .with("ADD_PRESCRIPTION")
+                .with("ADD_ADMINISTRATION");
         Middleware<StringCommand> middleware = new MiddlewareString(monitoringStage)
                 .with("LOGIN", (c, s, m) -> {
                     User x = (User) c.getArg();
@@ -307,6 +305,17 @@ public class Sistema {
                         return new Tuple<>(new StringCommand("FAILURE_TO_ADD_PRESCRIPTION"), s);
                     }
 
+                })
+                .with("ADD_ADMINISTRATION", (c,s,m) -> {
+                    Administration adm = (Administration) c.getArg();
+                    DatabaseService.addEntry(adm);
+                    try {
+                        adm.getPrescription().addToAdministrations(adm);
+                        adm.getPatient().addToAddministrations(adm);
+                        return new Tuple<>(new StringCommand("ADMINISTRATION_ADDED"), s);
+                    } catch(Exception e) {
+                        return new Tuple<>(new StringCommand("COULD_NOT_ADD_ADMINISTRATION"), s);
+                    }
                 });
 
         store = new Store<StringCommand>(new State(), reducer, middleware);
