@@ -120,7 +120,7 @@ Di seguito parte dei casi d'uso utilizzati, aggregati per chiarezza nei vari ute
 			\item altrimenti compare una finestra di errore
 		\end{enumerate}
 	}
-	\addfield{Postcondizioni:}{Se il numero di pazienti attualmente ricoverati è minore di dieci e ha accettato di ammetterne uno inserendo la diagnosi, allora il nome del paziente scompare dal menù a tendina ed esso sarà compreso tra quelli ricoverati.}
+	\addfield{Postcondizioni:}{Se il numero di pazienti attualmente ricoverati è minore di dieci e ha accettato di ammetterne uno inserendo la diagnosi, allora il nome del paziente scompare dal menù a tendina ed esso sarà compreso tra quelli ricoverati}
 	
 \end{usecase}
 
@@ -131,11 +131,38 @@ Di seguito parte dei casi d'uso utilizzati, aggregati per chiarezza nei vari ute
 	\additemizedfield{Passi}{
 		\item Nella propria dashboard seleziona la finestra per aggiungere una prescrizione
 		\item Da un menù a tendina sceglie tra i diversi pazienti attualmente ricoverati, visualizzando, a seconda della selezione, informazioni sommarie sul paziente
-		\item In diversi campi di testo aggiunge il nome del medicinale, la dose giornaliera, la quantità per dose e la durata della terapi e preme il bottone di conferma
+		\item In diversi campi di testo aggiunge il nome del medicinale, la dose giornaliera, la quantità per dose e la durata della terapi e preme il pulsante di conferma
 	}
 	\addfield{Postcondizioni:}{La prescrizione viene aggiunta a quelle associate al paziente ricoverato.}
 	
 \end{usecase}
+
+\begin{usecase}
+	\addtitle{Caso d'uso}{Compilazione dati anagrafici paziente}
+	\addfield{Utente:}{Infermiere}
+	\addfield{Precondizioni:}{L'infermiere deve essersi autenticato}
+	\additemizedfield{Passi}{
+		\item Nel propria dashboard seleziona la finestra per inserire i dati anagrafici dei pazienti
+		\item In diversi campi di testo aggiunge i dati anagrafici del paziente, tra cui nome, congnome, luogo e data di nascita. Premendo un pulsante può generare, sulla base di tali dati, il codice fiscale corretto del paziente
+	}
+	\addfield{Postcondizioni:}{Il paziente è inserito in stato di attesa}
+	
+\end{usecase}
+
+
+\begin{usecase}
+	\addtitle{Caso d'uso}{Aggiunta di somministrazioni}
+	\addfield{Utente:}{Infermiere}
+	\addfield{Precondizioni:}{L'infermiere deve essersi autenticato; il paziente a cui viene aggiunta una somministrazione deve essere ricoverato e avere almeno una prescrizione registrata}
+	\additemizedfield{Passi}{
+		\item Nel propria dashboard seleziona la finestra per aggiungere una somministrazione
+		\item Seleziona da un menù a tendina il paziente e il medicinale prescritto per cui può aggiungere una prescrizione
+		\item Visualizza nella schermata i dati sommari della prescrizione, tra cui le massime dosi giornaliere; in un campo di testo può inserire note circa la somministrazione. Aggiunge la somministrazione premendo un pulsante di conferma
+	}
+	\addfield{Postcondizioni:}{La somministrazione è aggiunta al paziente}
+	
+\end{usecase}
+
 \subsubsection{Design del sistema}
 La scelta di design è avvenuta inizialmente a tavolino tra tutti i membri del team.
 %

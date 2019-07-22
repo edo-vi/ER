@@ -281,7 +281,7 @@ public class Sistema {
                 .with("TRY_ADMISSION", (c,s,m) -> {
                     Tuple<Patient, String> p = (Tuple<Patient, String>) c.getArg();
                     try {
-                        if(s.getActiveRecoveries().size() < 9) {
+                        if(s.getActiveRecoveries().size() < 10) {
                             Recovery rec = new Recovery(p.snd(),p.fst());
                             DatabaseService.addEntry(rec);
                             p.fst().addToRecoveries(rec);
