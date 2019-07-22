@@ -79,7 +79,7 @@ public class DOCSRController implements DOCController {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<Prescription, String> param) {
                 int a = param.getValue().getTotalNumberofDoses() * param.getValue().getDailyDose();
-                String s = String.format("%d mg/mm", a);
+                String s = String.format("%d mg/mL", a);
                 return new SimpleObjectProperty<String>(s);
             }
         });
