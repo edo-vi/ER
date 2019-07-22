@@ -21,6 +21,7 @@ import System.DOCInterfaceFactory.DOCFactory;
 import System.HPInterfaceFactory.HPFactory;
 import System.NURInterfaceFactory.NURFactory;
 import System.Session.DoctorSessionThread;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
@@ -45,6 +46,7 @@ public class Sistema {
     private Stage monitoringStage = null;
     private Stage alarmStage = null;
     private Stage alarmControlStage = null;
+    private Stage errorStage = null;
     private final Random random = new Random();
     private int selectedPatient = -1;
     private boolean alarmCtlIsShown = false;
@@ -88,6 +90,7 @@ public class Sistema {
                 .with("START_MONITORING")
                 .with("STOP_MONITORING")
                 .with("SHOW_ALARMS")
+                .with("CLOSE_ALARMS")
                 .with("GET_LOGIN", (c, s) -> {
                     if(s.getUser().isValid())
                         controller.toFront();
@@ -122,7 +125,9 @@ public class Sistema {
                 .with("SEARCH_PATIENT")
                 .with("TRY_ADMISSION")
                 .with("ADD_PRESCRIPTION")
-                .with("ADD_ADMINISTRATION");
+                .with("ADD_ADMINISTRATION")
+                .with("ERROR")
+                .with("CLOSE_ERROR_WINDOW");
         Middleware<StringCommand> middleware = new MiddlewareString(monitoringStage)
                 .with("LOGIN", (c, s, m) -> {
                     User x = (User) c.getArg();
@@ -157,7 +162,10 @@ public class Sistema {
                 .with("SHOW_MONITORING", (c,s,m) -> {
                     if(monitoringStage == null) {
                         monitoringStage = createUI("MON", MonitoringComponent.monitoringTitle);
-                        monitoringStage.setOnCloseRequest(e -> store.update(new StringCommand("STOP_MONITORING")));
+                        monitoringStage.setOnCloseRequest(e -> {
+                            store.update(new StringCommand("STOP_MONITORING"));
+                            store.update(new StringCommand("CLOSE_ALARMS"));
+                        });
                     }
                     monitoringStage.sizeToScene();
                     monitoringStage.show();
@@ -181,18 +189,23 @@ public class Sistema {
                 })
                 .with("CLOSE_MONITORING", (c,s,m) -> {
                     monitoringStage.close();
+                    store.update(new StringCommand("CLOSE_ALARMS"));
                     return new Tuple<>(new StringCommand("CLOSE_MONITORING"), s);
                 })
                 .with("SHOW_ALARMS", (c,s,m) -> {
                     if(alarmStage == null)
                         alarmStage = createUI("ALM", AlarmsComponent.AlarmsTitle);
                     alarmStage.sizeToScene();
-                    alarmStage.show();
                     alarmStage.toFront();
+                    alarmStage.show();
                     return new Tuple<>(new StringCommand("SHOW_ALARMS"), s);
                 })
-                .with("ALARM_ACTIVATED", (c,s,m) -> {
+                .with("CLOSE_ALARMS", (c,s,m) -> {
+                    alarmStage.close();
 
+                    return new Tuple<>(new StringCommand("CLOSED_ALARMS"), s);
+                })
+                .with("ALARM_ACTIVATED", (c,s,m) -> {
                     if(!alarmCtlIsShown) {
                         boolean docAlreadyLog = s.getDocAlarm().isValid() && s.getDocAlarm().equals(s.getDocAlarmCheck());
                         String filename = (docAlreadyLog) ? "ALMCTL" : "ALMCTLLOG";
@@ -323,6 +336,23 @@ public class Sistema {
                     } catch(Exception e) {
                         return new Tuple<>(new StringCommand("COULD_NOT_ADD_ADMINISTRATION"), s);
                     }
+                })
+                .with("ERROR", (c,s,m) -> {
+                    if(errorStage == null) {
+                        errorStage = createUI("ERR", ErrorComponet.ErrorTitle);
+                        errorStage.initModality(Modality.APPLICATION_MODAL);
+                        errorStage.initStyle(StageStyle.UNDECORATED);
+                    }
+                    errorStage.sizeToScene();
+                    errorStage.toFront();
+                    errorStage.show();
+
+                    return new Tuple<>(new StringCommand("ERROR_WINDOW_CREATED", c.getArg()), s);
+                })
+                .with("CLOSE_ERROR_WINDOW", (c,s,m) -> {
+                    errorStage.close();
+                    store.update(new StringCommand("RESET_ALARMS"));
+                    return new Tuple<>(new StringCommand("ERROR_WINDOW_CLOSED"), s);
                 });
 
         store = new Store<StringCommand>(new State(), reducer, middleware);
@@ -421,7 +451,7 @@ public class Sistema {
         public AlarmTimer(int level) {
             if(level == 3)
                 this.alarmLifeTime = 30*1000;
-            if(level == 2)
+            else if(level == 2)
                 this.alarmLifeTime = 60*1000;
             else this.alarmLifeTime = 90*1000;
         }
@@ -431,10 +461,12 @@ public class Sistema {
         }
 
         public void run() {
-            try {
-                sleep(alarmLifeTime);
-                store.update(new StringCommand("PATIENT_DEAD"));
-            } catch (InterruptedException e) {}
+            Platform.runLater(() -> {
+                try {
+                    sleep(alarmLifeTime);
+                    store.update(new StringCommand("ERROR", "F in the chat\nRIP"));
+                } catch (InterruptedException e) {}
+            });
         }
     }
 }

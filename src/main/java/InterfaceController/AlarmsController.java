@@ -19,7 +19,6 @@ public class AlarmsController {
 
     public AlarmsController(Store store, Subject<StateEvent> stream) {
         this.store = store;
-
     }
 
 
