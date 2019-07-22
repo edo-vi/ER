@@ -53,6 +53,7 @@ public class Sistema {
     private Media sound = new Media(new File("Cicalino retromarcia.mp3").toURI().toString());
     private MediaPlayer mediaPlayer = new MediaPlayer(sound);
     private MediaThread mt = new MediaThread();
+    private AlarmTimer att;
 
     public static Sistema getInstance() {
         if (s == null)
@@ -224,10 +225,13 @@ public class Sistema {
                     }
                     mt = new MediaThread();
                     mt.start();
+                    att = new AlarmTimer(((Tuple<Integer, Sickness>) c.getArg()).fst());
+                    att.start();
                     return new Tuple<>(new StringCommand("ACTIVE_ALARM", c.getArg()), s);
                 })
                 .with("RESET_ALARMS", (c,s,m) -> {
                     mt.interruptSound();
+                    att.alarmDeactivated();
                     if(selectedPatient != -1) {
                         s.getActiveRecoveries().get(selectedPatient).resetGenerator();
                         selectedPatient = -1;
@@ -409,6 +413,29 @@ public class Sistema {
             mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
             mediaPlayer.seek(Duration.ZERO);
             mediaPlayer.play();
+        }
+    }
+
+    private class AlarmTimer extends Thread {
+        private long alarmLifeTime;
+
+        public AlarmTimer(int level) {
+            if(level == 3)
+                this.alarmLifeTime = 30*1000;
+            if(level == 2)
+                this.alarmLifeTime = 60*1000;
+            else this.alarmLifeTime = 90*1000;
+        }
+
+        private void alarmDeactivated() {
+            att.interrupt();
+        }
+
+        public void run() {
+            try {
+                sleep(alarmLifeTime);
+                store.update(new StringCommand("PATIENT_DEAD"));
+            } catch (InterruptedException e) {}
         }
     }
 }
