@@ -112,7 +112,7 @@ public class DOCSRController implements DOCController {
             data.addAll(r.getPrescriptions());
 
             ObservableList<Administration> data1 = administrations.getItems();
-            data.removeAll(data1);
+            data1.removeAll(data1);
             data1.addAll(r.getPrescriptions().stream().flatMap(pr -> pr.getAdministrations().stream())
                     .collect(Collectors.toList()));
         } else {

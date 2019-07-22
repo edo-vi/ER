@@ -25,6 +25,7 @@ public abstract class Component<C extends Command> {
         initialization(this.store.poll());
 
     }
+
     protected State getState() {
         return this.store.poll();
     }
