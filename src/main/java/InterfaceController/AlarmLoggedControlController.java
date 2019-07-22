@@ -29,7 +29,7 @@ public class AlarmLoggedControlController {
 
         dis = this.stream.subscribe(se -> {
            String command = se.command().name();
-            if(command.equals("ACTIVE_ALARM"))
+            if(command.equals("ACTIVE_ALARM")) {
                 Platform.runLater(() -> {
                     Tuple<Integer, Sickness> elem = (Tuple) se.command().getArg();
                     messageLabel.setText("Attenzione! Allarme di livello " + elem.fst() + "\n" +
@@ -40,10 +40,13 @@ public class AlarmLoggedControlController {
                             "\n" +
                             "Richiesto l'intervento del dottor " + se.state().getDocAlarm().getName());
                 });
+                store.update(new StringCommand("ACTIVATE_COUNTDOWN", ((Tuple) se.command().getArg()).fst()));
+            }
         });
     }
 
     @FXML protected void login() {
         store.update(new StringCommand("RESET_ALARMS"));
+        store.update(new StringCommand("STOP_COUNTDOWN"));
     }
 }
