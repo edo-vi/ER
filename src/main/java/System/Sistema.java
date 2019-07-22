@@ -322,11 +322,6 @@ public class Sistema {
 
         store = new Store<StringCommand>(new State(), reducer, middleware);
         store.update(new StringCommand("LOAD"));
-        /*
-        store.update(new StringCommand("START_MONITORING"));
-        store.update(new StringCommand("ADD_PATIENT", new Patient("Roberto", "Posenato", "PSNRBRA373UUS88I",
-                "Verona", new GregorianCalendar(1981, Calendar.FEBRUARY, 11).getTime())));
-        */
     }
 
     public void setupUI(Stage stage){
@@ -340,6 +335,7 @@ public class Sistema {
             this.controller.addInterface("ALM", new AlarmsComponent<StringCommand>().getLoader().load());
             this.controller.addInterface("ALMCTLLOG", new AlarmControlComponent<StringCommand>(false).getLoader().load());
             this.controller.addInterface("ALMCTL", new AlarmControlComponent<StringCommand>(true).getLoader().load());
+            this.controller.addInterface("ERR", new ErrorComponet<StringCommand>().getLoader().load());
             System.out.println("---- HP Interfaces ----");
             this.controller.addInterface("HPD", new HPComponent<StringCommand>(new HPFactory().getHPInterface("default"), new HPControllerFactory().getController("default")).getLoader().load());
             this.controller.addInterface("HPS", new HPComponent<StringCommand>(new HPFactory().getHPInterface("search"), new HPControllerFactory().getController("search")).getLoader().load());
