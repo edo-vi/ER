@@ -22,7 +22,6 @@ import System.HPInterfaceFactory.HPFactory;
 import System.NURInterfaceFactory.NURFactory;
 import System.Session.AlarmTimer;
 import System.Session.DoctorSessionThread;
-import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;

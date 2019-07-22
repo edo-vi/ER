@@ -2,9 +2,7 @@ package Entities;
 
 import Generator.*;
 import Main.Tuple;
-import System.Sistema;
 import com.sun.istack.NotNull;
-import com.sun.istack.Nullable;
 
 
 import javax.persistence.*;
