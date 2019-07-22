@@ -139,7 +139,7 @@ public class Prescription implements Entry{
     }
 
     public boolean isAdministrable(Tuple<String, String> drug) {
-        if(dailyAdministrationCounter.size() == 0 && dailyAdministrationCounter.get(drug) == null) {
+        if(dailyAdministrationCounter.size() == 0 || dailyAdministrationCounter.get(drug) == null) {
             dailyAdministrationCounter.put(drug, 0);
         }
         return dailyAdministrationCounter.get(drug) < totalNumberofDoses && isBefore(drug.fst(), new java.sql.Date(date.getTime() + duration*24*60*60*1000).toString());

@@ -130,7 +130,9 @@ public class NURDController implements NURController {
             pat.getActiveRecoveries().forEach(r -> r.getPrescriptions().forEach(p -> {
                 if(data.size() == 0)
                     prescriptionOfThisAdm = p;
-                data.add(p.getDrug());
+                Tuple<String, String> drugToBeAdministrated = new Tuple<>(new java.sql.Date(new Date().getTime()).toString(), p.getDrug());
+                if(p.isAdministrable(drugToBeAdministrated))
+                    data.add(p.getDrug());
             }));
             if (data.size() > 0) {
                 drugComboBox.getSelectionModel().select(index);
@@ -194,7 +196,7 @@ public class NURDController implements NURController {
             quantityLabel.setVisible(true);
             admDate.setVisible(true);
             admDateValue = new Date();
-            admDateLabel.setText(admDateValue.toString());
+            admDateLabel.setText(new java.sql.Date(admDateValue.getTime()).toString());
             admDateLabel.setVisible(true);
             note.setVisible(true);
             noteTextArea.setVisible(true);
