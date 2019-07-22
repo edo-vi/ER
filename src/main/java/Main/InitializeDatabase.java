@@ -37,11 +37,11 @@ public class InitializeDatabase {
         try {
 
             Prescription pr1 = new Prescription("Aspirin", new GregorianCalendar(2019, Calendar.JULY,22).getTime(),
-                    3, 2389, 3, "Dr. Mario", rec1);
+                    3, 100, 3, "Dr. Mario", rec1);
             Prescription pr2 = new Prescription("Oki", new GregorianCalendar(2016, Calendar.JULY, 9).getTime(),
                     4, 20, 3, "Dr. Warian", rec3);
             Administration adm1 = new Administration(new GregorianCalendar(2019, Calendar.JULY, 11).getTime(),
-                    14, 75.76, "All good", patient1, pr1);
+                    14, 75, "All good", patient1, pr1);
 
             Administration adm2 = new Administration(new GregorianCalendar(2019, Calendar.JULY, 11).getTime(),
                     2, 2, "Fine", patient1, pr2);
