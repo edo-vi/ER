@@ -10,11 +10,14 @@ import java.util.Optional;
 public class MutableTest {
     public static void main(String ...args) {
         MutableItem<Integer> a = new MutableItem<Integer>(3);
-        a.subscribeWithLast(10, (p, l) -> {});
+        a.subscribeWithLast(5, (p, l) -> {
+            System.out.print(p + " & ");
+            System.out.println(l);
+        });
 
         for (int i = 1; i < 18; i ++ ) {
-            a.change(a.last().get()+1);
-            System.out.println(a.last(3));
+            a.change(a.get()+1);
+            //System.out.println(a.last(3));
         }
 
     }

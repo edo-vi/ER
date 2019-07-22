@@ -1,10 +1,10 @@
 package Main;
 
+import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -16,17 +16,16 @@ public class MutableItem<T> {
     private List<T> history = new ArrayList<>();
 
     private Subject<T> life$ = PublishSubject.create();
-    private int bufferSize = 11;
-    private int cursor = 0;
+    private int bufferSize = 10;
+    private int cursor = -1;
 
     public MutableItem(T item) {
         this.item = item;
-        history.add(item);
     }
 
     public MutableItem buffer(int s) {
-        if (s < 0 || s > 20) bufferSize = 11;
-        else bufferSize = s+1;
+        if (s < 0 || s > 20) bufferSize = 10;
+        else bufferSize = s;
 
         return this;
     }
@@ -35,15 +34,23 @@ public class MutableItem<T> {
         return this.life$.subscribe(function::accept);
     }
 
-    public Disposable subscribeWithLast(BiConsumer<T, T> function) {
-        return this.life$.subscribe(t -> function.accept(t, history.get(1)));
+    public Disposable subscribeWithLast(BiConsumer<T, Optional<T>> function) {
+        try {
+            return this.life$.subscribe(t -> function.accept(t, Optional.of(history.get(0))));
+        } catch (ArrayIndexOutOfBoundsException err) {
+            return this.life$.subscribe(t -> function.accept(t, Optional.empty()));
+        }
+
     }
 
+    public T get() {
+        return item;
+    }
     public Disposable subscribeWithLast(int size, BiConsumer<T, List<Optional<T>>> function) {
 
         return this.life$.subscribe(t -> {
             List<Optional<T>> arr = new ArrayList<>();
-            for (int i = 1; i < size + 1 && i < bufferSize; i++) {
+            for (int i = 0; i < size && i < bufferSize; i++) {
                 try {
                     arr.add(Optional.of(history.get(i)));
                 } catch (IndexOutOfBoundsException err) {
@@ -54,13 +61,26 @@ public class MutableItem<T> {
         });
     }
 
+    public Disposable subscribeAll(Consumer<T> function) {
+        List<T> arr = history;
+        arr.add(0, item);
+        return ((Observable<T>) Observable.fromArray(arr.toArray())).subscribe(function::accept);
+    }
+
+    public Observable<T> getAll() {
+        List<T> arr = history;
+        arr.add(0, item);
+        return ((Observable<T>) Observable.fromArray(arr.toArray()));
+    }
+
     public static MutableItem of(Object item) {
         return new MutableItem<>(item);
     }
 
     public void change(T item) {
+        this.history.add(0, this.item);
         this.item = item;
-        this.history.add(0, item);
+
         if (cursor++ >= bufferSize) {
             history.remove(cursor--);
         }
