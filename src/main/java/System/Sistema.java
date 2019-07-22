@@ -142,16 +142,25 @@ public class Sistema {
                     return new Tuple<>(new StringCommand("LOGIN_FAILURE"), s);
                 })
                 .with("LOAD", (c, s, m) -> {
-                    List<Patient> ps = DatabaseService.getEntries("Patient").stream()
-                            .map(e -> (Patient) e)
-                            .collect(Collectors.toList());
+                    List<Patient> ps = DatabaseService.getEntries("Patient").stream().map(e -> (Patient) e).collect(Collectors.toList());
                     s.setPatients(ps);
-                    List<Recovery> rec = ps.stream().flatMap(p -> p.getAllRecoveries().stream()).filter(Recovery::isActive)
-                            .collect(Collectors.toList());
+                    List<Recovery> rec = ps.stream().flatMap(p -> p.getAllRecoveries().stream()).filter(Recovery::isActive).collect(Collectors.toList());
+
+                    //setUp HashMap Prescriptions
+                    rec.forEach(r -> r.getPrescriptions().forEach(p -> {
+                        p.getAdministrations().forEach(a -> {
+                            Tuple<String, String> dataAndDrug = new Tuple<>(new java.sql.Date(a.getDate().getTime()).toString(), p.getDrug());
+                            HashMap<Tuple<String, String>, Integer> admHistory = p.getDailyAdministrationCounter();
+                            admHistory.putIfAbsent(dataAndDrug, 0);
+                            admHistory.replace(dataAndDrug, admHistory.get(dataAndDrug) + 1);
+                        });
+                    }));
+
                     //TODO add
                     /*if (rec.size() == 0) {
 
                     }*/
+
                     s.setMainRecoveryIndex(0);
                     return new Tuple<>(new StringCommand("LOADED"), s);
                 })
