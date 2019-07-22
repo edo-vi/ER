@@ -140,7 +140,8 @@ public class DOCSRController implements DOCController {
         String name = arr[0];
         String surname = arr[1];
         Patient p = store.poll().getPatients().stream()
-                .filter(pa -> pa.getName().equals(name) && pa.getSurname().equals(surname)).findFirst().orElse(null);
+                .filter(pa -> pa.getName().toLowerCase().equals(name.toLowerCase())
+                        && pa.getSurname().toLowerCase().equals(surname.toLowerCase())).findFirst().orElse(null);
 
         if (p != null) {
             store.update(new StringCommand("SEARCH_PATIENT", patientText.getText()));
