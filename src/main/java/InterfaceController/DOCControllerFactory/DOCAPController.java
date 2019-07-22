@@ -74,7 +74,7 @@ public class DOCAPController implements DOCController {
             }
         });
 
-        prescriptionDate.setText(Calendar.getInstance().getTime().toString());
+        prescriptionDate.setText(new java.sql.Date(Calendar.getInstance().getTime().getTime()).toString());
         fillPatients(store.poll());
         try {
             setSelectedPatient(this.patientComboBox.getItems().get(0));
