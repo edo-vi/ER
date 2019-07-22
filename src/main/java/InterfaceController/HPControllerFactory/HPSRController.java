@@ -81,7 +81,7 @@ public class HPSRController implements HPController {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<Prescription, String> param) {
                 int a = param.getValue().getTotalNumberofDoses() * param.getValue().getDailyDose();
-                String s = String.format("%d mg/mm", a);
+                String s = String.format("%d mg/mL", a);
                 return new SimpleObjectProperty<String>(s);
             }
         });
@@ -114,7 +114,7 @@ public class HPSRController implements HPController {
             data.addAll(r.getPrescriptions());
 
             ObservableList<Administration> data1 = administrations.getItems();
-            data.removeAll(data1);
+            data1.removeAll(data1);
             data1.addAll(r.getPrescriptions().stream().flatMap(pr -> pr.getAdministrations().stream())
                     .collect(Collectors.toList()));
         } else {
@@ -142,7 +142,8 @@ public class HPSRController implements HPController {
         String name = arr[0];
         String surname = arr[1];
         Patient p = store.poll().getPatients().stream()
-                .filter(pa -> pa.getName().equals(name) && pa.getSurname().equals(surname)).findFirst().orElse(null);
+                .filter(pa -> pa.getName().toLowerCase().equals(name.toLowerCase())
+                        && pa.getSurname().toLowerCase().equals(surname.toLowerCase())).findFirst().orElse(null);
 
         if (p != null) {
             store.update(new StringCommand("SEARCH_PATIENT", patientText.getText()));

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
-public class Patient implements Entry{
+public class Patient implements Entry {
     @Id
     @GeneratedValue
     @Column(name = "patient_id")
@@ -26,6 +26,9 @@ public class Patient implements Entry{
     @OneToMany(mappedBy = "patient")
     private List<Recovery> recoveries = new ArrayList<>();
 
+
+    private PatientState patientState;
+
     public Patient() { }
 
     public Patient(String name, String surname, String fiscalCode, String placeOfBirth, Date birthDay) {
@@ -34,13 +37,31 @@ public class Patient implements Entry{
         this.fiscalCode = fiscalCode;
         this.placeOfBirth = placeOfBirth;
         this.birthDay = new java.sql.Date(birthDay.getTime());
+        this.patientState = PatientState.WAITING;
     }
 
-    public Patient(String name, String surname, String fiscalCode, String placeOfBirth, Date birthDay,
+    /*public Patient(String name, String surname, String fiscalCode, String placeOfBirth, Date birthDay,
                    List<Administration> administrations, List<Recovery> recoveries) {
-        this(name,surname, fiscalCode, placeOfBirth, birthDay);
+        this(name, surname, fiscalCode, placeOfBirth, birthDay);
         this.administrations.addAll(administrations);
         this.recoveries.addAll(recoveries);
+    }*/
+
+    public void admit(Recovery recovery) throws MoreThanOneActiveRecoveryException {
+        if (getActiveRecoveries().size() > 0) throw new MoreThanOneActiveRecoveryException();
+        this.patientState = PatientState.RECOVERED;
+
+        this.addToRecoveries(recovery);
+        try {
+            recovery.setPatient(this);
+        } catch (Recovery.PatientNotAdmittedException err) {
+            System.out.print("Should never happen!!! :" + err);
+        }
+    }
+
+    public void discharge(Recovery recovery, String dischargeSummary) {
+        this.patientState = PatientState.DISCHARGED;
+        recovery.discharge(dischargeSummary);
     }
 
     public String toString() {
@@ -64,6 +85,8 @@ public class Patient implements Entry{
         int lg = sb.toString().length()-2;
         return sb.substring(0,lg);
     }
+
+
 
     /**
      * GETTERS AND SETTERS
@@ -133,12 +156,19 @@ public class Patient implements Entry{
         this.recoveries = recoveries;
     }
 
-    public void addToRecoveries(Recovery recovery) {
+    private void addToRecoveries(Recovery recovery) {
         this.recoveries.add(recovery);
     }
 
     public boolean isRecovered() {
-        return this.getActiveRecoveries().size() > 0;
+        return this.patientState.equals(PatientState.RECOVERED);
+    }
+
+    public boolean isWaiting() {
+        return this.patientState.equals(PatientState.WAITING);
+    }
+    public boolean isDischarged() {
+        return this.patientState.equals(PatientState.DISCHARGED);
     }
 
     public List<Recovery> getActiveRecoveries() {
@@ -146,17 +176,21 @@ public class Patient implements Entry{
     }
 
     public List<Recovery> getDischargedRecovery() {
-        return this.getAllRecoveries().stream().filter(a -> !a.isActive()).collect(Collectors.toList());
+        return this.getAllRecoveries().stream().filter(Recovery::isDischarged).collect(Collectors.toList());
     }
 
     public List<Monitoring> getActiveMonitorings() {
-        return this.getActiveRecoveries().stream().filter(Recovery::isActive).flatMap(re -> re.getMonitorings().stream())
+        return this.getActiveRecoveries().stream().flatMap(re -> re.getMonitorings().stream())
                 .collect(Collectors.toList());
     }
 
     public List<Monitoring> getAllMonitorings() {
-        return this.getAllRecoveries().stream().filter(Recovery::isActive).flatMap(re -> re.getMonitorings().stream())
+        return this.getAllRecoveries().stream().flatMap(re -> re.getMonitorings().stream())
                 .collect(Collectors.toList());
+    }
+
+    public class MoreThanOneActiveRecoveryException extends Exception {
+
     }
 
 }

@@ -72,16 +72,11 @@
                                 <PropertyValueFactory property="diagnosis" />
                             </cellValueFactory>
                         </TableColumn>
-                        <TableColumn prefWidth="200.0" text="Data dimissione">
-                            <cellValueFactory>
-                                <PropertyValueFactory property="endDate" />
-                            </cellValueFactory>
-                        </TableColumn>
-                        <TableColumn prefWidth="277.0" text="Esito">
-                            <cellValueFactory>
-                                <PropertyValueFactory property="dischargeSummary" />
-                            </cellValueFactory>
-                        </TableColumn>
+
+                        <TableColumn prefWidth="200.0" text="Data dimissione" fx:id="endDateColumn"/>
+
+                        <TableColumn prefWidth="277.0" text="Esito" fx:id="dischargeSummary" />
+
                      </columns>
                   </TableView>
                   <Button layoutX="580.0" layoutY="67.0" mnemonicParsing="false" onAction="#searchPatient" text="Cerca" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="47.0" />

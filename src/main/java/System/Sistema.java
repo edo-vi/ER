@@ -6,7 +6,6 @@ import Generator.DataThread;
 import Generator.Sickness;
 import Generator.Value;
 import InterfaceController.DOCControllerFactory.DOCControllerFactory;
-import InterfaceController.DOCControllerFactory.DOCDController;
 import InterfaceController.HPControllerFactory.HPControllerFactory;
 import InterfaceController.NURControllerFactory.NURControllerFactory;
 import State.Reducer;
@@ -21,6 +20,7 @@ import State.Middleware;
 import System.DOCInterfaceFactory.DOCFactory;
 import System.HPInterfaceFactory.HPFactory;
 import System.NURInterfaceFactory.NURFactory;
+import System.Session.AlarmTimer;
 import System.Session.DoctorSessionThread;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -47,6 +47,7 @@ public class Sistema {
     private Stage monitoringStage = null;
     private Stage alarmStage = null;
     private Stage alarmControlStage = null;
+    private Stage errorStage = null;
     private final Random random = new Random();
     private int selectedPatient = -1;
     private boolean alarmCtlIsShown = false;
@@ -89,6 +90,7 @@ public class Sistema {
                 .with("START_MONITORING")
                 .with("STOP_MONITORING")
                 .with("SHOW_ALARMS")
+                .with("CLOSE_ALARMS")
                 .with("GET_LOGIN", (c, s) -> {
                     if(s.getUser().isValid())
                         controller.toFront();
@@ -123,7 +125,11 @@ public class Sistema {
                 .with("SEARCH_PATIENT")
                 .with("TRY_ADMISSION")
                 .with("ADD_PRESCRIPTION")
-                .with("ADD_ADMINISTRATION");
+                .with("ADD_ADMINISTRATION")
+                .with("ERROR")
+                .with("CLOSE_ERROR_WINDOW")
+                .with("ACTIVATE_COUNTDOWN")
+                .with("STOP_COUNTDOWN");
         Middleware<StringCommand> middleware = new MiddlewareString(monitoringStage)
                 .with("LOGIN", (c, s, m) -> {
                     User x = (User) c.getArg();
@@ -158,7 +164,10 @@ public class Sistema {
                 .with("SHOW_MONITORING", (c,s,m) -> {
                     if(monitoringStage == null) {
                         monitoringStage = createUI("MON", MonitoringComponent.monitoringTitle);
-                        monitoringStage.setOnCloseRequest(e -> store.update(new StringCommand("STOP_MONITORING")));
+                        monitoringStage.setOnCloseRequest(e -> {
+                            store.update(new StringCommand("STOP_MONITORING"));
+                            store.update(new StringCommand("CLOSE_ALARMS"));
+                        });
                     }
                     monitoringStage.sizeToScene();
                     monitoringStage.show();
@@ -182,18 +191,24 @@ public class Sistema {
                 })
                 .with("CLOSE_MONITORING", (c,s,m) -> {
                     monitoringStage.close();
+                    store.update(new StringCommand("CLOSE_ALARMS"));
                     return new Tuple<>(new StringCommand("CLOSE_MONITORING"), s);
                 })
                 .with("SHOW_ALARMS", (c,s,m) -> {
                     if(alarmStage == null)
                         alarmStage = createUI("ALM", AlarmsComponent.AlarmsTitle);
                     alarmStage.sizeToScene();
-                    alarmStage.show();
                     alarmStage.toFront();
+                    alarmStage.show();
                     return new Tuple<>(new StringCommand("SHOW_ALARMS"), s);
                 })
-                .with("ALARM_ACTIVATED", (c,s,m) -> {
+                .with("CLOSE_ALARMS", (c,s,m) -> {
+                    if(alarmStage != null)
+                        alarmStage.close();
 
+                    return new Tuple<>(new StringCommand("CLOSED_ALARMS"), s);
+                })
+                .with("ALARM_ACTIVATED", (c,s,m) -> {
                     if(!alarmCtlIsShown) {
                         boolean docAlreadyLog = s.getDocAlarm().isValid() && s.getDocAlarm().equals(s.getDocAlarmCheck());
                         String filename = (docAlreadyLog) ? "ALMCTL" : "ALMCTLLOG";
@@ -220,7 +235,6 @@ public class Sistema {
                         alarmControlStage.toFront();
                         alarmControlStage.show();
                         alarmCtlIsShown = true;
-
                     }
                     mt = new MediaThread();
                     mt.start();
@@ -248,12 +262,10 @@ public class Sistema {
                     }
                 })
                 .with("DISCHARGE_PATIENT", (c,s,m) -> {
-                    Tuple<Integer, String> val = (Tuple<Integer, String>) c.getArg();
+                    Tuple<Recovery, String> val = (Tuple<Recovery, String>) c.getArg();
                     try {
-                        Recovery re = s.getAllRecoveries().stream()
-                                .filter(r -> r.getId()==val.fst()).findFirst().orElse(null);
-                        re.discharge(val.snd());
-                        DatabaseService.addEntry(re);
+                        val.fst().getPatient().discharge(val.fst(), val.snd());
+                        DatabaseService.addEntry(val.fst());
                         return new Tuple<>(new StringCommand("DISCHARGED_A_PATIENT"), s);
                     } catch (Exception e) {
                         System.out.println("Sistema, Discharge summary: " + e);
@@ -281,15 +293,22 @@ public class Sistema {
                 .with("TRY_ADMISSION", (c,s,m) -> {
                     Tuple<Patient, String> p = (Tuple<Patient, String>) c.getArg();
                     try {
-                        if(s.getActiveRecoveries().size() < 9) {
-                            Recovery rec = new Recovery(p.snd(),p.fst());
+                        Patient patient = p.fst();
+                        String diagnosis = p.snd();
+
+                        if(s.getActiveRecoveries().size() < 10) {
+                            Recovery rec = new Recovery(diagnosis);
+
+                            patient.admit(rec);
+                            rec.setPatient(patient);
+
                             DatabaseService.addEntry(rec);
-                            p.fst().addToRecoveries(rec);
+
                             return new Tuple<>(new StringCommand("PATIENT_SUCCESSFULLY_ADMITTED"), s);
                         } else {
                             return new Tuple<>(new StringCommand("COULD_NOT_ADMIT_A_PATIENT"), s);
                         }
-                    } catch (Exception e) {
+                    } catch (Patient.MoreThanOneActiveRecoveryException | Recovery.PatientNotAdmittedException e) {
                         System.out.println("Sistema, admission summary: " + e);
                         return new Tuple<>(new StringCommand("COULD_NOT_ADMIT_A_PATIENT"), s);
                     }
@@ -316,15 +335,43 @@ public class Sistema {
                     } catch(Exception e) {
                         return new Tuple<>(new StringCommand("COULD_NOT_ADD_ADMINISTRATION"), s);
                     }
+                })
+                .with("ERROR", (c,s,m) -> {
+                    if(errorStage == null) {
+                        errorStage = createUI("ERR", ErrorComponet.ErrorTitle);
+                        errorStage.initModality(Modality.APPLICATION_MODAL);
+                        errorStage.initStyle(StageStyle.UNDECORATED);
+                    }
+                    errorStage.sizeToScene();
+                    errorStage.toFront();
+                    errorStage.show();
+
+                    return new Tuple<>(new StringCommand("ERROR_WINDOW_CREATED", c.getArg()), s);
+                })
+                .with("CLOSE_ERROR_WINDOW", (c,s,m) -> {
+                    errorStage.close();
+                    store.update(new StringCommand("RESET_ALARMS"));
+                    return new Tuple<>(new StringCommand("ERROR_WINDOW_CLOSED"), s);
+                })
+                .with("ACTIVATE_COUNTDOWN", (c,s,m) -> {
+                    MiddlewareString x = ((MiddlewareString) m);
+                    if(x.getAlarmTimerThread() == null) {
+                        AlarmTimer att = new AlarmTimer((int) c.getArg(), store);
+                        x.setAlarmTimerThread(att);
+                        att.start();
+                    } else x.getAlarmTimerThread().restart();
+
+                    return new Tuple<>(new StringCommand("START_COUNTDOWN"), s);
+                })
+                .with("STOP_COUNTDOWN", (c,s,m) -> {
+                    MiddlewareString x = ((MiddlewareString) m);
+                    x.getAlarmTimerThread().alarmDeactivated();
+
+                    return new Tuple<>(new StringCommand("COUNTDOWN_STOPPED"), s);
                 });
 
         store = new Store<StringCommand>(new State(), reducer, middleware);
         store.update(new StringCommand("LOAD"));
-        /*
-        store.update(new StringCommand("START_MONITORING"));
-        store.update(new StringCommand("ADD_PATIENT", new Patient("Roberto", "Posenato", "PSNRBRA373UUS88I",
-                "Verona", new GregorianCalendar(1981, Calendar.FEBRUARY, 11).getTime())));
-        */
     }
 
     public void setupUI(Stage stage){
@@ -338,6 +385,7 @@ public class Sistema {
             this.controller.addInterface("ALM", new AlarmsComponent<StringCommand>().getLoader().load());
             this.controller.addInterface("ALMCTLLOG", new AlarmControlComponent<StringCommand>(false).getLoader().load());
             this.controller.addInterface("ALMCTL", new AlarmControlComponent<StringCommand>(true).getLoader().load());
+            this.controller.addInterface("ERR", new ErrorComponet<StringCommand>().getLoader().load());
             System.out.println("---- HP Interfaces ----");
             this.controller.addInterface("HPD", new HPComponent<StringCommand>(new HPFactory().getHPInterface("default"), new HPControllerFactory().getController("default")).getLoader().load());
             this.controller.addInterface("HPS", new HPComponent<StringCommand>(new HPFactory().getHPInterface("search"), new HPControllerFactory().getController("search")).getLoader().load());

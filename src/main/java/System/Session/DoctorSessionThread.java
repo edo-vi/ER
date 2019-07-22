@@ -33,7 +33,7 @@ public class DoctorSessionThread extends Thread {
 
     private class SessionTimer extends TimerTask {
 
-        public SessionTimer() {};
+        public SessionTimer() {}
 
         public void run() {
             Platform.runLater(() -> {

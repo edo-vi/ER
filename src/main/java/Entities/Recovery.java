@@ -24,7 +24,6 @@ public class Recovery implements Entry {
     private Date startDate;
 
     private String diagnosis;
-    private boolean active;
     @Temporal(TemporalType.DATE)
     private Date endDate;
     private String dischargeSummary;
@@ -38,6 +37,8 @@ public class Recovery implements Entry {
 
     @OneToMany(mappedBy = "recovery")
     private List<Prescription> prescriptions = new ArrayList<>();
+
+    private RecoveryState recoveryState;
 
     @Transient
     private final BPGenerator bpGenerator = new BPGenerator();
@@ -54,29 +55,39 @@ public class Recovery implements Entry {
 
     public Recovery () {}
 
-
-    public Recovery(Date start, String diagnosis, Patient patient) {
+    /**
+     *
+     * @param start
+     * @param diagnosis
+     * @param patient
+     * @throws PatientNotAdmittedException must be called after Patient.Admit
+     */
+    public Recovery(Date start, String diagnosis, Patient patient) throws PatientNotAdmittedException {
+        if (!patient.isRecovered()) throw new PatientNotAdmittedException();
         this.startDate = new java.sql.Date(start.getTime());
         this.diagnosis = diagnosis;
         this.patient = patient;
-        this.active = true;
+        this.recoveryState = RecoveryState.ACTIVE;
     }
 
-    public Recovery(String diagnosis, Patient patient) {
+    public Recovery(Date start, String diagnosis) {
+        this.startDate = new java.sql.Date(start.getTime());
+        this.diagnosis = diagnosis;
+        this.recoveryState = RecoveryState.ACTIVE;
+    }
+
+    public Recovery(String diagnosis, Patient patient) throws PatientNotAdmittedException {
         this(Calendar.getInstance().getTime(), diagnosis, patient);
     }
 
-    public Recovery(Date start, String diagnosis, Patient patient, List<Prescription> prescriptions) {
+    public Recovery(String diagnosis) {
+        this(Calendar.getInstance().getTime(), diagnosis);
+    }
+
+    public Recovery(Date start, String diagnosis, Patient patient, List<Prescription> prescriptions) throws PatientNotAdmittedException {
         this(start, diagnosis, patient);
         this.prescriptions.addAll(prescriptions);
     }
-
-    public Recovery(Date start, String diagnosis, Patient patient, List<Monitoring> monitorings, List<Prescription> prescriptions) {
-        this(start, diagnosis, patient);
-        this.monitorings.addAll(monitorings);
-        this.prescriptions.addAll(prescriptions);
-    }
-
 
     public Monitoring getLastMonitoring() {
         if (this.monitorings.size() == 0) {
@@ -99,7 +110,7 @@ public class Recovery implements Entry {
     }
 
     public void generateMonitoring(Value value) {
-        if (active) {
+        if (this.recoveryState.equals(RecoveryState.ACTIVE)) {
             Monitoring last = this.getLastMonitoring();
             Monitoring nm = new Monitoring();
             nm.setDate(new Date());
@@ -151,7 +162,11 @@ public class Recovery implements Entry {
     }
 
     public boolean isActive() {
-        return active && (this.dischargeSummary == null || this.dischargeSummary.equals("")) && this.endDate == null;
+        return this.recoveryState.equals(RecoveryState.ACTIVE);
+    }
+
+    public boolean isDischarged() {
+        return this.recoveryState.equals(RecoveryState.DISCHARGED);
     }
 
     public void discharge(String dischargeSummary) {
@@ -161,10 +176,7 @@ public class Recovery implements Entry {
     public void discharge(String dischargeSummary, Date endDate) {
         this.dischargeSummary = dischargeSummary;
         this.setEndDate(endDate);
-        this.active = false;
-    }
-    public void setActive(boolean active) {
-        this.active = active;
+        this.recoveryState = RecoveryState.DISCHARGED;
     }
 
     public Date getEndDate() throws RecoveryNullFieldException {
@@ -175,7 +187,7 @@ public class Recovery implements Entry {
         }
     }
 
-    public void setEndDate(Date endDate) {
+    private void setEndDate(Date endDate) {
         this.endDate = new java.sql.Date(endDate.getTime());
     }
 
@@ -187,7 +199,7 @@ public class Recovery implements Entry {
         }
     }
 
-    public void setDischargeSummary(String dischargeSummary) {
+    private void setDischargeSummary(String dischargeSummary) {
         this.dischargeSummary = dischargeSummary;
     }
 
@@ -195,7 +207,8 @@ public class Recovery implements Entry {
         return patient;
     }
 
-    public void setPatient(Patient patient) {
+    public void setPatient(Patient patient) throws PatientNotAdmittedException {
+        if (!patient.isRecovered()) throw new PatientNotAdmittedException();
         this.patient = patient;
     }
 
@@ -223,4 +236,11 @@ public class Recovery implements Entry {
 
     }
 
+    public class PatientNotAdmittedException extends Exception {
+
+    }
+
+    private enum RecoveryState {
+        ACTIVE, DISCHARGED
+    }
 }

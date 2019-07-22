@@ -133,9 +133,10 @@ public class FiscalCodeCalculator {
         }
         /* day */
         int day = 0;
-        if (birth.charAt(8) == '0')
+        if (birth.charAt(8) == '0') {
+            fiscalCode += '0';
             day = Integer.parseInt(birth.substring(9));
-        else
+        } else
             day = Integer.parseInt(birth.substring(8));
         if (sex == 'M')
             fiscalCode += day;

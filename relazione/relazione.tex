@@ -57,7 +57,7 @@ Di seguito parte dei casi d'uso utilizzati, aggregati per chiarezza nei vari ute
 	\addfield{Utente:}{Primario}
 	\addfield{Precondizioni:}{Il primario deve essersi autenticato}
 	\additemizedfield{Passi}{
-		\item Nel propria dashboard seleziona la finestra per compilare le lettere di dimissione
+		\item Nella propria dashboard seleziona la finestra per compilare lae letterae di dimissionie
 		\item Seleziona da un menù a tendina i ricoveri dei pazienti in attesa di essere dimessi
 		\item Visualizza nella schermata i dati sommari del ricovero e compila la lettera di dimissione
 	}
@@ -120,7 +120,7 @@ Di seguito parte dei casi d'uso utilizzati, aggregati per chiarezza nei vari ute
 			\item altrimenti compare una finestra di errore
 		\end{enumerate}
 	}
-	\addfield{Postcondizioni:}{Se il numero di pazienti attualmente ricoverati è minore di dieci e ha accettato di ammetterne uno inserendo la diagnosi, allora il nome del paziente scompare dal menù a tendina ed esso sarà compreso tra quelli ricoverati.}
+	\addfield{Postcondizioni:}{Se il numero di pazienti attualmente ricoverati è minore di dieci e ha accettato di ammetterne uno inserendo la diagnosi, allora il nome del paziente scompare dal menù a tendina ed esso sarà compreso tra quelli ricoverati}
 	
 \end{usecase}
 
@@ -131,17 +131,49 @@ Di seguito parte dei casi d'uso utilizzati, aggregati per chiarezza nei vari ute
 	\additemizedfield{Passi}{
 		\item Nella propria dashboard seleziona la finestra per aggiungere una prescrizione
 		\item Da un menù a tendina sceglie tra i diversi pazienti attualmente ricoverati, visualizzando, a seconda della selezione, informazioni sommarie sul paziente
-		\item In diversi campi di testo aggiunge il nome del medicinale, la dose giornaliera, la quantità per dose e la durata della terapi e preme il bottone di conferma
+		\item In diversi campi di testo aggiunge il nome del medicinale, la dose giornaliera, la quantità per dose e la durata della terapi e preme il pulsante di conferma
 	}
 	\addfield{Postcondizioni:}{La prescrizione viene aggiunta a quelle associate al paziente ricoverato.}
 	
 \end{usecase}
+
+\begin{usecase}
+	\addtitle{Caso d'uso}{Compilazione dati anagrafici paziente}
+	\addfield{Utente:}{Infermiere}
+	\addfield{Precondizioni:}{L'infermiere deve essersi autenticato}
+	\additemizedfield{Passi}{
+		\item Nella propria dashboard seleziona la finestra per inserire i dati anagrafici dei pazienti
+		\item In diversi campi di testo aggiunge i dati anagrafici del paziente, tra cui nome, congnome, luogo e data di nascita. Premendo un pulsante può generare, sulla base di tali dati, il codice fiscale corretto del paziente
+	}
+	\addfield{Postcondizioni:}{Il paziente è inserito in stato di attesa}
+	
+\end{usecase}
+
+
+\begin{usecase}
+	\addtitle{Caso d'uso}{Aggiunta di somministrazioni}
+	\addfield{Utente:}{Infermiere}
+	\addfield{Precondizioni:}{L'infermiere deve essersi autenticato; il paziente a cui viene aggiunta una somministrazione deve essere ricoverato e avere almeno una prescrizione registrata}
+	\additemizedfield{Passi}{
+		\item Nella propria dashboard seleziona la finestra per aggiungere una somministrazione
+		\item Seleziona da un menù a tendina il paziente e il medicinale prescritto per cui può aggiungere una prescrizione
+		\item Visualizza nella schermata i dati sommari della prescrizione, tra cui le massime dosi giornaliere; in un campo di testo può inserire note circa la somministrazione. Aggiunge la somministrazione premendo un pulsante di conferma
+	}
+	\addfield{Postcondizioni:}{La somministrazione è aggiunta al paziente}
+	
+\end{usecase}
+
 \subsubsection{Design del sistema}
-La scelta di design è avvenuta inizialmente a tavolino tra tutti i membri del team.
-%
-%\subsubsection{Implementazione}
-%
-%\subsubsection{Verifica e convalida}
+La scelta di design iniziale del sistema è stata fatta a tavolino tra tutti i membri del team. %TODO
+
+\subsubsection{Implementazione}
+
+\subsubsection{Validazione e verifica}
+Le operazioni di validazione e verifica sono state fondamentali per garantire che il progetto rispettasse la specifica e il documento dei requisiti dati, e che si comportasse in modo coerente e prevedibile, senza errori, a tutti gli input previsti e operazioni eseguibili degli utenti.
+
+La fase di validazione è stata eseguita facendo un check periodico, dopo ogni implementazione di funzionalità non triviali, del rispetto della specifica per verificare sia che tutti i vincoli temporali e di caratteristiche dei dati fossero rispettati, sia che tali funzionalità corrispondessero a quello richiesto dal software finale.
+Questo è stato soprattutto importante dopo l'implementazione delle funzionalità di ogni utente: data la non modesta quantità di funzioni da mettere a disposizione e dati da considerare/ manipolare in molti casi il check di verifica eseguito successivamente ha messo alla luce rilevanti criticità e importanti modifiche da implementare. 
+Oltre a queste verifiche periodiche si è anche eseguito un controllo finale, al ridosso della scadenza, per validare il sistema nel suo complesso e cercare di individuare eventuali omissioni e elementi non completamente rispettosi della specifica e dei requisiti.
 %\subsection{Design e struttura del sistema}
 %
 %\section{Specifica del sistema}
@@ -151,7 +183,7 @@ La scelta di design è avvenuta inizialmente a tavolino tra tutti i membri del te
 \begin{figure}[b]
 \begin{tikzpicture}
 \begin{umlsystem}[x=0, fill=red!5]{Casi d'uso}
-\umlusecase[x=1, y=-2.5]{Inserisce dati anagrafici del paziente}
+\umlusecase[x=1, y=-2.45]{Inserisce dati anagrafici del paziente}
 \umlusecase[ x=.95, y=-1]{Inserisce dati somministrazione}
 \umlusecase[x=4.8, ]{Inserisce note stato paziente}
 \umlusecase[y=-6.5, x =2.6]{Visualizza dati paziente (ultime due ore)}
@@ -304,10 +336,10 @@ La scelta di design è avvenuta inizialmente a tavolino tra tutti i membri del te
 \begin{table}
 	\begin{tabular}{r | l}
 		Entità & Campi \\ \hline
-		Patient & \underline{Id}, Name, Surname, Fiscal code, Place of birth, Date of birth \\
+		Patient & \underline{Id}, Name, Surname, Fiscal code, Place of birth, Date of birth, Patient state \\
 		Administration & \underline{Id}, Date, Hour, Dose, Notes, \textit{Patient}, \textit{Prescription} \\
 		Prescription & \underline{Id}, Drug, Duration, Daily dose, Number of doses, Doctor, \textit{Recovery} \\ 
-		Recovery & \underline{Id}, Start date, End date, Diagnosis, Active, Discharge summary, \textit{Patient}\\
+		Recovery & \underline{Id}, Start date, End date, Diagnosis, Active, Discharge summary, Recovery state, \textit{Patient}\\
 		Monitoring & \underline{Id}, Date, Diastolic pressure, Systolic pressure, Heart rate, Temperature, \textit{Recovery}
 	\end{tabular}\caption{Campi e relazioni delle entità del database. I campi sottolineati indicano le \textit{primary keys}, quelli in corsivo le \textit{foreign keys} (mappate sempre ai campi Id della rispettiva entità).}
 \end{table}

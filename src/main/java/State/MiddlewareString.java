@@ -2,6 +2,7 @@ package State;
 
 import Generator.DataThread;
 import Main.Tuple;
+import System.Session.AlarmTimer;
 import System.Session.DoctorSessionThread;
 import javafx.stage.Stage;
 
@@ -12,6 +13,7 @@ public class MiddlewareString implements Middleware<StringCommand> {
 
     private DataThread monitoring;
     private DoctorSessionThread docSession;
+    private AlarmTimer alarmTimerThread;
 
     public MiddlewareString(Stage stage) {
         this.stage = stage;
@@ -55,5 +57,14 @@ public class MiddlewareString implements Middleware<StringCommand> {
     public void setDocSession(DoctorSessionThread docSession) {
         this.docSession = docSession;
     }
+
+    public AlarmTimer getAlarmTimerThread() {
+        return alarmTimerThread;
+    }
+
+    public void setAlarmTimerThread(AlarmTimer alarmTimerThread) {
+        this.alarmTimerThread = alarmTimerThread;
+    }
+
 
 }

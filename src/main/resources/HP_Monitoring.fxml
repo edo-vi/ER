@@ -62,24 +62,19 @@
                   <Label layoutX="40.0" layoutY="463.0" style="-fx-font-size: 24; -fx-text-fill: #B0C4DE;" text="Somministrazioni degli ultimi 2 giorni:" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="450.0" />
                   <TableView fx:id="tableMonitorings" layoutX="11.0" layoutY="-53.0" prefHeight="253.0" prefWidth="977.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="360.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="170.0">
                      <columns>
-                        <TableColumn prefWidth="110.0" text="Ora">
-                           <cellValueFactory>
-                              <PropertyValueFactory property="date" />
-                           </cellValueFactory>
-                        </TableColumn>
-                        <TableColumn prefWidth="310.0" text="Frequenza cardiaca (bpm)">
+                        <TableColumn prefWidth="350.0" text="Frequenza cardiaca (bpm)">
                            <cellValueFactory>
                               <PropertyValueFactory property="heartRate" />
                            </cellValueFactory>
                         </TableColumn>
-                        <TableColumn fx:id="temperatureColumn" prefWidth="215.0" text="Temperatura (°C)" />
+                        <TableColumn fx:id="temperatureColumn" prefWidth="255.0" text="Temperatura (°C)" />
 
-                        <TableColumn prefWidth="165.0" text="DBP (mmHg)">
+                        <TableColumn prefWidth="180.0" text="DBP (mmHg)">
                            <cellValueFactory>
                               <PropertyValueFactory property="diastolicPressure" />
                            </cellValueFactory>
                         </TableColumn>
-                        <TableColumn prefWidth="162.0" text="SBP (mmHg)">
+                        <TableColumn prefWidth="177.0" text="SBP (mmHg)">
                            <cellValueFactory>
                               <PropertyValueFactory property="systolicPressure" />
                            </cellValueFactory>
@@ -99,7 +94,7 @@
                            </cellValueFactory>
                         </TableColumn>
                         <TableColumn fx:id="drugColumn" prefWidth="200.0" text="Farmaco" />
-                        <TableColumn prefWidth="145.0" text="Dose">
+                        <TableColumn prefWidth="145.0" text="Dosaggio">
                            <cellValueFactory>
                               <PropertyValueFactory property="dose" />
                            </cellValueFactory>

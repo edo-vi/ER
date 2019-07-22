@@ -23,6 +23,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.util.StringConverter;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -75,6 +76,7 @@ public class HPDController implements HPController{
                 return patientsChoice.getValue();
             }
         });
+        patientRecoveryEndDate.setText(new java.sql.Date(Calendar.getInstance().getTime().getTime()).toString());
         initialize(store.poll());
     }
 
@@ -114,11 +116,7 @@ public class HPDController implements HPController{
             patientPlaceofBirth.setText(p.getPlaceOfBirth());
             patientDateofBirth.setText(p.getDateofBirth().toString());
             patientRecoveryStartDate.setText(r.getStartDate().toString());
-            try {
-                patientRecoveryEndDate.setText(r.getEndDate().toString());
-            } catch (Recovery.RecoveryNullFieldException e) {
-                patientRecoveryEndDate.setText("");
-            }
+            patientRecoveryEndDate.setText(new java.sql.Date(Calendar.getInstance().getTime().getTime()).toString());
             patientRecoveryReasons.setText(r.getDiagnosis());
         } else {
             patientName.setText("");
@@ -143,9 +141,8 @@ public class HPDController implements HPController{
         String dt = dischargeText.getText();
         if (dt != null && !dt.equals("")) {
             try {
-                Recovery r = this.patientsChoice.getValue();
-                this.store.update(new StringCommand("DISCHARGE_PATIENT", new Tuple<>(r.getId(), dt)));
-
+                this.store.update(new StringCommand("DISCHARGE_PATIENT",
+                        new Tuple<>(this.patientsChoice.getValue(), dt)));
             } catch(Exception err) {
 
             } finally {
@@ -153,7 +150,6 @@ public class HPDController implements HPController{
             }
 
         }
-
     }
 
     @FXML protected void search() {
