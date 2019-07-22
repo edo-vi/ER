@@ -12,14 +12,14 @@ import System.Sistema;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.Subject;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.util.Callback;
 
-import java.util.stream.Collectors;
+import java.util.Date;
 
 public class NURSController implements NURController {
     private final Store<StringCommand> store;
@@ -28,6 +28,9 @@ public class NURSController implements NURController {
     @FXML private TextField searchPatient;
     @FXML private Label nameLabel;
     private Disposable dis;
+
+    @FXML private TableColumn<Recovery, String> endDateColumn;
+    @FXML private TableColumn<Recovery, String> dischargeSummary;
 
     public NURSController(Store<StringCommand> store, Subject<StateEvent> stream) {
         this.store = store;
@@ -57,7 +60,29 @@ public class NURSController implements NURController {
             return row ;
         });
 
+        dischargeSummary.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Recovery , String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Recovery, String> param) {
+                try {
+                    String dis = param.getValue().getDischargeSummary();
+                    return new SimpleObjectProperty<>(dis);
+                } catch (Recovery.RecoveryNullFieldException e) {
+                    return new SimpleObjectProperty<>("-----");
+                }
+            }
+        });
 
+        endDateColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Recovery , String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Recovery, String> param) {
+                try {
+                    Date d = param.getValue().getEndDate();
+                    return new SimpleObjectProperty<>(d.toString());
+                } catch (Recovery.RecoveryNullFieldException e) {
+                    return new SimpleObjectProperty<>("-----");
+                }
+            }
+        });
     }
 
 
@@ -72,17 +97,11 @@ public class NURSController implements NURController {
             ObservableList<Recovery> data = recoveryTable.getItems();
             data.removeAll(data);
             //todo check
-            data.addAll(p.getAllRecoveries()
-                    .stream().filter(r -> {try {
-                        return !r.isActive()
-                            && r.getDischargeSummary() != null
-                            && !r.getDischargeSummary().equals("");
-                    } catch (Recovery.RecoveryNullFieldException e) {
-                        return false;
-                    }
-
-
-                    }).collect(Collectors.toList()));
+            p.getAllRecoveries().forEach(r -> {
+                Date extreme = new Date(r.getStartDate().getTime() - 7*24*60*60*1000);
+                if(r.getStartDate().after(extreme))
+                    data.add(r);
+            });
         }
     }
 
