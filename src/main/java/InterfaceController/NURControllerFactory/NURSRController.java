@@ -136,17 +136,22 @@ public class NURSRController implements NURController {
     }
 
     @FXML protected void searchPatient() {
-        String[] arr = patientText.getText().split(" ");
-        String name = arr[0];
-        String surname = arr[1];
-        Patient p = store.poll().getPatients().stream()
-                .filter(pa -> pa.getName().toLowerCase().equals(name.toLowerCase())
-                        && pa.getSurname().toLowerCase().equals(surname.toLowerCase())).findFirst().orElse(null);
+        try {
+            String[] arr = patientText.getText().split(" ");
+            String name = arr[0];
+            String surname = arr[1];
+            Patient p = store.poll().getPatients().stream()
+                    .filter(pa -> pa.getName().toLowerCase().equals(name.toLowerCase())
+                            && pa.getSurname().toLowerCase().equals(surname.toLowerCase())).findFirst().orElse(null);
 
-        if (p != null) {
-            store.update(new StringCommand("SEARCH_PATIENT", patientText.getText()));
-            sys.setInterface("NURS", NURComponent.NURTitle);
+            if (p != null) {
+                store.update(new StringCommand("SEARCH_PATIENT", patientText.getText()));
+                sys.setInterface("NURS", NURComponent.NURTitle);
+            }
+        } catch (ArrayIndexOutOfBoundsException err) {
+
         }
+
 
     }
 

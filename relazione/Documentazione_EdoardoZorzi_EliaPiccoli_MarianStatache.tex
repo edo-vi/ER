@@ -17,6 +17,7 @@
 \usepackage{dot2texi}
 \usepgfmodule{oo}
 \usepackage{lscape}
+
 \usepackage{./usecases}
 
 \tikzset{multi attribute/.style={attribute,double distance=1.5pt}} \tikzset{derived attribute/.style={attribute ,dashed}} \tikzset{total/.style={double distance=1.5pt}}
@@ -28,11 +29,10 @@
 \begin{document}
 
 \maketitle
-\tableofcontents
-\newpage
+
 
 \section{Ingegneria e sviluppo}
-\subsection{Organizzazione del processo di sviluppo}
+\subsection{Organizzazione iniziale del processo di sviluppo}
 
 \paragraph{Decisioni organizzative}
 La dimensione del team di sviluppo --- tre persone --- e i diversi livelli di interesse relativi agli `ambiti' di programmazione concernenti tale progetto, espressi inizialmente dai soggetti del team, hanno portato alla decisione di suddividere in modo moderatamente netto i compiti assegnati alle diverse persone, perlomeno nella fase iniziale, pre-design. 
@@ -45,26 +45,28 @@ Ad Elia ed Edoardo invece è stato assegnato il compito di progettare e sviluppar
 
 \paragraph{Gestione dei dati} La chiara natura relazionale dei dati necessari per il funzionamento del sistema ha subito portato alla decisione di affidarsi ad un RDBMS per la loro gestione, e in particolare a PostgreSQL; tale scelta è stata motivata principalmente dalla previa esperienza di utilizzo di un membro del team. Oltre che ad utilizzare un RBDMS si è inoltre deciso di affidarsi ad un ORM --- Hibernate --- per il mapping tra entità nel database e oggetti in memoria: questa decisione è derivata soprattutto dalla volontà di mantenere semplice la logica del sistema che, per sua natura e limitata dimensione, non ha mai richiesto la maggior efficienza derivante dall'utilizzo di pure query SQL. 
 
-\subsubsection{Ingegneria dei requisiti}
+\subsection{Ingegneria dei requisiti}
 Data la natura didattica del progetto non si sono seguite le classiche tecniche di elicitazione dei requisiti ma essi sono stati ricavati e studiati a partire dalla specifica di consegna, considerata, almeno in parte, come documento dei requisiti. La stesura iniziale delle principali funzionalità, sotto forma di un provvisorio schema dei casi d'uso, è stata eseguita nella fase di pre-design da parte di tutti i membri del team basandoci appunto su tale documento dei requisiti.
 
 Nel corso dello sviluppo del progetto, a seconda delle diverse funzionalità da implementare, sono anche stati stilati diversi casi d'uso per i vari utenti finali secondo un processo simile a quello adottato dai modelli agili: prima di implementare funzionalità specifiche del sistema si è pensato ad almeno un caso d'uso reale di tali funzionalità per permettere poi un'implementazione quanto più semplice, naturale e rispettante le aspettative e necessità degli utenti.
 
 Di seguito parte dei casi d'uso utilizzati, aggregati per chiarezza nei vari utenti finali.
 
+\vspace{.5cm}
+\subsection*{\textbf{Primario}}\hrule
+\vspace{1cm}
 \begin{usecase}
 	\addtitle{Caso d'uso}{Compilazione lettera di dimissioni}
 	\addfield{Utente:}{Primario}
 	\addfield{Precondizioni:}{Il primario deve essersi autenticato}
 	\additemizedfield{Passi}{
-		\item Nella propria dashboard seleziona la finestra per compilare lae letterae di dimissionie
-		\item Seleziona da un menù a tendina i ricoveri dei pazienti in attesa di essere dimessi
-		\item Visualizza nella schermata i dati sommari del ricovero e compila la lettera di dimissione
+		\item Nella propria dashboard seleziona la finestra per compilare le lettere di dimissioni
+		\item Seleziona da un menù a tendina i pazienti ricoverati in attesa di essere dimessi
+		\item Visualizza nella schermata i dati sommari del ricovero e compila la lettera di dimissione, e conferma la dimissione premendo il tasto di conferma
 	}
 	\addfield{Postcondizioni:}{Il paziente viene dimesso e il suo ricovero non compare più nel menù}
 	
 \end{usecase}
-
 
 \begin{usecase}
 \addtitle{Caso d'uso}{Visualizzazione e stampa dei reports dei ricoveri}
@@ -73,7 +75,7 @@ Di seguito parte dei casi d'uso utilizzati, aggregati per chiarezza nei vari ute
 \additemizedfield{Passi}{
 	\item Nella propria dashboard seleziona la finestra per visualizzare i reports dei ricoveri settimanali
 	\item Seleziona da un menù a tendina, o tramite ricerca, i ricoveri settimanali, attivi o non attivi 
-	\item Visualizza nella schermata i dati sommari dei ricoveri e dei pazienti. Eventualmente può stampare tali report cliccando su un bottone che genera un documento pdf
+	\item Visualizza nella schermata i dati sommari dei ricoveri e dei pazienti. Eventualmente può stampare tali report cliccando su un pulsante che genera un documento pdf
 }
 \addfield{Postcondizioni:}{Vengono visualizzati i reports dei ricoveri settimanali. Se il primario ha premuto il bottone per stamparli, viene generato un documento pdf con i dati richiesti}
 
@@ -85,17 +87,20 @@ Di seguito parte dei casi d'uso utilizzati, aggregati per chiarezza nei vari ute
 	\addfield{Precondizioni:}{L'utente deve essersi autenticato}
 	\additemizedfield{Passi}{
 		\item Nella propria dashboard l'utente seleziona la finestra per visualizzare i dati dei pazienti ricoverati
-		\item L'utente visualizza, in una tabella, i dati aggiornati in tempo reale, ed esclusivi delle ultime due ore, di tutti i pazienti ricoverati attualmente
+		\item L'utente visualizza, in una tabella, i dati aggiornati in tempo reale, ed esclusivi delle ultime due ore, di tutti i pazienti ricoverati
 	}
 	\addfield{Postcondizioni:}{L'utente visualizza le informazioni, non più vecchie di due ore, sui parametri vitali dei pazienti ricoverati}
 \end{usecase}
+\vspace{1cm}
 
+\subsection*{\textbf{Medico}}\hrule
+\vspace{1cm}
 \begin{usecase}
 	\addtitle{Caso d'uso}{Spegnimento allarme}
 	\addfield{Utente:}{Medico}
 	\addfield{Precondizioni:}{Deve essere partito un allarme}
 	\additemizedfield{Passi}{
-		\item Prende atto della patologia segnalata e del paziente in questione
+		\item In un finestra compaiono informazioni circa il paziente e la condizione segnalata
 		\item Indica le attività svolte per portare il paziente alla normalità
 		\item \begin{enumerate}
 			\item se è gia autenticato, spegne l'allarme
@@ -105,18 +110,17 @@ Di seguito parte dei casi d'uso utilizzati, aggregati per chiarezza nei vari ute
 	\addfield{Postcondizioni:}{L'allarme viene spento. Se il medico non era autenticato e ha inserito correttamente le sue credenziali rimarrà autenticato per un certo periodo di tempo}
 	
 \end{usecase}
-\vspace{2cm}
 
 \begin{usecase}
 	\addtitle{Caso d'uso}{Ammissione dei pazienti in attesa}
 	\addfield{Utente:}{Medico}
 	\addfield{Precondizioni:}{Il medico deve essersi autenticato; un infermiere deve avere aggiunto i dati anagrafici dei pazienti in attesa di ricovero}
 	\additemizedfield{Passi}{
-		\item Nella propria dashboard selezione la finestra per visualizzare i pazienti in attesa di ricovero
-		\item Da un menù a tendina sceglie tra i diversi pazienti, visualizzando, a seconda della selezione, informazioni sommarie sul paziente
+		\item Nella propria dashboard seleziona la finestra per visualizzare i pazienti in attesa di ricovero
+		\item Da un menù a tendina sceglie tra i diversi pazienti in attesa, visualizzando informazioni sommarie
 		\item Se accetta di ammetterlo, da un campo di testo inserisce la diagnosi e preme un bottone di conferma
 		\begin{enumerate}
-			\item se il numero di pazienti attualmente ricoverati è minore di dieci, viene ammesso;
+			\item se il numero di pazienti attualmente ricoverati è minore di dieci, viene ammesso
 			\item altrimenti compare una finestra di errore
 		\end{enumerate}
 	}
@@ -137,6 +141,10 @@ Di seguito parte dei casi d'uso utilizzati, aggregati per chiarezza nei vari ute
 	
 \end{usecase}
 
+
+\subsection*{\textbf{Infermiere}}\hrule
+
+
 \begin{usecase}
 	\addtitle{Caso d'uso}{Compilazione dati anagrafici paziente}
 	\addfield{Utente:}{Infermiere}
@@ -149,31 +157,38 @@ Di seguito parte dei casi d'uso utilizzati, aggregati per chiarezza nei vari ute
 	
 \end{usecase}
 
-
 \begin{usecase}
 	\addtitle{Caso d'uso}{Aggiunta di somministrazioni}
 	\addfield{Utente:}{Infermiere}
 	\addfield{Precondizioni:}{L'infermiere deve essersi autenticato; il paziente a cui viene aggiunta una somministrazione deve essere ricoverato e avere almeno una prescrizione registrata}
 	\additemizedfield{Passi}{
 		\item Nella propria dashboard seleziona la finestra per aggiungere una somministrazione
-		\item Seleziona da un menù a tendina il paziente e il medicinale prescritto per cui può aggiungere una prescrizione
-		\item Visualizza nella schermata i dati sommari della prescrizione, tra cui le massime dosi giornaliere; in un campo di testo può inserire note circa la somministrazione. Aggiunge la somministrazione premendo un pulsante di conferma
+		\item Seleziona da un menù a tendina il paziente e il medicinale prescritto per cui può aggiungere una somministrazione
+		\item Visualizza nella schermata i dati sommari della prescrizione, tra cui le massime dosi giornaliere; in un campo di testo può inserire note circa la somministrazione e la conferma premendo un pulsante
 	}
-	\addfield{Postcondizioni:}{La somministrazione è aggiunta al paziente}
+	\addfield{Postcondizioni:}{La somministrazione è aggiunta al paziente, associata alla data prescrizione}
 	
 \end{usecase}
 
-\subsubsection{Design del sistema}
-La scelta di design iniziale del sistema è stata fatta a tavolino tra tutti i membri del team. %TODO
+\subsection{Design del sistema}
+La scelta di design iniziale del sistema è stata fatta a tavolino tra tutti i membri del team. TODO %TODO 
 
-\subsubsection{Implementazione}
+\subsection{Implementazione}
+ Heila TODO %todo
+ 
+\subsection{Validazione e verifica}
+Le operazioni di validazione e verifica sono state fondamentali per garantire che il progetto rispettasse la specifica e il documento dei requisiti, e che si comportasse in modo coerente e prevedibile, senza errori, a tutti gli input previsti e operazioni eseguibili degli utenti.
 
-\subsubsection{Validazione e verifica}
-Le operazioni di validazione e verifica sono state fondamentali per garantire che il progetto rispettasse la specifica e il documento dei requisiti dati, e che si comportasse in modo coerente e prevedibile, senza errori, a tutti gli input previsti e operazioni eseguibili degli utenti.
-
-La fase di validazione è stata eseguita facendo un check periodico, dopo ogni implementazione di funzionalità non triviali, del rispetto della specifica per verificare sia che tutti i vincoli temporali e di caratteristiche dei dati fossero rispettati, sia che tali funzionalità corrispondessero a quello richiesto dal software finale.
-Questo è stato soprattutto importante dopo l'implementazione delle funzionalità di ogni utente: data la non modesta quantità di funzioni da mettere a disposizione e dati da considerare/ manipolare in molti casi il check di verifica eseguito successivamente ha messo alla luce rilevanti criticità e importanti modifiche da implementare. 
+\paragraph{Validazione}Le operazioni di validazione sono state eseguite facendo un check periodico, dopo ogni implementazione di funzionalità non triviali, del rispetto della specifica per verificare sia che tutti i vincoli temporali e di caratteristiche dei dati fossero rispettati (come ad esempio i tipi di ricovero da visualizzare o le informazioni sui parametri vitali dei pazienti, limitati a dati intervalli temporali), sia che tali funzionalità corrispondessero a quello richiesto dal software finale.
+Questo è stato soprattutto importante dopo l'implementazione delle funzionalità di ogni utente: data la non modesta quantità di funzioni da mettere a disposizione e dati da considerare/manipolare in molti casi il check di verifica eseguito successivamente ha messo alla luce rilevanti criticità e importanti modifiche da implementare. 
 Oltre a queste verifiche periodiche si è anche eseguito un controllo finale, al ridosso della scadenza, per validare il sistema nel suo complesso e cercare di individuare eventuali omissioni e elementi non completamente rispettosi della specifica e dei requisiti.
+
+\paragraph{Verifica} Molto importante è stata anche la verifica della correttezza del programma che data la sua non banale complessità ha mostrato spesso comportamenti sbagliati in fase di programmazione. A tal fine si è deciso di operare nel seguente modo: \begin{itemize}
+	\item una fase di \textit{development testing} utilizzando \textit{unit tests} per tutte quelle classi e aree di più facile testabilità automatica: quelle meno dipendenti dagli input specifici dell'utente, eseguite dall'interfaccia grafica, e dall'integrazione con altri oggetti del sistema.
+
+	\item una fase di \textit{user testing} dove si è fatto testare il software ad un soggetto di media/moderata abilità informatica per verificare l'usabilità del programma di fronte ad input reali e sostanzialmente conformi a quelli che ci si aspetta da soggetti normali e non avversariali.
+\end{itemize}
+
 %\subsection{Design e struttura del sistema}
 %
 %\section{Specifica del sistema}
@@ -333,16 +348,19 @@ Oltre a queste verifiche periodiche si è anche eseguito un controllo finale, al 
 	\end{center}
 	\caption{Schema \textit{Entity-Relationship} dei dati del sistema.}\label{ERdiagram}
 \end{figure}
-\begin{table}
-	\begin{tabular}{r | l}
-		Entità & Campi \\ \hline
-		Patient & \underline{Id}, Name, Surname, Fiscal code, Place of birth, Date of birth, Patient state \\
-		Administration & \underline{Id}, Date, Hour, Dose, Notes, \textit{Patient}, \textit{Prescription} \\
-		Prescription & \underline{Id}, Drug, Duration, Daily dose, Number of doses, Doctor, \textit{Recovery} \\ 
-		Recovery & \underline{Id}, Start date, End date, Diagnosis, Active, Discharge summary, Recovery state, \textit{Patient}\\
-		Monitoring & \underline{Id}, Date, Diastolic pressure, Systolic pressure, Heart rate, Temperature, \textit{Recovery}
-	\end{tabular}\caption{Campi e relazioni delle entità del database. I campi sottolineati indicano le \textit{primary keys}, quelli in corsivo le \textit{foreign keys} (mappate sempre ai campi Id della rispettiva entità).}
-\end{table}
+\begin{figure}
+	
+		\begin{tabular}{r | l}
+			Entità & Campi \\ \hline
+			Patient & \underline{Id}, Name, Surname, Fiscal code, Place of birth, Date of birth, Patient state \\
+			Administration & \underline{Id}, Date, Hour, Dose, Notes, \textit{Patient}, \textit{Prescription} \\
+			Prescription & \underline{Id}, Drug, Duration, Daily dose, Number of doses, Doctor, \textit{Recovery} \\ 
+			Recovery & \underline{Id}, Start date, End date, Diagnosis, Active, Discharge summary, Recovery state, \textit{Patient}\\
+			Monitoring & \underline{Id}, Date, Diastolic pressure, Systolic pressure, Heart rate, Temperature, \textit{Recovery}
+		\end{tabular}\caption{Campi e relazioni delle entità del database. I campi sottolineati indicano le \textit{primary keys}, quelli in corsivo le \textit{foreign keys} (mappate sempre ai campi Id della rispettiva entità).}
+
+\end{figure}
+
 
 
 \end{document}

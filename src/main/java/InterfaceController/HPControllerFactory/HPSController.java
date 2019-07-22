@@ -41,8 +41,11 @@ public class HPSController implements HPController {
 
         dis = stream.subscribe(se -> {
             Platform.runLater(() -> nameLabel.setText("Primario Dr. " + se.state().getUser().toString()));
-            if(se.command().name().equals("SEARCH_PATIENT"))
-                updateRecoveries((String) se.command().getArg());
+            if(se.command().name().equals("SEARCH_PATIENT")) {
+                String search = (String) se.command().getArg();
+                searchPatient.setText(search);
+                updateRecoveries(search);
+            }
         });
     }
 
@@ -87,28 +90,36 @@ public class HPSController implements HPController {
 
 
     @FXML protected void updateRecoveries(String nameandsurname) {
-        String[] arr = nameandsurname.split(" ");
-        String name = arr[0];
-        String surname = arr[1];
-        Patient p = store.poll().getPatients().stream()
-                .filter(pa -> pa.getName().toLowerCase().equals(name.toLowerCase())
-                        && pa.getSurname().toLowerCase().equals(surname.toLowerCase())).findFirst().orElse(null);
+        try {
+            String[] arr = nameandsurname.split(" ");
+            String name = arr[0];
+            String surname = arr[1];
 
-        if (p != null) {
-            ObservableList<Recovery> data = recoveryTable.getItems();
-            data.removeAll(data);
-            //todo check
-            p.getAllRecoveries().forEach(r -> {
-                Date extreme = new Date(r.getStartDate().getTime() - 7*24*60*60*1000);
-                if(r.getStartDate().after(extreme))
-                    data.add(r);
-            });
+            Patient p = store.poll().getPatients().stream()
+                    .filter(pa -> pa.getName().toLowerCase().equals(name.toLowerCase())
+                            && pa.getSurname().toLowerCase().equals(surname.toLowerCase())).findFirst().orElse(null);
+
+            if (p != null) {
+                //searchPatient.setText(name + " " + surname);
+                ObservableList<Recovery> data = recoveryTable.getItems();
+                data.removeAll(data);
+                //todo check
+                p.getAllRecoveries().forEach(r -> {
+                    Date extreme = new Date(r.getStartDate().getTime() - 7*24*60*60*1000);
+                    if(r.getStartDate().after(extreme))
+                        data.add(r);
+                });
+            } else {
+                searchPatient.clear();
+            }
+        }  catch (ArrayIndexOutOfBoundsException err) {
+            searchPatient.clear();
         }
     }
 
     @FXML protected void searchPatient() {
         this.updateRecoveries(searchPatient.getText());
-        this.searchPatient.clear();
+        //this.searchPatient.clear();
     }
     @FXML protected void showMonitoring() {
         store.update(new StringCommand("SHOW_MONITORING"));

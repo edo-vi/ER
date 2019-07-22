@@ -3,6 +3,7 @@ package InterfaceController.DOCControllerFactory;
 import Component.DOCComponent;
 import Component.HPComponent;
 import Component.LoginComponent;
+import Component.NURComponent;
 import Entities.Administration;
 import Entities.Patient;
 import Entities.Prescription;
@@ -136,16 +137,20 @@ public class DOCSRController implements DOCController {
     }
 
     @FXML protected void searchPatient() {
-        String[] arr = patientText.getText().split(" ");
-        String name = arr[0];
-        String surname = arr[1];
-        Patient p = store.poll().getPatients().stream()
-                .filter(pa -> pa.getName().toLowerCase().equals(name.toLowerCase())
-                        && pa.getSurname().toLowerCase().equals(surname.toLowerCase())).findFirst().orElse(null);
+        try {
+            String[] arr = patientText.getText().split(" ");
+            String name = arr[0];
+            String surname = arr[1];
+            Patient p = store.poll().getPatients().stream()
+                    .filter(pa -> pa.getName().toLowerCase().equals(name.toLowerCase())
+                            && pa.getSurname().toLowerCase().equals(surname.toLowerCase())).findFirst().orElse(null);
 
-        if (p != null) {
-            store.update(new StringCommand("SEARCH_PATIENT", patientText.getText()));
-            sys.setInterface("DOCS", HPComponent.HPTitle);
+            if (p != null) {
+                store.update(new StringCommand("SEARCH_PATIENT", patientText.getText()));
+                sys.setInterface("DOCS", DOCComponent.DOCTitle);
+            }
+        } catch (ArrayIndexOutOfBoundsException err) {
+
         }
 
     }
