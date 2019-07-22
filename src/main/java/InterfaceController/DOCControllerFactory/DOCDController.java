@@ -69,7 +69,7 @@ public class DOCDController implements DOCController{
                     return
                             s <= 0 || s > 71 ?
                                     new SimpleObjectProperty<>("BOTH")
-                                    : s > 41 ?
+                                    : s > 31 ?
                                     new SimpleObjectProperty<>("F")
                                     : new SimpleObjectProperty<>("M");
 
