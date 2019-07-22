@@ -2,6 +2,7 @@ package InterfaceController.NURControllerFactory;
 
 import Component.LoginComponent;
 import Component.NURComponent;
+import Entities.Patient;
 import State.StateEvent;
 import State.Store;
 import State.StringCommand;
@@ -62,12 +63,12 @@ public class NURAPController implements NURController {
 
     @FXML protected void submit() {
         try {
-            if(!surnameLabel.getText().equals("") && !nameLabel.getText().equals("") && (male.isSelected() || female.isSelected()) && bDayDate.getValue() != null && !placeLabel.getText().equals("") && !cfLabel.getText().equals("")) {
-                System.out.println("\n\n" + new FiscalCodeCalculator().calculateFC(nameLabel.getText(), surnameLabel.getText(), (male.isSelected()) ? 'M' : 'F', bDayDate.getValue().toString()));
-                System.out.println("ALL DATA IS CORRECT");
+            if(allSet()) {
+                Patient p = new Patient(nameLabel.getText(), surnameLabel.getText(), cfLabel.getText(), placeLabel.getText(), java.sql.Date.valueOf(bDayDate.getValue()));
+                store.update(new StringCommand("ADD_PATIENT", p));
             } else throw new IllegalArgumentException();
         } catch (Exception e) {
-            System.out.println("NOT ALL DATA IS CORRECT OR INSERTED");
+            System.out.println("NOT ALL DATA IS CORRECT OR INSERTED, CAN'T ADD_PATIENT");
         } finally {
             nameLabel.clear();
             surnameLabel.clear();
@@ -81,10 +82,19 @@ public class NURAPController implements NURController {
         }
     }
 
+    @FXML private boolean allSet() {
+        return !surnameLabel.getText().equals("") &&
+               !nameLabel.getText().equals("") &&
+               (male.isSelected() || female.isSelected()) &&
+               bDayDate.getValue() != null &&
+               !placeLabel.getText().equals("") &&
+               !cfLabel.getText().equals("");
+    }
+
     @FXML protected void calcolateCF() {
         if(!surnameLabel.getText().equals("") && !nameLabel.getText().equals("") && (male.isSelected() || female.isSelected()) && bDayDate.getValue() != null)
             cfLabel.setText(new FiscalCodeCalculator().calculateFC(nameLabel.getText(), surnameLabel.getText(), (male.isSelected()) ? 'M' : 'F', bDayDate.getValue().toString()));
-        else System.out.println("NOT ALL FIELD TO CALCULATE CF WERE SET");
+        else throw new IllegalArgumentException();
     }
 
     @FXML protected void showMonitoring() {
