@@ -83,7 +83,7 @@
                         </TableColumn>
                         <TableColumn prefWidth="367.0" text="Note">
                            <cellValueFactory>
-                              <PropertyValueFactory property="note" />
+                              <PropertyValueFactory property="notes" />
                            </cellValueFactory>
                         </TableColumn>
                      </columns>
