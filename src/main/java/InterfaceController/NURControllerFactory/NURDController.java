@@ -182,7 +182,7 @@ public class NURDController implements NURController {
             dose.setVisible(true);
             patientComboBox.getSelectionModel().getSelectedItem().getActiveRecoveries().forEach(r -> r.getPrescriptions().forEach(p -> {
                 if(p.getDrug().equals(d)) {
-                    Tuple<java.sql.Date, String> drugToBeAdministrated = new Tuple<>(new java.sql.Date(new Date().getTime()), d);
+                    Tuple<String, String> drugToBeAdministrated = new Tuple<>(new java.sql.Date(new Date().getTime()).toString(), d);
                     if(p.isAdministrable(drugToBeAdministrated)) {
                         doseLabel.setText(String.valueOf(p.getAdministrationNumber(drugToBeAdministrated)));
                     }
@@ -233,8 +233,8 @@ public class NURDController implements NURController {
         String notes = (noteTextArea.getText().equals("")) ? "NONE" : noteTextArea.getText();
         Integer hour = new Integer(admDateValue.toString().substring(11, 13));
         Administration adm = new Administration(admDateValue, hour, prescriptionOfThisAdm.getDailyDose(), notes, patientComboBox.getValue(), prescriptionOfThisAdm);
+        prescriptionOfThisAdm.addAdministration(new Tuple<>(new java.sql.Date(admDateValue.getTime()).toString(), drugComboBox.getValue()));
         store.update(new StringCommand("ADD_ADMINISTRATION", adm));
-        prescriptionOfThisAdm.addAdministration(new Tuple<>(new java.sql.Date(admDateValue.getTime()), drugComboBox.getValue()));
     }
 
     @FXML protected void showMonitoring() {

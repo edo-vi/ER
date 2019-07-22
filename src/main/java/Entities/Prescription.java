@@ -29,7 +29,7 @@ public class Prescription implements Entry{
     private Recovery recovery;
 
     @Transient
-    private HashMap<Tuple<java.sql.Date, String>, Integer> dailyAdministrationCounter = new HashMap<>();
+    private HashMap<Tuple<String, String>, Integer> dailyAdministrationCounter = new HashMap<>();
 
     public Prescription(String drug, Date date, int duration, int dailyDose, int totalNumberofDoses, String doctor)
             throws Exception {
@@ -134,18 +134,44 @@ public class Prescription implements Entry{
         this.administrations.add(administration);
     }
 
-    public Integer getAdministrationNumber(Tuple<java.sql.Date, String> drug) {
+    public Integer getAdministrationNumber(Tuple<String, String> drug) {
         return dailyAdministrationCounter.get(drug) + 1;
     }
 
-    public boolean isAdministrable(Tuple<java.sql.Date, String> drug) {
-        if(dailyAdministrationCounter.size() == 0) {
+    public boolean isAdministrable(Tuple<String, String> drug) {
+        if(dailyAdministrationCounter.size() == 0 && dailyAdministrationCounter.get(drug) == null) {
             dailyAdministrationCounter.put(drug, 0);
         }
-        return dailyAdministrationCounter.get(drug) < totalNumberofDoses && drug.fst().before(new Date(date.getTime() + duration*24*60*60*1000));
+        return dailyAdministrationCounter.get(drug) < totalNumberofDoses && isBefore(drug.fst(), new java.sql.Date(date.getTime() + duration*24*60*60*1000).toString());
     }
 
-    public void addAdministration(Tuple<java.sql.Date, String> drug) { //todo: null pointer -> equals of Tuple need to be modified!
+    public void addAdministration(Tuple<String, String> drug) {
         dailyAdministrationCounter.replace(drug, dailyAdministrationCounter.get(drug) + 1);
+    }
+
+    private boolean isBefore(String date1, String date2) {
+        int data1 = new Integer(date1.substring(0, 4));
+        int data2 = new Integer(date2.substring(0, 4));
+        if(data1 < data2)
+            return true;
+        else if (data1 > data2)
+            return false;
+        else {
+            data1 = new Integer(date1.substring(5, 7));
+            data2 = new Integer(date2.substring(5, 7));
+            if(data1 < data2)
+                return true;
+            else if (data1 > data2)
+                return false;
+            else {
+                data1 = new Integer(date1.substring(8));
+                data2 = new Integer(date2.substring(8));
+                if(data1 < data2)
+                    return true;
+                else if (data1 > data2)
+                    return false;
+                else return false;
+            }
+        }
     }
 }

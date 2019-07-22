@@ -19,4 +19,13 @@ public class Tuple<T,W> {
     public String toString() {
         return "<" + first + ", " + second + ">";
     }
+
+    public boolean equals(Object other) {
+        return (other instanceof Tuple) && this.first.equals(((Tuple) other).first) && this.second.equals(((Tuple) other).second);
+    }
+
+    @Override
+    public int hashCode() {
+        return first.hashCode() + second.hashCode();
+    }
 }
