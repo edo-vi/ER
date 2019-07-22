@@ -115,7 +115,7 @@
                               <PropertyValueFactory property="drug" />
                            </cellValueFactory>
                         </TableColumn>
-                        <TableColumn text="Dosi">
+                        <TableColumn prefWidth="81.0" text="Dosi">
                            <cellValueFactory>
                               <PropertyValueFactory property="totalNumberofDoses" />
                            </cellValueFactory>

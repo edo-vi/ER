@@ -115,12 +115,11 @@
                              </cellValueFactory>
                         </TableColumn>
 
-                        <TableColumn text="Dosi">
+                        <TableColumn prefWidth="81.0" text="Dosi">
                            <cellValueFactory>
                               <PropertyValueFactory property="totalNumberofDoses" />
                            </cellValueFactory>
                         </TableColumn>
-
                         <TableColumn fx:id="quantityColumn" prefWidth="175.0" text="Quantità" />
 
                         <TableColumn prefWidth="187.0" text="Durata terapia">
