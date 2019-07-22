@@ -79,7 +79,7 @@ public class HPSController implements HPController {
                     Date d = param.getValue().getEndDate();
                     return new SimpleObjectProperty<>(d.toString());
                 } catch (Recovery.RecoveryNullFieldException e) {
-                    return new SimpleObjectProperty<>("-----");
+                    return new SimpleObjectProperty<>("Ricovero attivo");
                 }
             }
         });
