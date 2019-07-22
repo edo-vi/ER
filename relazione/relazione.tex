@@ -57,7 +57,7 @@ Di seguito parte dei casi d'uso utilizzati, aggregati per chiarezza nei vari ute
 	\addfield{Utente:}{Primario}
 	\addfield{Precondizioni:}{Il primario deve essersi autenticato}
 	\additemizedfield{Passi}{
-		\item Nel propria dashboard seleziona la finestra per compilare le lettere di dimissione
+		\item Nella propria dashboard seleziona la finestra per compilare lae letterae di dimissionie
 		\item Seleziona da un menù a tendina i ricoveri dei pazienti in attesa di essere dimessi
 		\item Visualizza nella schermata i dati sommari del ricovero e compila la lettera di dimissione
 	}
@@ -142,7 +142,7 @@ Di seguito parte dei casi d'uso utilizzati, aggregati per chiarezza nei vari ute
 	\addfield{Utente:}{Infermiere}
 	\addfield{Precondizioni:}{L'infermiere deve essersi autenticato}
 	\additemizedfield{Passi}{
-		\item Nel propria dashboard seleziona la finestra per inserire i dati anagrafici dei pazienti
+		\item Nella propria dashboard seleziona la finestra per inserire i dati anagrafici dei pazienti
 		\item In diversi campi di testo aggiunge i dati anagrafici del paziente, tra cui nome, congnome, luogo e data di nascita. Premendo un pulsante può generare, sulla base di tali dati, il codice fiscale corretto del paziente
 	}
 	\addfield{Postcondizioni:}{Il paziente è inserito in stato di attesa}
@@ -155,7 +155,7 @@ Di seguito parte dei casi d'uso utilizzati, aggregati per chiarezza nei vari ute
 	\addfield{Utente:}{Infermiere}
 	\addfield{Precondizioni:}{L'infermiere deve essersi autenticato; il paziente a cui viene aggiunta una somministrazione deve essere ricoverato e avere almeno una prescrizione registrata}
 	\additemizedfield{Passi}{
-		\item Nel propria dashboard seleziona la finestra per aggiungere una somministrazione
+		\item Nella propria dashboard seleziona la finestra per aggiungere una somministrazione
 		\item Seleziona da un menù a tendina il paziente e il medicinale prescritto per cui può aggiungere una prescrizione
 		\item Visualizza nella schermata i dati sommari della prescrizione, tra cui le massime dosi giornaliere; in un campo di testo può inserire note circa la somministrazione. Aggiunge la somministrazione premendo un pulsante di conferma
 	}
@@ -178,7 +178,7 @@ La scelta di design è avvenuta inizialmente a tavolino tra tutti i membri del te
 \begin{figure}[b]
 \begin{tikzpicture}
 \begin{umlsystem}[x=0, fill=red!5]{Casi d'uso}
-\umlusecase[x=1, y=-2.5]{Inserisce dati anagrafici del paziente}
+\umlusecase[x=1, y=-2.45]{Inserisce dati anagrafici del paziente}
 \umlusecase[ x=.95, y=-1]{Inserisce dati somministrazione}
 \umlusecase[x=4.8, ]{Inserisce note stato paziente}
 \umlusecase[y=-6.5, x =2.6]{Visualizza dati paziente (ultime due ore)}

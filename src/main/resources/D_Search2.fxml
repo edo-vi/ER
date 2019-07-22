@@ -75,7 +75,7 @@
                         </TableColumn>
                         <TableColumn fx:id="drugColumn" prefWidth="200.0" text="Farmaco" />
 
-                        <TableColumn prefWidth="145.0" text="Dose">
+                        <TableColumn prefWidth="145.0" text="Dosaggio">
                            <cellValueFactory>
                               <PropertyValueFactory property="dose" />
                            </cellValueFactory>

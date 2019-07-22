@@ -2,12 +2,10 @@ package PdfGenerator;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.net.URL;
 
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.text.Font;
 
 public class PdfTest
 {
@@ -16,16 +14,15 @@ public class PdfTest
         Document document = new Document();
         try
         {
-            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("SetAttributeExample.pdf"));
+            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("AddImageExample.pdf"));
             document.open();
-            document.add(new Paragraph("Some content here"));
+            document.add(new Paragraph("Image Example"));
 
-            //Set attributes here
-            document.addAuthor("Lokesh Gupta");
-            document.addCreationDate();
-            document.addCreator("HowToDoInJava.com");
-            document.addTitle("Set Attribute Example");
-            document.addSubject("An example to show how attributes can be added to pdf files.");
+
+
+            String imageUrl = "http://www.eclipse.org/xtend/images/java8_logo.png";
+            Image image2 = Image.getInstance(new URL(imageUrl));
+            document.add(image2);
 
             document.close();
             writer.close();
