@@ -29,7 +29,7 @@ public class DOCAPController implements DOCController {
     private Store<StringCommand> store;
     private Subject<StateEvent> stream;
     private Disposable dis;
-    private Optional<Patient> selectedPatient;
+    private Optional<Patient> selectedPatient = Optional.empty();
 
     @FXML private ComboBox<Patient> patientComboBox;
     @FXML private Label patientName;
@@ -46,7 +46,6 @@ public class DOCAPController implements DOCController {
     public DOCAPController(Store store, Subject<StateEvent> stream) {
         this.store = store;
         this.stream = stream;
-        this.selectedPatient = Optional.empty();
         try {
             dis.dispose();
         } catch (NullPointerException e) {
@@ -90,6 +89,16 @@ public class DOCAPController implements DOCController {
         data.addAll(state.getPatients().stream().filter(Patient::isRecovered).collect(Collectors.toList()));
     }
 
+    @FXML protected void fillPatientsMantainSelection(State state) {
+        fillPatients(state);
+        if (selectedPatient.isPresent() && patientComboBox.getItems().contains(selectedPatient.get())) {
+            setSelectedPatient(selectedPatient.get());
+        } else {
+            setSelectedPatient(null);
+        }
+
+    }
+
     @FXML protected void setLabels() {
         if (selectedPatient.isPresent()) {
             Patient pat = selectedPatient.get();
@@ -103,17 +112,6 @@ public class DOCAPController implements DOCController {
             patientPlaceofBirth.setText("");
             patientDateofBirth.setText("");
         }
-    }
-
-    @FXML protected void fillPatientsMantainSelection(State state) {
-        fillPatients(state);
-        selectedPatient.ifPresent(val -> {
-            if (patientComboBox.getItems().contains(val)) {
-                setSelectedPatient(selectedPatient.get());
-            } else {
-                setSelectedPatient(null);
-            }
-        });
     }
 
     @FXML protected void setSelectedPatient(Patient p) {
