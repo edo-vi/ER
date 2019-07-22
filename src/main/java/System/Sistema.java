@@ -250,12 +250,10 @@ public class Sistema {
                     }
                 })
                 .with("DISCHARGE_PATIENT", (c,s,m) -> {
-                    Tuple<Integer, String> val = (Tuple<Integer, String>) c.getArg();
+                    Tuple<Recovery, String> val = (Tuple<Recovery, String>) c.getArg();
                     try {
-                        Recovery re = s.getAllRecoveries().stream()
-                                .filter(r -> r.getId()==val.fst()).findFirst().orElse(null);
-                        re.discharge(val.snd());
-                        DatabaseService.addEntry(re);
+                        val.fst().getPatient().discharge(val.fst(), val.snd());
+                        DatabaseService.addEntry(val.fst());
                         return new Tuple<>(new StringCommand("DISCHARGED_A_PATIENT"), s);
                     } catch (Exception e) {
                         System.out.println("Sistema, Discharge summary: " + e);
@@ -283,15 +281,22 @@ public class Sistema {
                 .with("TRY_ADMISSION", (c,s,m) -> {
                     Tuple<Patient, String> p = (Tuple<Patient, String>) c.getArg();
                     try {
+                        Patient patient = p.fst();
+                        String diagnosis = p.snd();
+
                         if(s.getActiveRecoveries().size() < 10) {
-                            Recovery rec = new Recovery(p.snd(),p.fst());
+                            Recovery rec = new Recovery(diagnosis);
+
+                            patient.admit(rec);
+                            rec.setPatient(patient);
+
                             DatabaseService.addEntry(rec);
-                            p.fst().addToRecoveries(rec);
+
                             return new Tuple<>(new StringCommand("PATIENT_SUCCESSFULLY_ADMITTED"), s);
                         } else {
                             return new Tuple<>(new StringCommand("COULD_NOT_ADMIT_A_PATIENT"), s);
                         }
-                    } catch (Exception e) {
+                    } catch (Patient.MoreThanOneActiveRecoveryException | Recovery.PatientNotAdmittedException e) {
                         System.out.println("Sistema, admission summary: " + e);
                         return new Tuple<>(new StringCommand("COULD_NOT_ADMIT_A_PATIENT"), s);
                     }

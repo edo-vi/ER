@@ -97,14 +97,14 @@ public class DOCDController implements DOCController{
 
     }
     @FXML protected void initialize(State state) {
-        List<Patient> nonRecoveredPatients = state.getPatients().stream().filter(pa -> !pa.isRecovered()).collect(Collectors.toList());
+        List<Patient> waitingPatientList = state.getPatients().stream().filter(Patient::isWaiting).collect(Collectors.toList());
         ObservableList<Patient> data = waitingPatients.getItems();
         data.removeAll(data);
-        data.addAll(nonRecoveredPatients);
+        data.addAll(waitingPatientList);
 
-        if(nonRecoveredPatients.size() > selectedRow) {
+        if(waitingPatientList.size() > selectedRow) {
             waitingPatients.getSelectionModel().select(selectedRow);
-            setLabels(nonRecoveredPatients.get(selectedRow));
+            setLabels(waitingPatientList.get(selectedRow));
         }
     }
 

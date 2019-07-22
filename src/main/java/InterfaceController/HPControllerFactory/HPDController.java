@@ -141,9 +141,8 @@ public class HPDController implements HPController{
         String dt = dischargeText.getText();
         if (dt != null && !dt.equals("")) {
             try {
-                Recovery r = this.patientsChoice.getValue();
-                this.store.update(new StringCommand("DISCHARGE_PATIENT", new Tuple<>(r.getId(), dt)));
-
+                this.store.update(new StringCommand("DISCHARGE_PATIENT",
+                        new Tuple<>(this.patientsChoice.getValue(), dt)));
             } catch(Exception err) {
 
             } finally {
@@ -151,7 +150,6 @@ public class HPDController implements HPController{
             }
 
         }
-
     }
 
     @FXML protected void search() {
