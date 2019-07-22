@@ -20,6 +20,7 @@ import State.Middleware;
 import System.DOCInterfaceFactory.DOCFactory;
 import System.HPInterfaceFactory.HPFactory;
 import System.NURInterfaceFactory.NURFactory;
+import System.Session.AlarmTimer;
 import System.Session.DoctorSessionThread;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -53,7 +54,6 @@ public class Sistema {
     private Media sound = new Media(new File("Cicalino retromarcia.mp3").toURI().toString());
     private MediaPlayer mediaPlayer = new MediaPlayer(sound);
     private MediaThread mt = new MediaThread();
-    private AlarmTimer att;
 
     public static Sistema getInstance() {
         if (s == null)
@@ -127,7 +127,9 @@ public class Sistema {
                 .with("ADD_PRESCRIPTION")
                 .with("ADD_ADMINISTRATION")
                 .with("ERROR")
-                .with("CLOSE_ERROR_WINDOW");
+                .with("CLOSE_ERROR_WINDOW")
+                .with("ACTIVATE_COUNTDOWN")
+                .with("STOP_COUNTDOWN");
         Middleware<StringCommand> middleware = new MiddlewareString(monitoringStage)
                 .with("LOGIN", (c, s, m) -> {
                     User x = (User) c.getArg();
@@ -201,7 +203,8 @@ public class Sistema {
                     return new Tuple<>(new StringCommand("SHOW_ALARMS"), s);
                 })
                 .with("CLOSE_ALARMS", (c,s,m) -> {
-                    alarmStage.close();
+                    if(alarmStage != null)
+                        alarmStage.close();
 
                     return new Tuple<>(new StringCommand("CLOSED_ALARMS"), s);
                 })
@@ -232,17 +235,13 @@ public class Sistema {
                         alarmControlStage.toFront();
                         alarmControlStage.show();
                         alarmCtlIsShown = true;
-
                     }
                     mt = new MediaThread();
                     mt.start();
-                    att = new AlarmTimer(((Tuple<Integer, Sickness>) c.getArg()).fst());
-                    att.start();
                     return new Tuple<>(new StringCommand("ACTIVE_ALARM", c.getArg()), s);
                 })
                 .with("RESET_ALARMS", (c,s,m) -> {
                     mt.interruptSound();
-                    att.alarmDeactivated();
                     if(selectedPatient != -1) {
                         s.getActiveRecoveries().get(selectedPatient).resetGenerator();
                         selectedPatient = -1;
@@ -353,6 +352,22 @@ public class Sistema {
                     errorStage.close();
                     store.update(new StringCommand("RESET_ALARMS"));
                     return new Tuple<>(new StringCommand("ERROR_WINDOW_CLOSED"), s);
+                })
+                .with("ACTIVATE_COUNTDOWN", (c,s,m) -> {
+                    MiddlewareString x = ((MiddlewareString) m);
+                    if(x.getAlarmTimerThread() == null) {
+                        AlarmTimer att = new AlarmTimer((int) c.getArg(), store);
+                        x.setAlarmTimerThread(att);
+                        att.start();
+                    } else x.getAlarmTimerThread().restart();
+
+                    return new Tuple<>(new StringCommand("START_COUNTDOWN"), s);
+                })
+                .with("STOP_COUNTDOWN", (c,s,m) -> {
+                    MiddlewareString x = ((MiddlewareString) m);
+                    x.getAlarmTimerThread().alarmDeactivated();
+
+                    return new Tuple<>(new StringCommand("COUNTDOWN_STOPPED"), s);
                 });
 
         store = new Store<StringCommand>(new State(), reducer, middleware);
@@ -442,31 +457,6 @@ public class Sistema {
             mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
             mediaPlayer.seek(Duration.ZERO);
             mediaPlayer.play();
-        }
-    }
-
-    private class AlarmTimer extends Thread {
-        private long alarmLifeTime;
-
-        public AlarmTimer(int level) {
-            if(level == 3)
-                this.alarmLifeTime = 30*1000;
-            else if(level == 2)
-                this.alarmLifeTime = 60*1000;
-            else this.alarmLifeTime = 90*1000;
-        }
-
-        private void alarmDeactivated() {
-            att.interrupt();
-        }
-
-        public void run() {
-            Platform.runLater(() -> {
-                try {
-                    sleep(alarmLifeTime);
-                    store.update(new StringCommand("ERROR", "F in the chat\nRIP"));
-                } catch (InterruptedException e) {}
-            });
         }
     }
 }
