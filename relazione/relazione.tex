@@ -16,6 +16,7 @@
 \usetikzlibrary{automata ,shapes, er}
 \usepackage{dot2texi}
 \usepgfmodule{oo}
+\usepackage{lscape}
 \usepackage{./usecases}
 
 \tikzset{multi attribute/.style={attribute,double distance=1.5pt}} \tikzset{derived attribute/.style={attribute ,dashed}} \tikzset{total/.style={double distance=1.5pt}}
@@ -104,7 +105,39 @@ Di seguito parte dei casi d'uso utilizzati, aggregati per chiarezza nei vari ute
 	\addfield{Postcondizioni:}{L'allarme viene spento. Se il medico non era autenticato e ha inserito correttamente le sue credenziali rimarrà autenticato per un certo periodo di tempo}
 	
 \end{usecase}
-%\subsubsection{Design del sistema}
+\vspace{2cm}
+
+\begin{usecase}
+	\addtitle{Caso d'uso}{Ammissione dei pazienti in attesa}
+	\addfield{Utente:}{Medico}
+	\addfield{Precondizioni:}{Il medico deve essersi autenticato; un infermiere deve avere aggiunto i dati anagrafici dei pazienti in attesa di ricovero}
+	\additemizedfield{Passi}{
+		\item Nella propria dashboard selezione la finestra per visualizzare i pazienti in attesa di ricovero
+		\item Da un menù a tendina sceglie tra i diversi pazienti, visualizzando, a seconda della selezione, informazioni sommarie sul paziente
+		\item Se accetta di ammetterlo, da un campo di testo inserisce la diagnosi e preme un bottone di conferma
+		\begin{enumerate}
+			\item se il numero di pazienti attualmente ricoverati è minore di dieci, viene ammesso;
+			\item altrimenti compare una finestra di errore
+		\end{enumerate}
+	}
+	\addfield{Postcondizioni:}{Se il numero di pazienti attualmente ricoverati è minore di dieci e ha accettato di ammetterne uno inserendo la diagnosi, allora il nome del paziente scompare dal menù a tendina ed esso sarà compreso tra quelli ricoverati.}
+	
+\end{usecase}
+
+\begin{usecase}
+	\addtitle{Caso d'uso}{Aggiunta di prescrizioni}
+	\addfield{Utente:}{Medico}
+	\addfield{Precondizioni:}{Il medico deve essersi autenticato; il paziente a cui si aggiunge una prescrizione deve essere ricoverato}
+	\additemizedfield{Passi}{
+		\item Nella propria dashboard seleziona la finestra per aggiungere una prescrizione
+		\item Da un menù a tendina sceglie tra i diversi pazienti attualmente ricoverati, visualizzando, a seconda della selezione, informazioni sommarie sul paziente
+		\item In diversi campi di testo aggiunge il nome del medicinale, la dose giornaliera, la quantità per dose e la durata della terapi e preme il bottone di conferma
+	}
+	\addfield{Postcondizioni:}{La prescrizione viene aggiunta a quelle associate al paziente ricoverato.}
+	
+\end{usecase}
+\subsubsection{Design del sistema}
+La scelta di design è avvenuta inizialmente a tavolino tra tutti i membri del team.
 %
 %\subsubsection{Implementazione}
 %
