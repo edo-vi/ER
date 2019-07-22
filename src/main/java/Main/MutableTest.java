@@ -11,14 +11,13 @@ public class MutableTest {
     public static void main(String ...args) {
         MutableItem<Integer> a = new MutableItem<Integer>(3);
         a.subscribeWithLast(5, (p, l) -> {
-            System.out.print(p + " & ");
-            System.out.println(l);
+            /*System.out.print(p + " & ");
+            System.out.println(l);*/
         });
 
-        for (int i = 1; i < 18; i ++ ) {
+        for (int i = 1; i < 6; i ++ ) {
             a.change(a.get()+1);
-            //System.out.println(a.last(3));
         }
-
+        a.subscribeAll(System.out::print);
     }
 }

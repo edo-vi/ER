@@ -62,13 +62,13 @@ public class MutableItem<T> {
     }
 
     public Disposable subscribeAll(Consumer<T> function) {
-        List<T> arr = history;
+        List<T> arr = new ArrayList<>(history);
         arr.add(0, item);
         return ((Observable<T>) Observable.fromArray(arr.toArray())).subscribe(function::accept);
     }
 
     public Observable<T> getAll() {
-        List<T> arr = history;
+        List<T> arr = new ArrayList<>(history);
         arr.add(0, item);
         return ((Observable<T>) Observable.fromArray(arr.toArray()));
     }
