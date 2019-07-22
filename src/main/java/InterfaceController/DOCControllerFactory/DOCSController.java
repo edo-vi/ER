@@ -1,7 +1,6 @@
 package InterfaceController.DOCControllerFactory;
 
 import Component.DOCComponent;
-import Component.HPComponent;
 import Component.LoginComponent;
 import Entities.Patient;
 import Entities.Recovery;
@@ -116,7 +115,7 @@ public class DOCSController implements DOCController {
         sys.setInterface("DOCS", DOCComponent.DOCTitle);
     }
     @FXML protected void searchResultDoc() {
-        sys.setInterface("DOCSR", HPComponent.HPTitle);
+        sys.setInterface("DOCSR", DOCComponent.DOCTitle);
     }
     @FXML protected void defaultDoc() {
         sys.setInterface("DOCD", DOCComponent.DOCTitle);
