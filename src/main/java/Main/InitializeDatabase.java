@@ -27,12 +27,15 @@ public class InitializeDatabase {
 
 
         try {
+            Recovery active = new Recovery("Ruptured tendon");
+            patient1.admit(active);
             session.beginTransaction();
             /*adm1.setPrescription(pr1);
             patient1.addToAddministrations(adm1);*/
             session.save(patient1);
             session.save(patient2);
             session.save(patient3);
+            session.save(active);
         } catch (Exception e) {System.out.println(e);}
 
         session.getTransaction().commit();
