@@ -18,7 +18,7 @@ public class HeartRateGenerator implements GeneratorInterface {
     }
 
     public void evolve(Sickness sick) {
-        if(sick == Sickness.BRACHICARDIA) {
+        if(sick == Sickness.ARITMIA) {
             mean = 50;
             variance = 3.0;
         } else if(sick == Sickness.TACHICARDIA) {
@@ -44,7 +44,7 @@ public class HeartRateGenerator implements GeneratorInterface {
             Store<StringCommand> store = sys.getStore();
             if(x < 60) {
                 canGenerateAlarm = false;
-                store.update(new StringCommand("ALARM_ACTIVATED", new Tuple<>(1, Sickness.BRACHICARDIA)));
+                store.update(new StringCommand("ALARM_ACTIVATED", new Tuple<>(1, Sickness.ARITMIA)));
             } else if(x > 100) {
                 canGenerateAlarm = false;
                 store.update(new StringCommand("ALARM_ACTIVATED", new Tuple<>(1, Sickness.TACHICARDIA)));

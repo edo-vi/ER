@@ -23,7 +23,7 @@ public class AlarmsController {
 
 
     @FXML protected void aritmia(){
-        store.update(new StringCommand("EVOLVE_GENERATOR", Sickness.BRACHICARDIA));
+        store.update(new StringCommand("EVOLVE_GENERATOR", Sickness.ARITMIA));
 
     }
 

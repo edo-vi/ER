@@ -318,7 +318,7 @@ public class Sistema {
                         }
                     } catch (Patient.MoreThanOneActiveRecoveryException | Recovery.PatientNotAdmittedException e) {
                         System.out.println("Sistema, admission summary: " + e);
-                        return new Tuple<>(new StringCommand("COULD_NOT_ADMIT_A_PATIENT"), s);
+                        return new Tuple<>(new StringCommand("COULD_NOT_ADMIT_A_PATIENT_EXC"), s);
                     }
                 })
                 .with("ADD_PRESCRIPTION", (c,s,m) -> {

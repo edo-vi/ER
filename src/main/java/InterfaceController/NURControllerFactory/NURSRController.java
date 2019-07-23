@@ -148,8 +148,13 @@ public class NURSRController implements NURController {
                 store.update(new StringCommand("SEARCH_PATIENT", patientText.getText()));
                 sys.setInterface("NURS", NURComponent.NURTitle);
             }
+            else {
+                store.update(new StringCommand("ERROR", "La ricerca non ha prodotto nessun risultato.\nRiprovare."));
+                patientText.clear();
+            }
         } catch (ArrayIndexOutOfBoundsException err) {
-
+            store.update(new StringCommand("ERROR", "La stringa di ricerca deve rispettare il formato:\nNome Cognome"));
+            patientText.clear();
         }
 
 

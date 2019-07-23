@@ -243,6 +243,7 @@ public class MonitoringController {
             clearInfo();
         }
     }
+
     @FXML protected void clearInfo() {
         nameLabel.setText("");
         surnameLabel.setText("");
@@ -268,6 +269,7 @@ public class MonitoringController {
         data1= seriesS.getData();
         data1.removeAll(data1);
     }
+
     @FXML protected void buttonPressed(Event e)
     {
         String s = ((Button) e.getSource()).getText();
