@@ -66,6 +66,7 @@ public class NURAPController implements NURController {
             if(allSet()) {
                 Patient p = new Patient(nameLabel.getText(), surnameLabel.getText(), cfLabel.getText(), placeLabel.getText(), java.sql.Date.valueOf(bDayDate.getValue()));
                 store.update(new StringCommand("ADD_PATIENT", p));
+                store.update(new StringCommand("ERROR", "Paziente aggiunto alla lista.\nIn attesa di diagnosi da parte di un medico."));
             } else throw new IllegalArgumentException();
         } catch (Exception e) {
             store.update(new StringCommand("ERROR", "Non tutti i dati sono stati inseriti correttamente.\nImpossibile aggiungere il paziente."));
@@ -92,9 +93,14 @@ public class NURAPController implements NURController {
     }
 
     @FXML protected void calcolateCF() {
-        if(!surnameLabel.getText().equals("") && !nameLabel.getText().equals("") && (male.isSelected() || female.isSelected()) && bDayDate.getValue() != null)
-            cfLabel.setText(new FiscalCodeCalculator().calculateFC(nameLabel.getText(), surnameLabel.getText(), (male.isSelected()) ? 'M' : 'F', bDayDate.getValue().toString()));
-        else store.update(new StringCommand("ERROR", "Sulla base dei dati forniti impossibile generare il CF.\nControllare le informazioni."));
+        try {
+            if (!surnameLabel.getText().equals("") && !nameLabel.getText().equals("") && (male.isSelected() || female.isSelected()) && bDayDate.getValue() != null)
+                cfLabel.setText(new FiscalCodeCalculator().calculateFC(nameLabel.getText(), surnameLabel.getText(), (male.isSelected()) ? 'M' : 'F', bDayDate.getValue().toString()));
+            else
+                store.update(new StringCommand("ERROR", "Sulla base dei dati forniti impossibile generare il CF.\nControllare le informazioni."));
+        } catch(Exception e) {
+            store.update(new StringCommand("ERROR", "Sulla base dei dati forniti impossibile generare il CF.\nControllare le informazioni."));
+        }
     }
 
     @FXML protected void showMonitoring() {

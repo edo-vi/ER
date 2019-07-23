@@ -148,12 +148,13 @@ public class DOCAPController implements DOCController {
                 Prescription pre = new Prescription(drug, Integer.valueOf(duration), Integer.valueOf(dose), Integer.valueOf(quantity),
                         store.poll().getUser().getName(), rec);
                         store.update(new StringCommand("ADD_PRESCRIPTION", pre));
+                        store.update(new StringCommand("ERROR", "Prescrizione aggiunta con successo."));
                 prescriptionTotalNumberofDoses.clear();
                 prescriptionDrug.clear();
                 prescriptionDose.clear();
                 prescriptionDuration.clear();
             } catch (Exception e) {
-                store.update(new StringCommand("ERROR", "I campi 'Quantità' - 'Dose' - 'Durata' richidono valori numerici."));
+                store.update(new StringCommand("ERROR", "I campi 'Quantità' - 'Dose' - 'Durata'\nrichidono valori numerici validi."));
             }
         } else store.update(new StringCommand("ERROR", "I campi d'inserimento dati sono obbligatori.\nRiprovare."));
     }

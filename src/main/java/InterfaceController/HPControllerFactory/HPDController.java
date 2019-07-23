@@ -139,9 +139,11 @@ public class HPDController implements HPController{
 
     @FXML protected void discharge() {
         String dt = dischargeText.getText();
-        if (dt != null && !dt.equals(""))
+        dischargeText.clear();
+        if (dt != null && !dt.equals("")) {
             this.store.update(new StringCommand("DISCHARGE_PATIENT", new Tuple<>(this.patientsChoice.getValue(), dt)));
-        else store.update(new StringCommand("ERROR", "Il campo: 'Diagnosi di dimissione' è obbligatorio."));
+            store.update(new StringCommand("ERROR", "Paziente dimesso."));
+        } else store.update(new StringCommand("ERROR", "Il campo: 'Diagnosi di dimissione' è obbligatorio."));
     }
 
     @FXML protected void search() {
