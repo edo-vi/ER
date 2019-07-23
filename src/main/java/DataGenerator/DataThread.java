@@ -1,4 +1,4 @@
-package Generator;
+package DataGenerator;
 
 import java.util.*;
 

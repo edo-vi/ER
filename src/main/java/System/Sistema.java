@@ -2,9 +2,9 @@ package System;
 
 import Component.*;
 import Entities.*;
-import Generator.DataThread;
-import Generator.Sickness;
-import Generator.Value;
+import DataGenerator.DataThread;
+import DataGenerator.Sickness;
+import DataGenerator.Value;
 import InterfaceController.DOCControllerFactory.DOCControllerFactory;
 import InterfaceController.HPControllerFactory.HPControllerFactory;
 import InterfaceController.NURControllerFactory.NURControllerFactory;

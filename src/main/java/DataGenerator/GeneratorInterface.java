@@ -1,4 +1,4 @@
-package Generator;
+package DataGenerator;
 
 public interface GeneratorInterface {
     void reset();

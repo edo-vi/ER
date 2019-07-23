@@ -1,4 +1,4 @@
-package Generator;
+package DataGenerator;
 
 import Main.Tuple;
 import State.Store;

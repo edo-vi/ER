@@ -1,6 +1,6 @@
 package Entities;
 
-import Generator.*;
+import DataGenerator.*;
 import Main.Tuple;
 import com.sun.istack.NotNull;
 
