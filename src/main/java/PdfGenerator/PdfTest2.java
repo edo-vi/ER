@@ -1,85 +1,115 @@
 package PdfGenerator;
 
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Date;
 
-import com.itextpdf.text.Anchor;
-import com.itextpdf.text.BadElementException;
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Chapter;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.List;
-import com.itextpdf.text.ListItem;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.Section;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.Anchor;
 
 
 public class PdfTest2 {
-    private static String FILE = "FirstPdf.pdf";
-    private static Font catFont = new Font(Font.FontFamily.TIMES_ROMAN, 18,
+
+    private static Font courier = new Font(Font.FontFamily.COURIER, 22,
             Font.BOLD);
-    private static Font redFont = new Font(Font.FontFamily.TIMES_ROMAN, 12,
-            Font.NORMAL, BaseColor.RED);
-    private static Font subFont = new Font(Font.FontFamily.TIMES_ROMAN, 16,
+    private static Font courierC = new Font(Font.FontFamily.COURIER, 18,
             Font.BOLD);
-    private static Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 12,
+    private static Font courierS = new Font(Font.FontFamily.COURIER, 15,
             Font.BOLD);
+
+    private static Font small = FontFactory.getFont("src/main/resources/Crimson_Text/CrimsonText-Regular.ttf",
+            BaseFont.IDENTITY_H , BaseFont.EMBEDDED, 12, Font.NORMAL, BaseColor.BLACK);
+    private static Font small7 = FontFactory.getFont("src/main/resources/Crimson_Text/CrimsonText-Regular.ttf",
+            BaseFont.IDENTITY_H , BaseFont.EMBEDDED, 7, Font.NORMAL, BaseColor.BLACK);
+    private static Font small9 = FontFactory.getFont("src/main/resources/Crimson_Text/CrimsonText-Regular.ttf",
+            BaseFont.IDENTITY_H , BaseFont.EMBEDDED, 9, Font.NORMAL, BaseColor.BLACK);
+    private static Font smallBold = FontFactory.getFont("src/main/resources/Crimson_Text/CrimsonText-Regular.ttf",
+            BaseFont.IDENTITY_H , BaseFont.EMBEDDED, 12, Font.BOLD, BaseColor.BLACK);
+
+    private static Font roboto = FontFactory.getFont("src/main/resources/Roboto/Roboto-Regular.ttf",
+            BaseFont.IDENTITY_H , BaseFont.EMBEDDED, 20, Font.NORMAL, BaseColor.BLACK);
+    private static Font robotoC = FontFactory.getFont("src/main/resources/Roboto/Roboto-Regular.ttf",
+            BaseFont.IDENTITY_H , BaseFont.EMBEDDED, 18, Font.BOLD, BaseColor.BLACK);
+    private static Font robotoS = FontFactory.getFont("src/main/resources/Roboto/Roboto-Regular.ttf",
+            BaseFont.IDENTITY_H , BaseFont.EMBEDDED, 15, Font.BOLD, BaseColor.BLACK);
+
+
 
     public static void main(String[] args) {
         try {
             Document document = new Document();
-            PdfWriter.getInstance(document, new FileOutputStream(FILE));
+            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(new Date().toString().replace(":", "_")+".pdf"));
             document.open();
             addMetaData(document);
             addTitlePage(document);
             addContent(document);
+
+
+
             document.close();
+            writer.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    // iText allows to add metadata to the PDF which can be viewed in your Adobe
-    // Reader
-    // under File -> Properties
     private static void addMetaData(Document document) {
-        document.addTitle("My first PDF");
-        document.addSubject("Using iText");
-        document.addKeywords("Java, PDF, iText");
-        document.addAuthor("Lars Vogel");
-        document.addCreator("Lars Vogel");
+        document.addTitle("Week report");
+        document.addSubject("Summary of the last 7 days with recoveries, prescriptions, drug administrations and vital parameters.");
+        document.addKeywords("PDF, report, summary, recovery, parameters");
+        document.addAuthor("Marian Statache");
+        document.addCreator("Marian Statache");
     }
 
     private static void addTitlePage(Document document)
             throws DocumentException {
+        Image image1 = null;
+        try {
+            image1 = Image.getInstance("logo.png");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //Fixed Positioning
+        image1.setAbsolutePosition(400f, 720f);
+        //Scale to new height and new width of image
+        image1.scaleAbsolute(180, 120);
+        document.add(image1);
+
         Paragraph preface = new Paragraph();
-        // We add one empty line
+        preface.add(new Paragraph("Azienda ospedaliera di Borgo Roma", small7));
+        preface.add(new Paragraph("Reparto terapia intensiva", small7));
+        preface.add(new Paragraph("Piazzale Ludovico Antonio Scuro, Verona, VR", small7));
+        preface.add(new Paragraph("Primario Dr. Null", small7));
+        preface.add(new Paragraph("tel. +39 045 254625", small7));
         addEmptyLine(preface, 1);
-        // Lets write a big header
-        preface.add(new Paragraph("Title of the document", catFont));
+        preface.add(new Paragraph("Data: "+new Date(), small9));
+        addEmptyLine(preface, 1);
+
+        preface.add(new Paragraph("Report Riassuntivo Ultimi 7 Giorni", courier));
 
         addEmptyLine(preface, 1);
-        // Will create: Report generated by: _name, _date
-        preface.add(new Paragraph(
-                "Report generated by: " + System.getProperty("user.name") + ", " + new Date(), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                smallBold));
-        addEmptyLine(preface, 3);
-        preface.add(new Paragraph(
-                "This document describes something which is very important ",
-                smallBold));
 
-        addEmptyLine(preface, 8);
+        Paragraph paragraph = new Paragraph("Questo documento descrive le informazioni principali sui ricoveri degli ultimi 7 giorni.", small);
+        paragraph.setIndentationLeft(5);
+        preface.add(paragraph);
 
-        preface.add(new Paragraph(
-                "This document is a preliminary version and not subject to your license agreement or any other agreement with vogella.com ;-).",
-                redFont));
+        addEmptyLine(preface, 2);
+
+        Anchor anchor = new Anchor("1. Pazienti attualmente in ricovero", small);
+        anchor.setReference("#C1");
+        paragraph = new Paragraph(anchor);
+        paragraph.setIndentationLeft(30);
+        preface.add(paragraph);
+        createList(preface, "active");
+
+        anchor = new Anchor("2. Cartelle cliniche chiuse", small);
+        anchor.setReference("#C2");
+        paragraph = new Paragraph(anchor);
+        paragraph.setIndentationLeft(30);
+        preface.add(paragraph);
+        createList(preface, "inactive");
 
         document.add(preface);
         // Start a new page
@@ -87,89 +117,121 @@ public class PdfTest2 {
     }
 
     private static void addContent(Document document) throws DocumentException {
-        Anchor anchor = new Anchor("First Chapter", catFont);
-        anchor.setName("First Chapter");
+
+        Paragraph subPara;
+        Paragraph subPara2;
+        Section subCatPart;
+
+        Anchor anchor = new Anchor("Pazienti attualmente in ricovero", courierC);
+        anchor.setName("C1");
 
         // Second parameter is the number of the chapter
         Chapter catPart = new Chapter(new Paragraph(anchor), 1);
 
-        Paragraph subPara = new Paragraph("Subcategory 1", subFont);
-        Section subCatPart = catPart.addSection(subPara);
-        subCatPart.add(new Paragraph("Hello"));
-
-        subPara = new Paragraph("Subcategory 2", subFont);
-        subCatPart = catPart.addSection(subPara);
-        subCatPart.add(new Paragraph("Paragraph 1"));
-        subCatPart.add(new Paragraph("Paragraph 2"));
-        subCatPart.add(new Paragraph("Paragraph 3"));
-
-        // add a list
-        createList(subCatPart);
         Paragraph paragraph = new Paragraph();
-        addEmptyLine(paragraph, 5);
-        subCatPart.add(paragraph);
+        addEmptyLine(paragraph, 1);
+        catPart.add(paragraph);
 
-        // add a table
-        createTable(subCatPart);
+
+
+        //while...
+        subPara = new Paragraph("Carlo Combi", courierS);
+        subCatPart = catPart.addSection(subPara);
+        subPara = new Paragraph();
+        subPara.add(paragraph);
+        subPara.add(new Paragraph("Cognome: ", small));
+        subPara.add(new Paragraph("Nome: ", small));
+        subPara.add(new Paragraph("Data di nascita: ", small));
+        subPara.add(new Paragraph("Luogo di nascita: ", small));
+        subPara.add(new Paragraph("C.F.: ", small));
+        subPara.add(new Paragraph("Data inizio ricovero: ", small));
+        subPara.add(new Paragraph("Diagnosi di ingresso: ", small));
+        subPara.add(paragraph);
+        subPara.add(new Paragraph("PRESCRIZIONI", smallBold));
+        //while...
+        subPara.add(paragraph);
+        subPara.add(new Paragraph("data+medico+farmaco+quantita+dosi+durata", small));
+        subPara.add(paragraph);
+        subPara2 = new Paragraph("Somministrazioni", smallBold);
+        //while
+        subPara2.add(new Paragraph("data, ora, farmaco, dosaggio, note", small));
+        subPara2.setIndentationLeft(30);
+        //}}
+        subPara.add(subPara2);
+        subPara.add(paragraph);
+        subPara.add(paragraph);
+
+        subPara.setIndentationLeft(20);
+        subCatPart.add(subPara);
+        subCatPart.setIndentationLeft(10);
+        //}
+
 
         // now add all this to the document
         document.add(catPart);
 
-        // Next section
-        anchor = new Anchor("Second Chapter", catFont);
-        anchor.setName("Second Chapter");
+        document.newPage();
+
+
+
+
+
+        anchor = new Anchor("Cartelle cliniche chiuse", courierC);
+        anchor.setName("C2");
 
         // Second parameter is the number of the chapter
-        catPart = new Chapter(new Paragraph(anchor), 1);
+        catPart = new Chapter(new Paragraph(anchor), 2);
+        catPart.add(paragraph);
 
-        subPara = new Paragraph("Subcategory", subFont);
+
+        //while...
+        subPara = new Paragraph("Carlo Combi", courierS);
         subCatPart = catPart.addSection(subPara);
-        subCatPart.add(new Paragraph("This is a very important message"));
+        subPara = new Paragraph();
+        subPara.add(paragraph);
+        subPara.add(new Paragraph("Cognome: ", small));
+        subPara.add(new Paragraph("Nome: ", small));
+        subPara.add(new Paragraph("Data di nascita: ", small));
+        subPara.add(new Paragraph("Luogo di nascita: ", small));
+        subPara.add(new Paragraph("C.F.: ", small));
+        subPara.add(new Paragraph("Data inizio ricovero: ", small));
+        subPara.add(new Paragraph("Diagnosi di ingresso: ", small));
+        subPara.add(new Paragraph("Data fine ricovero: ", small));
+        subPara.add(new Paragraph("Esito ricovero: ", small));
+        subPara.add(paragraph);
+        subPara.add(new Paragraph("PRESCRIZIONI", smallBold));
+        //while...
+        subPara.add(paragraph);
+        subPara.add(new Paragraph("data+medico+farmaco+quantita+dosi+durata", small));
+        subPara.add(paragraph);
+        subPara2 = new Paragraph("Somministrazioni", smallBold);
+        //while
+        subPara2.add(new Paragraph("data, ora, farmaco, dosaggio, note", small));
+        subPara2.setIndentationLeft(30);
+        //}}
+        subPara.add(subPara2);
+        subPara.add(paragraph);
+        subPara.add(paragraph);
+
+        subPara.setIndentationLeft(20);
+        subCatPart.add(subPara);
+        subCatPart.setIndentationLeft(10);
+        //}
 
         // now add all this to the document
         document.add(catPart);
 
     }
 
-    private static void createTable(Section subCatPart)
-            throws BadElementException {
-        PdfPTable table = new PdfPTable(3);
 
-        // t.setBorderColor(BaseColor.GRAY);
-        // t.setPadding(4);
-        // t.setSpacing(4);
-        // t.setBorderWidth(1);
+    private static void createList(Paragraph preface, String cmd) {
+        List list = new List(false, false, 20);
+        //while...
+        list.add(new ListItem(new Paragraph("item1", small)));
+        list.add(new ListItem(new Paragraph("item1", small)));
 
-        PdfPCell c1 = new PdfPCell(new Phrase("Table Header 1"));
-        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-        table.addCell(c1);
-
-        c1 = new PdfPCell(new Phrase("Table Header 2"));
-        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-        table.addCell(c1);
-
-        c1 = new PdfPCell(new Phrase("Table Header 3"));
-        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-        table.addCell(c1);
-        table.setHeaderRows(1);
-
-        table.addCell("1.0");
-        table.addCell("1.1");
-        table.addCell("1.2");
-        table.addCell("2.1");
-        table.addCell("2.2");
-        table.addCell("2.3");
-
-        subCatPart.add(table);
-
-    }
-
-    private static void createList(Section subCatPart) {
-        List list = new List(true, false, 10);
-        list.add(new ListItem("First point"));
-        list.add(new ListItem("Second point"));
-        list.add(new ListItem("Third point"));
-        subCatPart.add(list);
+        list.setIndentationLeft(50);
+        preface.add(list);
     }
 
     private static void addEmptyLine(Paragraph paragraph, int number) {
