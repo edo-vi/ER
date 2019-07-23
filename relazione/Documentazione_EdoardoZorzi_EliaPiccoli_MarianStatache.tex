@@ -13,11 +13,13 @@
 \usepackage[latin1]{inputenc}
 \usepackage[italian]{babel}
 \usepackage[T1]{fontenc}
-\usetikzlibrary{automata ,shapes, er}
+\usetikzlibrary{automata ,shapes, er, arrows,chains,positioning,scopes,quotes,decorations.markings,shapes.multipart,shapes.callouts}
 \usepackage{dot2texi}
 \usepgfmodule{oo}
 \usepackage{lscape}
-
+\tikzset{singlestate/.style={draw, rounded corners,
+		minimum width=15mm, minimum height=6mm,
+		align=center, inner sep=1mm, outer sep=0mm,}}
 
 \usepackage{./usecases}
 
@@ -177,7 +179,8 @@ La scelta di design iniziale del sistema è stata fatta a tavolino tra tutti i me
 Dopo diverse discussioni e lavoro di gruppo e individuale si è deciso a grandi passi di adottare una architettura generalmente simile a quella adottata da alcuni frameworks di sviluppo web: un sistema centralizzato (\textit{repository}) di gestione e salvataggio dello stato che ad ogni modifica è propagato a tutta l'applicazione in ascolto e che si aggiorna in modo asincrono (\textit{observer pattern}); componenti decentralizzati, creati da \textit{factories} adoperate dal sistema centrale, che rappresentano singole finestre e che comprendono sia la \textit{view}, cioè quello che vede l'utente, sia la business logic (\textit{controller}) che determina come si reagisce alle diverse interazioni e modifiche dello stato centrale, oltre che ai dati (\textit{model}) ottenuti e aggiornati centralmente dal gestore dello stato --- \textit{pattern MVC}.
 
 Oltre a questo è stato spesso fatto uso della \textit{dependency injection} per garantire una maggiore modularità dei componenti e limitare la dipendenza da classi statiche e stato nascosto, spesso rischioso e prono ad errori.
- \textcolor{red!70!black}{***TODO***} %TODO 
+ \textcolor{red!70!black}{***TODO (spiegazione del design dello stato, completa patterns)***} %TODO 
+
 \subsection{Implementazione}
  Heila \textcolor{red!70!black}{***TODO***} %todo
  
@@ -187,11 +190,29 @@ Le operazioni di validazione e verifica sono state fondamentali per garantire ch
 \paragraph{Validazione}Le operazioni di validazione sono state eseguite facendo un check periodico, dopo ogni implementazione di funzionalità non triviali, del rispetto della specifica per verificare sia che tutti i vincoli temporali e di caratteristiche dei dati fossero rispettati (come ad esempio i tipi di ricovero da visualizzare o le informazioni sui parametri vitali dei pazienti, limitati a dati intervalli temporali), sia che tali funzionalità corrispondessero a quello richiesto dal software finale.
 Questo è stato soprattutto importante dopo l'implementazione delle funzionalità di ogni utente: data la non modesta quantità di funzioni da mettere a disposizione e dati da considerare/manipolare in molti casi il check di verifica eseguito successivamente ha messo alla luce rilevanti criticità e importanti modifiche da implementare. 
 Oltre a queste verifiche periodiche si è anche eseguito un controllo finale, al ridosso della scadenza, per validare il sistema nel suo complesso e cercare di individuare eventuali omissioni e elementi non completamente rispettosi della specifica e dei requisiti.
-
+\begin{figure}
+	\begin{tikzpicture} 
+	\umlstateinitial[x=0, name=A];
+	\umlstatedecision[x=1.5,name=dec];
+	\node[singlestate, name=B] at(4.2,0) {Design funzionalità};
+	\node[singlestate, name=C] at(8.1,0) {Implementazione};
+	\node[singlestate, name=D] at(11.4,0) {Validazione};
+	\umlstatedecision[x=13.8, name=decision]
+	
+	\umltrans[arm1=0cm, pos =1.5 ] {A}{dec}
+	\umltrans[]{dec}{B}
+	\umltrans[]{B}{C}
+	\umltrans[]{C}{D}
+	\umltrans[arg=Ok?]{D}{decision}
+	\umlVHVtrans[arm1=-1cm, arg=No]{decision}{dec}
+	\umlstatefinal[x=15.5, name=final]
+	\umltrans[arg=Sì]{decision}{final}
+	\end{tikzpicture}\caption{\textit{Activity diagram} della fase di validazione per le funzionalità dei componenti utente.}
+\end{figure}
 \paragraph{Verifica} Molto importante è stata anche la verifica della correttezza del programma che data la sua non banale complessità ha mostrato spesso comportamenti sbagliati in fase di programmazione. A tal fine si è deciso di operare nel seguente modo: \begin{itemize}
 	\item una fase di \textit{development testing} utilizzando \textit{unit tests} per tutte quelle classi e aree di più facile testabilità automatica: quelle meno dipendenti dagli input specifici dell'utente, eseguite dall'interfaccia grafica, e dall'integrazione con altri oggetti del sistema. Essi sono stati eseguiti affindandosi ad una libreria esterna, \textit{JUnit4}, e sono stati principalmente usati per verificare il comportamento del package \textit{State}, della classe \textit{Sistema} e \textcolor{red!70!black}{***TODO (completa qui e aggiungi test sistema, non uso di testdriven development)***}
 	\item una fase di \textit{release testing} dove si è cercato di testare tutti i comportamenti possibili degli utenti finali simulando diverse casistiche e flow di lavoro per verificare che il sistema gestisse correttamente gli input. In particolare si è testato il corretto comportamento di tutti i pulsanti e dei menù e si è verificato che le diverse entità, consistenti lo stato del sistema, fossero correttamente gestite, manipolate, e visualizzate nelle diverse view degli utenti. Questo tipo di test è stato eseguito a parte da tutti i membri del team cercando di simulare il comportamento di un soggetto non tecnico.
-	\item una fase di \textit{user testing} dove si è fatto testare il software ad un soggetto di media/moderata abilità informatica per verificare l'usabilità del programma di fronte ad input reali e sostanzialmente conformi a quelli che ci si aspetta da soggetti normali che utilizzerebbero in modo coerente il programma. Questa fase è stata molto utile per implementare piccole migliorie all'usabilità del programma come ad esempio un miglioramento del comportamento dei menù a tendina, modifiche ad alcune tabelle --- al fine di includere dati differenti o formattati diversamente --- e anche lievi modifiche alla struttura e disposizione degli elementi dell'interfaccia grafica. 
+	\item una fase di \textit{user testing} dove si è fatto testare il software ad un soggetto di media/moderata abilità informatica per verificare l'usabilità del programma di fronte ad input reali e sostanzialmente conformi a quelli che ci si aspetta da soggetti normali che utilizzerebbero in modo coerente il programma. Questa fase è stata molto utile per implementare piccole migliorie all'usabilità del programma come ad esempio un ritocco del comportamento dei menù a tendina, modifiche ad alcune tabelle --- al fine di includere dati differenti o formattati diversamente --- e anche lievi cambiamenti alla struttura e disposizione degli elementi dell'interfaccia grafica (tipo rendere alcuni pulsanti non attivi, cambiare alcune grafiche etc.). 
 \end{itemize}
 
 %\subsection{Design e struttura del sistema}

@@ -27,7 +27,7 @@ public class InitializeDatabase {
 
 
         try {
-            Recovery active = new Recovery("Ruptured tendon");
+            Recovery active = new Recovery("Gomito del tennista");
             patient1.admit(active);
             session.beginTransaction();
             /*adm1.setPrescription(pr1);
