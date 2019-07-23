@@ -181,6 +181,30 @@ Dopo diverse discussioni e lavoro di gruppo e individuale si è deciso a grandi p
 Oltre a questo è stato spesso fatto uso della \textit{dependency injection} per garantire una maggiore modularità dei componenti e limitare la dipendenza da classi statiche e stato nascosto, spesso rischioso e prono ad errori.
  \textcolor{red!70!black}{***TODO (spiegazione del design dello stato, completa patterns)***} %TODO 
 
+\begin{figure}[b]
+	\begin{tikzpicture}[scale=.9] \begin{umlseqdiag}
+	\umlobject[class=Controller, ] {a} 
+	\umlobject[class=Store] {b}
+	\umlobject[class=Controller]{c}
+	\umlobject[class=Reducer]{d}
+	\umlobject[class=Middleware]{e}
+	\begin{umlcall}[op={\scriptsize{subscribe(f1: Function)}}, type=asynchron, dt=6] {a}{b} 
+	\end{umlcall}
+	\begin{umlcall}[op={\scriptsize{subscribe(f2: Function)}}, type=asynchron, dt=12] {c}{b} 
+	\end{umlcall}
+	\begin{umlcall}[op={\scriptsize{update(c: Command)}}, type=asynchron, dt=9] {c}{b}
+	\end{umlcall}
+	\begin{umlcall}[op={\scriptsize{run(c: Command , s:  State)}}, dt=6, return={\scriptsize{s: State}}]{b}{d}
+	\end{umlcall}
+	\begin{umlcall}[op={\scriptsize{run(c: Command, s: State)}}, dt=7, return={\tiny{sc: (Command, State)}}]{b}{e}
+	\end{umlcall}
+	\begin{umlcall}[op={\scriptsize{f1 (sc)}}]{b}{a}
+	\begin{umlcall}[op={\scriptsize{f2 (sc)}}]{b}{c}
+	\end{umlcall}
+	\end{umlcall}
+	\end{umlseqdiag} \end{tikzpicture}\caption{\textit{Sequence diagram} dell'interazione di due generici controller con lo stato centralizzato gestito dallo Store, che usa un Reducer e Middleware per trasformare lo stato e trasmetterlo asincronicamente a tutti i controllori registrati tramite \textit{subcribe()}.}
+\end{figure}
+
 \subsection{Implementazione}
  Heila \textcolor{red!70!black}{***TODO***} %todo
  
@@ -190,7 +214,7 @@ Le operazioni di validazione e verifica sono state fondamentali per garantire ch
 \paragraph{Validazione}Le operazioni di validazione sono state eseguite facendo un check periodico, dopo ogni implementazione di funzionalità non triviali, del rispetto della specifica per verificare sia che tutti i vincoli temporali e di caratteristiche dei dati fossero rispettati (come ad esempio i tipi di ricovero da visualizzare o le informazioni sui parametri vitali dei pazienti, limitati a dati intervalli temporali), sia che tali funzionalità corrispondessero a quello richiesto dal software finale.
 Questo è stato soprattutto importante dopo l'implementazione delle funzionalità di ogni utente: data la non modesta quantità di funzioni da mettere a disposizione e dati da considerare/manipolare in molti casi il check di verifica eseguito successivamente ha messo alla luce rilevanti criticità e importanti modifiche da implementare. 
 Oltre a queste verifiche periodiche si è anche eseguito un controllo finale, al ridosso della scadenza, per validare il sistema nel suo complesso e cercare di individuare eventuali omissioni e elementi non completamente rispettosi della specifica e dei requisiti.
-\begin{figure}
+\begin{figure}[t]
 	\begin{tikzpicture} 
 	\umlstateinitial[x=0, name=A];
 	\umlstatedecision[x=1.5,name=dec];
