@@ -3,7 +3,6 @@ package InterfaceController.HPControllerFactory;
 
 import Entities.Administration;
 import Entities.Monitoring;
-import Entities.Patient;
 import Entities.Recovery;
 import State.State;
 import State.StateEvent;

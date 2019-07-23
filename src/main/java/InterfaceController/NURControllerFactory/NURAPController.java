@@ -15,7 +15,6 @@ import System.Sistema;
 import javafx.util.Callback;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public class NURAPController implements NURController {
     private Store<StringCommand> store;
