@@ -358,7 +358,6 @@ public class Sistema {
                 })
                 .with("CLOSE_ERROR_WINDOW", (c,s,m) -> {
                     errorStage.close();
-                    store.update(new StringCommand("RESET_ALARMS"));
                     return new Tuple<>(new StringCommand("ERROR_WINDOW_CLOSED"), s);
                 })
                 .with("ACTIVATE_COUNTDOWN", (c,s,m) -> {

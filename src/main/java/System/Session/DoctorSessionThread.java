@@ -3,6 +3,7 @@ package System.Session;
 import State.StringCommand;
 import State.Store;
 import javafx.application.Platform;
+import org.hibernate.Session;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -12,6 +13,7 @@ public class DoctorSessionThread extends Thread {
     private volatile boolean run = true;
     private Timer timerTask;
     private final int sessionLength = 30000; //30s
+    private SessionTimer sessionThread;
 
     public DoctorSessionThread(Store<StringCommand> store) {
         this.store = store;
@@ -19,16 +21,19 @@ public class DoctorSessionThread extends Thread {
     }
 
     public void start() {
-        this.timerTask.scheduleAtFixedRate(new SessionTimer(), sessionLength, sessionLength);
+        sessionThread = new SessionTimer();
+        this.timerTask.scheduleAtFixedRate(sessionThread, sessionLength, sessionLength);
     }
 
     public void interrupt() {
+        sessionThread.cancel();
         run = false;
     }
 
     public void restart() {
         if (!run)
             run = true;
+        start();
     }
 
     private class SessionTimer extends TimerTask {
