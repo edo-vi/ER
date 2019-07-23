@@ -1,6 +1,4 @@
-package System.HPInterfaceFactory;
-
-import State.StringCommand;
+package System.InterfaceFactories.HPInterfaceFactory;
 
 public class HPFactory {
     public HPInterface getHPInterface(String type) {

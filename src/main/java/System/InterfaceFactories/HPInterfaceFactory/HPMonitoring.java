@@ -1,4 +1,4 @@
-package System.HPInterfaceFactory;
+package System.InterfaceFactories.HPInterfaceFactory;
 
 public class HPMonitoring implements HPInterface{
     private String file;

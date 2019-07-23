@@ -1,4 +1,4 @@
-package System.DOCInterfaceFactory;
+package System.InterfaceFactories.DOCInterfaceFactory;
 
 public class DOCDefault implements DOCInterface {
     private String file;

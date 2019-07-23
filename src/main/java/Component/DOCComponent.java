@@ -1,10 +1,9 @@
 package Component;
 
 import InterfaceController.DOCControllerFactory.DOCController;
-import InterfaceController.HPControllerFactory.HPController;
 import State.Command;
 import State.StateEvent;
-import System.DOCInterfaceFactory.DOCInterface;
+import System.InterfaceFactories.DOCInterfaceFactory.DOCInterface;
 import System.Sistema;
 import javafx.fxml.FXMLLoader;
 

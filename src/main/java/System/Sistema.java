@@ -17,9 +17,9 @@ import State.DatabaseService;
 import State.MiddlewareString;
 import State.Middleware;
 
-import System.DOCInterfaceFactory.DOCFactory;
-import System.HPInterfaceFactory.HPFactory;
-import System.NURInterfaceFactory.NURFactory;
+import System.InterfaceFactories.DOCInterfaceFactory.DOCFactory;
+import System.InterfaceFactories.HPInterfaceFactory.HPFactory;
+import System.InterfaceFactories.NURInterfaceFactory.NURFactory;
 import System.Session.AlarmTimer;
 import System.Session.DoctorSessionThread;
 import javafx.scene.Scene;

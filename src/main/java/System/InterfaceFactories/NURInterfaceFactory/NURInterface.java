@@ -1,4 +1,4 @@
-package System.NURInterfaceFactory;
+package System.InterfaceFactories.NURInterfaceFactory;
 
 public interface NURInterface {
     String getFile();

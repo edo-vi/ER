@@ -1,4 +1,4 @@
-package System.DOCInterfaceFactory;
+package System.InterfaceFactories.DOCInterfaceFactory;
 
 public class DOCFactory {
     public DOCInterface getInterface(String type) {

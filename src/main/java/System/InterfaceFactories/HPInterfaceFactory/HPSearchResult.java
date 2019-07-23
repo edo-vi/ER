@@ -1,4 +1,4 @@
-package System.HPInterfaceFactory;
+package System.InterfaceFactories.HPInterfaceFactory;
 
 public class HPSearchResult implements HPInterface{
     private String file;

@@ -1,4 +1,4 @@
-package System.NURInterfaceFactory;
+package System.InterfaceFactories.NURInterfaceFactory;
 
 public class NURAddPatient implements NURInterface {
     private String file;
