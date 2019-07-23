@@ -26,6 +26,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,6 +48,16 @@ public class MonitoringController {
     @FXML private NumberAxis yhrAxis;
     @FXML private NumberAxis ybpAxis;
     @FXML private TableColumn<Monitoring, String> temperatureColumn;
+    @FXML private Button bed0;
+    @FXML private Button bed1;
+    @FXML private Button bed2;
+    @FXML private Button bed3;
+    @FXML private Button bed4;
+    @FXML private Button bed5;
+    @FXML private Button bed6;
+    @FXML private Button bed7;
+    @FXML private Button bed8;
+    @FXML private Button bed9;
 
     private Subject<StateEvent> stream;
     private Disposable dis;
@@ -57,6 +68,7 @@ public class MonitoringController {
     private XYChart.Series seriesD = new XYChart.Series();
     private int room;
     private int recoveryId;
+    private ArrayList<Button> bedRooms;
 
     public MonitoringController(Store store, Subject<StateEvent> stream) {
         this.store = store;
@@ -69,7 +81,7 @@ public class MonitoringController {
         dis = stream.subscribe(se -> {
             String name = se.command().name();
             List<Recovery> activeRecoveries = se.state().getActiveRecoveries();
-
+            updateBed(activeRecoveries);
             if (activeRecoveries.size() <= room) {
                 this.setInfo(null);
                 this.setRoomLabel(0);
@@ -78,13 +90,13 @@ public class MonitoringController {
             }
             if (name.equals("GENERATE_BP") || name.equals("GENERATE_HEART_RATE") || name.equals("GENERATE_TEMPERATURE")) {
                 ObservableList<Monitoring> data = table.getItems();
-                if (activeRecoveries.size() <= room ) {
+                if (activeRecoveries.size() <= room) {
                     setInfo(null);
                     setRoomLabel(0);
                 } else {
                     Monitoring lastMonitoring = se.state().getActiveRecoveries().get(room).getLastMonitoring();
                     data.add(0, lastMonitoring);
-                    if(table.getItems().size() > 11)
+                    if (table.getItems().size() > 11)
                         table.getItems().remove(11);
 
                     Platform.runLater(() -> hrLabel.setText(String.valueOf(lastMonitoring.getHeartRate())));
@@ -96,9 +108,10 @@ public class MonitoringController {
                         Platform.runLater(() -> yhrAxis.setLabel("bpm"));
                         Platform.runLater(() -> seriesHR.setName("HR"));
                         Platform.runLater(() -> {
-                            if(seriesHR.getData().size() > 9) {
+                            if (seriesHR.getData().size() > 9) {
                                 xhrAxis.setLowerBound((counterHR - 11 > 0) ? counterHR - 11 : 0);
-                            } else xhrAxis.setLowerBound((counterHR - seriesHR.getData().size() > 0) ? counterHR - seriesHR.getData().size() - 1  : 0);
+                            } else
+                                xhrAxis.setLowerBound((counterHR - seriesHR.getData().size() > 0) ? counterHR - seriesHR.getData().size() - 1 : 0);
 
                             xhrAxis.setUpperBound(counterHR + 1);
                         });
@@ -112,16 +125,17 @@ public class MonitoringController {
                             hrGraphic.getData().add(seriesHR);
                             counterHR++;
                         });
-                    } else if(name.equals("GENERATE_BP")) {
+                    } else if (name.equals("GENERATE_BP")) {
                         Platform.runLater(() -> ybpAxis.setLabel("mmHg"));
                         Platform.runLater(() -> {
                             seriesS.setName("SBP");
                             seriesD.setName("DBP");
                         });
                         Platform.runLater(() -> {
-                            if(seriesD.getData().size() > 9) {
+                            if (seriesD.getData().size() > 9) {
                                 xbpAxis.setLowerBound((counterBP - 11 > 0) ? counterBP - 11 : 0);
-                            } else xbpAxis.setLowerBound((counterBP - seriesD.getData().size() > 0) ? counterBP - seriesD.getData().size() - 1  : 0);
+                            } else
+                                xbpAxis.setLowerBound((counterBP - seriesD.getData().size() > 0) ? counterBP - seriesD.getData().size() - 1 : 0);
 
                             xbpAxis.setUpperBound(counterBP + 1);
                         });
@@ -146,7 +160,6 @@ public class MonitoringController {
                         });
                     }
                 }
-
             }
         });
     }
@@ -185,6 +198,17 @@ public class MonitoringController {
         else
             setInfo(null);
 
+        bedRooms = new ArrayList<>();
+        bedRooms.add(bed0);
+        bedRooms.add(bed1);
+        bedRooms.add(bed2);
+        bedRooms.add(bed3);
+        bedRooms.add(bed4);
+        bedRooms.add(bed5);
+        bedRooms.add(bed6);
+        bedRooms.add(bed7);
+        bedRooms.add(bed8);
+        bedRooms.add(bed9);
     }
 
     @FXML protected void login() {
@@ -281,7 +305,12 @@ public class MonitoringController {
             setRoomLabel(roomNumber);
             setInfo(activerRecoveries.get(roomNumber));
         }
+    }
 
-
+    @FXML protected void updateBed(List<Recovery> activeRecoveries) {
+        int activeRec = activeRecoveries.size();
+        if(activeRec < 10)
+            for(int i=0; i<10; i++)
+                bedRooms.get(i).setDisable(!(i < activeRec));
     }
 }
