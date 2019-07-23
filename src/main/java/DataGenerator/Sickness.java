@@ -1,0 +1,5 @@
+package DataGenerator;
+
+public enum Sickness {
+    ARITMIA, TACHICARDIA, FLUTTER, IPERTENSIONE, IPOTENSIONE, IPERTERMIA, IPOTERMIA
+}

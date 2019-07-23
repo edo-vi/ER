@@ -3,7 +3,7 @@ package Component;
 import InterfaceController.NURControllerFactory.NURController;
 import State.Command;
 import State.StateEvent;
-import System.NURInterfaceFactory.NURInterface;
+import System.InterfaceFactories.NURInterfaceFactory.NURInterface;
 import javafx.fxml.FXMLLoader;
 import System.Sistema;
 

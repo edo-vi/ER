@@ -52,6 +52,9 @@ public class DOCAPController implements DOCController {
 
         }
         dis = stream.subscribe(se -> {
+            if(se.command().name().equals("FAILURE_TO_ADD_PRESCRIPTION"))
+                store.update(new StringCommand("ERROR", "System Error.\nUnlucky."));
+
             Platform.runLater(() -> nameLabel.setText("Dr. " + se.state().getUser().toString()));
             fillPatientsMantainSelection(se.state());
         });
@@ -145,15 +148,15 @@ public class DOCAPController implements DOCController {
                 Prescription pre = new Prescription(drug, Integer.valueOf(duration), Integer.valueOf(dose), Integer.valueOf(quantity),
                         store.poll().getUser().getName(), rec);
                         store.update(new StringCommand("ADD_PRESCRIPTION", pre));
+                        store.update(new StringCommand("ERROR", "Prescrizione aggiunta con successo."));
                 prescriptionTotalNumberofDoses.clear();
                 prescriptionDrug.clear();
                 prescriptionDose.clear();
                 prescriptionDuration.clear();
             } catch (Exception e) {
-
+                store.update(new StringCommand("ERROR", "I campi 'Quantità' - 'Dose' - 'Durata'\nrichidono valori numerici validi."));
             }
-        }
-
+        } else store.update(new StringCommand("ERROR", "I campi d'inserimento dati sono obbligatori.\nRiprovare."));
     }
 
     @FXML protected void addPrescription() {

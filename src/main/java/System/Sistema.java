@@ -2,9 +2,9 @@ package System;
 
 import Component.*;
 import Entities.*;
-import Generator.DataThread;
-import Generator.Sickness;
-import Generator.Value;
+import DataGenerator.DataThread;
+import DataGenerator.Sickness;
+import DataGenerator.Value;
 import InterfaceController.DOCControllerFactory.DOCControllerFactory;
 import InterfaceController.HPControllerFactory.HPControllerFactory;
 import InterfaceController.NURControllerFactory.NURControllerFactory;
@@ -17,12 +17,11 @@ import State.DatabaseService;
 import State.MiddlewareString;
 import State.Middleware;
 
-import System.DOCInterfaceFactory.DOCFactory;
-import System.HPInterfaceFactory.HPFactory;
-import System.NURInterfaceFactory.NURFactory;
+import System.InterfaceFactories.DOCInterfaceFactory.DOCFactory;
+import System.InterfaceFactories.HPInterfaceFactory.HPFactory;
+import System.InterfaceFactories.NURInterfaceFactory.NURFactory;
 import System.Session.AlarmTimer;
 import System.Session.DoctorSessionThread;
-import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
@@ -142,16 +141,25 @@ public class Sistema {
                     return new Tuple<>(new StringCommand("LOGIN_FAILURE"), s);
                 })
                 .with("LOAD", (c, s, m) -> {
-                    List<Patient> ps = DatabaseService.getEntries("Patient").stream()
-                            .map(e -> (Patient) e)
-                            .collect(Collectors.toList());
+                    List<Patient> ps = DatabaseService.getEntries("Patient").stream().map(e -> (Patient) e).collect(Collectors.toList());
                     s.setPatients(ps);
-                    List<Recovery> rec = ps.stream().flatMap(p -> p.getAllRecoveries().stream()).filter(Recovery::isActive)
-                            .collect(Collectors.toList());
+                    List<Recovery> rec = ps.stream().flatMap(p -> p.getAllRecoveries().stream()).filter(Recovery::isActive).collect(Collectors.toList());
+
+                    //setUp HashMap Prescriptions
+                    rec.forEach(r -> r.getPrescriptions().forEach(p -> {
+                        p.getAdministrations().forEach(a -> {
+                            Tuple<String, String> dataAndDrug = new Tuple<>(new java.sql.Date(a.getDate().getTime()).toString(), p.getDrug());
+                            HashMap<Tuple<String, String>, Integer> admHistory = p.getDailyAdministrationCounter();
+                            admHistory.putIfAbsent(dataAndDrug, 0);
+                            admHistory.replace(dataAndDrug, admHistory.get(dataAndDrug) + 1);
+                        });
+                    }));
+
                     //TODO add
                     /*if (rec.size() == 0) {
 
                     }*/
+
                     s.setMainRecoveryIndex(0);
                     return new Tuple<>(new StringCommand("LOADED"), s);
                 })
@@ -310,7 +318,7 @@ public class Sistema {
                         }
                     } catch (Patient.MoreThanOneActiveRecoveryException | Recovery.PatientNotAdmittedException e) {
                         System.out.println("Sistema, admission summary: " + e);
-                        return new Tuple<>(new StringCommand("COULD_NOT_ADMIT_A_PATIENT"), s);
+                        return new Tuple<>(new StringCommand("COULD_NOT_ADMIT_A_PATIENT_EXC"), s);
                     }
                 })
                 .with("ADD_PRESCRIPTION", (c,s,m) -> {
@@ -350,7 +358,6 @@ public class Sistema {
                 })
                 .with("CLOSE_ERROR_WINDOW", (c,s,m) -> {
                     errorStage.close();
-                    store.update(new StringCommand("RESET_ALARMS"));
                     return new Tuple<>(new StringCommand("ERROR_WINDOW_CLOSED"), s);
                 })
                 .with("ACTIVATE_COUNTDOWN", (c,s,m) -> {

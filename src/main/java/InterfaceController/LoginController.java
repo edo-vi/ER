@@ -37,7 +37,7 @@ public class LoginController {
                         sys.setInterface("DOCD", DOCComponent.DOCTitle);
                     else sys.setInterface("NURD", NURComponent.NURTitle);
                 } else {
-                    System.out.println("Invalid username and/or password");
+                    store.update(new StringCommand("ERROR", "Username e Password non validi"));
                 }
             }
         });

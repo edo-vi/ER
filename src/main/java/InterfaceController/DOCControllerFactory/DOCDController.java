@@ -51,9 +51,12 @@ public class DOCDController implements DOCController{
 
         }
         dis = stream.subscribe(se -> {
-            if (se.command().name().equals("PATIENT_SUCCESSFULLY_ADMITTED")) {
+            if (se.command().name().equals("COULD_NOT_ADMIT_A_PATIENT"))
+                store.update(new StringCommand("ERROR", "Impossibile ospitare più di 10 pazienti\nall'interno della struttura."));
+            if(se.command().name().equals("COULD_NOT_ADMIT_A_PATIENT_EXC"))
+                store.update(new StringCommand("ERROR", "System Error.\nUnlucky."));
+            if (se.command().name().equals("PATIENT_SUCCESSFULLY_ADMITTED"))
                 selectedRow = 0;
-            }
             Platform.runLater(() -> nameLabel.setText("Dr. " + se.state().getUser().toString()));
             initialize(se.state());
         });
@@ -125,9 +128,9 @@ public class DOCDController implements DOCController{
 
     @FXML protected void tryAdmission() {
         Patient p = waitingPatients.getSelectionModel().getSelectedItem();
-        if (p != null) {
+        if (p != null && !diagnosisTextField.getText().equals("")) {
             store.update(new StringCommand("TRY_ADMISSION", new Tuple<>(p, diagnosisTextField.getText())));
-        }
+        } else store.update(new StringCommand("ERROR", "Nessun paziente selezionato e/o il campo:\n\t>'Diagnosi'\nè obbligatorio."));
         diagnosisTextField.clear();
     }
 

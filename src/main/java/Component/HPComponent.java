@@ -3,7 +3,7 @@ package Component;
 import InterfaceController.HPControllerFactory.*;
 import State.Command;
 import State.StateEvent;
-import System.HPInterfaceFactory.HPInterface;
+import System.InterfaceFactories.HPInterfaceFactory.HPInterface;
 import javafx.fxml.FXMLLoader;
 import System.Sistema;
 

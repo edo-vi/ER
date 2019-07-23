@@ -134,6 +134,14 @@ public class Prescription implements Entry{
         this.administrations.add(administration);
     }
 
+    public HashMap<Tuple<String, String>, Integer> getDailyAdministrationCounter() {
+        return dailyAdministrationCounter;
+    }
+
+    public void setDailyAdministrationCounter(HashMap<Tuple<String, String>, Integer> dailyAdministrationCounter) {
+        this.dailyAdministrationCounter = dailyAdministrationCounter;
+    }
+
     public Integer getAdministrationNumber(Tuple<String, String> drug) {
         return dailyAdministrationCounter.get(drug) + 1;
     }

@@ -137,16 +137,16 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button mnemonicParsing="false" onAction="#buttonPressed" prefHeight="60.0" prefWidth="200.0" style="-fx-font-size: 20;" text="Letto 1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-            <Button mnemonicParsing="false" onAction="#buttonPressed" prefHeight="60.0" prefWidth="200.0" style="-fx-font-size: 20;" text="Letto 2" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-            <Button mnemonicParsing="false" onAction="#buttonPressed" prefHeight="60.0" prefWidth="200.0" style="-fx-font-size: 20;" text="Letto 3" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-            <Button mnemonicParsing="false" onAction="#buttonPressed" prefHeight="60.0" prefWidth="200.0" style="-fx-font-size: 20;" text="Letto 4" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-            <Button mnemonicParsing="false" onAction="#buttonPressed" prefHeight="60.0" prefWidth="200.0" style="-fx-font-size: 20;" text="Letto 5" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-            <Button mnemonicParsing="false" onAction="#buttonPressed" prefHeight="60.0" prefWidth="200.0" style="-fx-font-size: 20;" text="Letto 6" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-            <Button mnemonicParsing="false" onAction="#buttonPressed" prefHeight="60.0" prefWidth="200.0" style="-fx-font-size: 20;" text="Letto 7" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-            <Button mnemonicParsing="false" onAction="#buttonPressed" prefHeight="60.0" prefWidth="200.0" style="-fx-font-size: 20;" text="Letto 8" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-            <Button mnemonicParsing="false" onAction="#buttonPressed" prefHeight="60.0" prefWidth="200.0" style="-fx-font-size: 20;" text="Letto 9" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-            <Button mnemonicParsing="false" onAction="#buttonPressed" prefHeight="60.0" prefWidth="200.0" style="-fx-font-size: 20;" text="Letto 10" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <Button fx:id="bed0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="60.0" prefWidth="200.0" style="-fx-font-size: 20;" text="Letto 1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <Button fx:id="bed1" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="60.0" prefWidth="200.0" style="-fx-font-size: 20;" text="Letto 2" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <Button fx:id="bed2" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="60.0" prefWidth="200.0" style="-fx-font-size: 20;" text="Letto 3" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <Button fx:id="bed3" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="60.0" prefWidth="200.0" style="-fx-font-size: 20;" text="Letto 4" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <Button fx:id="bed4" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="60.0" prefWidth="200.0" style="-fx-font-size: 20;" text="Letto 5" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <Button fx:id="bed5" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="60.0" prefWidth="200.0" style="-fx-font-size: 20;" text="Letto 6" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <Button fx:id="bed6" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="60.0" prefWidth="200.0" style="-fx-font-size: 20;" text="Letto 7" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <Button fx:id="bed7" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="60.0" prefWidth="200.0" style="-fx-font-size: 20;" text="Letto 8" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <Button fx:id="bed8" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="60.0" prefWidth="200.0" style="-fx-font-size: 20;" text="Letto 9" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <Button fx:id="bed9" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="60.0" prefWidth="200.0" style="-fx-font-size: 20;" text="Letto 10" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
          </children>
       </GridPane>
    </children>

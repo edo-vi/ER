@@ -110,9 +110,11 @@ public class NURSController implements NURController {
                         data.add(r);
                 });
             } else {
+                store.update(new StringCommand("ERROR", "La ricerca non ha prodotto nessun risultato.\nRiprovare."));
                 searchPatient.clear();
             }
         }  catch (ArrayIndexOutOfBoundsException err) {
+            store.update(new StringCommand("ERROR", "La stringa di ricerca deve rispettare il formato:\nNome Cognome"));
             searchPatient.clear();
         }
     }

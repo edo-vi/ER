@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="mainAnchor11" maxHeight="-1.0" maxWidth="-1.0" prefHeight="400.0" prefWidth="450.0" style="-fx-background-color: #1d1d1d;" styleClass="column-header" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="mainAnchor11" maxHeight="-1.0" maxWidth="-1.0" prefHeight="400.0" prefWidth="450.0" style="-fx-border-color: white; -fx-background-color: #1d1d1d;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Button fx:id="loginButton" layoutX="370.0" layoutY="194.0" mnemonicParsing="false" onAction="#login" prefHeight="33.0" prefWidth="151.0" text="Spegni Allarme" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0">
          <font>

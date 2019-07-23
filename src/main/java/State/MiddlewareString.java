@@ -1,6 +1,6 @@
 package State;
 
-import Generator.DataThread;
+import DataGenerator.DataThread;
 import Main.Tuple;
 import System.Session.AlarmTimer;
 import System.Session.DoctorSessionThread;

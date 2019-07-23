@@ -15,6 +15,7 @@ public class ErrorController {
     private Store<StringCommand> store;
     private Disposable dis;
     @FXML private Label errorText;
+    private boolean areAlarmsActive = false;
 
     public ErrorController(Store<StringCommand> store, Subject<StateEvent> stream) {
         this.store = store;
@@ -27,10 +28,18 @@ public class ErrorController {
             String command = se.command().name();
             if(command.equals("ERROR_WINDOW_CREATED"))
                 Platform.runLater(() -> errorText.setText(((String) se.command().getArg())));
+            if(command.equals("ACTIVE_ALARM"))
+                areAlarmsActive = true;
+            if(command.equals("ALM_LOGIN_FAILURE"))
+                areAlarmsActive = false;
         });
     }
 
     @FXML protected void close() {
         store.update(new StringCommand("CLOSE_ERROR_WINDOW"));
+        if(areAlarmsActive) {
+            areAlarmsActive = false;
+            store.update(new StringCommand("RESET_ALARMS"));
+        }
     }
 }

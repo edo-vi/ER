@@ -1,7 +1,7 @@
 package InterfaceController;
 
 import Entities.User;
-import Generator.Sickness;
+import DataGenerator.Sickness;
 import Main.Tuple;
 import State.StateEvent;
 import State.Store;
@@ -42,7 +42,7 @@ public class AlarmControlController {
                     store.update(new StringCommand("STOP_COUNTDOWN"));
                     store.update(new StringCommand("SESSION_START"));
                 } else {
-                    System.out.println("Invalid username and/or password");
+                    store.update(new StringCommand("ERROR", "Username e Password non validi.\nSolo i dottori possono spegnere l'allarme."));
                 }
             } else if(command.equals("ACTIVE_ALARM")) {
                 Platform.runLater(() -> {

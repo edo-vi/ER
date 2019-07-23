@@ -20,12 +20,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.util.StringConverter;
 
 import java.util.Calendar;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class HPDController implements HPController{
     private final Store<StringCommand> store;
@@ -139,17 +137,11 @@ public class HPDController implements HPController{
 
     @FXML protected void discharge() {
         String dt = dischargeText.getText();
+        dischargeText.clear();
         if (dt != null && !dt.equals("")) {
-            try {
-                this.store.update(new StringCommand("DISCHARGE_PATIENT",
-                        new Tuple<>(this.patientsChoice.getValue(), dt)));
-            } catch(Exception err) {
-
-            } finally {
-                dischargeText.clear();
-            }
-
-        }
+            this.store.update(new StringCommand("DISCHARGE_PATIENT", new Tuple<>(this.patientsChoice.getValue(), dt)));
+            store.update(new StringCommand("ERROR", "Paziente dimesso."));
+        } else store.update(new StringCommand("ERROR", "Il campo: 'Diagnosi di dimissione' è obbligatorio."));
     }
 
     @FXML protected void search() {

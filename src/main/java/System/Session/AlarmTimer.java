@@ -12,6 +12,7 @@ public class AlarmTimer extends Thread {
     private long alarmLifeTime;
     private volatile boolean run = true;
     private Timer timerTask;
+    private AlarmTimerThread alarmThread;
 
     public AlarmTimer(int level, Store<StringCommand> store) {
         this.store = store;
@@ -25,23 +26,29 @@ public class AlarmTimer extends Thread {
     }
 
     public void start() {
-        this.timerTask.scheduleAtFixedRate(new AlarmTimerThread(), alarmLifeTime, alarmLifeTime);
+        alarmThread = new AlarmTimerThread();
+        this.timerTask.scheduleAtFixedRate(alarmThread, alarmLifeTime, alarmLifeTime);
     }
 
     public void alarmDeactivated() {
+        alarmThread.cancel();
         run = false;
     }
 
     public void restart() {
         if (!run)
             run = true;
+        start();
     }
 
     private class AlarmTimerThread extends TimerTask {
         public AlarmTimerThread() {}
 
         public void run() {
-            Platform.runLater(() -> store.update(new StringCommand("ERROR", "F in the chat\nRIP")));
+            Platform.runLater(() -> {
+                if(run)
+                    store.update(new StringCommand("ERROR", "F in the chat\nRIP"));
+            });
         }
     }
 }

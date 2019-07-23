@@ -1,6 +1,6 @@
 package InterfaceController;
 
-import Generator.Sickness;
+import DataGenerator.Sickness;
 import Main.Tuple;
 import State.StateEvent;
 import State.Store;
@@ -8,10 +8,6 @@ import State.StringCommand;
 import System.Sistema;
 import io.reactivex.subjects.Subject;
 import javafx.fxml.FXML;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-
-import java.io.File;
 
 public class AlarmsController {
     private final Sistema sys = Sistema.getInstance();
@@ -23,7 +19,7 @@ public class AlarmsController {
 
 
     @FXML protected void aritmia(){
-        store.update(new StringCommand("EVOLVE_GENERATOR", Sickness.BRACHICARDIA));
+        store.update(new StringCommand("EVOLVE_GENERATOR", Sickness.ARITMIA));
 
     }
 
