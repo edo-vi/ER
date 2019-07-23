@@ -76,6 +76,11 @@ public class PdfTest2 {
         //Scale to new height and new width of image
         image1.scaleAbsolute(180, 120);
         document.add(image1);
+        Anchor an = new Anchor("Link");
+        an.setReference("#C2");
+        Paragraph p = new Paragraph(an);
+        document.add(p);
+
 
         Paragraph preface = new Paragraph();
         preface.add(new Paragraph("Azienda ospedaliera di Borgo Roma", small7));
@@ -96,20 +101,27 @@ public class PdfTest2 {
         preface.add(paragraph);
 
         addEmptyLine(preface, 2);
+        document.add(preface);
 
         Anchor anchor = new Anchor("1. Pazienti attualmente in ricovero", small);
         anchor.setReference("#C1");
-        paragraph = new Paragraph(anchor);
-        paragraph.setIndentationLeft(30);
-        preface.add(paragraph);
+        preface = new Paragraph(anchor);
+        //paragraph.setIndentationLeft(30);
+        document.add(preface);
+        document.add(paragraph);
+        preface = new Paragraph();
         createList(preface, "active");
+        document.add(preface);
 
         anchor = new Anchor("2. Cartelle cliniche chiuse", small);
         anchor.setReference("#C2");
-        paragraph = new Paragraph(anchor);
-        paragraph.setIndentationLeft(30);
-        preface.add(paragraph);
+        preface = new Paragraph(anchor);
+        //paragraph.setIndentationLeft(30);
+        document.add(preface);
+        document.add(paragraph);
+        preface = new Paragraph();
         createList(preface, "inactive");
+
 
         document.add(preface);
         // Start a new page
