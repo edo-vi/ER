@@ -13,9 +13,11 @@ public class AlarmTimer extends Thread {
     private volatile boolean run = true;
     private Timer timerTask;
     private AlarmTimerThread alarmThread;
+    private int alarmLevel;
 
     public AlarmTimer(int level, Store<StringCommand> store) {
         this.store = store;
+        this.alarmLevel = level;
         timerTask = new Timer();
 
         if(level == 3)
@@ -42,12 +44,19 @@ public class AlarmTimer extends Thread {
     }
 
     private class AlarmTimerThread extends TimerTask {
-        public AlarmTimerThread() {}
+        private final String mgsDeath = "RIP\n";
+        private final String msgAlert = "Si consiglia di chiamare un medico.\nIl paziente ha i minuti contati!!";
+        private String msg;
+        public AlarmTimerThread() {
+            if(alarmLevel == 3)
+                msg = mgsDeath;
+            else msg = msgAlert;
+        }
 
         public void run() {
             Platform.runLater(() -> {
                 if(run)
-                    store.update(new StringCommand("ERROR", "F in the chat\nRIP"));
+                    store.update(new StringCommand("ERROR", msg));
             });
         }
     }
