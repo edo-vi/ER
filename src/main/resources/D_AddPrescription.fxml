@@ -76,8 +76,8 @@
                   <Label layoutX="58.0" layoutY="477.0" style="-fx-font-size: 18; -fx-text-fill: #B0C4DE;" text="N° giorni di terapia:" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="540.0" />
                   <TextField fx:id="prescriptionDrug" layoutX="281.0" layoutY="355.0" prefWidth="250.0" promptText="denominazione farmaco..." AnchorPane.leftAnchor="180.0" AnchorPane.topAnchor="355.0" />
                   <TextField fx:id="prescriptionDose" layoutX="280.0" layoutY="415.0" prefWidth="100.0" promptText="mg/mL..." AnchorPane.leftAnchor="330.0" AnchorPane.topAnchor="415.0" />
+                   <TextField fx:id="prescriptionTotalNumberofDoses" layoutX="280.0" layoutY="535.0" prefWidth="100.0" promptText="dosi..." AnchorPane.leftAnchor="330.0" AnchorPane.topAnchor="475.0" />
                   <TextField fx:id="prescriptionDuration" layoutX="280.0" layoutY="475.0" prefWidth="100.0" promptText="giorni..." AnchorPane.leftAnchor="330.0" AnchorPane.topAnchor="535.0" />
-                  <TextField fx:id="prescriptionTotalNumberofDoses" layoutX="280.0" layoutY="535.0" prefWidth="100.0" promptText="dosi..." AnchorPane.leftAnchor="330.0" AnchorPane.topAnchor="475.0" />
                </children>
             </AnchorPane>
             </children>
