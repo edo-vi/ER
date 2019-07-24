@@ -84,7 +84,7 @@ public class ReportPDF {
         preface.add(new Paragraph("Primario Dr. Null", small7));
         preface.add(new Paragraph("tel. +39 045 254625", small7));
         addEmptyLine(preface, 1);
-        preface.add(new Paragraph("Data: "+new Date(), small9));
+        preface.add(new Paragraph("Data: " + new Date(), small9));
         addEmptyLine(preface, 1);
 
         preface.add(new Paragraph("Report Riassuntivo Ultimi 7 Giorni", courier));
@@ -99,65 +99,97 @@ public class ReportPDF {
 
         Anchor anchor = new Anchor("1. Pazienti attualmente in ricovero", small);
         anchor.setReference("#C1");
-        paragraph = new Paragraph(anchor);
+        paragraph = new Paragraph();
+        paragraph.add(anchor);
         paragraph.setIndentationLeft(30);
         preface.add(paragraph);
         createList(preface, "active");
 
-        anchor = new Anchor("2. Cartelle cliniche chiuse", small);
+        anchor = new Anchor("2. Pazienti dimessi", small);
         anchor.setReference("#C2");
-        paragraph = new Paragraph(anchor);
+        paragraph = new Paragraph();
+        paragraph.add(anchor);
         paragraph.setIndentationLeft(30);
         preface.add(paragraph);
         createList(preface, "inactive");
 
         document.add(preface);
-        document.newPage();
     }
 
     private void addContent(Document document) throws DocumentException {
-        final Anchor anchor = new Anchor("Pazienti attualmente in ricovero", courierC);
-        anchor.setName("C1");
-        final Chapter catPart = new Chapter(new Paragraph(anchor), 1);
+
+        Paragraph para;
+        Anchor target;
+
+        target = new Anchor("Pazienti attualmente in ricovero", courierC);
+        target.setName("C1");
+        para = new Paragraph();
+        para.add(target);
+
+        final Chapter catPart = new Chapter(para, 1);
         state.getPatients().forEach(p -> {
-            Paragraph paragraph = new Paragraph();
-            addEmptyLine(paragraph, 1);
-            catPart.add(paragraph);
+
             if (p.isRecovered()) {
+                Paragraph paragraph = new Paragraph();
+                addEmptyLine(paragraph, 1);
+                catPart.add(paragraph);
+                catPart.add(paragraph);
                 Paragraph subPara = new Paragraph(p.getSurname() + " " + p.getName(), courierS);
                 Section subCatPart = catPart.addSection(subPara);
                 Paragraph subPara2 = new Paragraph();
                 subPara2.add(paragraph);
-                subPara2.add(new Paragraph("Cognome: " + p.getSurname(), small));
-                subPara2.add(new Paragraph("Nome: " + p.getName(), small));
-                subPara2.add(new Paragraph("Data di nascita: " + p.getDateofBirth().toString(), small));
-                subPara2.add(new Paragraph("Luogo di nascita: " + p.getPlaceOfBirth(), small));
-                subPara2.add(new Paragraph("C.F.: " + p.getFiscalCode(), small));
-                subPara2.add(new Paragraph("Data inizio ricovero: " + p.getActiveRecoveries().get(0).getStartDate().toString(), small));
-                subPara2.add(new Paragraph("Diagnosi di ingresso: " + p.getActiveRecoveries().get(0).getDiagnosis(), small));
-                subPara2.add(paragraph);
+                Paragraph par = new Paragraph("Cognome:   ", small9);
+                Anchor anc = new Anchor(p.getSurname(), small);
+                par.add(anc);
+                subPara2.add(par);
+                par = new Paragraph("Nome:   ", small9);
+                anc = new Anchor(p.getName(), small);
+                par.add(anc);
+                subPara2.add(par);
+                par = new Paragraph("Data di nascita:   ", small9);
+                anc = new Anchor(p.getDateofBirth().toString(), small);
+                par.add(anc);
+                subPara2.add(par);
+                par = new Paragraph("Luogo di nascita:   ", small9);
+                anc = new Anchor(p.getPlaceOfBirth(), small);
+                par.add(anc);
+                subPara2.add(par);
+                par = new Paragraph("C.F.:   " , small9);
+                anc = new Anchor(p.getFiscalCode(), small);
+                par.add(anc);
+                subPara2.add(par);
+                par = new Paragraph("Data inizio ricovero:   ", small9);
+                anc = new Anchor(p.getActiveRecoveries().get(0).getStartDate().toString(), small);
+                par.add(anc);
+                subPara2.add(par);
+                par = new Paragraph("Diagnosi di ingresso:   ", small9);
+                anc = new Anchor(p.getActiveRecoveries().get(0).getDiagnosis(), small);
+                par.add(anc);
+                subPara2.add(par);
                 p.getActiveRecoveries().forEach(r -> {
                     if(r.getPrescriptions().size() > 0) {
+                        subPara2.add(paragraph);
                         subPara2.add(new Paragraph("PRESCRIZIONI", smallBold));
                         r.getPrescriptions().forEach(prescription -> {
                             subPara2.add(paragraph);
-                            subPara2.add(new Paragraph(prescription.getDate().toString() + " Dottor " + prescription.getDoctor()
-                                    + " " + prescription.getDrug() + " " + prescription.getDailyDose() + " " + prescription.getTotalNumberofDoses()
-                                    + " per " + prescription.getDuration() + "gg", small));
-                            subPara2.add(paragraph);
-                            prescription.getAdministrations().forEach(a -> {
+                            subPara2.add(new Paragraph(prescription.getDate().toString() + "    Dr. " + prescription.getDoctor()
+                                    + "    " + prescription.getDrug() + "    " + prescription.getDailyDose() + "mg/mL    " + prescription.getTotalNumberofDoses()
+                                    + " al giorno per " + prescription.getDuration() + " giorni", small));
+                            if(prescription.getAdministrations().size() > 0) {
+                                subPara2.add(paragraph);
                                 Paragraph subPara3 = new Paragraph("Somministrazioni", smallBold);
-                                subPara3.add(new Paragraph(new java.sql.Date(a.getDate().getTime()).toString() + " "
-                                        + a.getHour() + " " + a.getPrescription().getDrug() + " " + a.getDose() + " " + a.getNotes(), small));
-                                subPara3.setIndentationLeft(30);
+                                prescription.getAdministrations().forEach(a -> {
+                                    subPara3.add(new Paragraph(new java.sql.Date(a.getDate().getTime()).toString() + "    Ore:  "
+                                            + a.getHour() + "    " + a.getPrescription().getDrug() + "    " + a.getDose() + "mg/mL    Note: " + a.getNotes(), small));
+                                    subPara3.setIndentationLeft(10);
+                                });
                                 subPara2.add(subPara3);
-                            });
+                            }
                         });
                     }
                 });
                 subPara.add(subPara2); // add SubPara2
-                subPara.add(paragraph);
-                subPara.setIndentationLeft(20);
+                subPara.setIndentationLeft(10);
 
                 subCatPart.setIndentationLeft(10);
             }
@@ -167,37 +199,67 @@ public class ReportPDF {
         } catch (DocumentException e) {
             store.update(new StringCommand("ERROR", "System Error.\nUnlucky"));
         }
-        document.newPage();
 
-        Anchor anchor2 = new Anchor("Pazienti non più in ricovero", courierC);
-        anchor2.setName("C1");
+        target = new Anchor("Pazienti dimessi", courierC);
+        target.setName("C2");
+        para = new Paragraph();
+        para.add(target);
 
-        Chapter catPart2 = new Chapter(new Paragraph(anchor2), 1);
+        Chapter catPart2 = new Chapter(para, 2);
 
         state.getPatients().forEach(p -> {
-            Paragraph paragraph = new Paragraph();
-            addEmptyLine(paragraph, 1);
-            catPart2.add(paragraph);
+
             if(p.isDischarged()) {
+                Paragraph paragraph = new Paragraph();
+                addEmptyLine(paragraph, 1);
+                catPart2.add(paragraph);
+                catPart2.add(paragraph);
                 Paragraph subPara = new Paragraph(p.getSurname() + " " + p.getName(), courierS);
                 Section subCatPart = catPart2.addSection(subPara);
                 p.getDischargedRecovery().forEach(r -> {
                     Paragraph subPara2 = new Paragraph();
                     subPara2.add(paragraph);
-                    subPara2.add(new Paragraph("Cognome: " + p.getSurname(), small));
-                    subPara2.add(new Paragraph("Nome: " + p.getName(), small));
-                    subPara2.add(new Paragraph("Data di nascita: " + p.getDateofBirth().toString(), small));
-                    subPara2.add(new Paragraph("Luogo di nascita: " + p.getPlaceOfBirth(), small));
-                    subPara2.add(new Paragraph("C.F.: " + p.getFiscalCode(), small));
-                    subPara2.add(new Paragraph("Data inizio ricovero: " + r.getStartDate().toString(), small));
-                    subPara2.add(new Paragraph("Diagnosi di ingresso: " + r.getDiagnosis(), small));
+                    Paragraph par = new Paragraph("Cognome:   ", small9);
+                    Anchor anc = new Anchor(p.getSurname(), small);
+                    par.add(anc);
+                    subPara2.add(par);
+                    par = new Paragraph("Nome:   ", small9);
+                    anc = new Anchor(p.getName(), small);
+                    par.add(anc);
+                    subPara2.add(par);
+                    par = new Paragraph("Data di nascita:   ", small9);
+                    anc = new Anchor(p.getDateofBirth().toString(), small);
+                    par.add(anc);
+                    subPara2.add(par);
+                    par = new Paragraph("Luogo di nascita:   ", small9);
+                    anc = new Anchor(p.getPlaceOfBirth(), small);
+                    par.add(anc);
+                    subPara2.add(par);
+                    par = new Paragraph("C.F.:   ", small9);
+                    anc = new Anchor(p.getFiscalCode(), small);
+                    par.add(anc);
+                    subPara2.add(par);
+                    par = new Paragraph("Data inizio ricovero:   ", small9);
+                    anc = new Anchor(r.getStartDate().toString(), small);
+                    par.add(anc);
+                    subPara2.add(par);
+                    par = new Paragraph("Diagnosi di ingresso:   ", small9);
+                    anc = new Anchor(r.getDiagnosis(), small);
+                    par.add(anc);
+                    subPara2.add(par);
                     try {
-                        subPara2.add(new Paragraph("Data fine ricovero: " + r.getEndDate(), small));
+                        par = new Paragraph("Data fine ricovero:   ", small9);
+                        anc = new Anchor(r.getEndDate().toString(), small);
+                        par.add(anc);
+                        subPara2.add(par);
                     } catch (Recovery.RecoveryNullFieldException e) {
                         store.update(new StringCommand("ERROR", "System Error.\nUnlucky"));
                     }
                     try {
-                        subPara2.add(new Paragraph("Diagnosi d'uscita: " + r.getDischargeSummary(), small));
+                        par = new Paragraph("Diagnosi d'uscita:   ", small9);
+                        anc = new Anchor(r.getDischargeSummary(), small);
+                        par.add(anc);
+                        subPara2.add(par);
                     } catch (Recovery.RecoveryNullFieldException e) {
                         store.update(new StringCommand("ERROR", "System Error.\nUnlucky"));
                     }
@@ -206,22 +268,23 @@ public class ReportPDF {
                         subPara2.add(new Paragraph("PRESCRIZIONI", smallBold));
                         r.getPrescriptions().forEach(prescription -> {
                             subPara2.add(paragraph);
-                            subPara2.add(new Paragraph(prescription.getDate().toString() + " Dottor " + prescription.getDoctor()
-                                    + " " + prescription.getDrug() + " " + prescription.getDailyDose() + " " + prescription.getTotalNumberofDoses()
-                                    + " per " + prescription.getDuration() + "gg", small));
-                            subPara2.add(paragraph);
-                            prescription.getAdministrations().forEach(a -> {
+                            subPara2.add(new Paragraph(prescription.getDate().toString() + "    Dr. " + prescription.getDoctor()
+                                    + "    " + prescription.getDrug() + "    " + prescription.getDailyDose() + "mg/mL    " + prescription.getTotalNumberofDoses()
+                                    + " al giorno per " + prescription.getDuration() + " giorni", small));
+                            if(prescription.getAdministrations().size() > 0) {
+                                subPara2.add(paragraph);
                                 Paragraph subPara3 = new Paragraph("Somministrazioni", smallBold);
-                                subPara3.add(new Paragraph(new java.sql.Date(a.getDate().getTime()).toString() + " "
-                                        + a.getHour() + " " + a.getPrescription().getDrug() + " " + a.getDose() + " " + a.getNotes(), small));
-                                subPara3.setIndentationLeft(30);
+                                prescription.getAdministrations().forEach(a -> {
+                                    subPara3.add(new Paragraph(new java.sql.Date(a.getDate().getTime()).toString() + "    Ore:  "
+                                            + a.getHour() + "    " + a.getPrescription().getDrug() + "    " + a.getDose() + "mg/mL    Note: " + a.getNotes(), small));
+                                    subPara3.setIndentationLeft(10);
+                                });
                                 subPara2.add(subPara3);
-                            });
+                            }
                         });
                     }
                     subPara.add(subPara2); // add SubPara2
-                    subPara.add(paragraph);
-                    subPara.setIndentationLeft(20);
+                    subPara.setIndentationLeft(10);
                 });
 
                 subCatPart.setIndentationLeft(10);
