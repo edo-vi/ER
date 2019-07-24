@@ -25,6 +25,7 @@ import javafx.scene.control.TableView;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -119,7 +120,10 @@ public class NURMController implements NURController {
 
             ObservableList<Administration> data2 = tableAdministrations.getItems();
             data2.removeAll(data2);
-            data2.addAll(administrations);
+            administrations.forEach(a -> {
+                if(new Integer(new Date().toString().substring(11, 13)) - a.getHour() <= 2)
+                    data2.add(a);
+            });
         }
     }
 
