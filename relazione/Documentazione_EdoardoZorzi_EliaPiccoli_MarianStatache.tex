@@ -219,12 +219,34 @@ Oltre a questo è stato spesso fatto uso della \textit{dependency injection} per 
 		\begin{umlcall}[type=asynchron, op={\scriptsize{update("LOAD")}}]{a}{b}\end{umlcall}
 		\begin{umlcallself}[op={\scriptsize{load state from db}}]{b}
 		\end{umlcallself}
-		\begin{umlcall}[type=asynchron, op={\scriptsize{setup ui}}, dt=13]{a}{c}
+		\begin{umlcall}[type=asynchron, op={\scriptsize{setup ui} (instanziando \textit{components})}, dt=13]{a}{c}
 		\end{umlcall}
 		\end{umlseqdiag} \end{tikzpicture}
 	\end{center}
 	\caption{\textit{Sequence diagram} delle operazioni eseguite durante il bootstrapping del programma. }
 \end{figure}
+\begin{figure}
+	\begin{center}
+		\begin{tikzpicture}
+
+		\umlsimpleclass[x=7, fill=gray!10!white]{InterfacesController}
+		\umlsimpleclass[x=7, y=-2, fill=gray!10!white]{Component}
+		\umlsimpleclass[x=3, y=-4, fill=gray!10!white]{Interface Factory}
+		\umlsimpleclass[x=11, y=-4, fill=gray!10!white]{Controller Factory}
+		\umlsimpleclass[x=3, y=-6, fill=gray!10!white]{Interface}
+		\umlsimpleclass[x=11, y=-6, fill=gray!10!white]{Controller}
+	
+		\umldep[stereo=create]{Component}{Interface Factory}
+		\umldep[stereo=create]{Component}{Controller Factory}
+		\umlunicompo[mult1=1, mult2=*]{InterfacesController}{Component}
+		\umlCNunicompo[ mult1=1, mult2=1]{Component}{6.3, -6}{Interface}
+		\umlCNunicompo[ ]{Component}{7.6, -6}{Controller}
+		\node at(7.75,-5.05) {1};
+		\node at(7.4,-2.85) {1};
+		\end{tikzpicture}
+	\end{center}\caption{\textit{Class diagram} che mostra la relazione tra InterfaceController e i vari oggetti che costituiscono la parte View-Controller dell'architettura \textit{MVC} dell'applicazione. }\label{ComponentClassDiagram}
+\end{figure}
+
 \subsection{Implementazione}
  Heila \textcolor{red!70!black}{***TODO***} %todo
  
@@ -419,6 +441,8 @@ Oltre a queste verifiche periodiche si è anche eseguito un controllo finale, al 
 	\end{center}
 	\caption{Schema \textit{Entity-Relationship} dei dati del sistema.}\label{ERdiagram}
 \end{figure}
+
+
 \begin{figure}
 	
 		\begin{tabular}{r | l}
