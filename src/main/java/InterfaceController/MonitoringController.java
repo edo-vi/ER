@@ -307,7 +307,7 @@ public class MonitoringController {
         }
     }
 
-    @FXML protected void updateBed(List<Recovery> activeRecoveries) {
+    @FXML protected void updateBed(List<Recovery> activeRecoveries)
         int activeRec = activeRecoveries.size();
         if(activeRec <= 10)
             for(int i=0; i<10; i++)
