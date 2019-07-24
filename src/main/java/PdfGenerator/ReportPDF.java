@@ -44,9 +44,9 @@ public class ReportPDF {
         this.state = store.poll();
     }
 
-    public void createPDF() throws Exception {
+    public void createPDF(String name) throws Exception {
         Document document = new Document();
-        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(new Date().toString().replace(":", "_")+".pdf"));
+        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(name + ".pdf"));
         document.open();
         addMetaData(document);
         addTitlePage(document);
@@ -54,6 +54,7 @@ public class ReportPDF {
         document.close();
         writer.close();
         store.update(new StringCommand("ERROR", "May the PDF be with you."));
+        Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + name + ".pdf");
     }
 
     private void addMetaData(Document document) {

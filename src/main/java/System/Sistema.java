@@ -381,8 +381,9 @@ public class Sistema {
                 .with("CREATE_PDF", (c,s,m) -> {
                     ReportPDF repot = new ReportPDF(store);
                     try {
-                        repot.createPDF();
-                        return new Tuple<>(new StringCommand("PDF_CREATED"), s);
+                        String name = new Date().toString().replace(":", "_");
+                        repot.createPDF(name);
+                        return new Tuple<>(new StringCommand("PDF_CREATED", name), s);
                     } catch (Exception e) {
                         store.update(new StringCommand("ERROR", "System Error.\nUnlucky"));
                         return new Tuple<>(new StringCommand("PDF_NOT_CREATED"), s);
