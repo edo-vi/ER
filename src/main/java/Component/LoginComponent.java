@@ -10,7 +10,7 @@ import System.Sistema;
 public class LoginComponent<C extends Command> extends Component {
     private FXMLLoader loader;
     private final Sistema sys = Sistema.getInstance();
-    public static final String loginTitle = "ER - Login";
+    public static final String loginTitle = "SICURA - Login";
 
     public LoginComponent() {
         LoginController logctl = new LoginController(sys.getStore(), sys.getStore().getEventStream());

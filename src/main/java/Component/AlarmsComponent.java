@@ -10,7 +10,7 @@ import javafx.fxml.FXMLLoader;
 public class AlarmsComponent<C extends Command> extends Component {
     private FXMLLoader loader;
     private final Sistema sys = Sistema.getInstance();
-    public static final String AlarmsTitle = "ER - Alarms";
+    public static final String AlarmsTitle = "SICURA - Alarms";
 
     public AlarmsComponent() {
         AlarmsController almctl = new AlarmsController(sys.getStore(), sys.getStore().getEventStream());

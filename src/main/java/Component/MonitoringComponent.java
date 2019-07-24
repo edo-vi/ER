@@ -10,7 +10,7 @@ import System.Sistema;
 public class MonitoringComponent<C extends Command> extends Component {
     private FXMLLoader loader;
     private final Sistema sys = Sistema.getInstance();
-    public static final String monitoringTitle = "ER - Monitoring";
+    public static final String monitoringTitle = "SICURA - Monitoring";
 
     public MonitoringComponent() {
         MonitoringController monctl = new MonitoringController(sys.getStore(), sys.getStore().getEventStream());
