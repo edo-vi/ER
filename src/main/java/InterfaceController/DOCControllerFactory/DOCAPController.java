@@ -46,6 +46,7 @@ public class DOCAPController implements DOCController {
     public DOCAPController(Store store, Subject<StateEvent> stream) {
         this.store = store;
         this.stream = stream;
+
         try {
             dis.dispose();
         } catch (NullPointerException e) {
@@ -58,7 +59,9 @@ public class DOCAPController implements DOCController {
             if(!command.equals("GENERATE_BP") && !command.equals("GENERATE_HEART_RATE") && !command.equals("GENERATE_TEMPERATURE")) {
                 Platform.runLater(() -> nameLabel.setText("Dr. " + se.state().getUser().toString()));
                 fillPatientsMantainSelection(se.state());
+
             }
+
         });
     }
 
@@ -86,12 +89,17 @@ public class DOCAPController implements DOCController {
         } catch(IndexOutOfBoundsException er) {
             setSelectedPatient(null);
         }
+        //this.setSelectedPatient(store.poll().getPatients().stream().filter(Patient::isRecovered).findFirst().orElse(null));
     }
 
     @FXML protected void fillPatients(State state) {
+        Optional<Patient> pat = this.selectedPatient;
+
         ObservableList<Patient> data = patientComboBox.getItems();
         data.removeAll(data);
         data.addAll(state.getPatients().stream().filter(Patient::isRecovered).collect(Collectors.toList()));
+
+        setSelectedPatient(pat.orElse(null));
     }
 
     @FXML protected void fillPatientsMantainSelection(State state) {
@@ -120,6 +128,7 @@ public class DOCAPController implements DOCController {
     }
 
     @FXML protected void setSelectedPatient(Patient p) {
+
         if (p != null) {
             patientComboBox.getSelectionModel().select(p);
             this.selectedPatient = Optional.of(p);

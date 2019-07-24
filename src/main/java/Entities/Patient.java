@@ -193,4 +193,13 @@ public class Patient implements Entry {
 
     }
 
+    @Override
+    public boolean equals(Object oth) {
+        return (oth instanceof Patient) && ((Patient) oth).getName().equals(this.name)
+                && ((Patient) oth).getId() == this.id
+                && ((Patient) oth).getSurname().equals(this.surname)
+                && ((Patient) oth).getPlaceOfBirth().equals(this.placeOfBirth)
+                && ((Patient) oth).getDateofBirth().equals(this.birthDay)
+                && ((Patient) oth).getFiscalCode().equals(this.fiscalCode);
+    }
 }
