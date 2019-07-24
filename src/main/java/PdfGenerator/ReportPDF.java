@@ -138,13 +138,34 @@ public class ReportPDF {
                 Section subCatPart = catPart.addSection(subPara);
                 Paragraph subPara2 = new Paragraph();
                 subPara2.add(paragraph);
-                subPara2.add(new Paragraph("Cognome:   " + p.getSurname(), small));
-                subPara2.add(new Paragraph("Nome:   " + p.getName(), small));
-                subPara2.add(new Paragraph("Data di nascita:   " + p.getDateofBirth().toString(), small));
-                subPara2.add(new Paragraph("Luogo di nascita:   " + p.getPlaceOfBirth(), small));
-                subPara2.add(new Paragraph("C.F.:   " + p.getFiscalCode(), small));
-                subPara2.add(new Paragraph("Data inizio ricovero:   " + p.getActiveRecoveries().get(0).getStartDate().toString(), small));
-                subPara2.add(new Paragraph("Diagnosi di ingresso:   " + p.getActiveRecoveries().get(0).getDiagnosis(), small));
+                Paragraph par = new Paragraph("Cognome:   ", small9);
+                Anchor anc = new Anchor(p.getSurname(), small);
+                par.add(anc);
+                subPara2.add(par);
+                par = new Paragraph("Nome:   ", small9);
+                anc = new Anchor(p.getName(), small);
+                par.add(anc);
+                subPara2.add(par);
+                par = new Paragraph("Data di nascita:   ", small9);
+                anc = new Anchor(p.getDateofBirth().toString(), small);
+                par.add(anc);
+                subPara2.add(par);
+                par = new Paragraph("Luogo di nascita:   ", small9);
+                anc = new Anchor(p.getPlaceOfBirth(), small);
+                par.add(anc);
+                subPara2.add(par);
+                par = new Paragraph("C.F.:   " , small9);
+                anc = new Anchor(p.getFiscalCode(), small);
+                par.add(anc);
+                subPara2.add(par);
+                par = new Paragraph("Data inizio ricovero:   ", small9);
+                anc = new Anchor(p.getActiveRecoveries().get(0).getStartDate().toString(), small);
+                par.add(anc);
+                subPara2.add(par);
+                par = new Paragraph("Diagnosi di ingresso:   ", small9);
+                anc = new Anchor(p.getActiveRecoveries().get(0).getDiagnosis(), small);
+                par.add(anc);
+                subPara2.add(par);
                 p.getActiveRecoveries().forEach(r -> {
                     if(r.getPrescriptions().size() > 0) {
                         subPara2.add(paragraph);
@@ -198,20 +219,47 @@ public class ReportPDF {
                 p.getDischargedRecovery().forEach(r -> {
                     Paragraph subPara2 = new Paragraph();
                     subPara2.add(paragraph);
-                    subPara2.add(new Paragraph("Cognome:   " + p.getSurname(), small));
-                    subPara2.add(new Paragraph("Nome:   " + p.getName(), small));
-                    subPara2.add(new Paragraph("Data di nascita:   " + p.getDateofBirth().toString(), small));
-                    subPara2.add(new Paragraph("Luogo di nascita:   " + p.getPlaceOfBirth(), small));
-                    subPara2.add(new Paragraph("C.F.:   " + p.getFiscalCode(), small));
-                    subPara2.add(new Paragraph("Data inizio ricovero:   " + r.getStartDate().toString(), small));
-                    subPara2.add(new Paragraph("Diagnosi di ingresso:   " + r.getDiagnosis(), small));
+                    Paragraph par = new Paragraph("Cognome:   ", small9);
+                    Anchor anc = new Anchor(p.getSurname(), small);
+                    par.add(anc);
+                    subPara2.add(par);
+                    par = new Paragraph("Nome:   ", small9);
+                    anc = new Anchor(p.getName(), small);
+                    par.add(anc);
+                    subPara2.add(par);
+                    par = new Paragraph("Data di nascita:   ", small9);
+                    anc = new Anchor(p.getDateofBirth().toString(), small);
+                    par.add(anc);
+                    subPara2.add(par);
+                    par = new Paragraph("Luogo di nascita:   ", small9);
+                    anc = new Anchor(p.getPlaceOfBirth(), small);
+                    par.add(anc);
+                    subPara2.add(par);
+                    par = new Paragraph("C.F.:   ", small9);
+                    anc = new Anchor(p.getFiscalCode(), small);
+                    par.add(anc);
+                    subPara2.add(par);
+                    par = new Paragraph("Data inizio ricovero:   ", small9);
+                    anc = new Anchor(r.getStartDate().toString(), small);
+                    par.add(anc);
+                    subPara2.add(par);
+                    par = new Paragraph("Diagnosi di ingresso:   ", small9);
+                    anc = new Anchor(r.getDiagnosis(), small);
+                    par.add(anc);
+                    subPara2.add(par);
                     try {
-                        subPara2.add(new Paragraph("Data fine ricovero:   " + r.getEndDate(), small));
+                        par = new Paragraph("Data fine ricovero:   ", small9);
+                        anc = new Anchor(r.getEndDate().toString(), small);
+                        par.add(anc);
+                        subPara2.add(par);
                     } catch (Recovery.RecoveryNullFieldException e) {
                         store.update(new StringCommand("ERROR", "System Error.\nUnlucky"));
                     }
                     try {
-                        subPara2.add(new Paragraph("Diagnosi d'uscita:   " + r.getDischargeSummary(), small));
+                        par = new Paragraph("Diagnosi d'uscita:   ", small9);
+                        anc = new Anchor(r.getDischargeSummary(), small);
+                        par.add(anc);
+                        subPara2.add(par);
                     } catch (Recovery.RecoveryNullFieldException e) {
                         store.update(new StringCommand("ERROR", "System Error.\nUnlucky"));
                     }
