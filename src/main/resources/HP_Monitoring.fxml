@@ -67,7 +67,7 @@
                               <PropertyValueFactory property="heartRate" />
                            </cellValueFactory>
                         </TableColumn>
-                        <TableColumn fx:id="temperatureColumn" prefWidth="255.0" text="Temperatura (°C)" />
+                        <TableColumn fx:id="temperatureColumn" prefWidth="245.0" text="Temperatura (°C)" />
 
                         <TableColumn prefWidth="180.0" text="DBP (mmHg)">
                            <cellValueFactory>

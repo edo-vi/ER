@@ -29,6 +29,7 @@
 
 \definecolor{mediumpurple}{rgb}{0.58, 0.44, 0.86}
 \definecolor{Chartreuse2}{rgb}{0.5, 1.0, 0.0}
+
 \begin{document}
 
 \maketitle
@@ -181,28 +182,33 @@ Dopo diverse discussioni e lavoro di gruppo e individuale si è deciso a grandi p
 Oltre a questo è stato spesso fatto uso della \textit{dependency injection} per garantire una maggiore modularità dei componenti e limitare la dipendenza da classi statiche e stato nascosto, spesso rischioso e prono ad errori.
  \textcolor{red!70!black}{***TODO (spiegazione del design dello stato, completa patterns)***} %TODO 
 
-\begin{figure}[b]
-	\begin{tikzpicture}[scale=.9] \begin{umlseqdiag}
-	\umlobject[class=Controller, ] {a} 
-	\umlobject[class=Store] {b}
-	\umlobject[class=Controller]{c}
-	\umlobject[class=Reducer]{d}
-	\umlobject[class=Middleware]{e}
-	\begin{umlcall}[op={\scriptsize{subscribe(f1: Function)}}, type=asynchron, dt=6] {a}{b} 
-	\end{umlcall}
-	\begin{umlcall}[op={\scriptsize{subscribe(f2: Function)}}, type=asynchron, dt=12] {c}{b} 
-	\end{umlcall}
-	\begin{umlcall}[op={\scriptsize{update(c: Command)}}, type=asynchron, dt=9] {c}{b}
-	\end{umlcall}
-	\begin{umlcall}[op={\scriptsize{run(c: Command , s:  State)}}, dt=6, return={\scriptsize{s: State}}]{b}{d}
-	\end{umlcall}
-	\begin{umlcall}[op={\scriptsize{run(c: Command, s: State)}}, dt=7, return={\tiny{sc: (Command, State)}}]{b}{e}
-	\end{umlcall}
-	\begin{umlcall}[op={\scriptsize{f1 (sc)}}]{b}{a}
-	\begin{umlcall}[op={\scriptsize{f2 (sc)}}]{b}{c}
-	\end{umlcall}
-	\end{umlcall}
-	\end{umlseqdiag} \end{tikzpicture}\caption{\textit{Sequence diagram} dell'interazione di due generici controller con lo stato centralizzato gestito dallo Store, che usa un Reducer e Middleware per trasformare lo stato e trasmetterlo asincronicamente a tutti i controllori registrati tramite \textit{subcribe()}.}
+\begin{figure}\begin{center}
+		\begin{tikzpicture}[scale=.9] \begin{umlseqdiag}
+		\umlobject[class= Controller, fill=blue!10!white ] {a} 
+		\umlobject[class= Store, fill=blue!10!white] {b}
+		\umlobject[class= Controller, fill=blue!10!white]{c}
+		\begin{umlcall}[op={\scriptsize{subscribe(f1: Function)}}, type=asynchron, dt=6] {a}{b} 
+		\end{umlcall}
+		\begin{umlcall}[op={\scriptsize{subscribe(f2: Function)}}, type=asynchron, dt=12, ] {c}{b} 
+		\end{umlcall}
+		
+		\begin{umlcall}[op={\scriptsize{update(c: Command)}}, type=asynchron, dt=14] {c}{b}
+		\begin{umlcallself}[op={\scriptsize{stato mutato}}]{b}
+		
+		\end{umlcallself}
+		\begin{umlcall}[op={\scriptsize{onNext(s: State)}}, type=asynchron, dt=2]{b}{a}
+		\begin{umlcall}[op={\scriptsize{onNext(s: State)}}, type=asynchron , dt=0]{b}{c}
+		\begin{umlcallself}[op={\scriptsize{f1(s)}}]{a}	\end{umlcallself}
+		\begin{umlcallself}[op={\scriptsize{f2(s)}}]{c}	\end{umlcallself}
+		\end{umlcall}
+		\end{umlcall}
+		\end{umlcall}
+		
+		
+		
+		\end{umlseqdiag} \end{tikzpicture}
+	\end{center}
+	\caption{\textit{Sequence diagram} dell'interazione di due generici controllers con lo stato centralizzato gestito dallo Store. Dopo aver invocato in modo non bloccante \textit{subscribe()}, passandogli una funzione, qualsiasi \textit{update()} chiamato sullo store comporta una mutazione interna dello stato, sulla base del comando passato: il nuovo stato viene quindi propagato a tutti i controllori `sottoscritti' tramite \textit{onNext()}; la funzione precedentemente passata in \textit{subscribe} sarà quindi chiamata, all'interno di tutti i controllori, sul nuovo stato ricevuto dallo Store.  }
 \end{figure}
 
 \subsection{Implementazione}
@@ -214,6 +220,12 @@ Le operazioni di validazione e verifica sono state fondamentali per garantire ch
 \paragraph{Validazione}Le operazioni di validazione sono state eseguite facendo un check periodico, dopo ogni implementazione di funzionalità non triviali, del rispetto della specifica per verificare sia che tutti i vincoli temporali e di caratteristiche dei dati fossero rispettati (come ad esempio i tipi di ricovero da visualizzare o le informazioni sui parametri vitali dei pazienti, limitati a dati intervalli temporali), sia che tali funzionalità corrispondessero a quello richiesto dal software finale.
 Questo è stato soprattutto importante dopo l'implementazione delle funzionalità di ogni utente: data la non modesta quantità di funzioni da mettere a disposizione e dati da considerare/manipolare in molti casi il check di verifica eseguito successivamente ha messo alla luce rilevanti criticità e importanti modifiche da implementare. 
 Oltre a queste verifiche periodiche si è anche eseguito un controllo finale, al ridosso della scadenza, per validare il sistema nel suo complesso e cercare di individuare eventuali omissioni e elementi non completamente rispettosi della specifica e dei requisiti.
+\paragraph{Verifica} Molto importante è stata anche la verifica della correttezza del programma che data la sua non banale complessità ha mostrato spesso comportamenti sbagliati in fase di programmazione. A tal fine si è deciso di operare nel seguente modo: \begin{itemize}
+	\item una fase di \textit{development testing} utilizzando \textit{unit tests} per tutte quelle classi e aree di più facile testabilità automatica: quelle meno dipendenti dagli input specifici dell'utente, eseguite dall'interfaccia grafica, e dall'integrazione con altri oggetti del sistema. Essi sono stati eseguiti affindandosi ad una libreria esterna, \textit{JUnit4}, e sono stati principalmente usati per verificare il comportamento della classe \textit{Sistema}, il `bootstrapper' del programma, del gestore centralizzato dello stato, di implementazione interna complessa, e delle diverse entità (vedi figura \ref{entitiesTable}) che lo costituiscono le quali hanno richiesto particolare attenzione soprattutto  in termini di gestione del loro stato interno e delle sue mutazioni, che se avvenisse in modo sbagliato provocherebbe errori di alta severità: pazienti con più ricoveri attivi, in uno stato non ben definito (non \textit{in attesa}/\textit{ricoverato}/\textit{dimesso}), somministrazioni non associate a prescrizioni etc. 
+	\item una fase di \textit{release testing} dove si è cercato di testare tutti i comportamenti possibili degli utenti finali simulando diverse casistiche e flow di lavoro per verificare che il sistema gestisse correttamente gli input. In particolare si è testato il corretto comportamento di tutti i pulsanti e dei menù e si è verificato che le diverse entità, consistenti lo stato del sistema, fossero correttamente gestite, manipolate, e visualizzate nelle diverse view degli utenti. Questo tipo di test è stato eseguito a parte da tutti i membri del team cercando di simulare il comportamento di un soggetto non tecnico.
+	\item una fase di \textit{user testing} dove si è fatto testare il software ad un soggetto di media/moderata abilità informatica per verificare l'usabilità del programma di fronte ad input reali e sostanzialmente conformi a quelli che ci si aspetta da soggetti normali che utilizzerebbero in modo coerente il programma. Questa fase è stata molto utile per implementare piccole migliorie all'usabilità del programma come ad esempio un ritocco del comportamento dei menù a tendina, modifiche ad alcune tabelle --- al fine di includere dati differenti o formattati diversamente --- e anche lievi cambiamenti alla struttura e disposizione degli elementi dell'interfaccia grafica (tipo rendere alcuni pulsanti non attivi, cambiare alcune grafiche etc.). 
+\end{itemize}
+
 \begin{figure}[t]
 	\begin{tikzpicture} 
 	\umlstateinitial[x=0, name=A];
@@ -233,12 +245,6 @@ Oltre a queste verifiche periodiche si è anche eseguito un controllo finale, al 
 	\umltrans[arg=Sì]{decision}{final}
 	\end{tikzpicture}\caption{\textit{Activity diagram} della fase di validazione per le funzionalità dei componenti utente.}
 \end{figure}
-\paragraph{Verifica} Molto importante è stata anche la verifica della correttezza del programma che data la sua non banale complessità ha mostrato spesso comportamenti sbagliati in fase di programmazione. A tal fine si è deciso di operare nel seguente modo: \begin{itemize}
-	\item una fase di \textit{development testing} utilizzando \textit{unit tests} per tutte quelle classi e aree di più facile testabilità automatica: quelle meno dipendenti dagli input specifici dell'utente, eseguite dall'interfaccia grafica, e dall'integrazione con altri oggetti del sistema. Essi sono stati eseguiti affindandosi ad una libreria esterna, \textit{JUnit4}, e sono stati principalmente usati per verificare il comportamento del package \textit{State}, della classe \textit{Sistema} e \textcolor{red!70!black}{***TODO (completa qui e aggiungi test sistema, non uso di testdriven development)***}
-	\item una fase di \textit{release testing} dove si è cercato di testare tutti i comportamenti possibili degli utenti finali simulando diverse casistiche e flow di lavoro per verificare che il sistema gestisse correttamente gli input. In particolare si è testato il corretto comportamento di tutti i pulsanti e dei menù e si è verificato che le diverse entità, consistenti lo stato del sistema, fossero correttamente gestite, manipolate, e visualizzate nelle diverse view degli utenti. Questo tipo di test è stato eseguito a parte da tutti i membri del team cercando di simulare il comportamento di un soggetto non tecnico.
-	\item una fase di \textit{user testing} dove si è fatto testare il software ad un soggetto di media/moderata abilità informatica per verificare l'usabilità del programma di fronte ad input reali e sostanzialmente conformi a quelli che ci si aspetta da soggetti normali che utilizzerebbero in modo coerente il programma. Questa fase è stata molto utile per implementare piccole migliorie all'usabilità del programma come ad esempio un ritocco del comportamento dei menù a tendina, modifiche ad alcune tabelle --- al fine di includere dati differenti o formattati diversamente --- e anche lievi cambiamenti alla struttura e disposizione degli elementi dell'interfaccia grafica (tipo rendere alcuni pulsanti non attivi, cambiare alcune grafiche etc.). 
-\end{itemize}
-
 %\subsection{Design e struttura del sistema}
 %
 %\section{Specifica del sistema}
@@ -253,7 +259,7 @@ Oltre a queste verifiche periodiche si è anche eseguito un controllo finale, al 
 \umlusecase[x=4.8, ]{Inserisce note stato paziente}
 \umlusecase[y=-6.5, x =2.6]{Visualizza dati paziente (ultime due ore)}
 \umlusecase[x=5, y=-5.3]{Inserisce diagnosi d'ingresso}
-\umlusecase[x=5.7, y=-4.3]{Aggiunge prescrizioni}
+\umlusecase[x=5.7, y=-4.2]{Aggiunge prescrizioni}
 \umlusecase[x=6.3,  y=-7.5]{Spegne allarmi}
 \umlusecase[x=.6, y=-9.4]{Visualizza/stampa reports pazienti}
 \umlusecase[x=0, y=-10.8]{Compila lettera di dimissioni}
@@ -293,7 +299,7 @@ Oltre a queste verifiche periodiche si è anche eseguito un controllo finale, al 
 	\begin{center}
 		\begin{tikzpicture}
 		\begin{umlpackage}[ x=0, y=0]{State}
-		\umlclass[x=5.5, template={C}]{Store} {- s: State\\- r: Reducer \\- m: Middleware}{+ poll(): State \\ + update(com: C)}
+		\umlclass[x=5.5, template={C}]{Store} {- s: State\\- r: Reducer \\- m: Middleware}{+ poll(): State \\ + update(com: C) \\ + subscribe(f: Function)}
 		
 		\umlinterface[x=0, y=-3, template={C}]{Reducer}{}{+ run(s: State, c: C): State \\+ with(s: String, f: Function) }
 		\umlsimpleclass[x=0, y=-6]{ReducerString}{}{}
@@ -307,16 +313,16 @@ Oltre a queste verifiche periodiche si è anche eseguito un controllo finale, al 
 		\umlinterface[ y=-9, x=5.5]{Command}{}{+ name(): String \\+ getArg(): Object}
 		\umlsimpleclass[x=0.2, y=-9]{StringCommand}
 		
-		\umlsimpleclass[x=11.8, y=0]{DatabaseService}{}{}
+		\umlsimpleclass[x=11.8, y=-8.5]{DatabaseService}{}{}
 		
 		\umlreal[]{MiddlewareString}{Middleware}
 		\umlreal[]{ReducerString}{Reducer}
 		\umlreal[]{StringCommand}{Command}
-		\umldep[geometry=-|-]{Reducer}{Store}
-		\umldep[geometry=-|-]{Middleware}{Store}
-		\umldep[geometry=-|]{State}{Store}
-		\umldep[]{State}{StateEvent}
-		\umldep[]{Command}{StateEvent}
+		\umldep[geometry=-|]{Store}{Reducer}
+		\umldep[geometry=-|]{Store}{Middleware}
+		\umldep[geometry=-|]{Store}{State}
+		\umldep[]{StateEvent}{State}
+		\umldep[]{StateEvent}{Command}
 		\end{umlpackage}  
 		
 		\end{tikzpicture}
@@ -352,13 +358,14 @@ Oltre a queste verifiche periodiche si è anche eseguito un controllo finale, al 
 		
 		\umlsimpleclass[x=0, y=-3]{HPDefault}
 		\umlsimpleclass[x=4.4, y=-3]{HPMonitoring}
-		\umlsimpleclass[x=9.2, y=-3]{HPSearch}
+		\umlsimpleclass[x=9.4, y=-3]{HPSearch}
 		\umlsimpleclass[x=13.2, y=-3]{HPSearchResult}
 		
 		\umlimpl[geometry=|-]{HPDefault}{HPInterface}
 		\umlimpl{HPMonitoring}{HPInterface}
 		\umlimpl{HPSearch}{HPInterface}
 		\umlimpl[geometry=|-]{HPSearchResult}{HPInterface}
+		\umldep{HPFactory}{HPInterface}
 		\end{umlpackage}  
 		
 		\end{tikzpicture}
@@ -371,7 +378,7 @@ Oltre a queste verifiche periodiche si è anche eseguito un controllo finale, al 
 \node[entity] at (0,0) (patient) {Patient};
 \node[relationship] (riceve) at(3.2,0) {receives} edge (patient); 
 \node[entity] (administration) at (6.7,0) {Administration} edge (riceve); 
-\node[relationship] (has) [below of=administration] {has} edge(administration);
+\node[relationship] (has) [below of=administration, inner xsep=10] {has} edge(administration);
 \node[entity] (prescription) [below of=has] {Prescription} edge(has);
 \node[relationship] (comprehends) at (3.2,-5) {includes} edge(prescription);
 \node[entity] (recovery) at (0, -5) {Recovery} edge(comprehends);
@@ -407,10 +414,9 @@ Oltre a queste verifiche periodiche si è anche eseguito un controllo finale, al 
 			Prescription & \underline{Id}, Drug, Duration, Daily dose, Number of doses, Doctor, \textit{Recovery} \\ 
 			Recovery & \underline{Id}, Start date, End date, Diagnosis, Active, Discharge summary, Recovery state, \textit{Patient}\\
 			Monitoring & \underline{Id}, Date, Diastolic pressure, Systolic pressure, Heart rate, Temperature, \textit{Recovery}
-		\end{tabular}\caption{Campi e relazioni delle entità del database. I campi sottolineati indicano le \textit{primary keys}, quelli in corsivo le \textit{foreign keys} (mappate sempre ai campi Id della rispettiva entità).}
+		\end{tabular}\caption{Campi e relazioni delle entità del database. I campi sottolineati indicano le \textit{primary keys}, quelli in corsivo le \textit{foreign keys} (mappate sempre ai campi Id della rispettiva entità).}\label{entitiesTable}
 
 \end{figure}
-
 
 
 \end{document}

@@ -1,11 +1,13 @@
 package State;
 
 import Main.Tuple;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 
 import java.io.*;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 
 /**
  *
@@ -81,6 +83,10 @@ public class Store<C extends Command> {
 
     public Subject<String> getCommandStream() {
         return commands$;
+    }
+
+    public Disposable subscribe(Consumer<? super StateEvent> fun) {
+        return this.state$.subscribe(fun::accept);
     }
 
     public State getState() {
