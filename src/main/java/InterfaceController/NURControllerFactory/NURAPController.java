@@ -88,12 +88,13 @@ public class NURAPController implements NURController {
                (male.isSelected() || female.isSelected()) &&
                bDayDate.getValue() != null &&
                !placeLabel.getText().equals("") &&
-               !cfLabel.getText().equals("");
+               !cfLabel.getText().equals("") &&
+               !bDayDate.getValue().isAfter(LocalDate.now());
     }
 
     @FXML protected void calcolateCF() {
         try {
-            if (!surnameLabel.getText().equals("") && !nameLabel.getText().equals("") && (male.isSelected() || female.isSelected()) && bDayDate.getValue() != null)
+            if (!surnameLabel.getText().equals("") && !nameLabel.getText().equals("") && (male.isSelected() || female.isSelected()) && bDayDate.getValue() != null && !bDayDate.getValue().isAfter(LocalDate.now()))
                 cfLabel.setText(new FiscalCodeCalculator().calculateFC(nameLabel.getText(), surnameLabel.getText(), (male.isSelected()) ? 'M' : 'F', bDayDate.getValue().toString()));
             else
                 store.update(new StringCommand("ERROR", "Sulla base dei dati forniti impossibile generare il CF.\nControllare le informazioni."));
