@@ -245,6 +245,7 @@ Oltre a questo è stato spesso fatto uso della \textit{dependency injection} per 
 		\umldep[stereo=create]{Controller Factory}{Controller}
 		\node at(9.5,-5.75) {1};
 		\node at(7.41,-2.85) {1};
+		\node at(4.35,-5.75) {1};
 		\end{tikzpicture}
 	\end{center}\caption{\textit{Class diagram} che mostra la relazione tra InterfaceController e i vari oggetti che costituiscono la parte View-Controller dell'architettura \textit{MVC} dell'applicazione. }\label{ComponentClassDiagram}
 \end{figure}
@@ -333,62 +334,46 @@ Oltre a queste verifiche periodiche si è anche eseguito un controllo finale, al 
 \end{figure}
 \begin{figure}[b]
 	\begin{tikzpicture} [scale=.92]
-	\umlstateinitial[ name=A, x=5.5, y=0];
-	\node[singlestate, name=B] at(5.5,-1.5)  {Visualizza interfaccia};
-	\umlstatedecision[name=dec1, x=5.5, y=-2.5];
-	\node[singlestate, name=C] at(0,-4.2)  {Scegli paziente};
-	\node[singlestate, name=D] at(4,-4.2)  {Scegli paziente};
-	\node[singlestate, name=E, text width=1.9cm] at(7,-4.6)  {Inserisci nome \\ e cognome};
-	\node[ join, text width=60mm, name=F, fill=black, align=center] at(12.5,-4.) {};
-	\node[singlestate, text width= 1.9cm, align=center, name=G] at (7, -6.5) {Ricerca cartella};
-	\node[singlestate, text width= 1.9cm, align=center, name=H] at (0, -6.5) {Compila diagnosi};
-	\node[singlestate, text width= 1.9cm, align=center, name=H1] at (0, -8.8) {Conferma};
-	\node[singlestate, text width= 1.9cm, align=center, name=H2] at (12.5, -8.8) {Conferma};
-	\node[singlestate, text width= 1.9cm, align=center, name=I] at (4, -8.8) {Visualizza info};
-	\node[singlestate, text width= 1.9cm, align=center, name=J] at (7, -8.8) {Visualizza dati};
-	
-	\node[singlestate, text width= 1.9cm, align=center, name=Fa] at (9.7, -5.3) {Inserisci farmaco};
-	\node[singlestate, text width= 1.9cm, align=center, name=Fb] at (11.2, -6.5) {Inserisci quantità};
-	\node[singlestate, text width= 1.9cm, align=center, name=Fc] at (13.6, -6.5) {Inserisci n. dosi};
-	\node[singlestate, text width= 1.9cm, align=center, name=Fd] at (15.3, -5.3) {Inserisci giorno};
-	
-	\node[ join, text width=60mm, name=K, fill=black, align=center] at(12.5,-7.8) {};
-	\umlstatedecision[name=dec2, x=5.5, y=-11];
-	\umlstatefinal[name=final, x=5.5, y=-12.5];
+	\umlstateinitial[ name=A, x=8, y=0];
+	\node[singlestate, name=B] at(8,-1.5)  {Visualizza interfaccia};
+	\umlstatedecision[name=dec1, x=8, y=-2.5];
+	\node[singlestate, name=C] at(1,-4.2)  {Scegli paziente};
+	\node[singlestate, name=D] at(8,-4.2)  {Scegli paziente};
+	\node[singlestate, name=E, text width=1.9cm] at(15,-4.2)  {Inserisci nome \\ e cognome};
+	\node[singlestate, text width= 1.9cm, align=center, name=G] at (15, -6.5) {Ricerca cartella};
+	\node[singlestate, text width= 1.9cm, align=center, name=H] at (1, -6.5) {Inserisci lettera di dimissioni};
+	\node[singlestate, text width= 1.9cm, align=center, name=H1] at (1, -9.5) {Conferma};
+	\node[singlestate, text width= 1.9cm, align=center, name=K] at (8, -6.5) {Visualizza info};
+	\node[singlestate, text width= 1.9cm, align=center, name=I] at (8, -9.5) {Stampa report};
+	\node[singlestate, text width= 1.9cm, align=center, name=J] at (15, -9.5) {Visualizza dati};
+	\umlstatedecision[name=dec3, x=8, y=-8];
+	\umlstatedecision[name=dec2, x=8, y=-13];
+	\umlstatefinal[name=final, x=8, y=-14.5];
 	
 	\umltrans[ ] {A}{B}
 	\umltrans{B}{dec1}
 	\umlHVtrans{dec1}{C}
 	\umltrans{dec1}{D}
-	\umltrans{dec1}{E}
+	\umlHVtrans{dec1}{E}
 	\umltrans{E}{G}
 	\umltrans{C}{H}
-	\umltrans{D}{I}
+	\umltrans{D}{K}
+	\umltrans{K}{dec3}
 	\umltrans{G}{J}
-	\umlHVtrans{dec1}{F}
-	\umltrans{K}{H2}
-	\umltrans{H2}{dec2}
 	\umltrans{H}{H1}
-	\umltrans{H1}{dec2}
+	\umlVHtrans{H1}{dec2}
+	\umltrans{dec3}{I}
 	\umltrans{I}{dec2}
-	\umltrans{J}{dec2}
+	\umlVHtrans{J}{dec2}
 	\umltrans{dec2}{final}
+	\draw[->] (8.3,-8) -- (10,-8) -- (10,-12.8) -- (8.2, -12.8); 
 	
-	\draw[->] (9.75,-4.0) -- (9.75,-4.8);
-	\draw[->] (15.2,-4) -- (15.2,-4.8);
-	\draw[->] (11.2,-4) -- (11.2,-6);
-	\draw[->] (13.5,-4) -- (13.5,-6);
-	
-	\draw[->] (9.75,-5.8) -- (9.75,-7.8);
-	\draw[->] (15.2,-5.8) -- (15.2,-7.8);
-	\draw[->] (11.2,-7) -- (11.2,-7.8);
-	\draw[->] (13.5,-7) -- (13.5,-7.8);
-	
-	\node[darkgray!80!white] at (2,-2.2) {Ammette paziente};
-	\node[darkgray!80!white] at (10,-2.2) {Aggiunge prescrizione};
-	\node[darkgray!80!white, text width=2.2cm] at (3,-3.2) {Visualizza dati ultime 2h};
-	\node[darkgray!80!white, text width=2.6cm] at (8,-3.2) {Visualizza cartella clinica};
-	\end{tikzpicture}\caption{\textit{Activity diagram} delle diverse azioni che possono essere compiute dal primario.}
+
+	\node[darkgray!80!white] at (2,-2.2) {Dimette paziente};
+	\node[darkgray!80!white, text width=2.5cm] at (9.7,-3.2) {Visualizza dati ultime 2h};
+
+	\node[darkgray!80!white,] at (13,-2.2) {Visualizza cartella clinica};
+5	\end{tikzpicture}\caption{\textit{Activity diagram} delle diverse azioni che possono essere compiute dal primario.}
 \end{figure}
 \begin{figure}[t]
 	\begin{tikzpicture} [scale=.92]
@@ -465,10 +450,11 @@ Oltre a queste verifiche periodiche si è anche eseguito un controllo finale, al 
 	\node[singlestate, text width= 1.9cm, align=center, name=J] at (7, -8.8) {Visualizza dati};
 	
 
-	\node[singlestate, text width= 1.9cm, align=center, name=Fb] at (10.8, -5.8) {Scegli paziente};
-	\node[singlestate, text width= 1.9cm, align=center, name=Fc] at (14, -5.8) {Scegli medicinale};
-
-
+	\node[singlestate, text width= 1.9cm, align=center, name=Fb] at (10.4, -5.8) {Scegli paziente};
+	\node[singlestate, text width= 1.9cm, align=center, name=Fc] at (12.8, -5.8) {Scegli medicinale};
+	\node[singlestate, text width= 1.3cm, align=center, name=Fa] at (15, -5.8) {Inserisci note};
+	\umlstatedecision[name=decjoin1, x=15, y=-4.65]
+	\umlstatedecision[name=decjoin2, x=15, y=-7.05]
 	\node[ join, text width=60mm, name=K, fill=black, align=center] at(12.5,-7.8) {};
 	\umlstatedecision[name=dec2, x=5.5, y=-11];
 	\umlstatefinal[name=final, x=5.5, y=-12.5];
@@ -489,13 +475,18 @@ Oltre a queste verifiche periodiche si è anche eseguito un controllo finale, al 
 	\umltrans{I}{dec2}
 	\umltrans{J}{dec2}
 	\umltrans{dec2}{final}
+	\umltrans{decjoin1}{Fa}
+	\umltrans{Fa}{decjoin2}
+	\umlHVHtrans[arm2=1cm, pos=2.5]{decjoin1}{decjoin2}
+
+	\draw[->] (10.4,-4) -- (10.4,-5.3);
+	\draw[->] (12.8,-4) -- (12.8,-5.3);
+
+	\draw[->] (10.4,-6.3) -- (10.4,-7.8);
+	\draw[->] (12.8,-6.3) -- (12.8,-7.8);
 	
-
-	\draw[->] (10.8,-4) -- (10.8,-5.3);
-	\draw[->] (14,-4) -- (14,-5.3);
-
-	\draw[->] (10.8,-6.3) -- (10.8,-7.8);
-	\draw[->] (14,-6.3) -- (14,-7.8);
+	\draw[->] (15,-4) -- (15,-4.3);
+	\draw[->] (15,-7.4) -- (15,-7.8);
 	
 	\node[darkgray!80!white] at (2,-2.2) {Aggiunge paziente};
 	\node[darkgray!80!white] at (10,-2.2) {Aggiunge somministrazione};
@@ -509,7 +500,7 @@ Oltre a queste verifiche periodiche si è anche eseguito un controllo finale, al 
 \begin{figure}
 	\begin{center}
 		\begin{tikzpicture}
-		\begin{umlpackage}[ x=0, y=0]{State}
+		\begin{umlpackage}[fill=gray!15!white, x=0, y=0]{State}
 		\umlclass[x=5.5, template={C}]{Store} {- s: State\\- r: Reducer \\- m: Middleware}{+ poll(): State \\ + update(com: C) \\ + subscribe(f: Function)}
 		
 		\umlinterface[x=0, y=-3, template={C}]{Reducer}{}{+ run(s: State, c: C): State \\+ with(s: String, f: Function) }
@@ -543,7 +534,7 @@ Oltre a queste verifiche periodiche si è anche eseguito un controllo finale, al 
 \begin{figure}
 	\begin{center}
 		\begin{tikzpicture}
-		\begin{umlpackage}[ x=0, y=0]{Generator}
+		\begin{umlpackage}[fill=gray!15!white, x=0, y=0]{Generator}
 		
 		\umlinterface[x=6.25, y=0]{GeneratorInterface}{}{+ reset() \\ + evolve(sick: Sickness) \\ + getValue(): Object}
 	
@@ -563,7 +554,7 @@ Oltre a queste verifiche periodiche si è anche eseguito un controllo finale, al 
 \begin{figure}
 	\begin{center}
 		\begin{tikzpicture}
-		\begin{umlpackage}[ x=0, y=0]{HPInterfaceFactory}
+		\begin{umlpackage}[fill=gray!15!white, x=0, y=0]{HPInterfaceFactory}
 		\umlclass[x=7, y=3.5]{HPFactory}{}{+ getHPFactory(s: String)}
 		\umlinterface[x=7, y=0]{HPInterface}{}{+ getFile() : String }
 		
