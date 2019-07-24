@@ -4,6 +4,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
 
+import Entities.Recovery;
+import State.State;
+import State.Store;
+import State.StringCommand;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -12,38 +16,46 @@ import com.itextpdf.text.Anchor;
 
 public class DischargePDF {
 
-    private static Font courier = new Font(Font.FontFamily.COURIER, 22,
+    private final Font courier = new Font(Font.FontFamily.COURIER, 22,
             Font.BOLD);
 
-    private static Font small = FontFactory.getFont("src/main/resources/Crimson_Text/CrimsonText-Regular.ttf",
+    private final Font small = FontFactory.getFont("src/main/resources/Crimson_Text/CrimsonText-Regular.ttf",
             BaseFont.IDENTITY_H , BaseFont.EMBEDDED, 12, Font.NORMAL, BaseColor.BLACK);
-    private static Font small7 = FontFactory.getFont("src/main/resources/Crimson_Text/CrimsonText-Regular.ttf",
+    private final Font small7 = FontFactory.getFont("src/main/resources/Crimson_Text/CrimsonText-Regular.ttf",
             BaseFont.IDENTITY_H , BaseFont.EMBEDDED, 7, Font.NORMAL, BaseColor.BLACK);
-    private static Font small9 = FontFactory.getFont("src/main/resources/Crimson_Text/CrimsonText-Regular.ttf",
+    private final Font small9 = FontFactory.getFont("src/main/resources/Crimson_Text/CrimsonText-Regular.ttf",
             BaseFont.IDENTITY_H , BaseFont.EMBEDDED, 9, Font.NORMAL, BaseColor.BLACK);
-    private static Font small10 = FontFactory.getFont("src/main/resources/Crimson_Text/CrimsonText-Regular.ttf",
+    private final Font small10 = FontFactory.getFont("src/main/resources/Crimson_Text/CrimsonText-Regular.ttf",
             BaseFont.IDENTITY_H , BaseFont.EMBEDDED, 10, Font.NORMAL, BaseColor.BLACK);
-    private static Font smallBold = FontFactory.getFont("src/main/resources/Crimson_Text/CrimsonText-Regular.ttf",
+    private final Font smallBold = FontFactory.getFont("src/main/resources/Crimson_Text/CrimsonText-Regular.ttf",
             BaseFont.IDENTITY_H , BaseFont.EMBEDDED, 12, Font.BOLD, BaseColor.BLACK);
 
+    private Store<StringCommand> store;
+    private State state;
 
+    public DischargePDF(Store<StringCommand> store) {
+        this.store = store;
+        this.state = store.poll();
+    }
 
-    public static void main(String[] args) {
+    public void createPDF(String name, Recovery recovery) {
         try {
+            String filename = "Lettera_" + name + "_" + new Date().toString().replace(":", "_").replace(" ", "_" );
             Document document = new Document();
-            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("Lettera_" + "Marianovic" + "_" + new Date().toString().replace(":", "_").replace(" ", "_" )+ ".pdf"));
+            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("Lettera_" + name + "_" + new Date().toString().replace(":", "_").replace(" ", "_" )+ ".pdf"));
             document.open();
             addMetaData(document);
-            addContentPage(document);
+            addContentPage(document, recovery);
 
             document.close();
             writer.close();
+            Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + filename + ".pdf");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private static void addMetaData(Document document) {
+    private void addMetaData(Document document) {
         document.addTitle("Week report");
         document.addSubject("Summary of the last 7 days with recoveries, prescriptions, drug administrations and vital parameters.");
         document.addKeywords("PDF, report, summary, recovery, parameters");
@@ -51,7 +63,7 @@ public class DischargePDF {
         document.addCreator("Marian Statache");
     }
 
-    private static void addContentPage(Document document) throws DocumentException {
+    private void addContentPage(Document document, Recovery recovery) throws DocumentException {
         Image image = null;
         try {
             image = Image.getInstance("src/main/resources/logo.png");
@@ -86,56 +98,61 @@ public class DischargePDF {
 
         addEmptyLine(preface, 3);
 
+
         Paragraph par = new Paragraph("Cognome:   ", small);
-        Anchor anc = new Anchor("Marianovic", smallBold);
+        Anchor anc = new Anchor(recovery.getPatient().getSurname(), smallBold);
         par.add(anc);
         par.setIndentationLeft(20);
         preface.add(par);
         addEmptyLine(preface, 1);
         par = new Paragraph("Nome:   ", small);
-        anc = new Anchor("Mario", smallBold);
+        anc = new Anchor(recovery.getPatient().getName(), smallBold);
         par.add(anc);
         par.setIndentationLeft(20);
         preface.add(par);
         addEmptyLine(preface, 1);
         par = new Paragraph("Data di nascita:   ", small);
-        anc = new Anchor("01-01-2000", smallBold);
+        anc = new Anchor(recovery.getPatient().getDateofBirth().toString(), smallBold);
         par.add(anc);
         par.setIndentationLeft(20);
         preface.add(par);
         addEmptyLine(preface, 1);
         par = new Paragraph("Luogo di nascita:   ", small);
-        anc = new Anchor("Forette", smallBold);
+        anc = new Anchor(recovery.getPatient().getPlaceOfBirth(), smallBold);
         par.add(anc);
         par.setIndentationLeft(20);
         preface.add(par);
         addEmptyLine(preface, 1);
         par = new Paragraph("C.F.:   " , small);
-        anc = new Anchor("1234", smallBold);
+        anc = new Anchor(recovery.getPatient().getFiscalCode(), smallBold);
         par.add(anc);
         par.setIndentationLeft(20);
         preface.add(par);
         addEmptyLine(preface, 2);
         par = new Paragraph("Data inizio ricovero:   ", small);
-        anc = new Anchor("ieri", smallBold);
+        anc = new Anchor(recovery.getStartDate().toString(), smallBold);
         par.add(anc);
         par.setIndentationLeft(20);
         preface.add(par);
         addEmptyLine(preface, 1);
         par = new Paragraph("Diagnosi di ingresso:   ", small);
-        anc = new Anchor("tutto male", smallBold);
+        anc = new Anchor(recovery.getDiagnosis(), smallBold);
         par.add(anc);
         par.setIndentationLeft(20);
         preface.add(par);
         addEmptyLine(preface, 2);
         par = new Paragraph("Data dimissione:   ", small);
-        anc = new Anchor("domani", smallBold);
+        try {
+            anc = new Anchor(recovery.getEndDate().toString(), smallBold);
+        } catch (Recovery.RecoveryNullFieldException e) {}
         par.add(anc);
         par.setIndentationLeft(20);
         preface.add(par);
         addEmptyLine(preface, 1);
         par = new Paragraph("Esito:   ", small);
-        anc = new Anchor("tutto bene", smallBold);
+        try {
+            anc = new Anchor(recovery.getDischargeSummary(), smallBold);
+        } catch (Recovery.RecoveryNullFieldException e) {}
         par.add(anc);
         par.setIndentationLeft(20);
         preface.add(par);
@@ -151,7 +168,7 @@ public class DischargePDF {
         document.add(preface);
     }
 
-    private static void addEmptyLine(Paragraph paragraph, int number) {
+    private void addEmptyLine(Paragraph paragraph, int number) {
         for (int i = 0; i < number; i++) {
             paragraph.add(new Paragraph(" "));
         }

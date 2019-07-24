@@ -8,6 +8,7 @@ import DataGenerator.Value;
 import InterfaceController.DOCControllerFactory.DOCControllerFactory;
 import InterfaceController.HPControllerFactory.HPControllerFactory;
 import InterfaceController.NURControllerFactory.NURControllerFactory;
+import PdfGenerator.DischargePDF;
 import PdfGenerator.ReportPDF;
 import State.Reducer;
 import State.ReducerString;
@@ -276,6 +277,10 @@ public class Sistema {
                     try {
                         val.fst().getPatient().discharge(val.fst(), val.snd());
                         DatabaseService.addEntry(val.fst());
+
+                        DischargePDF pdf = new DischargePDF(store);
+                        pdf.createPDF(val.fst().getPatient().getSurname() + "_" + val.fst().getPatient().getName(), val.fst());
+
                         return new Tuple<>(new StringCommand("DISCHARGED_A_PATIENT"), s);
                     } catch (Exception e) {
                         System.out.println("Sistema, Discharge summary: " + e);
@@ -381,9 +386,9 @@ public class Sistema {
                 .with("CREATE_PDF", (c,s,m) -> {
                     ReportPDF repot = new ReportPDF(store);
                     try {
-                        String name = new Date().toString().replace(":", "_");
+                        String name = new Date().toString().replace(":", "_").replace(" ", "_");
                         repot.createPDF(name);
-                        return new Tuple<>(new StringCommand("PDF_CREATED", name), s);
+                        return new Tuple<>(new StringCommand("PDF_CREATED"), s);
                     } catch (Exception e) {
                         store.update(new StringCommand("ERROR", "System Error.\nUnlucky"));
                         return new Tuple<>(new StringCommand("PDF_NOT_CREATED"), s);
