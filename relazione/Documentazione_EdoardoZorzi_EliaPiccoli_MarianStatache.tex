@@ -59,8 +59,8 @@ Nel corso dello sviluppo del progetto, a seconda delle diverse funzionalità da i
 Di seguito parte dei casi d'uso utilizzati, aggregati per chiarezza nei vari utenti finali.
 
 \vspace{1cm}
-\textbf{{\large Primario}}
-\vspace{.2cm}\hrule
+\textbf{{\large \textit{Primario}}}
+\vspace{.24cm}
 
 \begin{usecase}
 	\addtitle{Caso d'uso}{Compilazione lettera di dimissioni}
@@ -99,8 +99,9 @@ Di seguito parte dei casi d'uso utilizzati, aggregati per chiarezza nei vari ute
 	}
 	\addfield{Postcondizioni:}{L'utente visualizza le informazioni, non più vecchie di due ore, sui parametri vitali dei pazienti ricoverati}
 \end{usecase}
-\textbf{{\large Medico}}
-\vspace{.2cm}\hrule
+%\vspace{4cm}
+\textbf{{\large \textit{Medico}}}
+\vspace{.25cm}
 \begin{usecase}
 	\addtitle{Caso d'uso}{Spegnimento allarme}
 	\addfield{Utente:}{Medico}
@@ -147,8 +148,8 @@ Di seguito parte dei casi d'uso utilizzati, aggregati per chiarezza nei vari ute
 	
 \end{usecase}
 
-\textbf{{\large Infermiere}}
-\vspace{.2cm}\hrule
+\textbf{{\large \textit{Infermiere}}}
+\vspace{.25cm}
 \begin{usecase}
 	\addtitle{Caso d'uso}{Compilazione dati anagrafici paziente}
 	\addfield{Utente:}{Infermiere}
@@ -184,20 +185,20 @@ Oltre a questo è stato spesso fatto uso della \textit{dependency injection} per 
 
 \begin{figure}\begin{center}
 		\begin{tikzpicture}[scale=1] \begin{umlseqdiag}
-		\umlobject[class= Controller, fill=blue!10!white ] {a} 
-		\umlobject[class= Store, fill=blue!10!white] {b}
-		\umlobject[class= Controller, fill=blue!10!white]{c}
-		\begin{umlcall}[op={\scriptsize{subscribe(f1: Function)}}, type=asynchron, dt=6] {a}{b} 
+		\umlobject[class= Controller, fill=blue!10!white ] {c1} 
+		\umlobject[class= Store, fill=blue!10!white] {s}
+		\umlobject[class= Controller, fill=blue!10!white]{c2}
+		\begin{umlcall}[op={\scriptsize{subscribe(f1: Function)}}, type=asynchron, dt=6] {c1}{s} 
 		\end{umlcall}
-		\begin{umlcall}[op={\scriptsize{subscribe(f2: Function)}}, type=asynchron, dt=12, ] {c}{b} 
+		\begin{umlcall}[op={\scriptsize{subscribe(f2: Function)}}, type=asynchron, dt=12, ] {c2}{s} 
 		\end{umlcall}
 		
-		\begin{umlcall}[op={\scriptsize{update(c: Command)}}, type=asynchron, dt=14] {c}{b}\end{umlcall}
-		\begin{umlcallself}[op={\scriptsize{stato mutato}},dt=0.8]{b}
-		\begin{umlcall}[op={\scriptsize{onNext(se: StateEvent)}}, type=asynchron, dt=4]{b}{a}
-		\begin{umlcall}[op={\scriptsize{onNext(se: StateEvent)}}, type=asynchron , dt=0]{b}{c}
-		\begin{umlcallself}[op={\scriptsize{f1(se)}}]{a}	\end{umlcallself}
-		\begin{umlcallself}[op={\scriptsize{f2(se)}}]{c}	\end{umlcallself}
+		\begin{umlcall}[op={\scriptsize{update(c: Command)}}, type=asynchron, dt=14] {c2}{s}\end{umlcall}
+		\begin{umlcallself}[op={\scriptsize{stato mutato}},dt=0.8]{s}
+		\begin{umlcall}[op={\scriptsize{onNext(se: StateEvent)}}, type=asynchron, dt=4]{s}{c1}
+		\begin{umlcall}[op={\scriptsize{onNext(se: StateEvent)}}, type=asynchron , dt=0]{s}{c2}
+		\begin{umlcallself}[op={\scriptsize{f1(se)}}]{c1}	\end{umlcallself}
+		\begin{umlcallself}[op={\scriptsize{f2(se)}}]{c2}	\end{umlcallself}
 		
 		\end{umlcall}
 		\end{umlcall}
@@ -225,7 +226,34 @@ Oltre a questo è stato spesso fatto uso della \textit{dependency injection} per 
 	\end{center}
 	\caption{\textit{Sequence diagram} delle operazioni eseguite durante il bootstrapping del programma. }
 \end{figure}
+
+\begin{figure}\begin{center}
+		\begin{tikzpicture}[] \begin{umlseqdiag}
+		\umlactor[class=User, fill=white ] {a}
+		\umlobject[class={Component Interface}, fill=blue!10!white, x=3.3]{ci}
+		\umlobject[class={Component Controller}, fill=blue!10!white, x=8.2]{cc}
+		\umlobject[class={Store}, fill=blue!10!white, x= 12]{s}
+
+		\begin{umlcall}[type=asynchron, op={\scriptsize{interazione}}, dt=6]{a}{ci}\end{umlcall}
+		\begin{umlcall}[type=asynchron, op={\scriptsize{attiva listener}}, dt=4]{ci}{cc}\end{umlcall}
+		
+		\begin{umlcallself}[op={\scriptsize{aggiornamento}},dt=3]{cc}\end{umlcallself}
+		\begin{umlfragment} [ type=opt,inner xsep=9]
+		\begin{umlcall}[type=asynchron, op={\scriptsize{update(c: Command)}}, dt=6]{cc}{s}\end{umlcall}
+		%\begin{umlcall}[type=asynchron, dt=6, op={\scriptsize{onNext(se)}}]{s}{cc}\end{umlcall}	
+		\end{umlfragment}
+		\begin{umlfragment} [ type=opt,inner xsep=9]
+		\begin{umlcall}[type=asynchron, op={\scriptsize{components update}}, dt=8]{cc}{ci}\end{umlcall}
+		\begin{umlcall}[type=asynchron, op={\scriptsize{interfaccia aggiornata}}, dt=4]{ci}{a}\end{umlcall}
+		%\begin{umlcall}[type=asynchron, dt=6, op={\scriptsize{onNext(se)}}]{s}{cc}\end{umlcall}	
+		\end{umlfragment}
+		\end{umlseqdiag} \end{tikzpicture}
+	\end{center}
+	\caption{\textit{Sequence diagram} che mostra le operazioni che avvengono a seguito di una generica interazione di un utente con il software. Premendo qualche pulsante, inserendo dati, cliccando tasti della tastiera un utente interagisce con l'interfaccia a cui è associato un \textit{controller}: a seconda dell'azione vengono eseguite certe operazioni interne che aggiornano lo stato del controllore (ed eventualmente un \textit{update} è inviato allo store.) A seguito di questo è possibile che ci sia un aggiornamento dell'interfaccia, come mostrata all'utente.}
+\end{figure}
+
 \begin{figure}
+	
 	\begin{center}
 		\begin{tikzpicture}
 
