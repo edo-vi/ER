@@ -37,7 +37,7 @@
             </Menu>
             <Menu mnemonicParsing="false" text="Aiuto">
                <items>
-                  <MenuItem mnemonicParsing="false" text="Supporto" />
+                  <MenuItem mnemonicParsing="false" text="Supporto" onAction="#showSupport"/>
                </items>
             </Menu>
          </menus>
@@ -107,7 +107,7 @@
                      </columns>
                   </TableView>
                   <AnchorPane layoutX="-24.0" layoutY="329.0" prefHeight="3.0" prefWidth="987.0" style="-fx-background-color: grey;" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="430.0" />
-                  <Button layoutX="719.0" layoutY="34.0" mnemonicParsing="false" prefHeight="40.0" text="Stampa report ultimi 7 giorni" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="34.0" />
+                  <Button layoutX="719.0" layoutY="34.0" mnemonicParsing="false" prefHeight="40.0" text="Stampa report ultimi 7 giorni" onAction="#createReport" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="34.0" />
                </children></AnchorPane>
             </children>
         </HBox>

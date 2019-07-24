@@ -42,18 +42,17 @@ public class DOCMController implements DOCController {
 
     public DOCMController(Store<StringCommand> store, Subject<StateEvent> stream) {
 
-    this.store = store;
+        this.store = store;
 
-    try {
-        dis.dispose();
-    } catch (NullPointerException e) {}
+        try {
+            dis.dispose();
+        } catch (NullPointerException e) {}
 
-    dis = stream.subscribe(se ->
-    {
-        Platform.runLater(() -> nameLabel.setText("Dr. " + se.state().getUser().toString()));
-        updatePatients(se.state());
-        setData(patientComboBox.getValue());
-    });
+        dis = stream.subscribe(se -> {
+            Platform.runLater(() -> nameLabel.setText("Dr. " + se.state().getUser().toString()));
+            updatePatients(se.state());
+            setData(patientComboBox.getValue());
+        });
     }
 
     @FXML public void initialize() {
@@ -148,5 +147,10 @@ public class DOCMController implements DOCController {
 
     @FXML protected void close() {
         sys.endSystem();
+    }
+
+    @FXML protected void showSupport() {
+        store.update(new StringCommand("ERROR", "Per supporto contattare i Main Developers\nPiccoli Elia, Marian Statache & ***REMOVED***." +
+                "\nJava is the best programming language."));
     }
 }

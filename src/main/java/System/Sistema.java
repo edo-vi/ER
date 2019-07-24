@@ -8,6 +8,7 @@ import DataGenerator.Value;
 import InterfaceController.DOCControllerFactory.DOCControllerFactory;
 import InterfaceController.HPControllerFactory.HPControllerFactory;
 import InterfaceController.NURControllerFactory.NURControllerFactory;
+import PdfGenerator.ReportPDF;
 import State.Reducer;
 import State.ReducerString;
 import State.StringCommand;
@@ -128,7 +129,8 @@ public class Sistema {
                 .with("ERROR")
                 .with("CLOSE_ERROR_WINDOW")
                 .with("ACTIVATE_COUNTDOWN")
-                .with("STOP_COUNTDOWN");
+                .with("STOP_COUNTDOWN")
+                .with("CREATE_PDF");
         Middleware<StringCommand> middleware = new MiddlewareString(monitoringStage)
                 .with("LOGIN", (c, s, m) -> {
                     User x = (User) c.getArg();
@@ -375,6 +377,16 @@ public class Sistema {
                     x.getAlarmTimerThread().alarmDeactivated();
 
                     return new Tuple<>(new StringCommand("COUNTDOWN_STOPPED"), s);
+                })
+                .with("CREATE_PDF", (c,s,m) -> {
+                    ReportPDF repot = new ReportPDF(store);
+                    try {
+                        repot.createPDF();
+                        return new Tuple<>(new StringCommand("PDF_CREATED"), s);
+                    } catch (Exception e) {
+                        store.update(new StringCommand("ERROR", "System Error.\nUnlucky"));
+                        return new Tuple<>(new StringCommand("PDF_NOT_CREATED"), s);
+                    }
                 });
 
         store = new Store<StringCommand>(new State(), reducer, middleware);
@@ -410,7 +422,7 @@ public class Sistema {
             this.controller.addInterface("NURM", new NURComponent<StringCommand>(new NURFactory().getInterface("monitoring"), new NURControllerFactory().getController("monitoring")).getLoader().load());
             this.controller.addInterface("NURS", new NURComponent<StringCommand>(new NURFactory().getInterface("search"), new NURControllerFactory().getController("search")).getLoader().load());
             this.controller.addInterface("NURSR", new NURComponent<StringCommand>(new NURFactory().getInterface("searchResult"), new NURControllerFactory().getController("searchResult")).getLoader().load());
-            System.out.println("---- Interfaces Loaded Successfully----");
+            System.out.println("---- Interfaces Loaded Successfully ----");
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error during interfaces setup");

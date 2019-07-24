@@ -313,4 +313,9 @@ public class MonitoringController {
             for(int i=0; i<10; i++)
                 bedRooms.get(i).setDisable(!(i < activeRec));
     }
+
+    @FXML protected void showSupport() {
+        store.update(new StringCommand("ERROR", "Per supporto contattare i Main Developers\nPiccoli Elia, Marian Statache & ***REMOVED***." +
+                "\nJava is the best programming language."));
+    }
 }

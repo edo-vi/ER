@@ -50,7 +50,6 @@ public class HPDController implements HPController{
         dis = stream.subscribe(se ->
         {
             Platform.runLater(() -> nameLabel.setText("Primario Dr. " + se.state().getUser().toString()));
-            /*if (se.command().name().equals("DISCHARGED_A_PATIENT"))*/
             updateRecoveries(se.state());
             setLabels(patientsChoice.getValue());
 
@@ -161,5 +160,10 @@ public class HPDController implements HPController{
 
     @FXML protected void close() {
         sys.endSystem();
+    }
+
+    @FXML protected void showSupport() {
+        store.update(new StringCommand("ERROR", "Per supporto contattare i Main Developers\nPiccoli Elia, Marian Statache & ***REMOVED***." +
+                "\nJava is the best programming language."));
     }
 }
