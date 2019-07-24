@@ -22,6 +22,7 @@
 		align=center, inner sep=1mm, outer sep=0mm,}}
 
 \usepackage{./usecases}
+\usepackage{svg}
 
 \tikzset{multi attribute/.style={attribute,double distance=1.5pt}} \tikzset{derived attribute/.style={attribute ,dashed}} \tikzset{total/.style={double distance=1.5pt}}
 \tikzset{every entity/.style={draw=orange, fill=orange!20}}
@@ -236,13 +237,15 @@ Oltre a questo è stato spesso fatto uso della \textit{dependency injection} per 
 		\umlsimpleclass[x=3, y=-6, fill=gray!10!white]{Interface}
 		\umlsimpleclass[x=11, y=-6, fill=gray!10!white]{Controller}
 	
-		\umldep[stereo=create]{Component}{Interface Factory}
-		\umldep[stereo=create]{Component}{Controller Factory}
+		\umldep[]{Component}{Interface Factory}
+		\umldep[]{Component}{Controller Factory}
 		\umlunicompo[mult1=1, mult2=*]{InterfacesController}{Component}
-		\umlCNunicompo[ mult1=1, mult2=1]{Component}{6.3, -6}{Interface}
+		\umlCNunicompo[ mult1=1,]{Component}{6.3, -6}{Interface}
 		\umlCNunicompo[ ]{Component}{7.6, -6}{Controller}
-		\node at(7.75,-5.05) {1};
-		\node at(7.4,-2.85) {1};
+		\umldep[stereo=create]{Interface Factory}{Interface}
+		\umldep[stereo=create]{Controller Factory}{Controller}
+		\node at(9.5,-5.75) {1};
+		\node at(7.41,-2.85) {1};
 		\end{tikzpicture}
 	\end{center}\caption{\textit{Class diagram} che mostra la relazione tra InterfaceController e i vari oggetti che costituiscono la parte View-Controller dell'architettura \textit{MVC} dell'applicazione. }\label{ComponentClassDiagram}
 \end{figure}
@@ -457,4 +460,8 @@ Oltre a queste verifiche periodiche si è anche eseguito un controllo finale, al 
 \end{figure}
 
 
+\begin{figure}
+	%\includegraphics[scale=.06]{ClassDiagramImages/ER.pdf}
+\caption{\textit{Class diagram} dell'intero programma.}\label{totalclassdiagram}
+\end{figure}
 \end{document}
