@@ -136,9 +136,9 @@ public class ReportPDF {
                 subPara2.add(new Paragraph("Data inizio ricovero: " + p.getActiveRecoveries().get(0).getStartDate().toString(), small));
                 subPara2.add(new Paragraph("Diagnosi di ingresso: " + p.getActiveRecoveries().get(0).getDiagnosis(), small));
                 subPara2.add(paragraph);
-                subPara2.add(new Paragraph("PRESCRIZIONI", smallBold));
                 p.getActiveRecoveries().forEach(r -> {
                     if(r.getPrescriptions().size() > 0) {
+                        subPara2.add(new Paragraph("PRESCRIZIONI", smallBold));
                         r.getPrescriptions().forEach(prescription -> {
                             subPara2.add(paragraph);
                             subPara2.add(new Paragraph(prescription.getDate().toString() + " Dottor " + prescription.getDoctor()
@@ -202,8 +202,8 @@ public class ReportPDF {
                         store.update(new StringCommand("ERROR", "System Error.\nUnlucky"));
                     }
                     subPara2.add(paragraph);
-                    subPara2.add(new Paragraph("PRESCRIZIONI", smallBold));
                     if(r.getPrescriptions().size() > 0) {
+                        subPara2.add(new Paragraph("PRESCRIZIONI", smallBold));
                         r.getPrescriptions().forEach(prescription -> {
                             subPara2.add(paragraph);
                             subPara2.add(new Paragraph(prescription.getDate().toString() + " Dottor " + prescription.getDoctor()
@@ -225,7 +225,6 @@ public class ReportPDF {
                 });
 
                 subCatPart.setIndentationLeft(10);
-                catPart2.add(subCatPart);
             }
         });
         try {
