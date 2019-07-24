@@ -50,7 +50,6 @@ public class HPDController implements HPController{
         dis = stream.subscribe(se ->
         {
             Platform.runLater(() -> nameLabel.setText("Primario Dr. " + se.state().getUser().toString()));
-            /*if (se.command().name().equals("DISCHARGED_A_PATIENT"))*/
             updateRecoveries(se.state());
             setLabels(patientsChoice.getValue());
 

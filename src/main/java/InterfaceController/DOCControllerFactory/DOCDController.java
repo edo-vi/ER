@@ -51,14 +51,17 @@ public class DOCDController implements DOCController{
 
         }
         dis = stream.subscribe(se -> {
-            if (se.command().name().equals("COULD_NOT_ADMIT_A_PATIENT"))
+            String command = se.command().name();
+            if (command.equals("COULD_NOT_ADMIT_A_PATIENT"))
                 store.update(new StringCommand("ERROR", "Impossibile ospitare più di 10 pazienti\nall'interno della struttura."));
-            if(se.command().name().equals("COULD_NOT_ADMIT_A_PATIENT_EXC"))
+            if(command.equals("COULD_NOT_ADMIT_A_PATIENT_EXC"))
                 store.update(new StringCommand("ERROR", "System Error.\nUnlucky."));
-            if (se.command().name().equals("PATIENT_SUCCESSFULLY_ADMITTED"))
+            if (command.equals("PATIENT_SUCCESSFULLY_ADMITTED"))
                 selectedRow = 0;
-            Platform.runLater(() -> nameLabel.setText("Dr. " + se.state().getUser().toString()));
-            initialize(se.state());
+            if(!command.equals("GENERATE_BP") && !command.equals("GENERATE_HP") && !command.equals("GENERATE_TEMPERATURE")) {
+                Platform.runLater(() -> nameLabel.setText("Dr. " + se.state().getUser().toString()));
+                initialize(se.state());
+            }
         });
     }
 

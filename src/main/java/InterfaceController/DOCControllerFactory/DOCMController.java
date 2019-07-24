@@ -42,18 +42,17 @@ public class DOCMController implements DOCController {
 
     public DOCMController(Store<StringCommand> store, Subject<StateEvent> stream) {
 
-    this.store = store;
+        this.store = store;
 
-    try {
-        dis.dispose();
-    } catch (NullPointerException e) {}
+        try {
+            dis.dispose();
+        } catch (NullPointerException e) {}
 
-    dis = stream.subscribe(se ->
-    {
-        Platform.runLater(() -> nameLabel.setText("Dr. " + se.state().getUser().toString()));
-        updatePatients(se.state());
-        setData(patientComboBox.getValue());
-    });
+        dis = stream.subscribe(se -> {
+            Platform.runLater(() -> nameLabel.setText("Dr. " + se.state().getUser().toString()));
+            updatePatients(se.state());
+            setData(patientComboBox.getValue());
+        });
     }
 
     @FXML public void initialize() {

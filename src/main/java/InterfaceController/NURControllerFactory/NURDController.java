@@ -63,13 +63,16 @@ public class NURDController implements NURController {
         } catch (NullPointerException e) {}
 
         dis = stream.subscribe(se -> {
-            if(se.command().name().equals("COULD_NOT_ADD_ADMINISTRATION"))
+            String command = se.command().name();
+            if(command.equals("COULD_NOT_ADD_ADMINISTRATION"))
                 store.update(new StringCommand("ERROR", "System Error.\nUnlucky"));
             Platform.runLater(() -> nurseNameLabel.setText(se.state().getUser().toString()));
-            updatePatient(se.state());
-            setPatientLabel(patientComboBox.getValue());
-            updatePrescription();
-            setAdministrationLabel(drugComboBox.getValue());
+            if(!command.equals("GENERATE_BP") && !command.equals("GENERATE_HP") && !command.equals("GENERATE_TEMPERATURE")) {
+                updatePatient(se.state());
+                setPatientLabel(patientComboBox.getValue());
+                updatePrescription();
+                setAdministrationLabel(drugComboBox.getValue());
+            }
         });
     }
 

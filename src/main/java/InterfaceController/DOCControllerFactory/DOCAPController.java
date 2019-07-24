@@ -52,11 +52,13 @@ public class DOCAPController implements DOCController {
 
         }
         dis = stream.subscribe(se -> {
-            if(se.command().name().equals("FAILURE_TO_ADD_PRESCRIPTION"))
+            String command = se.command().name();
+            if(command.equals("FAILURE_TO_ADD_PRESCRIPTION"))
                 store.update(new StringCommand("ERROR", "System Error.\nUnlucky."));
-
-            Platform.runLater(() -> nameLabel.setText("Dr. " + se.state().getUser().toString()));
-            fillPatientsMantainSelection(se.state());
+            if(!command.equals("GENERATE_BP") && !command.equals("GENERATE_HP") && !command.equals("GENERATE_TEMPERATURE")) {
+                Platform.runLater(() -> nameLabel.setText("Dr. " + se.state().getUser().toString()));
+                fillPatientsMantainSelection(se.state());
+            }
         });
     }
 
