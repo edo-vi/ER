@@ -55,7 +55,7 @@ public class DOCAPController implements DOCController {
             String command = se.command().name();
             if(command.equals("FAILURE_TO_ADD_PRESCRIPTION"))
                 store.update(new StringCommand("ERROR", "System Error.\nUnlucky."));
-            if(!command.equals("GENERATE_BP") && !command.equals("GENERATE_HP") && !command.equals("GENERATE_TEMPERATURE")) {
+            if(!command.equals("GENERATE_BP") && !command.equals("GENERATE_HEART_RATE") && !command.equals("GENERATE_TEMPERATURE")) {
                 Platform.runLater(() -> nameLabel.setText("Dr. " + se.state().getUser().toString()));
                 fillPatientsMantainSelection(se.state());
             }

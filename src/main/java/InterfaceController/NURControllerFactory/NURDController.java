@@ -67,7 +67,7 @@ public class NURDController implements NURController {
             if(command.equals("COULD_NOT_ADD_ADMINISTRATION"))
                 store.update(new StringCommand("ERROR", "System Error.\nUnlucky"));
             Platform.runLater(() -> nurseNameLabel.setText(se.state().getUser().toString()));
-            if(!command.equals("GENERATE_BP") && !command.equals("GENERATE_HP") && !command.equals("GENERATE_TEMPERATURE")) {
+            if(!command.equals("GENERATE_BP") && !command.equals("GENERATE_HEART_RATE") && !command.equals("GENERATE_TEMPERATURE")) {
                 updatePatient(se.state());
                 setPatientLabel(patientComboBox.getValue());
                 updatePrescription();

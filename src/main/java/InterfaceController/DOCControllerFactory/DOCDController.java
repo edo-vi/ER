@@ -58,7 +58,7 @@ public class DOCDController implements DOCController{
                 store.update(new StringCommand("ERROR", "System Error.\nUnlucky."));
             if (command.equals("PATIENT_SUCCESSFULLY_ADMITTED"))
                 selectedRow = 0;
-            if(!command.equals("GENERATE_BP") && !command.equals("GENERATE_HP") && !command.equals("GENERATE_TEMPERATURE")) {
+            if(!command.equals("GENERATE_BP") && !command.equals("GENERATE_HEART_RATE") && !command.equals("GENERATE_TEMPERATURE")) {
                 Platform.runLater(() -> nameLabel.setText("Dr. " + se.state().getUser().toString()));
                 initialize(se.state());
             }
