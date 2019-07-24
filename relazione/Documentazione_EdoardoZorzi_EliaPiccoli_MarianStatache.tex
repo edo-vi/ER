@@ -183,7 +183,7 @@ Oltre a questo è stato spesso fatto uso della \textit{dependency injection} per 
  \textcolor{red!70!black}{***TODO (spiegazione del design dello stato, completa patterns)***} %TODO 
 
 \begin{figure}\begin{center}
-		\begin{tikzpicture}[scale=.9] \begin{umlseqdiag}
+		\begin{tikzpicture}[scale=1] \begin{umlseqdiag}
 		\umlobject[class= Controller, fill=blue!10!white ] {a} 
 		\umlobject[class= Store, fill=blue!10!white] {b}
 		\umlobject[class= Controller, fill=blue!10!white]{c}
@@ -192,18 +192,18 @@ Oltre a questo è stato spesso fatto uso della \textit{dependency injection} per 
 		\begin{umlcall}[op={\scriptsize{subscribe(f2: Function)}}, type=asynchron, dt=12, ] {c}{b} 
 		\end{umlcall}
 		
-		\begin{umlcall}[op={\scriptsize{update(c: Command)}}, type=asynchron, dt=14] {c}{b}
-		\begin{umlcallself}[op={\scriptsize{stato mutato}}]{b}
+		\begin{umlcall}[op={\scriptsize{update(c: Command)}}, type=asynchron, dt=14] {c}{b}\end{umlcall}
+		\begin{umlcallself}[op={\scriptsize{stato mutato}},dt=0.8]{b}
+		\begin{umlcall}[op={\scriptsize{onNext(se: StateEvent)}}, type=asynchron, dt=4]{b}{a}
+		\begin{umlcall}[op={\scriptsize{onNext(se: StateEvent)}}, type=asynchron , dt=0]{b}{c}
+		\begin{umlcallself}[op={\scriptsize{f1(se)}}]{a}	\end{umlcallself}
+		\begin{umlcallself}[op={\scriptsize{f2(se)}}]{c}	\end{umlcallself}
 		
+		\end{umlcall}
+		\end{umlcall}
 		\end{umlcallself}
-		\begin{umlcall}[op={\scriptsize{onNext(s: State)}}, type=asynchron, dt=2]{b}{a}
-		\begin{umlcall}[op={\scriptsize{onNext(s: State)}}, type=asynchron , dt=0]{b}{c}
-		\begin{umlcallself}[op={\scriptsize{f1(s)}}]{a}	\end{umlcallself}
-		\begin{umlcallself}[op={\scriptsize{f2(s)}}]{c}	\end{umlcallself}
-		\end{umlcall}
-		\end{umlcall}
-		\end{umlcall}
 		
+		\fill[white] (3.851,-4.59) -- (4.155,-4.59) -- (4.155,-4.62) -- (3.851, -4.62);
 		
 		
 		\end{umlseqdiag} \end{tikzpicture}
@@ -211,6 +211,20 @@ Oltre a questo è stato spesso fatto uso della \textit{dependency injection} per 
 	\caption{\textit{Sequence diagram} dell'interazione di due generici controllers con lo stato centralizzato gestito dallo Store. Dopo aver invocato in modo non bloccante \textit{subscribe()}, passandogli una funzione, qualsiasi \textit{update()} chiamato sullo store comporta una mutazione interna dello stato, sulla base del comando passato: il nuovo stato viene quindi propagato a tutti i controllori `sottoscritti' tramite \textit{onNext()}; la funzione precedentemente passata in \textit{subscribe} sarà quindi chiamata, all'interno di tutti i controllori, sul nuovo stato ricevuto dallo Store.  }
 \end{figure}
 
+\begin{figure}\begin{center}
+		\begin{tikzpicture}[scale=.9] \begin{umlseqdiag}
+		\umlobject[class= Sistema, fill=blue!10!white ] {a} 
+		\begin{umlcreatecall}[class=Store, fill obj=blue!10!white] {a}{b} \end{umlcreatecall}
+		\begin{umlcreatecall}[class={InterfacesController}, fill obj=blue!10!white] {a}{c} \end{umlcreatecall}
+		\begin{umlcall}[type=asynchron, op={\scriptsize{update("LOAD")}}]{a}{b}\end{umlcall}
+		\begin{umlcallself}[op={\scriptsize{load state from db}}]{b}
+		\end{umlcallself}
+		\begin{umlcall}[type=asynchron, op={\scriptsize{setup ui}}, dt=13]{a}{c}
+		\end{umlcall}
+		\end{umlseqdiag} \end{tikzpicture}
+	\end{center}
+	\caption{\textit{Sequence diagram} delle operazioni eseguite durante il bootstrapping del programma. }
+\end{figure}
 \subsection{Implementazione}
  Heila \textcolor{red!70!black}{***TODO***} %todo
  
@@ -321,8 +335,8 @@ Oltre a queste verifiche periodiche si è anche eseguito un controllo finale, al 
 		\umldep[geometry=-|]{Store}{Reducer}
 		\umldep[geometry=-|]{Store}{Middleware}
 		\umldep[geometry=-|]{Store}{State}
-		\umldep[]{StateEvent}{State}
-		\umldep[]{StateEvent}{Command}
+		\umluniassoc[]{StateEvent}{State}
+		\umluniassoc[]{StateEvent}{Command}
 		\end{umlpackage}  
 		
 		\end{tikzpicture}
