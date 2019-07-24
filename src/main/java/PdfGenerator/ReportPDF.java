@@ -84,7 +84,7 @@ public class ReportPDF {
         preface.add(new Paragraph("Primario Dr. Null", small7));
         preface.add(new Paragraph("tel. +39 045 254625", small7));
         addEmptyLine(preface, 1);
-        preface.add(new Paragraph("Data: "+new Date(), small9));
+        preface.add(new Paragraph("Data: " + new Date(), small9));
         addEmptyLine(preface, 1);
 
         preface.add(new Paragraph("Report Riassuntivo Ultimi 7 Giorni", courier));
@@ -97,17 +97,17 @@ public class ReportPDF {
 
         addEmptyLine(preface, 2);
 
-        Anchor anchor = new Anchor(" Pazienti attualmente in ricovero", small);
-        anchor.setReference("#C2");
-        paragraph = new Paragraph("1.", small);
+        Anchor anchor = new Anchor("1. Pazienti attualmente in ricovero", small);
+        anchor.setReference("#C1");
+        paragraph = new Paragraph();
         paragraph.add(anchor);
         paragraph.setIndentationLeft(30);
         preface.add(paragraph);
         createList(preface, "active");
 
-        anchor = new Anchor(" Pazienti dimessi", small);
+        anchor = new Anchor("2. Pazienti dimessi", small);
         anchor.setReference("#C2");
-        paragraph = new Paragraph("2.", small);
+        paragraph = new Paragraph();
         paragraph.add(anchor);
         paragraph.setIndentationLeft(30);
         preface.add(paragraph);
@@ -120,7 +120,13 @@ public class ReportPDF {
 
         Paragraph para;
         Anchor target;
-        final Chapter catPart = new Chapter(new Paragraph("Pazienti attualmente in ricovero", courierC), 1);
+
+        target = new Anchor("Pazienti attualmente in ricovero", courierC);
+        target.setName("C1");
+        para = new Paragraph();
+        para.add(target);
+
+        final Chapter catPart = new Chapter(para, 1);
         state.getPatients().forEach(p -> {
 
             if (p.isRecovered()) {
@@ -173,13 +179,12 @@ public class ReportPDF {
             store.update(new StringCommand("ERROR", "System Error.\nUnlucky"));
         }
 
-        target = new Anchor("Pazienti dimessi");
+        target = new Anchor("Pazienti dimessi", courierC);
         target.setName("C2");
         para = new Paragraph();
         para.add(target);
-        document.add(para);
 
-        Chapter catPart2 = new Chapter(new Paragraph("Pazienti dimessi", courierC), 2);
+        Chapter catPart2 = new Chapter(para, 2);
 
         state.getPatients().forEach(p -> {
 
