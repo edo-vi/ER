@@ -1,0 +1,187 @@
+@startuml
+
+title __NURCONTROLLERFACTORY's Class Diagram__\n
+
+        class InterfaceController.NURControllerFactory.FiscalCodeCalculator {
+            + calculateFC()
+            - consonants()
+            - vowels()
+        }
+
+
+        class InterfaceController.NURControllerFactory.NURAPController {
+            - bDayDate : DatePicker
+            - cfLabel : TextField
+            - dis : Disposable
+            - female : RadioButton
+            - male : RadioButton
+            - nameLabel : TextField
+            - nurseNameLabel : Label
+            - placeLabel : TextField
+            - store : Store<StringCommand>
+            - surnameLabel : TextField
+            + NURAPController()
+            + initialize()
+            # addAdministration()
+            # addPatient()
+            # calcolateCF()
+            # close()
+            # logout()
+            # search()
+            # showLast2H()
+            # showMonitoring()
+            # showSupport()
+            # submit()
+            - allSet()
+        }
+
+
+        interface InterfaceController.NURControllerFactory.NURController {
+        }
+
+
+        class InterfaceController.NURControllerFactory.NURControllerFactory {
+            + getController()
+        }
+
+
+        class InterfaceController.NURControllerFactory.NURDController {
+            - admDate : Label
+            - admDateLabel : Label
+            - admDateValue : Date
+            - bDay : Label
+            - bDayLabel : Label
+            - confirm : Button
+            - dis : Disposable
+            - dose : Label
+            - doseLabel : Label
+            - drug : Label
+            - drugComboBox : ComboBox<String>
+            - drugLabel : Label
+            - name : Label
+            - nameLabel : Label
+            - note : Label
+            - noteTextArea : TextArea
+            - nurseNameLabel : Label
+            - patientComboBox : ComboBox<Patient>
+            - quantity : Label
+            - quantityLabel : Label
+            - store : Store<StringCommand>
+            - surname : Label
+            - surnameLabel : Label
+            + NURDController()
+            # addAdministration()
+            # addPatient()
+            # administrate()
+            # close()
+            # initialize()
+            # logout()
+            # search()
+            # selectedDrugFromCombobox()
+            # selectedPatientFromCombobox()
+            # setAdministrationLabel()
+            # setPatientLabel()
+            # showLast2H()
+            # showMonitoring()
+            # showSupport()
+            # updatePatient()
+            # updatePrescription()
+        }
+
+
+        class InterfaceController.NURControllerFactory.NURMController {
+            - dis : Disposable
+            - drugColumn : TableColumn<Administration, String>
+            - nameLabel : Label
+            - patientComboBox : ComboBox<Recovery>
+            - store : Store<StringCommand>
+            - tableAdministrations : TableView<Administration>
+            - tableMonitorings : TableView<Monitoring>
+            - temperatureColumn : TableColumn<Monitoring, String>
+            + NURMController()
+            + initialize()
+            + initialize()
+            + selectedPatient()
+            + setData()
+            + updatePatients()
+            # addAdministration()
+            # addPatient()
+            # close()
+            # logout()
+            # search()
+            # showLast2H()
+            # showMonitoring()
+            # showSupport()
+        }
+
+
+        class InterfaceController.NURControllerFactory.NURSController {
+            - dis : Disposable
+            - dischargeSummary : TableColumn<Recovery, String>
+            - endDateColumn : TableColumn<Recovery, String>
+            - nameLabel : Label
+            - recoveryTable : TableView<Recovery>
+            - searchPatient : TextField
+            - store : Store<StringCommand>
+            + NURSController()
+            # addAdministration()
+            # addPatient()
+            # close()
+            # initialize()
+            # logout()
+            # search()
+            # searchPatient()
+            # searchResult()
+            # showLast2H()
+            # showMonitoring()
+            # showSupport()
+            # updateRecoveries()
+        }
+
+
+        class InterfaceController.NURControllerFactory.NURSRController {
+            - administrations : TableView<Administration>
+            - dis : Disposable
+            - drugColumn : TableColumn<Administration, String>
+            - nameLabel : Label
+            - patientDateofBirth : Label
+            - patientFiscalCode : Label
+            - patientName : Label
+            - patientPlaceofBirth : Label
+            - patientRecoveryDischarge : Label
+            - patientRecoveryEndDate : Label
+            - patientRecoveryReasons : Label
+            - patientRecoveryStartDate : Label
+            - patientSurname : Label
+            - patientText : TextField
+            - prescriptions : TableView<Prescription>
+            - quantityColumn : TableColumn<Prescription, String>
+            - store : Store<StringCommand>
+            + NURSRController()
+            # addAdministration()
+            # addPatient()
+            # close()
+            # initialize()
+            # logout()
+            # search()
+            # searchPatient()
+            # setData()
+            # showLast2H()
+            # showMonitoring()
+            # showSupport()
+        }
+
+  InterfaceController.NURControllerFactory.NURAPController .up.|> InterfaceController.NURControllerFactory.NURController
+  InterfaceController.NURControllerFactory.NURAPController o-- System.Sistema : sys
+  InterfaceController.NURControllerFactory.NURControllerFactory o-- System.Sistema : sys
+  InterfaceController.NURControllerFactory.NURDController .up.|> InterfaceController.NURControllerFactory.NURController
+  InterfaceController.NURControllerFactory.NURDController o-- Entities.Prescription : prescriptionOfThisAdm
+  InterfaceController.NURControllerFactory.NURDController o-- System.Sistema : sys
+  InterfaceController.NURControllerFactory.NURMController .up.|> InterfaceController.NURControllerFactory.NURController
+  InterfaceController.NURControllerFactory.NURMController o-- System.Sistema : sys
+  InterfaceController.NURControllerFactory.NURSController .up.|> InterfaceController.NURControllerFactory.NURController
+  InterfaceController.NURControllerFactory.NURSController o-- System.Sistema : sys
+  InterfaceController.NURControllerFactory.NURSRController .up.|> InterfaceController.NURControllerFactory.NURController
+  InterfaceController.NURControllerFactory.NURSRController o-- System.Sistema : sys
+
+@enduml

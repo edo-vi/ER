@@ -1,0 +1,119 @@
+@startuml
+
+title __COMPONENT's Class Diagram__\n
+
+      class Component.AlarmControlComponent {
+          {static} + AlarmControlTitle : String
+          - loader : FXMLLoader
+          + AlarmControlComponent()
+          + getLoader()
+          # draw()
+          # eventHook()
+      }
+
+
+      class Component.AlarmsComponent {
+          {static} + AlarmsTitle : String
+          - loader : FXMLLoader
+          + AlarmsComponent()
+          + getLoader()
+          # draw()
+          # eventHook()
+      }
+
+
+      abstract class Component.Component {
+          - store : Store<C>
+          - subscription : Disposable
+          + Component()
+          + Component()
+          + getStore()
+          {abstract} # draw()
+          {abstract} # eventHook()
+          # getState()
+          # initialization()
+          # sendCommand()
+          - clean()
+      }
+
+
+      class Component.DOCComponent {
+          {static} + DOCTitle : String
+          - loader : FXMLLoader
+          + DOCComponent()
+          + getLoader()
+          # draw()
+          # eventHook()
+      }
+
+
+      class Component.ErrorComponet {
+          {static} + ErrorTitle : String
+          - loader : FXMLLoader
+          + ErrorComponet()
+          + getLoader()
+          # draw()
+          # eventHook()
+      }
+
+
+      class Component.HPComponent {
+          {static} + HPTitle : String
+          - loader : FXMLLoader
+          + HPComponent()
+          + getLoader()
+          # draw()
+          # eventHook()
+      }
+
+
+      class Component.LoginComponent {
+          {static} + loginTitle : String
+          - loader : FXMLLoader
+          + LoginComponent()
+          + LoginComponent()
+          + getLoader()
+          # draw()
+          # eventHook()
+      }
+
+
+      class Component.MonitoringComponent {
+          {static} + monitoringTitle : String
+          - loader : FXMLLoader
+          + MonitoringComponent()
+          + MonitoringComponent()
+          + getLoader()
+          # draw()
+          # eventHook()
+      }
+
+
+      class Component.NURComponent {
+          {static} + NURTitle : String
+          - loader : FXMLLoader
+          + NURComponent()
+          + getLoader()
+          # draw()
+          # eventHook()
+      }
+
+
+  Component.AlarmControlComponent -up-|> Component.Component
+  Component.AlarmControlComponent o-- System.Sistema : sys
+  Component.AlarmsComponent -up-|> Component.Component
+  Component.AlarmsComponent o-- System.Sistema : sys
+  Component.DOCComponent -up-|> Component.Component
+  Component.DOCComponent o-- System.Sistema : sys
+  Component.ErrorComponet -up-|> Component.Component
+  Component.ErrorComponet o-- System.Sistema : sys
+  Component.HPComponent -up-|> Component.Component
+  Component.HPComponent o-- System.Sistema : sys
+  Component.LoginComponent -up-|> Component.Component
+  Component.LoginComponent o-- System.Sistema : sys
+  Component.MonitoringComponent -up-|> Component.Component
+  Component.MonitoringComponent o-- System.Sistema : sys
+  Component.NURComponent -up-|> Component.Component
+  Component.NURComponent o-- System.Sistema : sys
+
+@enduml

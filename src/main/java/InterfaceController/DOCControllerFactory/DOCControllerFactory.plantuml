@@ -1,0 +1,170 @@
+@startuml
+
+title __DOCCONTROLLERFACTORY's Class Diagram__\n
+
+        class InterfaceController.DOCControllerFactory.DOCAPController {
+            - dis : Disposable
+            - nameLabel : Label
+            - patientComboBox : ComboBox<Patient>
+            - patientDateofBirth : Label
+            - patientName : Label
+            - patientPlaceofBirth : Label
+            - patientSurname : Label
+            - prescriptionDate : Label
+            - prescriptionDose : TextField
+            - prescriptionDrug : TextField
+            - prescriptionDuration : TextField
+            - prescriptionTotalNumberofDoses : TextField
+            - selectedPatient : Optional<Patient>
+            - store : Store<StringCommand>
+            - stream : Subject<StateEvent>
+            + DOCAPController()
+            + initialize()
+            # addPrescription()
+            # close()
+            # defaultDoc()
+            # fillPatients()
+            # fillPatientsMantainSelection()
+            # logout()
+            # monitoringDoc()
+            # searchDoc()
+            # selectedItemFromCombobox()
+            # setLabels()
+            # setSelectedPatient()
+            # showMonitoring()
+            # showSupport()
+            # tryAddPrescription()
+        }
+
+
+        interface InterfaceController.DOCControllerFactory.DOCController {
+        }
+
+
+        class InterfaceController.DOCControllerFactory.DOCControllerFactory {
+            + getController()
+        }
+
+        class InterfaceController.DOCControllerFactory.DOCDController {
+            - diagnosisTextField : TextField
+            - dis : Disposable
+            - nameLabel : Label
+            - patientDateofBirth : Label
+            - patientNameLabel : Label
+            - patientPlaceofBirth : Label
+            - patientSurnameLabel : Label
+            - selectedRow : int
+            - sexColumn : TableColumn<Patient, String>
+            - store : Store<StringCommand>
+            - stream : Subject<StateEvent>
+            - waitingPatients : TableView<Patient>
+            + DOCDController()
+            + initialize()
+            # addPrescription()
+            # close()
+            # defaultDoc()
+            # initialize()
+            # logout()
+            # monitoringDoc()
+            # searchDoc()
+            # setLabels()
+            # showMonitoring()
+            # showSupport()
+            # tryAdmission()
+        }
+
+        class InterfaceController.DOCControllerFactory.DOCMController {
+            - dis : Disposable
+            - drugColumn : TableColumn<Administration, String>
+            - nameLabel : Label
+            - patientComboBox : ComboBox<Recovery>
+            - store : Store<StringCommand>
+            - stream : Subject<StateEvent>
+            - tableAdministrations : TableView<Administration>
+            - tableMonitorings : TableView<Monitoring>
+            - temperatureColumn : TableColumn<Monitoring, String>
+            + DOCMController()
+            + initialize()
+            + initialize()
+            + selectedPatient()
+            + setData()
+            + updatePatients()
+            # addPrescription()
+            # close()
+            # defaultDoc()
+            # logout()
+            # monitoringDoc()
+            # searchDoc()
+            # showMonitoring()
+            # showSupport()
+        }
+
+        class InterfaceController.DOCControllerFactory.DOCSController {
+            - dis : Disposable
+            - dischargeSummary : TableColumn<Recovery, String>
+            - endDateColumn : TableColumn<Recovery, String>
+            - nameLabel : Label
+            - recoveryTable : TableView<Recovery>
+            - searchPatient : TextField
+            - store : Store<StringCommand>
+            + DOCSController()
+            # addPrescription()
+            # close()
+            # defaultDoc()
+            # initialize()
+            # logout()
+            # monitoringDoc()
+            # searchDoc()
+            # searchPatient()
+            # searchResultDoc()
+            # showMonitoring()
+            # showSupport()
+            # updateRecoveries()
+        }
+
+        class InterfaceController.DOCControllerFactory.DOCSRController {
+            - administrations : TableView<Administration>
+            - dis : Disposable
+            - drugColumn : TableColumn<Administration, String>
+            - nameLabel : Label
+            - patientDateofBirth : Label
+            - patientFiscalCode : Label
+            - patientName : Label
+            - patientPlaceofBirth : Label
+            - patientRecoveryDischarge : Label
+            - patientRecoveryEndDate : Label
+            - patientRecoveryReasons : Label
+            - patientRecoveryStartDate : Label
+            - patientSurname : Label
+            - patientText : TextField
+            - prescriptions : TableView<Prescription>
+            - quantityColumn : TableColumn<Prescription, String>
+            - store : Store<StringCommand>
+            + DOCSRController()
+            # addPrescription()
+            # close()
+            # defaultDoc()
+            # initialize()
+            # logout()
+            # monitoringDoc()
+            # searchDoc()
+            # searchPatient()
+            # setData()
+            # showMonitoring()
+            # showSupport()
+        }
+
+  InterfaceController.DOCControllerFactory.DOCAPController .up.|> InterfaceController.DOCControllerFactory.DOCController
+  InterfaceController.DOCControllerFactory.DOCAPController o-- System.Sistema : sys
+  InterfaceController.DOCControllerFactory.DOCControllerFactory o-- System.Sistema : sys
+  InterfaceController.DOCControllerFactory.DOCDController .up.|> InterfaceController.DOCControllerFactory.DOCController
+  InterfaceController.DOCControllerFactory.DOCDController o-- System.Sistema : sys
+  InterfaceController.DOCControllerFactory.DOCMController .up.|> InterfaceController.DOCControllerFactory.DOCController
+  InterfaceController.DOCControllerFactory.DOCMController o-- InterfaceController.HPControllerFactory.HPMController : hpm
+  InterfaceController.DOCControllerFactory.DOCMController o-- System.Sistema : sys
+  InterfaceController.DOCControllerFactory.DOCSController .up.|> InterfaceController.DOCControllerFactory.DOCController
+  InterfaceController.DOCControllerFactory.DOCSController o-- System.Sistema : sys
+  InterfaceController.DOCControllerFactory.DOCSRController .up.|> InterfaceController.DOCControllerFactory.DOCController
+  InterfaceController.DOCControllerFactory.DOCSRController o-- System.Sistema : sys
+
+@enduml
