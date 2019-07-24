@@ -237,7 +237,7 @@ public class NURDController implements NURController {
     }
 
     @FXML protected void administrate() {
-        String notes = (noteTextArea.getText().equals("")) ? "NONE" : noteTextArea.getText();
+        String notes = (noteTextArea.getText().equals("")) ? "Nessuna" : noteTextArea.getText();
         noteTextArea.clear();
         Integer hour = new Integer(admDateValue.toString().substring(11, 13));
         Administration adm = new Administration(admDateValue, hour, prescriptionOfThisAdm.getDailyDose(), notes, patientComboBox.getValue(), prescriptionOfThisAdm);
