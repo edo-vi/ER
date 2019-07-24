@@ -61,4 +61,9 @@ public class LoginController {
         store.update(new StringCommand("SHOW_MONITORING"));
         store.update(new StringCommand("START_MONITORING"));
     }
+
+    @FXML protected void showSupport() {
+        store.update(new StringCommand("ERROR", "Per supporto contattare i Main Developers\nPiccoli Elia, Marian Statache & ***REMOVED***." +
+                "\nJava is the best programming language."));
+    }
 }

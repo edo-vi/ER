@@ -184,4 +184,9 @@ public class HPSRController implements HPController {
         store.update(new StringCommand("CLEAR_CHOSEN_RECOVERY"));
         sys.endSystem();
     }
+
+    @FXML protected void showSupport() {
+        store.update(new StringCommand("ERROR", "Per supporto contattare i Main Developers\nPiccoli Elia, Marian Statache & ***REMOVED***." +
+                "\nJava is the best programming language."));
+    }
 }

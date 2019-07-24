@@ -422,7 +422,7 @@ public class Sistema {
             this.controller.addInterface("NURM", new NURComponent<StringCommand>(new NURFactory().getInterface("monitoring"), new NURControllerFactory().getController("monitoring")).getLoader().load());
             this.controller.addInterface("NURS", new NURComponent<StringCommand>(new NURFactory().getInterface("search"), new NURControllerFactory().getController("search")).getLoader().load());
             this.controller.addInterface("NURSR", new NURComponent<StringCommand>(new NURFactory().getInterface("searchResult"), new NURControllerFactory().getController("searchResult")).getLoader().load());
-            System.out.println("---- Interfaces Loaded Successfully----");
+            System.out.println("---- Interfaces Loaded Successfully ----");
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error during interfaces setup");

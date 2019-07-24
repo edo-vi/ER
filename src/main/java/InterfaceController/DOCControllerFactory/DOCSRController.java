@@ -184,4 +184,9 @@ public class DOCSRController implements DOCController {
     @FXML protected void close() {
         sys.endSystem();
     }
+
+    @FXML protected void showSupport() {
+        store.update(new StringCommand("ERROR", "Per supporto contattare i Main Developers\nPiccoli Elia, Marian Statache & ***REMOVED***." +
+                "\nJava is the best programming language."));
+    }
 }
