@@ -66,17 +66,17 @@ public class ReportPDF {
     }
 
     private void addTitlePage(Document document) throws DocumentException {
-        Image image1 = null;
+        Image image = null;
         try {
-            image1 = Image.getInstance("src/main/resources/logo.png");
+            image = Image.getInstance("src/main/resources/logo.png");
         } catch (IOException e) {
             e.printStackTrace();
         }
         //Fixed Positioning
-        image1.setAbsolutePosition(400f, 720f);
+        image.setAbsolutePosition(400f, 720f);
         //Scale to new height and new width of image
-        image1.scaleAbsolute(180, 120);
-        document.add(image1);
+        image.scaleAbsolute(180, 120);
+        document.add(image);
 
         Paragraph preface = new Paragraph();
         preface.add(new Paragraph("Azienda ospedaliera di Borgo Roma", small7));
