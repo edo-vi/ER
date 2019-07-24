@@ -120,15 +120,16 @@ public class NURSController implements NURController {
     }
 
     @FXML protected void searchPatient() {
+        recoveryTable.getItems().removeAll(recoveryTable.getItems());
         this.updateRecoveries(searchPatient.getText());
         //this.searchPatient.clear();
     }
 
 //--------------------------------------------------------
-@FXML protected void showMonitoring() {
-    store.update(new StringCommand("SHOW_MONITORING"));
-    store.update(new StringCommand("START_MONITORING"));
-}
+    @FXML protected void showMonitoring() {
+        store.update(new StringCommand("SHOW_MONITORING"));
+        store.update(new StringCommand("START_MONITORING"));
+    }
 
     @FXML protected void search() {
         sys.setInterface("NURS", NURComponent.NURTitle);
