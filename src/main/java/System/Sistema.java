@@ -402,7 +402,7 @@ public class Sistema {
     public void setupUI(Stage stage){
 
         try {
-            stage.getIcons().add(new Image("/logo.png"));
+            stage.getIcons().add(new Image("/logo_icon.png"));
             System.out.println("---- System Interfaces ----");
             this.controller = new InterfacesController(stage);
             this.controller.addInterface("login", new LoginComponent<StringCommand>().getLoader().load());
@@ -457,7 +457,7 @@ public class Sistema {
 
     private Stage createUI(String filename, String title) {
         Stage stage = new Stage();
-        stage.getIcons().add(new Image("/logo.png"));
+        stage.getIcons().add(new Image("/logo_icon.png"));
         stage.setScene(new Scene(getInterface(filename)));
         stage.setTitle(title);
         stage.setResizable(false);
