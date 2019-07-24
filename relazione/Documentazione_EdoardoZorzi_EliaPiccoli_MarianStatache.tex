@@ -17,11 +17,13 @@
 \usepackage{dot2texi}
 \usepgfmodule{oo}
 \usepackage{lscape}
-\tikzset{singlestate/.style={draw, rounded corners,
-		minimum width=15mm, minimum height=6mm,
-		align=center, inner sep=1mm, outer sep=0mm,}}
+\tikzset{singlestate/.style={draw, rounded corners, align=center,
+		minimum width=15mm, minimum height=6mm, inner sep=1mm, outer sep=0mm,}}
+\tikzset{join/.style={draw,
+		minimum width=15mm,  inner sep=0.00001mm}}
 
 \usepackage{./usecases}
+\usepackage{svg}
 
 \tikzset{multi attribute/.style={attribute,double distance=1.5pt}} \tikzset{derived attribute/.style={attribute ,dashed}} \tikzset{total/.style={double distance=1.5pt}}
 \tikzset{every entity/.style={draw=orange, fill=orange!20}}
@@ -145,6 +147,58 @@ Di seguito parte dei casi d'uso utilizzati, aggregati per chiarezza nei vari ute
 	
 \end{usecase}
 
+\begin{figure}[t]
+	\begin{tikzpicture} [scale=.92]
+	\umlstateinitial[ name=A, x=5.5, y=0];
+	\node[singlestate, name=B] at(5.5,-1.5)  {Visualizza interfaccia};
+	\umlstatedecision[name=dec1, x=5.5, y=-2.5];
+	\node[singlestate, name=C] at(0,-4.2)  {Scegli paziente};
+	\node[singlestate, name=D] at(4,-4.2)  {Scegli paziente};
+	\node[singlestate, name=E, text width=1.9cm] at(7,-4.6)  {Inserisci nome \\ e cognome};
+	\node[ join, text width=60mm, name=F, fill=black, align=center] at(12.5,-4.2) {};
+	\node[singlestate, text width= 1.9cm, align=center, name=G] at (7, -6.5) {Ricerca cartella};
+	\node[singlestate, text width= 1.9cm, align=center, name=H] at (0, -8.5) {Compila diagnosi};
+	\node[singlestate, text width= 1.9cm, align=center, name=I] at (4, -8.5) {Visualizza info};
+	\node[singlestate, text width= 1.9cm, align=center, name=J] at (7, -8.5) {Visualizza dati};
+	
+	\node[singlestate, text width= 1.9cm, align=center, name=Fa] at (9.7, -5.8) {Inserisci farmaco};
+	\node[singlestate, text width= 1.9cm, align=center, name=Fb] at (11.2, -7) {Inserisci quantità};
+	\node[singlestate, text width= 1.9cm, align=center, name=Fc] at (13.6, -7) {Inserisci n. dosi};
+	\node[singlestate, text width= 1.9cm, align=center, name=Fd] at (15.3, -5.8) {Inserisci giorno};
+	
+	\node[ join, text width=60mm, name=K, fill=black, align=center] at(12.5,-8.5) {};
+	\umlstatedecision[name=dec2, x=5.5, y=-11];
+	\umlstatefinal[name=final, x=5.5, y=-12.5];
+	
+	\umltrans[ ] {A}{B}
+	\umltrans{B}{dec1}
+	\umlHVtrans{dec1}{C}
+	\umltrans{dec1}{D}
+	\umltrans{dec1}{E}
+	\umltrans{E}{G}
+	\umltrans{C}{H}
+	\umltrans{D}{I}
+	\umltrans{G}{J}
+	\umlHVtrans{dec1}{F}
+	\umltrans{K}{dec2}
+	\umltrans{H}{dec2}
+	\umltrans{I}{dec2}
+	\umltrans{J}{dec2}
+	\umltrans{dec2}{final}
+	
+	\draw[->] (9.75,-4.2) -- (9.75,-5.3);
+	\draw[->] (15.2,-4.2) -- (15.2,-5.3);
+	\draw[->] (11.2,-4.2) -- (11.2,-6.5);
+	\draw[->] (13.5,-4.2) -- (13.5,-6.5);
+	
+	\draw[->] (9.75,-6.3) -- (9.75,-8.5);
+	\draw[->] (15.2,-6.3) -- (15.2,-8.5);
+	\draw[->] (11.2,-7.5) -- (11.2,-8.5);
+	\draw[->] (13.5,-7.5) -- (13.5,-8.5);
+	
+
+	\end{tikzpicture}\caption{\textit{Activity diagram} delle diverse azioni che possono essere compiute dal medico.}
+\end{figure}
 
 \subsection*{\textbf{Infermiere}}\hrule
 
@@ -219,12 +273,36 @@ Oltre a questo è stato spesso fatto uso della \textit{dependency injection} per 
 		\begin{umlcall}[type=asynchron, op={\scriptsize{update("LOAD")}}]{a}{b}\end{umlcall}
 		\begin{umlcallself}[op={\scriptsize{load state from db}}]{b}
 		\end{umlcallself}
-		\begin{umlcall}[type=asynchron, op={\scriptsize{setup ui}}, dt=13]{a}{c}
+		\begin{umlcall}[type=asynchron, op={\scriptsize{setup ui} (instanziando \textit{components})}, dt=13]{a}{c}
 		\end{umlcall}
 		\end{umlseqdiag} \end{tikzpicture}
 	\end{center}
 	\caption{\textit{Sequence diagram} delle operazioni eseguite durante il bootstrapping del programma. }
 \end{figure}
+\begin{figure}
+	\begin{center}
+		\begin{tikzpicture}
+
+		\umlsimpleclass[x=7, fill=gray!10!white]{InterfacesController}
+		\umlsimpleclass[x=7, y=-2, fill=gray!10!white]{Component}
+		\umlsimpleclass[x=3, y=-4, fill=gray!10!white]{Interface Factory}
+		\umlsimpleclass[x=11, y=-4, fill=gray!10!white]{Controller Factory}
+		\umlsimpleclass[x=3, y=-6, fill=gray!10!white]{Interface}
+		\umlsimpleclass[x=11, y=-6, fill=gray!10!white]{Controller}
+	
+		\umldep[]{Component}{Interface Factory}
+		\umldep[]{Component}{Controller Factory}
+		\umlunicompo[mult1=1, mult2=*]{InterfacesController}{Component}
+		\umlCNunicompo[ mult1=1,]{Component}{6.3, -6}{Interface}
+		\umlCNunicompo[ ]{Component}{7.6, -6}{Controller}
+		\umldep[stereo=create]{Interface Factory}{Interface}
+		\umldep[stereo=create]{Controller Factory}{Controller}
+		\node at(9.5,-5.75) {1};
+		\node at(7.41,-2.85) {1};
+		\end{tikzpicture}
+	\end{center}\caption{\textit{Class diagram} che mostra la relazione tra InterfaceController e i vari oggetti che costituiscono la parte View-Controller dell'architettura \textit{MVC} dell'applicazione. }\label{ComponentClassDiagram}
+\end{figure}
+
 \subsection{Implementazione}
  Heila \textcolor{red!70!black}{***TODO***} %todo
  
@@ -419,6 +497,8 @@ Oltre a queste verifiche periodiche si è anche eseguito un controllo finale, al 
 	\end{center}
 	\caption{Schema \textit{Entity-Relationship} dei dati del sistema.}\label{ERdiagram}
 \end{figure}
+
+
 \begin{figure}
 	
 		\begin{tabular}{r | l}
@@ -433,4 +513,8 @@ Oltre a queste verifiche periodiche si è anche eseguito un controllo finale, al 
 \end{figure}
 
 
+\begin{figure}
+	%\includegraphics[scale=.06]{ClassDiagramImages/ER.pdf}
+\caption{\textit{Class diagram} dell'intero programma.}\label{totalclassdiagram}
+\end{figure}
 \end{document}

@@ -1,0 +1,142 @@
+@startuml
+
+title __HPCONTROLLERFACTORY's Class Diagram__\n
+
+        interface InterfaceController.HPControllerFactory.HPController {
+        }
+
+
+        class InterfaceController.HPControllerFactory.HPControllerFactory {
+            + getController()
+        }
+
+
+        class InterfaceController.HPControllerFactory.HPDController {
+            - dis : Disposable
+            - dischargeText : TextArea
+            - nameLabel : Label
+            - patientDateofBirth : Label
+            - patientName : Label
+            - patientPlaceofBirth : Label
+            - patientRecoveryEndDate : Label
+            - patientRecoveryReasons : Label
+            - patientRecoveryStartDate : Label
+            - patientSurname : Label
+            - patientsChoice : ComboBox<Recovery>
+            - store : Store<StringCommand>
+            + HPDController()
+            # close()
+            # discharge()
+            # dismissPatient()
+            # initialize()
+            # initialize()
+            # logout()
+            # search()
+            # selectedItemFromCombobox()
+            # setLabels()
+            # show()
+            # showLast2H()
+            # showMonitoring()
+            # showSupport()
+            # updateRecoveries()
+        }
+
+
+        class InterfaceController.HPControllerFactory.HPMController {
+            - dis : Disposable
+            - drugColumn : TableColumn<Administration, String>
+            - nameLabel : Label
+            - patientComboBox : ComboBox<Recovery>
+            - store : Store<StringCommand>
+            - tableAdministrations : TableView<Administration>
+            - tableMonitorings : TableView<Monitoring>
+            - temperatureColumn : TableColumn<Monitoring, String>
+            + HPMController()
+            + initialize()
+            + initialize()
+            + selectedPatient()
+            + setData()
+            + updatePatients()
+            # close()
+            # createReport()
+            # dismissPatient()
+            # logout()
+            # search()
+            # showLast2H()
+            # showMonitoring()
+            # showSupport()
+        }
+
+
+        class InterfaceController.HPControllerFactory.HPSController {
+            - dis : Disposable
+            - dischargeSummary : TableColumn<Recovery, String>
+            - endDateColumn : TableColumn<Recovery, String>
+            - nameLabel : Label
+            - recoveryTable : TableView<Recovery>
+            - searchPatient : TextField
+            - store : Store<StringCommand>
+            + HPSController()
+            # close()
+            # dismissPatient()
+            # initialize()
+            # logout()
+            # search()
+            # searchPatient()
+            # searchResult()
+            # showLast2H()
+            # showMonitoring()
+            # showSupport()
+            # updateRecoveries()
+        }
+
+        class InterfaceController.HPControllerFactory.HPSRController {
+            - administrations : TableView<Administration>
+            - dis : Disposable
+            - drugColumn : TableColumn<Administration, String>
+            - nameLabel : Label
+            - patientDateofBirth : Label
+            - patientFiscalCode : Label
+            - patientName : Label
+            - patientPlaceofBirth : Label
+            - patientRecoveryDischarge : Label
+            - patientRecoveryEndDate : Label
+            - patientRecoveryReasons : Label
+            - patientRecoveryStartDate : Label
+            - patientSurname : Label
+            - patientText : TextField
+            - prescriptions : TableView<Prescription>
+            - quantityColumn : TableColumn<Prescription, String>
+            - store : Store<StringCommand>
+            + HPSRController()
+            # close()
+            # dismissPatient()
+            # initialize()
+            # logout()
+            # search()
+            # searchPatient()
+            # setData()
+            # showLast2H()
+            # showMonitoring()
+            # showSupport()
+        }
+
+  InterfaceController.HPControllerFactory.HPControllerFactory o-- System.Sistema : sys
+  InterfaceController.HPControllerFactory.HPDController .up.|> InterfaceController.HPControllerFactory.HPController
+  InterfaceController.HPControllerFactory.HPDController o-- System.Sistema : sys
+  InterfaceController.HPControllerFactory.HPMController .up.|> InterfaceController.HPControllerFactory.HPController
+  InterfaceController.HPControllerFactory.HPMController o-- System.Sistema : sys
+  InterfaceController.HPControllerFactory.HPSController .up.|> InterfaceController.HPControllerFactory.HPController
+  InterfaceController.HPControllerFactory.HPSController o-- System.Sistema : sys
+  InterfaceController.HPControllerFactory.HPSRController .up.|> InterfaceController.HPControllerFactory.HPController
+  InterfaceController.HPControllerFactory.HPSRController o-- System.Sistema : sys
+
+
+right footer
+
+
+PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+For more information about this tool, please contact philippe.mesmeur@gmail.com
+endfooter
+
+@enduml

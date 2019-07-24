@@ -1,0 +1,514 @@
+@startuml
+
+title __1's Class Diagram__\n
+
+      class Component.AlarmControlComponent {
+      }
+
+
+      class Component.AlarmsComponent {
+      }
+
+
+      abstract class Component.Component {
+      }
+
+
+      class Component.DOCComponent {
+      }
+
+
+      class Component.ErrorComponet {
+      }
+
+
+      class Component.HPComponent {
+      }
+
+
+      class Component.LoginComponent {
+      }
+
+
+      class Component.MonitoringComponent {
+      }
+
+
+      class Component.NURComponent {
+      }
+
+
+      class DataGenerator.BPGenerator {
+      }
+
+
+      class DataGenerator.DataThread {
+      }
+
+
+      interface DataGenerator.GeneratorInterface {
+      }
+
+
+      class DataGenerator.HeartRateGenerator {
+      }
+
+
+      enum Sickness {
+      }
+
+
+      class DataGenerator.TemperatureGenerator {
+      }
+
+
+      enum Value {
+      }
+
+
+      class Entities.Administration {
+      }
+
+
+      interface Entities.Entry {
+      }
+  
+
+      class Entities.Monitoring {
+      }
+
+
+      class Entities.Patient {
+      }
+
+
+      enum PatientState {
+      }
+
+
+      class Entities.Prescription {
+      }
+
+
+      class Entities.Recovery {
+      }
+
+
+      enum Role {
+      }
+
+
+      class Entities.User {
+      }
+
+
+      class InterfaceController.AlarmControlController {
+      }
+
+
+      class InterfaceController.AlarmLoggedControlController {
+      }
+
+
+      class InterfaceController.AlarmsController {
+      }
+
+
+        class InterfaceController.DOCControllerFactory.DOCAPController {
+        }
+
+        interface InterfaceController.DOCControllerFactory.DOCController {
+        }
+
+
+        class InterfaceController.DOCControllerFactory.DOCControllerFactory {
+        }
+
+
+        class InterfaceController.DOCControllerFactory.DOCDController {
+        }
+
+
+        class InterfaceController.DOCControllerFactory.DOCMController {
+        }
+
+
+        class InterfaceController.DOCControllerFactory.DOCSController {
+        }
+
+
+        class InterfaceController.DOCControllerFactory.DOCSRController {
+        }
+
+
+      class InterfaceController.ErrorController {
+      }
+
+
+        interface InterfaceController.HPControllerFactory.HPController {
+        }
+
+
+        class InterfaceController.HPControllerFactory.HPControllerFactory {
+        }
+
+
+        class InterfaceController.HPControllerFactory.HPDController {
+        }
+
+
+        class InterfaceController.HPControllerFactory.HPMController {
+        }
+
+
+        class InterfaceController.HPControllerFactory.HPSController {
+        }
+
+
+        class InterfaceController.HPControllerFactory.HPSRController {
+        }
+
+
+      class InterfaceController.LoginController {
+      }
+
+
+      class InterfaceController.MonitoringController {
+      }
+
+
+        class InterfaceController.NURControllerFactory.FiscalCodeCalculator {
+        }
+
+
+        class InterfaceController.NURControllerFactory.NURAPController {
+        }
+
+
+        interface InterfaceController.NURControllerFactory.NURController {
+        }
+
+
+        class InterfaceController.NURControllerFactory.NURControllerFactory {
+        }
+
+
+        class InterfaceController.NURControllerFactory.NURDController {
+        }
+
+        class InterfaceController.NURControllerFactory.NURMController {
+        }
+
+
+        class InterfaceController.NURControllerFactory.NURSController {
+        }
+
+
+        class InterfaceController.NURControllerFactory.NURSRController {
+        }
+
+
+      class Main.EntryPoint {
+      }
+
+
+      class Main.InitializeDatabase {
+      }
+
+
+      class Main.MutableItem {
+      }
+
+
+      class Main.MutableList {
+      }
+
+
+      class Main.MutableTest {
+      }
+
+
+      class Main.Triple {
+      }
+
+
+      class Main.Tuple {
+      }
+
+
+      class PdfGenerator.PdfTest {
+      }
+
+
+      class PdfGenerator.ReportPDF {
+      }
+
+
+      interface State.Command {
+      }
+
+
+      class State.DatabaseService {
+      }
+
+
+      interface State.Middleware {
+      }
+
+
+      class State.MiddlewareString {
+      }
+
+
+      interface State.Reducer {
+      }
+
+
+      class State.ReducerString {
+      }
+
+
+      class State.State {
+      }
+
+
+      class State.StateEvent {
+      }
+
+
+      class State.Store {
+      }
+
+
+      class State.StringCommand {
+      }
+
+
+      interface State.TriFunction {
+      }
+
+
+        class System.InterfaceFactories.DOCInterfaceFactory.DOCAddPrescription {
+        }
+
+
+        class System.InterfaceFactories.DOCInterfaceFactory.DOCDefault {
+        }
+
+
+        class System.InterfaceFactories.DOCInterfaceFactory.DOCFactory {
+        }
+
+
+        interface System.InterfaceFactories.DOCInterfaceFactory.DOCInterface {
+        }
+
+
+        class System.InterfaceFactories.DOCInterfaceFactory.DOCMonitoring {
+        }
+
+
+        class System.InterfaceFactories.DOCInterfaceFactory.DOCSearch {
+        }
+
+
+        class System.InterfaceFactories.DOCInterfaceFactory.DOCSearchResult {
+        }
+
+
+        class System.InterfaceFactories.HPInterfaceFactory.HPDismiss {
+        }
+
+
+        class System.InterfaceFactories.HPInterfaceFactory.HPFactory {
+        }
+
+
+        interface System.InterfaceFactories.HPInterfaceFactory.HPInterface {
+        }
+
+
+        class System.InterfaceFactories.HPInterfaceFactory.HPMonitoring {
+        }
+
+
+        class System.InterfaceFactories.HPInterfaceFactory.HPSearch {
+        }
+
+
+        class System.InterfaceFactories.HPInterfaceFactory.HPSearchResult {
+        }
+
+
+        class System.InterfaceFactories.NURInterfaceFactory.NURAddPatient {
+        }
+
+
+        class System.InterfaceFactories.NURInterfaceFactory.NURDefault {
+        }
+
+
+        class System.InterfaceFactories.NURInterfaceFactory.NURFactory {
+        }
+
+
+        interface System.InterfaceFactories.NURInterfaceFactory.NURInterface {
+        }
+
+
+        class System.InterfaceFactories.NURInterfaceFactory.NURMonitoring {
+        }
+
+
+        class System.InterfaceFactories.NURInterfaceFactory.NURSearch {
+        }
+
+
+        class System.InterfaceFactories.NURInterfaceFactory.NURSearchResult {
+        }
+
+
+      class System.InterfacesController {
+      }
+
+
+      class System.Main {
+      }
+
+        class System.Session.AlarmTimer {
+        }
+
+        class System.Session.DoctorSessionThread {
+        }
+
+      class System.Sistema {
+      }
+
+
+  Component.AlarmControlComponent -up-|> Component.Component
+  Component.AlarmControlComponent o-- System.Sistema : sys
+  Component.AlarmsComponent -up-|> Component.Component
+  Component.AlarmsComponent o-- System.Sistema : sys
+  Component.DOCComponent -up-|> Component.Component
+  Component.DOCComponent o-- System.Sistema : sys
+  Component.ErrorComponet -up-|> Component.Component
+  Component.ErrorComponet o-- System.Sistema : sys
+  Component.HPComponent -up-|> Component.Component
+  Component.HPComponent o-- System.Sistema : sys
+  Component.LoginComponent -up-|> Component.Component
+  Component.LoginComponent o-- System.Sistema : sys
+  Component.MonitoringComponent -up-|> Component.Component
+  Component.MonitoringComponent o-- System.Sistema : sys
+  Component.NURComponent -up-|> Component.Component
+  Component.NURComponent o-- System.Sistema : sys
+  DataGenerator.BPGenerator .up.|> DataGenerator.GeneratorInterface
+  DataGenerator.BPGenerator o-- System.Sistema : sys
+  DataGenerator.HeartRateGenerator .up.|> DataGenerator.GeneratorInterface
+  DataGenerator.HeartRateGenerator o-- System.Sistema : sys
+  DataGenerator.TemperatureGenerator .up.|> DataGenerator.GeneratorInterface
+  DataGenerator.TemperatureGenerator o-- System.Sistema : sys
+  Entities.Administration .up.|> Entities.Entry
+  Entities.Administration o-- Entities.Patient : patient
+  Entities.Administration o-- Entities.Prescription : prescription
+  Entities.Monitoring .up.|> Entities.Entry
+  Entities.Monitoring o-- Entities.Recovery : recovery
+  Entities.Patient .up.|> Entities.Entry
+  Entities.Patient o-- Entities.PatientState : patientState
+  Entities.Prescription .up.|> Entities.Entry
+  Entities.Prescription o-- Entities.Recovery : recovery
+  Entities.Recovery .up.|> Entities.Entry
+  Entities.Recovery o-- DataGenerator.BPGenerator : bpGenerator
+  Entities.Recovery o-- DataGenerator.HeartRateGenerator : heartRateGenerator
+  Entities.Recovery o-- Entities.Patient : patient
+  Entities.Recovery o-- Entities.Recovery.RecoveryState : recoveryState
+  Entities.Recovery o-- DataGenerator.TemperatureGenerator : temperatureGenerator
+  Entities.User .up.|> Entities.Entry
+  Entities.User o-- Entities.Role : role
+  InterfaceController.AlarmControlController o-- System.Sistema : sys
+  InterfaceController.AlarmLoggedControlController o-- System.Sistema : sys
+  InterfaceController.AlarmsController o-- System.Sistema : sys
+  InterfaceController.DOCControllerFactory.DOCAPController .up.|> InterfaceController.DOCControllerFactory.DOCController
+  InterfaceController.DOCControllerFactory.DOCAPController o-- System.Sistema : sys
+  InterfaceController.DOCControllerFactory.DOCControllerFactory o-- System.Sistema : sys
+  InterfaceController.DOCControllerFactory.DOCDController .up.|> InterfaceController.DOCControllerFactory.DOCController
+  InterfaceController.DOCControllerFactory.DOCDController o-- System.Sistema : sys
+  InterfaceController.DOCControllerFactory.DOCMController .up.|> InterfaceController.DOCControllerFactory.DOCController
+  InterfaceController.DOCControllerFactory.DOCMController o-- InterfaceController.HPControllerFactory.HPMController : hpm
+  InterfaceController.DOCControllerFactory.DOCMController o-- System.Sistema : sys
+  InterfaceController.DOCControllerFactory.DOCSController .up.|> InterfaceController.DOCControllerFactory.DOCController
+  InterfaceController.DOCControllerFactory.DOCSController o-- System.Sistema : sys
+  InterfaceController.DOCControllerFactory.DOCSRController .up.|> InterfaceController.DOCControllerFactory.DOCController
+  InterfaceController.DOCControllerFactory.DOCSRController o-- System.Sistema : sys
+  InterfaceController.ErrorController o-- System.Sistema : sys
+  InterfaceController.HPControllerFactory.HPControllerFactory o-- System.Sistema : sys
+  InterfaceController.HPControllerFactory.HPDController .up.|> InterfaceController.HPControllerFactory.HPController
+  InterfaceController.HPControllerFactory.HPDController o-- System.Sistema : sys
+  InterfaceController.HPControllerFactory.HPMController .up.|> InterfaceController.HPControllerFactory.HPController
+  InterfaceController.HPControllerFactory.HPMController o-- System.Sistema : sys
+  InterfaceController.HPControllerFactory.HPSController .up.|> InterfaceController.HPControllerFactory.HPController
+  InterfaceController.HPControllerFactory.HPSController o-- System.Sistema : sys
+  InterfaceController.HPControllerFactory.HPSRController .up.|> InterfaceController.HPControllerFactory.HPController
+  InterfaceController.HPControllerFactory.HPSRController o-- System.Sistema : sys
+  InterfaceController.LoginController o-- System.Sistema : sys
+  InterfaceController.MonitoringController o-- System.Sistema : sys
+  InterfaceController.NURControllerFactory.NURAPController .up.|> InterfaceController.NURControllerFactory.NURController
+  InterfaceController.NURControllerFactory.NURAPController o-- System.Sistema : sys
+  InterfaceController.NURControllerFactory.NURControllerFactory o-- System.Sistema : sys
+  InterfaceController.NURControllerFactory.NURDController .up.|> InterfaceController.NURControllerFactory.NURController
+  InterfaceController.NURControllerFactory.NURDController o-- Entities.Prescription : prescriptionOfThisAdm
+  InterfaceController.NURControllerFactory.NURDController o-- System.Sistema : sys
+  InterfaceController.NURControllerFactory.NURMController .up.|> InterfaceController.NURControllerFactory.NURController
+  InterfaceController.NURControllerFactory.NURMController o-- System.Sistema : sys
+  InterfaceController.NURControllerFactory.NURSController .up.|> InterfaceController.NURControllerFactory.NURController
+  InterfaceController.NURControllerFactory.NURSController o-- System.Sistema : sys
+  InterfaceController.NURControllerFactory.NURSRController .up.|> InterfaceController.NURControllerFactory.NURController
+  InterfaceController.NURControllerFactory.NURSRController o-- System.Sistema : sys
+  Main.MutableItem o-- T : item
+  Main.MutableList .up.|> java.lang.Iterable
+  Main.Triple o-- T : first
+  Main.Triple o-- W : second
+  Main.Triple o-- S : third
+  Main.Tuple o-- T : first
+  Main.Tuple o-- W : second
+  PdfGenerator.ReportPDF o-- State.State : state
+  State.MiddlewareString .up.|> State.Middleware
+  State.MiddlewareString o-- System.Session.AlarmTimer : alarmTimerThread
+  State.MiddlewareString o-- System.Session.DoctorSessionThread : docSession
+  State.MiddlewareString o-- DataGenerator.DataThread : monitoring
+  State.ReducerString .up.|> State.Reducer
+  State.State o-- Entities.Recovery : chosenRecovery
+  State.State o-- Entities.User : docAlarm
+  State.State o-- Entities.User : user
+  State.StateEvent o-- State.State : s
+  State.StateEvent o-- C : sc
+  State.Store o-- State.State : state
+  State.StringCommand .up.|> State.Command
+  System.InterfaceFactories.DOCInterfaceFactory.DOCAddPrescription .up.|> System.InterfaceFactories.DOCInterfaceFactory.DOCInterface
+  System.InterfaceFactories.DOCInterfaceFactory.DOCDefault .up.|> System.InterfaceFactories.DOCInterfaceFactory.DOCInterface
+  System.InterfaceFactories.DOCInterfaceFactory.DOCMonitoring .up.|> System.InterfaceFactories.DOCInterfaceFactory.DOCInterface
+  System.InterfaceFactories.DOCInterfaceFactory.DOCSearch .up.|> System.InterfaceFactories.DOCInterfaceFactory.DOCInterface
+  System.InterfaceFactories.DOCInterfaceFactory.DOCSearchResult .up.|> System.InterfaceFactories.DOCInterfaceFactory.DOCInterface
+  System.InterfaceFactories.HPInterfaceFactory.HPDismiss .up.|> System.InterfaceFactories.HPInterfaceFactory.HPInterface
+  System.InterfaceFactories.HPInterfaceFactory.HPMonitoring .up.|> System.InterfaceFactories.HPInterfaceFactory.HPInterface
+  System.InterfaceFactories.HPInterfaceFactory.HPSearch .up.|> System.InterfaceFactories.HPInterfaceFactory.HPInterface
+  System.InterfaceFactories.HPInterfaceFactory.HPSearchResult .up.|> System.InterfaceFactories.HPInterfaceFactory.HPInterface
+  System.InterfaceFactories.NURInterfaceFactory.NURAddPatient .up.|> System.InterfaceFactories.NURInterfaceFactory.NURInterface
+  System.InterfaceFactories.NURInterfaceFactory.NURDefault .up.|> System.InterfaceFactories.NURInterfaceFactory.NURInterface
+  System.InterfaceFactories.NURInterfaceFactory.NURMonitoring .up.|> System.InterfaceFactories.NURInterfaceFactory.NURInterface
+  System.InterfaceFactories.NURInterfaceFactory.NURSearch .up.|> System.InterfaceFactories.NURInterfaceFactory.NURInterface
+  System.InterfaceFactories.NURInterfaceFactory.NURSearchResult .up.|> System.InterfaceFactories.NURInterfaceFactory.NURInterface
+  System.Main -up-|> javafx.application.Application
+  System.Session.AlarmTimer o-- System.Session.AlarmTimer.AlarmTimerThread : alarmThread
+  System.Session.DoctorSessionThread o-- System.Session.DoctorSessionThread.SessionTimer : sessionThread
+  System.Sistema o-- System.InterfacesController : controller
+  System.Sistema o-- System.Sistema.MediaThread : mt
+
+
+right footer
+
+
+PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+For more information about this tool, please contact philippe.mesmeur@gmail.com
+endfooter
+
+@enduml

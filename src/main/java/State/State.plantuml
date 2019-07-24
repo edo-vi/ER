@@ -1,0 +1,159 @@
+@startuml
+
+title __STATE's Class Diagram__\n
+
+      interface State.Command {
+          {abstract} + errorCommand()
+          {abstract} + getArg()
+          {abstract} + name()
+      }
+
+
+      class State.DatabaseService {
+          {static} - instance : DatabaseService
+          {static} - session : Session
+          {static} - sessionFactory : SessionFactory
+          {static} + addEntries()
+          {static} + addEntry()
+          {static} + getEntries()
+          {static} + getInstance()
+          - DatabaseService()
+      }
+
+
+      interface State.Middleware {
+          {abstract} + check()
+          {abstract} + getStage()
+          {abstract} + run()
+          {abstract} + with()
+      }
+
+
+      class State.MiddlewareString {
+          - map : HashMap<String, TriFunction<StringCommand, State, Middleware<StringCommand>, Tuple<StringCommand, State>>>
+          - stage : Stage
+          + MiddlewareString()
+          + check()
+          + getAlarmTimerThread()
+          + getDocSession()
+          + getMonitoring()
+          + getStage()
+          + run()
+          + setAlarmTimerThread()
+          + setDocSession()
+          + setMonitoring()
+          + with()
+      }
+
+
+      interface State.Reducer {
+          {abstract} + run()
+          {abstract} + with()
+          {abstract} + with()
+          {abstract} + with()
+      }
+
+
+      class State.ReducerString {
+          - commands : HashMap<String, BiFunction<StringCommand, State, State>>
+          + ReducerString()
+          + run()
+          + with()
+          + with()
+          + with()
+      }
+
+
+      class State.ReducerString.NonExistentCommandException {
+      }
+
+
+      class State.State {
+          - mainRecoveryIndex : int
+          - patients : List<Patient>
+          - systemUsers : ArrayList<User>
+          + State()
+          + addPatient()
+          + deletePatient()
+          + deletePatient()
+          + equals()
+          + getActiveMonitorings()
+          + getActiveRecoveries()
+          + getAllMonitorings()
+          + getAllRecoveries()
+          + getChosenRecovery()
+          + getDocAlarm()
+          + getDocAlarmCheck()
+          + getMainRecovery()
+          + getMainRecoveryIndex()
+          + getNonActiveRecoveries()
+          + getPatients()
+          + getSystemUsers()
+          + getUser()
+          + initial()
+          + setChosenRecovery()
+          + setDocAlarm()
+          + setMainRecoveryIndex()
+          + setPatients()
+          + setSystemUsers()
+          + setUser()
+          + toString()
+      }
+
+
+      class State.StateEvent {
+          + command()
+          + state()
+          ~ StateEvent()
+      }
+
+      class State.Store {
+          - commands$ : PublishSubject<String>
+          - counter : int
+          - middleware : Middleware<C>
+          - reducer : Reducer<C>
+          - state$ : PublishSubject<StateEvent>
+          - writer : Writer
+          + Store()
+          + getCommandStream()
+          + getEventStream()
+          + getState()
+          + poll()
+          + subscribe()
+          + update()
+      }
+
+
+      class State.StringCommand {
+          {static} - err : StringCommand
+          - obj : Object
+          - s : String
+          + StringCommand()
+          + StringCommand()
+          + errorCommand()
+          + getArg()
+          + name()
+          + toString()
+      }
+
+
+      interface State.TriFunction {
+          {abstract} + apply()
+      }
+
+  State.MiddlewareString .up.|> State.Middleware
+  State.MiddlewareString o-- System.Session.AlarmTimer : alarmTimerThread
+  State.MiddlewareString o-- System.Session.DoctorSessionThread : docSession
+  State.MiddlewareString o-- DataGenerator.DataThread : monitoring
+  State.ReducerString .up.|> State.Reducer
+  State.ReducerString +-down- State.ReducerString.NonExistentCommandException
+  State.State o-- Entities.Recovery : chosenRecovery
+  State.State o-- Entities.User : docAlarm
+  State.State o-- Entities.User : user
+  State.StateEvent o-- State.State : s
+  State.StateEvent o-- C : sc
+  State.Store o-- State.State : state
+  State.StringCommand .up.|> State.Command
+
+
+@enduml

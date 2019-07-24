@@ -10,7 +10,7 @@ import System.Sistema;
 public class HPComponent<C extends Command> extends Component {
     private FXMLLoader loader;
     private final Sistema sys = Sistema.getInstance();
-    public static final String HPTitle = "ER - HeadPhysician";
+    public static final String HPTitle = "SICURA - HeadPhysician";
 
     public HPComponent(HPInterface ui, HPController ctl) {
         this.loader = new FXMLLoader(getClass().getResource(ui.getFile()));

@@ -1,0 +1,274 @@
+@startuml
+
+title __ENTITIES's Class Diagram__\n
+
+      class Entities.Administration {
+          - date : Date
+          - dose : int
+          - hour : int
+          - id : int
+          - notes : String
+          + Administration()
+          + Administration()
+          + Administration()
+          + Administration()
+          + Administration()
+          + getDate()
+          + getDose()
+          + getHour()
+          + getId()
+          + getNotes()
+          + getPatient()
+          + getPrescription()
+          + setDate()
+          + setDose()
+          + setHour()
+          + setNotes()
+          + setPatient()
+          + setPrescription()
+          + toString()
+      }
+
+
+      interface Entities.Entry {
+      }
+
+
+      class Entities.Monitoring {
+          - date : Date
+          - diastolicPressure : int
+          - heartRate : int
+          - id : int
+          - systolicPressure : int
+          - temperature : double
+          + Monitoring()
+          + Monitoring()
+          + Monitoring()
+          + defaultMonitoring()
+          + getDate()
+          + getDiastolicPressure()
+          + getHeartRate()
+          + getId()
+          + getRecovery()
+          + getSystolicPressure()
+          + getTemperature()
+          + setDate()
+          + setDiastolicPressure()
+          + setHeartRate()
+          + setRecovery()
+          + setSystolicPressure()
+          + setTemperature()
+          + toString()
+      }
+
+
+      class Entities.Patient {
+          - administrations : List<Administration>
+          - birthDay : Date
+          - fiscalCode : String
+          - id : int
+          - name : String
+          - placeOfBirth : String
+          - recoveries : List<Recovery>
+          - surname : String
+          + Patient()
+          + Patient()
+          + addToAddministrations()
+          + admit()
+          + discharge()
+          + getActiveMonitorings()
+          + getActiveRecoveries()
+          + getAdministrations()
+          + getAllMonitorings()
+          + getAllRecoveries()
+          + getDateofBirth()
+          + getDischargedRecovery()
+          + getFiscalCode()
+          + getId()
+          + getName()
+          + getPlaceOfBirth()
+          + getSurname()
+          + isDischarged()
+          + isRecovered()
+          + isWaiting()
+          + setAdministrations()
+          + setDateofBirth()
+          + setFiscalCode()
+          + setName()
+          + setPlaceOfBirth()
+          + setRecoveries()
+          + setSurname()
+          + toString()
+          - addToRecoveries()
+      }
+
+
+      class Entities.Patient.MoreThanOneActiveRecoveryException {
+      }
+
+
+      enum PatientState {
+        DISCHARGED
+        RECOVERED
+        WAITING
+      }
+
+
+      class Entities.Prescription {
+          - administrations : List<Administration>
+          - dailyAdministrationCounter : HashMap<Tuple<String, String>, Integer>
+          - dailyDose : int
+          - date : Date
+          - doctor : String
+          - drug : String
+          - duration : int
+          - id : int
+          - totalNumberofDoses : int
+          + Prescription()
+          + Prescription()
+          + Prescription()
+          + Prescription()
+          + addAdministration()
+          + addToAdministrations()
+          + getAdministrationNumber()
+          + getAdministrations()
+          + getDailyAdministrationCounter()
+          + getDailyDose()
+          + getDate()
+          + getDoctor()
+          + getDrug()
+          + getDuration()
+          + getId()
+          + getRecovery()
+          + getTotalNumberofDoses()
+          + isAdministrable()
+          + setAdministrations()
+          + setDailyAdministrationCounter()
+          + setDailyDose()
+          + setDate()
+          + setDoctor()
+          + setDrug()
+          + setDuration()
+          + setRecovery()
+          + setTotalNumberofDoses()
+          + toString()
+          - isBefore()
+      }
+
+
+      class Entities.Recovery {
+          - diagnosis : String
+          - dischargeSummary : String
+          - endDate : Date
+          - id : int
+          - monitorings : List<Monitoring>
+          - prescriptions : List<Prescription>
+          - startDate : Date
+          + Recovery()
+          + Recovery()
+          + Recovery()
+          + Recovery()
+          + Recovery()
+          + Recovery()
+          + addToMonitorings()
+          + addToPrescriptions()
+          + discharge()
+          + discharge()
+          + evolveGenerator()
+          + generateMonitoring()
+          + getDiagnosis()
+          + getDischargeSummary()
+          + getEndDate()
+          + getId()
+          + getLastMonitoring()
+          + getMonitorings()
+          + getPatient()
+          + getPrescriptions()
+          + getStartDate()
+          + isActive()
+          + isDischarged()
+          + resetGenerator()
+          + setDiagnosis()
+          + setMonitorings()
+          + setPatient()
+          + setPrescriptions()
+          + setStartDate()
+          - setDischargeSummary()
+          - setEndDate()
+      }
+
+
+      class Entities.Recovery.PatientNotAdmittedException {
+      }
+
+
+      class Entities.Recovery.RecoveryNullFieldException {
+      }
+
+
+      enum RecoveryState {
+        ACTIVE
+        DISCHARGED
+      }
+
+
+      enum Role {
+        DOCTOR
+        HEAD_PHYSICIAN
+        NURSE
+      }
+
+
+      class Entities.User {
+          - id : int
+          - name : String
+          - password : String
+          - valid : boolean
+          + User()
+          + User()
+          + User()
+          + User()
+          + equals()
+          + getName()
+          + getPassword()
+          + getRole()
+          + isValid()
+          + setName()
+          + setPassword()
+          + setRole()
+          + setValid()
+          + toString()
+      }
+
+
+  Entities.Administration .up.|> Entities.Entry
+  Entities.Administration o-- Entities.Patient : patient
+  Entities.Administration o-- Entities.Prescription : prescription
+  Entities.Monitoring .up.|> Entities.Entry
+  Entities.Monitoring o-- Entities.Recovery : recovery
+  Entities.Patient .up.|> Entities.Entry
+  Entities.Patient o-- Entities.PatientState : patientState
+  Entities.Patient +-down- Entities.Patient.MoreThanOneActiveRecoveryException
+  Entities.Prescription .up.|> Entities.Entry
+  Entities.Prescription o-- Entities.Recovery : recovery
+  Entities.Recovery .up.|> Entities.Entry
+  Entities.Recovery o-- DataGenerator.BPGenerator : bpGenerator
+  Entities.Recovery o-- DataGenerator.HeartRateGenerator : heartRateGenerator
+  Entities.Recovery o-- Entities.Patient : patient
+  Entities.Recovery o-- Entities.Recovery.RecoveryState : recoveryState
+  Entities.Recovery o-- DataGenerator.TemperatureGenerator : temperatureGenerator
+  Entities.Recovery +-down- Entities.Recovery.PatientNotAdmittedException
+  Entities.Recovery +-down- Entities.Recovery.RecoveryNullFieldException
+  Entities.Recovery +-down- Entities.Recovery.RecoveryState
+  Entities.User .up.|> Entities.Entry
+  Entities.User o-- Entities.Role : role
+
+
+right footer
+
+
+PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+For more information about this tool, please contact philippe.mesmeur@gmail.com
+endfooter
+
+@enduml

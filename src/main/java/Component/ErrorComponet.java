@@ -9,7 +9,7 @@ import System.Sistema;
 public class ErrorComponet<C extends Command> extends Component {
     private FXMLLoader loader;
     private final Sistema sys = Sistema.getInstance();
-    public static final String ErrorTitle = "ER - Error";
+    public static final String ErrorTitle = "SICURA - Error";
 
     public ErrorComponet() {
         ErrorController errctl = new ErrorController(sys.getStore(), sys.getStore().getEventStream());

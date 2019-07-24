@@ -120,6 +120,7 @@ public class HPSController implements HPController {
     }
 
     @FXML protected void searchPatient() {
+        recoveryTable.getItems().removeAll(recoveryTable.getItems());
         this.updateRecoveries(searchPatient.getText());
         //this.searchPatient.clear();
     }

@@ -1,0 +1,120 @@
+@startuml
+
+title __INTERFACECONTROLLER's Class Diagram__\n
+
+      class InterfaceController.AlarmControlController {
+          ~ stream : Subject<StateEvent>
+          - dis : Disposable
+          - messageLabel : Label
+          - passField : PasswordField
+          - store : Store<StringCommand>
+          - userField : TextField
+          + AlarmControlController()
+          # login()
+      }
+
+
+      class InterfaceController.AlarmLoggedControlController {
+          - dis : Disposable
+          - messageLabel : Label
+          - store : Store<StringCommand>
+          - stream : Subject<StateEvent>
+          + AlarmLoggedControlController()
+          # login()
+      }
+
+
+      class InterfaceController.AlarmsController {
+          - store : Store<StringCommand>
+          + AlarmsController()
+          # aritmia()
+          # flutter()
+          # ipertensione()
+          # ipertermia()
+          # ipotensione()
+          # ipotermia()
+          # tachicardia()
+      }
+
+
+      class InterfaceController.ErrorController {
+          - areAlarmsActive : boolean
+          - dis : Disposable
+          - errorText : Label
+          - store : Store<StringCommand>
+          + ErrorController()
+          # close()
+      }
+
+
+      class InterfaceController.LoginController {
+          - passField : PasswordField
+          - store : Store<StringCommand>
+          - userField : TextField
+          + LoginController()
+          # buttonPressed()
+          # close()
+          # login()
+          # showSupport()
+          # startMonitoring()
+      }
+
+
+      class InterfaceController.MonitoringController {
+          - bed0 : Button
+          - bed1 : Button
+          - bed2 : Button
+          - bed3 : Button
+          - bed4 : Button
+          - bed5 : Button
+          - bed6 : Button
+          - bed7 : Button
+          - bed8 : Button
+          - bed9 : Button
+          - bedRooms : ArrayList<Button>
+          - bpGraphic : LineChart
+          - counterBP : int
+          - counterHR : int
+          - dbpLabel : Label
+          - dis : Disposable
+          - hrGraphic : LineChart
+          - hrLabel : Label
+          - nameLabel : Label
+          - recoveryId : int
+          - room : int
+          - roomLabel : Label
+          - sbpLabel : Label
+          - seriesD : Series
+          - seriesHR : Series
+          - seriesS : Series
+          - store : Store<StringCommand>
+          - stream : Subject<StateEvent>
+          - surnameLabel : Label
+          - table : TableView<Monitoring>
+          - tempLabel : Label
+          - temperatureColumn : TableColumn<Monitoring, String>
+          - xbpAxis : NumberAxis
+          - xhrAxis : NumberAxis
+          - ybpAxis : NumberAxis
+          - yhrAxis : NumberAxis
+          + MonitoringController()
+          + initialize()
+          # buttonPressed()
+          # clearInfo()
+          # close()
+          # login()
+          # setInfo()
+          # setRoomLabel()
+          # showAlarmController()
+          # showSupport()
+          # updateBed()
+      }
+
+  InterfaceController.AlarmControlController o-- System.Sistema : sys
+  InterfaceController.AlarmLoggedControlController o-- System.Sistema : sys
+  InterfaceController.AlarmsController o-- System.Sistema : sys
+  InterfaceController.ErrorController o-- System.Sistema : sys
+  InterfaceController.LoginController o-- System.Sistema : sys
+  InterfaceController.MonitoringController o-- System.Sistema : sys
+
+@enduml

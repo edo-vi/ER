@@ -10,7 +10,7 @@ import System.Sistema;
 public class NURComponent<C extends Command> extends Component {
     private FXMLLoader loader;
     private final Sistema sys = Sistema.getInstance();
-    public static final String NURTitle = "ER - Nurse";
+    public static final String NURTitle = "SICURA - Nurse";
 
     public NURComponent(NURInterface ui, NURController ctl) {
         this.loader = new FXMLLoader(getClass().getResource(ui.getFile()));

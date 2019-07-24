@@ -119,6 +119,7 @@ public class DOCSController implements DOCController {
     }
 
     @FXML protected void searchPatient() {
+        recoveryTable.getItems().removeAll(recoveryTable.getItems());
         this.updateRecoveries(searchPatient.getText());
         //this.searchPatient.clear();
     }
