@@ -101,7 +101,7 @@ public class NURDController implements NURController {
 
             @Override
             public String fromString(String string) {
-                return string;
+                return drugComboBox.getValue();
             }
         });
 
@@ -116,10 +116,14 @@ public class NURDController implements NURController {
         ObservableList<Patient> data = this.patientComboBox.getItems();
         List<Recovery> recoveries = state.getActiveRecoveries();
         int index = patientComboBox.getSelectionModel().getSelectedIndex();
+
+        String s = drugComboBox.getSelectionModel().getSelectedItem();
         data.removeAll(data);
+
         recoveries.forEach(r -> data.add(r.getPatient()));
         if(recoveries.size() > 0) {
             patientComboBox.getSelectionModel().select(index);
+            drugComboBox.getSelectionModel().select(s);
         } else {
             //todo it doesn't fucking work
             drugComboBox.setValue(null);
@@ -129,8 +133,11 @@ public class NURDController implements NURController {
     @FXML protected void updatePrescription() {
         ObservableList<String> data = this.drugComboBox.getItems();
         int index = drugComboBox.getSelectionModel().getSelectedIndex();
-        data.removeAll(data);
         Patient pat = patientComboBox.getSelectionModel().getSelectedItem();
+
+        String s = drugComboBox.getSelectionModel().getSelectedItem();
+        data.removeAll(data);
+
         if (pat != null) {
             pat.getActiveRecoveries().forEach(r -> r.getPrescriptions().forEach(p -> {
                 Tuple<String, String> drugToBeAdministrated = new Tuple<>(new java.sql.Date(new Date().getTime()).toString(), p.getDrug());
@@ -139,9 +146,10 @@ public class NURDController implements NURController {
             }));
             if (data.size() > 0) {
                 drugComboBox.getSelectionModel().select(index);
+                drugComboBox.getSelectionModel().select(s);
             } else {
                 //todo it doesn't fucking work
-                drugComboBox.setValue(null);
+                drugComboBox.getSelectionModel().selectFirst();
             }
         }
 
