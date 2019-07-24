@@ -122,6 +122,10 @@ public class HPMController implements HPController {
         }
     }
 
+    @FXML protected void createReport() {
+        store.update(new StringCommand("CREATE_PDF"));
+    }
+
     @FXML protected void showMonitoring() {
         store.update(new StringCommand("SHOW_MONITORING"));
         store.update(new StringCommand("START_MONITORING"));
