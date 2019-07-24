@@ -133,8 +133,6 @@ public class NURDController implements NURController {
         Patient pat = patientComboBox.getSelectionModel().getSelectedItem();
         if (pat != null) {
             pat.getActiveRecoveries().forEach(r -> r.getPrescriptions().forEach(p -> {
-                if(data.size() == 0)
-                    prescriptionOfThisAdm = p;
                 Tuple<String, String> drugToBeAdministrated = new Tuple<>(new java.sql.Date(new Date().getTime()).toString(), p.getDrug());
                 if(p.isAdministrable(drugToBeAdministrated))
                     data.add(p.getDrug());
@@ -240,6 +238,15 @@ public class NURDController implements NURController {
         String notes = (noteTextArea.getText().equals("")) ? "Nessuna" : noteTextArea.getText();
         noteTextArea.clear();
         Integer hour = new Integer(admDateValue.toString().substring(11, 13));
+
+        patientComboBox.getValue().getActiveRecoveries().forEach(r -> {
+            r.getPrescriptions().forEach(p-> {
+                if(p.getDrug().equals(drugComboBox.getValue())) {
+                    prescriptionOfThisAdm = p;
+                }
+            });
+        });
+
         Administration adm = new Administration(admDateValue, hour, prescriptionOfThisAdm.getDailyDose(), notes, patientComboBox.getValue(), prescriptionOfThisAdm);
         prescriptionOfThisAdm.addAdministration(new Tuple<>(new java.sql.Date(admDateValue.getTime()).toString(), drugComboBox.getValue()));
         store.update(new StringCommand("ADD_ADMINISTRATION", adm));
