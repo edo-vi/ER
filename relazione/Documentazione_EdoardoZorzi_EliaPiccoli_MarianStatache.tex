@@ -181,8 +181,11 @@ La scelta di design iniziale del sistema è stata fatta a tavolino tra tutti i me
 Dopo diverse discussioni e lavoro di gruppo e individuale si è deciso a grandi passi di adottare una architettura generalmente simile a quella adottata da alcuni frameworks di sviluppo web: un sistema centralizzato (\textit{repository}) di gestione e salvataggio dello stato che ad ogni modifica è propagato a tutta l'applicazione in ascolto e che si aggiorna in modo asincrono (\textit{observer pattern}); componenti decentralizzati, creati da \textit{factories} adoperate dal sistema centrale, che rappresentano singole finestre e che comprendono sia la \textit{view}, cioè quello che vede l'utente, sia la business logic (\textit{controller}) che determina come si reagisce alle diverse interazioni e modifiche dello stato centrale, oltre che ai dati (\textit{model}) ottenuti e aggiornati centralmente dal gestore dello stato --- \textit{pattern MVC}.
 
 Oltre a questo è stato spesso fatto uso della \textit{dependency injection} per garantire una maggiore modularità dei componenti e limitare la dipendenza da classi statiche e stato nascosto, spesso rischioso e prono ad errori.
- \textcolor{red!70!black}{***TODO (spiegazione del design dello stato, completa patterns)***} %TODO 
-
+ 
+\paragraph{Stato} Uno dei punti di forza del design di tale architettura è la gestione centralizzata dello stato che 
+viene mantenuto all'interno del sistema generale il quale mostra un interfaccia unica per il suo accesso e la sua modifica. In particolare, ogni sua manipolazione può avvenire  esclusivamente a seguito dell'invio di un comando al gestore, precedentemente inizializzato specificando l'insieme di tutti i comandi possibili e le diverse funzioni a loro associate. 
+In questo modo è necessario specificare, di volta in volta quando si va a costruire l'architettura in generale, quali sono le varie modifiche che potrebbero essere eseguite dai diversi componenti del sistema e l'interfaccia unica e comune con la quale si può andare ad eseguire tali.
+%TODO
 \begin{figure}\begin{center}
 		\begin{tikzpicture}[scale=1] \begin{umlseqdiag}
 		\umlobject[class= Controller, fill=blue!10!white ] {c1} 
@@ -196,6 +199,7 @@ Oltre a questo è stato spesso fatto uso della \textit{dependency injection} per 
 		\begin{umlcall}[op={\scriptsize{update(c: Command)}}, type=asynchron, dt=14] {c2}{s}\end{umlcall}
 		\begin{umlcallself}[op={\scriptsize{stato mutato}},dt=0.8]{s}
 		\begin{umlcall}[op={\scriptsize{onNext(se: StateEvent)}}, type=asynchron, dt=4]{s}{c1}
+	
 		\begin{umlcall}[op={\scriptsize{onNext(se: StateEvent)}}, type=asynchron , dt=0]{s}{c2}
 		\begin{umlcallself}[op={\scriptsize{f1(se)}}]{c1}	\end{umlcallself}
 		\begin{umlcallself}[op={\scriptsize{f2(se)}}]{c2}	\end{umlcallself}
@@ -204,9 +208,9 @@ Oltre a questo è stato spesso fatto uso della \textit{dependency injection} per 
 		\end{umlcall}
 		\end{umlcallself}
 		
-		\fill[white] (3.851,-4.59) -- (4.155,-4.59) -- (4.155,-4.62) -- (3.851, -4.62);
+		\fill[white] (3.851,-4.57) -- (4.155,-4.57) -- (4.155,-4.65) -- (3.851, -4.65);
 		
-		
+	
 		\end{umlseqdiag} \end{tikzpicture}
 	\end{center}
 	\caption{\textit{Sequence diagram} dell'interazione di due generici controllers con lo stato centralizzato gestito dallo Store. Dopo aver invocato in modo non bloccante \textit{subscribe()}, passandogli una funzione, qualsiasi \textit{update()} chiamato sullo store comporta una mutazione interna dello stato, sulla base del comando passato: il nuovo stato viene quindi propagato a tutti i controllori `sottoscritti' tramite \textit{onNext()}; la funzione precedentemente passata in \textit{subscribe} sarà quindi chiamata, all'interno di tutti i controllori, sul nuovo stato ricevuto dallo Store.  }
@@ -238,11 +242,13 @@ Oltre a questo è stato spesso fatto uso della \textit{dependency injection} per 
 		\begin{umlcall}[type=asynchron, op={\scriptsize{attiva listener}}, dt=4]{ci}{cc}\end{umlcall}
 		
 		\begin{umlcallself}[op={\scriptsize{aggiornamento}},dt=3]{cc}\end{umlcallself}
-		\begin{umlfragment} [ type=opt,inner xsep=9]
+		\begin{umlfragment} [ type=opt,
+inner xsep=9]
 		\begin{umlcall}[type=asynchron, op={\scriptsize{update(c: Command)}}, dt=6]{cc}{s}\end{umlcall}
 		%\begin{umlcall}[type=asynchron, dt=6, op={\scriptsize{onNext(se)}}]{s}{cc}\end{umlcall}	
 		\end{umlfragment}
-		\begin{umlfragment} [ type=opt,inner xsep=9]
+		\begin{umlfragment} [ type=opt,
+inner xsep=9]
 		\begin{umlcall}[type=asynchron, op={\scriptsize{components update}}, dt=8]{cc}{ci}\end{umlcall}
 		\begin{umlcall}[type=asynchron, op={\scriptsize{interfaccia aggiornata}}, dt=4]{ci}{a}\end{umlcall}
 		%\begin{umlcall}[type=asynchron, dt=6, op={\scriptsize{onNext(se)}}]{s}{cc}\end{umlcall}	
@@ -278,9 +284,6 @@ Oltre a questo è stato spesso fatto uso della \textit{dependency injection} per 
 	\end{center}\caption{\textit{Class diagram} che mostra la relazione tra InterfaceController e i vari oggetti che costituiscono la parte View-Controller dell'architettura \textit{MVC} dell'applicazione. }\label{ComponentClassDiagram}
 \end{figure}
 
-\subsection{Implementazione}
- Heila \textcolor{red!70!black}{***TODO***} %todo
- 
 \subsection{Validazione e verifica}
 Le operazioni di validazione e verifica sono state fondamentali per garantire che il progetto rispettasse la specifica e i requisiti, e che si comportasse in modo coerente e prevedibile, senza errori, a tutti gli input previsti e operazioni eseguibili degli utenti.
 
