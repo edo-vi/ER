@@ -133,7 +133,7 @@ public class DOCDController implements DOCController{
         Patient p = waitingPatients.getSelectionModel().getSelectedItem();
         if (p != null && !diagnosisTextField.getText().equals("")) {
             store.update(new StringCommand("TRY_ADMISSION", new Tuple<>(p, diagnosisTextField.getText())));
-        } else store.update(new StringCommand("ERROR", "Nessun paziente selezionato e/o il campo:\n\t>'Diagnosi'\nè obbligatorio."));
+        } else store.update(new StringCommand("ERROR", "Nessun paziente selezionato e/o il campo\n'Diagnosi' è obbligatorio."));
         diagnosisTextField.clear();
     }
 
