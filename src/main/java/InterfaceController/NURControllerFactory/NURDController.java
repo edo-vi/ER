@@ -76,7 +76,7 @@ public class NURDController implements NURController {
         });
     }
 
-     @FXML protected void initialize() {
+    @FXML protected void initialize() {
         patientComboBox.setConverter(new StringConverter<Patient>() {
             @Override
             public String toString(Patient patient) {
@@ -92,7 +92,7 @@ public class NURDController implements NURController {
                 }
                 return null;
             }
-         });
+        });
         drugComboBox.setConverter(new StringConverter<String>() {
             @Override
             public String toString(String object) {
@@ -101,7 +101,7 @@ public class NURDController implements NURController {
 
             @Override
             public String fromString(String string) {
-                return drugComboBox.getValue();
+                return string;
             }
         });
 
@@ -110,34 +110,27 @@ public class NURDController implements NURController {
         setPatientLabel(patientComboBox.getValue());
         updatePrescription();
         setAdministrationLabel(drugComboBox.getValue());
-     }
+    }
 
-     @FXML protected void updatePatient(State state) {
+    @FXML protected void updatePatient(State state) {
         ObservableList<Patient> data = this.patientComboBox.getItems();
         List<Recovery> recoveries = state.getActiveRecoveries();
         int index = patientComboBox.getSelectionModel().getSelectedIndex();
-
-        String s = drugComboBox.getSelectionModel().getSelectedItem();
         data.removeAll(data);
-
         recoveries.forEach(r -> data.add(r.getPatient()));
         if(recoveries.size() > 0) {
             patientComboBox.getSelectionModel().select(index);
-            drugComboBox.getSelectionModel().select(s);
         } else {
             //todo it doesn't fucking work
             drugComboBox.setValue(null);
         }
-     }
+    }
 
     @FXML protected void updatePrescription() {
         ObservableList<String> data = this.drugComboBox.getItems();
         int index = drugComboBox.getSelectionModel().getSelectedIndex();
-        Patient pat = patientComboBox.getSelectionModel().getSelectedItem();
-
-        String s = drugComboBox.getSelectionModel().getSelectedItem();
         data.removeAll(data);
-
+        Patient pat = patientComboBox.getSelectionModel().getSelectedItem();
         if (pat != null) {
             pat.getActiveRecoveries().forEach(r -> r.getPrescriptions().forEach(p -> {
                 Tuple<String, String> drugToBeAdministrated = new Tuple<>(new java.sql.Date(new Date().getTime()).toString(), p.getDrug());
@@ -146,10 +139,9 @@ public class NURDController implements NURController {
             }));
             if (data.size() > 0) {
                 drugComboBox.getSelectionModel().select(index);
-                drugComboBox.getSelectionModel().select(s);
             } else {
                 //todo it doesn't fucking work
-                drugComboBox.getSelectionModel().selectFirst();
+                drugComboBox.setValue(null);
             }
         }
 

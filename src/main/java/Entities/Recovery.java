@@ -90,7 +90,8 @@ public class Recovery implements Entry {
     public Monitoring getLastMonitoring() {
         if (this.monitorings.size() == 0) {
             System.out.println("*** Recovery: trying to get the last monitoring when the array is empty ***");
-            return new Monitoring().defaultMonitoring();
+            this.addToMonitorings(new Monitoring().defaultMonitoring());
+            new Monitoring().defaultMonitoring();
         }
         return this.monitorings.get(this.monitorings.size()-1);
     }

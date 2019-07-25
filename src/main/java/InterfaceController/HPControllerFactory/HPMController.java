@@ -120,7 +120,7 @@ public class HPMController implements HPController {
             ObservableList<Administration> data2 = tableAdministrations.getItems();
             data2.removeAll(data2);
             administrations.forEach(a -> {
-                if(a.getDate().after(new Date(new Date().getTime() - 2*24*60*60*1000)))
+                if(a.getDate().after(new Date(new Date().getTime() - 3*24*60*60*1000)))
                     data2.add(a);
             });
         }

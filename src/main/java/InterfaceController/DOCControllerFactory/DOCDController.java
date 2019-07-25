@@ -56,8 +56,10 @@ public class DOCDController implements DOCController{
                 store.update(new StringCommand("ERROR", "Impossibile ospitare più di 10 pazienti\nall'interno della struttura."));
             if(command.equals("COULD_NOT_ADMIT_A_PATIENT_EXC"))
                 store.update(new StringCommand("ERROR", "System Error.\nUnlucky."));
-            if (command.equals("PATIENT_SUCCESSFULLY_ADMITTED"))
+            if (command.equals("PATIENT_SUCCESSFULLY_ADMITTED")) {
+                setLabels(null);
                 selectedRow = 0;
+            }
             if(!command.equals("GENERATE_BP") && !command.equals("GENERATE_HEART_RATE") && !command.equals("GENERATE_TEMPERATURE")) {
                 Platform.runLater(() -> nameLabel.setText("Dr. " + se.state().getUser().toString()));
                 initialize(se.state());
@@ -93,7 +95,7 @@ public class DOCDController implements DOCController{
                 if (event.getClickCount() == 1 && (! row.isEmpty()) ) {
                     Patient rowData = row.getItem();
                     setLabels(rowData);
-                    selectedRow = row.getIndex();
+                    selectedRow = row.getIndex(); 
                 }
             });
             return row;
@@ -133,8 +135,12 @@ public class DOCDController implements DOCController{
         Patient p = waitingPatients.getSelectionModel().getSelectedItem();
         if (p != null && !diagnosisTextField.getText().equals("")) {
             store.update(new StringCommand("TRY_ADMISSION", new Tuple<>(p, diagnosisTextField.getText())));
-        } else store.update(new StringCommand("ERROR", "Nessun paziente selezionato e/o il campo\n'Diagnosi' è obbligatorio."));
+        }
+        else {
+            store.update(new StringCommand("ERROR", "Nessun paziente selezionato e/o il campo\n'Diagnosi' è obbligatorio."));
+        }
         diagnosisTextField.clear();
+
     }
 
     @FXML protected void addPrescription() {
