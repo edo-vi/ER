@@ -84,9 +84,9 @@ Di seguito parte dei casi d'uso utilizzati, aggregati per chiarezza nei vari ute
 \additemizedfield{Passi}{
 	\item Nella propria dashboard seleziona la finestra per visualizzare i dati delle ultime due ore
 	\item Seleziona da un menù a tendina il paziente 
-	\item Visualizza nella schermata i dati sui parametri vitali delle ultime due ore e le somministrazioni delle ultime due settimane. Eventualmente può stampare tali report cliccando su un pulsante che genera un documento pdf
+	\item Visualizza nella schermata i dati sui parametri vitali delle ultime due ore e le somministrazioni degli ultimi due giorni. Eventualmente può stampare un report sul paziente cliccando su un pulsante che genera un documento pdf
 }
-\addfield{Postcondizioni:}{Vengono visualizzati i dati sui parametri vitali e somministrazioni. Se il primario ha premuto il bottone per stamparli, viene generato un documento pdf con i dati dei pazienti dell'ultima settimana}
+\addfield{Postcondizioni:}{Vengono visualizzati i dati sui parametri vitali e somministrazioni. Se il primario ha premuto il bottone per stampare il report degli ultimi sette giorni, viene generato un documento pdf con i dati richiesti}
 
 \end{usecase}
 
@@ -177,6 +177,48 @@ Di seguito parte dei casi d'uso utilizzati, aggregati per chiarezza nei vari ute
 	
 \end{usecase}
 
+\begin{figure}[t]
+	\begin{tikzpicture}
+	\begin{umlsystem}[x=0, fill=red!5]{Casi d'uso}
+	\umlusecase[x=1, y=-2.45]{Inserisce dati anagrafici del paziente}
+	\umlusecase[ x=.95, y=-1]{Inserisce dati somministrazione}
+	\umlusecase[x=4.8, ]{Inserisce note stato paziente}
+	\umlusecase[y=-6.5, x =2.6]{Visualizza dati paziente (ultime due ore)}
+	\umlusecase[x=5, y=-5.3]{Inserisce diagnosi d'ingresso}
+	\umlusecase[x=5.7, y=-4.2]{Aggiunge prescrizioni}
+	\umlusecase[x=6.3,  y=-7.5]{Spegne allarmi}
+	\umlusecase[x=.6, y=-9.4]{Visualizza/stampa reports pazienti}
+	\umlusecase[x=0, y=-10.8]{Compila lettera di dimissioni}
+	\end{umlsystem}
+	
+	\umlactor[x=-5.5, y=-1.6]{Infermiere}
+	\umlactor[x=-5.5, y=-9.7]{Primario}
+	\umlactor[x=10.4, y=-5.7]{Medico}
+	
+	\umlassoc{Infermiere}{usecase-1}
+	\umlassoc{Infermiere}{usecase-2}
+	\umlassoc{Infermiere}{usecase-4}
+	
+	\umlassoc{Medico}{usecase-4}
+	\umlassoc{Medico}{usecase-5}
+	\umlassoc{Medico}{usecase-6}
+	\umlassoc{Medico}{usecase-7}
+	
+	\umlassoc{Primario}{usecase-4}
+	\umlassoc{Primario}{usecase-8}
+	\umlassoc{Primario}{usecase-9}
+	\umlVHinclude{usecase-1}{usecase-5}
+	%\umlassoc{subuser}{usecase-3}
+	%\umlassoc{admin}{usecase-5}
+	%\umlassoc{admin}{usecase-6}
+	\umlinclude{usecase-2}{usecase-6}
+	\node at(4.1, -3.35) {$\ll$include$\gg$};
+	\umlVHextend{usecase-3}{usecase-2}
+	%\umlinclude[name=incl]{usecase-3}{usecase-4}
+	%
+	%\umlnote[x=7, y=-7]{incl-1}{note on include dependency}
+	\end{tikzpicture}\caption{Diagramma UML dei casi d'uso del sistema.}\label{useDiagram}
+\end{figure}
 \subsection{Design del sistema}
 La scelta di design iniziale del sistema è stata fatta a tavolino tra tutti i membri del team prima di implementare qualsiasi funzionalità. Dopo aver letto attentamente la specifica e aver redatto lo schema dei casi d'uso, provvisorio, si sono discussi diversi possibili approcci e in particolare si è cercato di determinare se e quali \textit{design patterns} fossero i più adatti da usare al fine di costruire il sistema generale. 
 
@@ -250,15 +292,15 @@ In generale, scelta è stata guidata e ispirata dai sistemi web dove è presente u
  Come si può notare Paziente è collegato tramite una relazione 1-N sia con Somministrazioni, che con Ricovero. A primo impatto si nota subito come la prima non sia necessaria in quanto, tramite le diverse relazioni, si riesce a collegare perfettamente il paziente con le sue somministrazioni (Paziente $\rightarrow$ Ricovero $\rightarrow$ Prescrizioni $\rightarrow$ Somministrazioni). Si è però deciso di aggiungere questa relazione tra le due entità in quanto spesso, all'interno del software, viene richiesta l'informazione di un determinato Paziente e le sue Somministrazioni, senza che sia necessario avere informazioni relative al Ricovero e/o Prescrizioni. Il team ha deciso di evitare tre JOIN concatenati, fornendo più semplicemente un rifermento al Paziente all'interno della Somministrazione, in modo tale da ottenere le informazioni necessarie con il minimo uso di risorse.
  Successivamente è stato creato lo schema Logico sulla base dello schema E/R, rispettando le regole di transizione tra i due schemi. Una volta controllate le forme normali dello schema, si è proseguito con l'implementazione del Database in modo tale che le diverse tabelle rispettassero quanto riportato all'interno della tabella \ref{entitiesTable}.
  
- \paragraph{\textbf{Generazione di dati e allarmi}} Per quanto riguarda la generazione dei dati relativi al monitoraggio dei diversi pazienti ricoverati, è stato scelto di creare dei processi attivi in background dedicati a questo compito. Nel software sono presenti tre diversi generatori, uno per ogni gruppo di dati (battito cardiaco, pressione sanguinea, temperatura). Per l'implementazione si è optato di utilizzare delle distribuzioni Gaussiane, dove la media e varianza è stata calibrata rispetto ai dati segnalati dalla Dott.ssa De Carli durante l'incontro. 
+ \paragraph{\textbf{Generazione di dati e allarmi}} Per quanto riguarda la generazione dei dati relativi al monitoraggio dei diversi pazienti ricoverati, è stato scelto di creare dei processi attivi in background dedicati a questo compito. Nel software sono presenti tre diversi generatori, uno per ogni gruppo di dati (battito cardiaco, pressione sanguigna, temperatura). Per l'implementazione si è optato di utilizzare delle distribuzioni Gaussiane, dove la media e varianza è stata calibrata rispetto ai dati segnalati dalla Dott.ssa De Carli durante l'incontro. 
  
  I generatori, a regime normale, generano dati all'interno di intervalli accettabili per i segnali vitali di un paziente ricoverato in terapia intensiva. Una volta che viene richiesta la generazione di un allarme i generatori evolvono cambiando media e varianza della distribuzione, in questo modo verranno generati dati che non rispettano gli standard di valori accettabili. I valori rimangono fuori dalla norma fintanto che l'allarme è attivo, una volta disattivato o scaduto viene traslata la curva gaussiana entro i range di dati accettabili.
  
- \paragraph{\textbf{Design dei componenti e controllori}} Il software ha una classe \textit{singleton} Sistema, la quale rappresenta il core del programma, che gestisce le interfacce del sistema, lo stato centralizzato e fa da ponta con il database.
- Durante il bootstrapping del software viene creata l'istanza della classe Sistema; in questo passaggio la classe va a settare lo stato iniziare dei diversi elementi che ne sono alla base e permettono l'esecuzione del programma. Nello specifico quando si va a creare l'unica istanza vengono eseguiti diversi passaggi rispettando l'ordine specificato nel sequence diagram in figura \ref{bootstrapping}.
+ \paragraph{\textbf{Design dei componenti e controllori}} Il software ha una classe \textit{singleton} Sistema, la quale rappresenta il core del programma, che gestisce le interfacce del sistema, lo stato centralizzato e fa da ponte con il database.
+ Durante il bootstrapping del software viene creata l'istanza della classe Sistema; in questo passaggio la classe va a settare lo stato iniziale dei diversi elementi che ne sono alla base e permettono l'esecuzione del programma. Nello specifico quando si va a creare l'unica istanza vengono eseguiti diversi passaggi rispettando l'ordine specificato nel sequence diagram in figura \ref{bootstrapping}.
  
  In un primo momento viene creata un'istanza di Store, al quale vengono associati gli handler ai diversi comandi di update dello stato, e una di InterfacesController, al quale verrà dato il compito di gestire l'evoluzione delle interfacce durante la vita del software. Una volta finita questa fase viene inviato il comando di LOAD, quest'ultimo viene gestito dallo Store caricando da database tutti i dati in esso contenuti e inizializzando cosi lo State iniziale del software. Ultimo, non per importanza, viene popolata la pool di interfacce gestite da InterfacesController, associando una stringa a una determinata interfaccia. Tramite questo controllore il sistema può decidere a seconda della sua evoluzione quale interfaccia caricare semplicemente inviando un messaggio di update. 
- Le interfacce come anche i controllori, per quanto riguarda i tre diversi utenti all'interno del sistema, vengono istanziate e ottenute tramite le sei factory presenti all'interno del sistema. Infatti nel software sono presenti diverse factory, tre dedicate al caricamento dei component e altrettante dedicate al caricamento dei controllori delle interfacce, seguendo la struttura indicata in figura \ref{ComponentClassDiagram} (semplificato aggregando le diverse factory).
+ Le interfacce, come anche i controllori, per quanto riguarda i tre diversi utenti all'interno del sistema, vengono istanziate e ottenute tramite le sei factory presenti all'interno del sistema. Infatti nel software sono presenti diverse factory, tre dedicate al caricamento dei component e altrettante dedicate al caricamento dei controllori delle interfacce, seguendo la struttura indicata in figura \ref{ComponentClassDiagram} (semplificato aggregando le diverse factory).
  Terminato questo processo il Sistema è stato correttamente istanziato e portato allo stato iniziale dal quale potrà poi evolvere a seconda delle richieste da parte dell'utente.
  \begin{figure}[t]
 	\begin{center}
@@ -329,10 +371,10 @@ In generale, scelta è stata guidata e ispirata dai sistemi web dove è presente u
 
 Le istanze di component e controller interagiscono tra loro a seconda degli eventi generati da azioni da parte dello user (figura \ref{interactioncomponents}). Nello specifico, i vari componenti dell'interfaccia sono mappati tramite degli id dal controllore; quando lo user interagisce con l'interfaccia attiva un determinato componente che invoca il suo EventHandler. Quest'ultimo una volta aggiorna internamente l'interfaccia evolvendo eventuali campi e informazioni, e successivamente se necessario invia un comando di update allo Store che gli era stato iniettato durante la fase di creazione del component. Il controller dell'interfaccia rimane poi in ascolto di eventuali messaggi di update dello State e/o utilizzi degli elementi presenti nell'interfaccia, che nel caso in cui vanno a variare i dati correntemente attivi e salvati, aggiorna di conseguenza l'interfaccia mostrando all'utente, tramite il pattern Observer, un update in tempo reale.
  
-\paragraph{\textbf{Stato}} Uno dei punti di forza del design di tale architettura è la gestione centralizzata dello stato che viene mantenuto all'interno del sistema generale il quale mostra un interfaccia unica per il suo accesso e la sua modifica. In particolare, ogni sua manipolazione può avvenire esclusivamente a seguito dell'invio di un comando al gestore, precedentemente inizializzato specificando l'insieme di tutti i comandi possibili e le diverse funzioni a loro associate. 
-In questo modo è necessario specificare, di volta in volta, quando si va a costruire l'architettura in generale, quali sono le varie modifiche che potrebbero essere eseguite dai diversi componenti del sistema e l'interfaccia unica e comune --- i comandi --- che deve essere usata a tal fine. In questo modo si evita il problema di modifiche ´nascoste' dello stato che porta spesso ad errori quando diviene difficile determinare da chi, e dove, sono state eseguite modifiche.
+\paragraph{\textbf{Stato}} Uno dei punti di forza del design di tale architettura è la gestione centralizzata dello stato che viene mantenuto all'interno del sistema generale il quale mostra un interfaccia unica per il suo accesso e la sua modifica. In particolare, ogni sua manipolazione può avvenire esclusivamente a seguito dell'invio di un comando al gestore, precedentemente inizializzato, specificando l'insieme di tutti i comandi possibili e le diverse funzioni a loro associate. 
+In questo modo è necessario specificare, durante il design dell'architettura, quali sono le varie modifiche che potrebbero essere eseguite dai diversi componenti del sistema e l'interfaccia unica e comune --- i comandi --- che deve essere usata a tal fine. In questo modo si evita il problema di modifiche ´nascoste' dello stato che porta spesso ad errori quando diviene difficile determinare da chi, e dove, sono state eseguite modifiche.
 
-Altro punto di forza del design è la propagazione asincrona delle modifiche a tutti i \textit{subscribers}, secondo il pattern \textit{observer}: una volta instanziato lo Store da parte del SIstema i vari controllori si sottoscrivono ad esso, passandogli una funzione, che verrà richiamata asincronicamente ad ogni cambiamento di stato: questo permette, oltre ad una semplificazione della struttura dell'architettura, non dipendente da chiamate bloccanti a metodi specifici dello Store, di creare interfacce reattive che si aggiornano in tempo reale. Questa astrazione inoltre riduce la complessità associata alla gestione dei dati del sistema che altrimenti dovrebbero essere propagata in diversi stadi ai vari componenti: questo approccio è molto fragile e prono ad errori dato che spesso porta a diversi livelli di aggiornamento dei dati consegnati ai vari componenti che quindi si trovano in uno stato inconsistente; utilizzando il sistema centralizzato con interfaccia a priori determinata, si evita questo problema. Si veda figura \ref{stateinteractions}.
+Altro punto di forza del design è la propagazione asincrona delle modifiche a tutti i \textit{subscribers}, secondo il pattern \textit{observer}: una volta instanziato lo Store da parte del Sistema i vari controllori si sottoscrivono ad esso, passandogli una funzione, che verrà richiamata asincronicamente ad ogni cambiamento di stato: questo permette, oltre ad una semplificazione della struttura dell'architettura, non dipendente da chiamate bloccanti a metodi specifici dello Store, di creare interfacce reattive che si aggiornano in tempo reale. Questa astrazione inoltre riduce la complessità associata alla gestione dei dati del sistema che altrimenti dovrebbero essere propagati in diversi stadi ai vari componenti: questo approccio è molto fragile e prono ad errori dato che spesso porta a diversi livelli di aggiornamento dei dati consegnati ai vari componenti che quindi si trovano in uno stato inconsistente; utilizzando il sistema centralizzato con interfaccia a priori determinata, si evita questo problema. Si veda figura \ref{stateinteractions}.
 
 
 \begin{figure}\begin{center}
@@ -373,7 +415,7 @@ Le operazioni di validazione e verifica sono state fondamentali per garantire ch
 Questo è stato soprattutto importante dopo l'implementazione delle funzionalità di ogni utente: data la non modesta quantità di funzioni da mettere a disposizione e dati da considerare/manipolare in molti casi il check di verifica eseguito successivamente ha messo alla luce rilevanti criticità e importanti modifiche da implementare. 
 Oltre a queste verifiche periodiche si è anche eseguito un controllo finale, al ridosso della scadenza, per validare il sistema nel suo complesso e cercare di individuare eventuali omissioni e elementi non completamente rispettosi della specifica e dei requisiti.
 \paragraph{\textbf{Verifica}} Molto importante è stata anche la verifica della correttezza del programma che data la sua non banale complessità ha mostrato spesso comportamenti sbagliati in fase di programmazione. A tal fine si è deciso di operare nel seguente modo: \begin{itemize}
-	\item una fase di \textit{development testing} utilizzando \textit{unit tests} per tutte quelle classi e aree di più facile testabilità automatica: quelle meno dipendenti dagli input specifici dell'utente, eseguite dall'interfaccia grafica, e dall'integrazione con altri oggetti del sistema. Essi sono stati eseguiti affindandosi ad una libreria esterna, \textit{JUnit4}, e sono stati principalmente usati per verificare il comportamento della classe \textit{Sistema}, il `bootstrapper' del programma, del gestore centralizzato dello stato, di implementazione interna complessa, e delle diverse entità (vedi figura \ref{entitiesTable}) che lo costituiscono le quali hanno richiesto particolare attenzione soprattutto  in termini di gestione del loro stato interno e delle sue mutazioni, che se avvenisse in modo sbagliato provocherebbe errori di alta severità: pazienti con più ricoveri attivi, in uno stato non ben definito (non \textit{in attesa}/\textit{ricoverato}/\textit{dimesso}), somministrazioni non associate a prescrizioni etc. 
+	\item una fase di \textit{development testing} utilizzando \textit{unit tests} per tutte quelle classi e aree di più facile testabilità automatica: quelle meno dipendenti dagli input specifici dell'utente, eseguite dall'interfaccia grafica, e dall'integrazione con altri oggetti del sistema. Essi sono stati eseguiti affindandosi ad una libreria esterna, \textit{JUnit4}, e sono stati principalmente usati per verificare il comportamento della classe \textit{Sistema}, il `bootstrapper' del programma, del gestore centralizzato dello stato, di implementazione interna complessa, e delle diverse entità (vedi figura \ref{entitiesTable}) che lo costituiscono, le quali hanno richiesto particolare attenzione soprattutto  in termini di gestione del loro stato interno e delle sue mutazioni, che se avvenisse in modo sbagliato provocherebbe errori di alta severità: pazienti con più ricoveri attivi, in uno stato non ben definito (non \textit{in attesa}/\textit{ricoverato}/\textit{dimesso}), somministrazioni non associate a prescrizioni etc. 
 	\item una fase di \textit{release testing} dove si è cercato di testare tutti i comportamenti possibili degli utenti finali simulando diverse casistiche e flow di lavoro per verificare che il sistema gestisse correttamente gli input. In particolare si è testato il corretto comportamento di tutti i pulsanti e dei menù e si è verificato che le diverse entità, consistenti lo stato del sistema, fossero correttamente gestite, manipolate, e visualizzate nelle diverse view degli utenti. Questo tipo di test è stato eseguito a parte da tutti i membri del team cercando di simulare il comportamento di un soggetto non tecnico.
 	\item una fase di \textit{user testing} dove si è fatto testare il software ad un soggetto di media/moderata abilità informatica per verificare l'usabilità del programma di fronte ad input reali e sostanzialmente conformi a quelli che ci si aspetta da soggetti normali che utilizzerebbero in modo coerente il programma. Questa fase è stata molto utile per implementare piccole migliorie all'usabilità del programma come ad esempio un ritocco del comportamento dei menù a tendina, modifiche ad alcune tabelle --- al fine di includere dati differenti o formattati diversamente --- e anche lievi cambiamenti alla struttura e disposizione degli elementi dell'interfaccia grafica (tipo rendere alcuni pulsanti non attivi, cambiare alcune grafiche etc.). 
 \end{itemize}
@@ -407,50 +449,9 @@ Infatti, sia per quanto riguarda un potenziale completamento del software, per p
 
 Esempi di interventi che dovremo effettuare al fine di rendere operativo il software sul campo, sono il completamento dell'algoritmo del calcolo del codice fiscale, che per ora non tiene conto del luogo di nascita, oppure la stabilizzazione della visualizzazione dei grafici di monitoraggio, o ancora, il perfezionamento della ricerca delle cartelle cliniche.
 L'organizzazione, quindi, distingue nettamente le parti che si occupano del database, quelle del sistema di controllo, e le componenti prettamente grafiche, tramite opportuna suddivisione in sorgenti e package. Si individua, così, in modo rapido il luogo di intervento per eventuali modifiche o risoluzioni di bug.
+
 \section{Specifica}
 
-\begin{figure}[b]
-\begin{tikzpicture}
-\begin{umlsystem}[x=0, fill=red!5]{Casi d'uso}
-\umlusecase[x=1, y=-2.45]{Inserisce dati anagrafici del paziente}
-\umlusecase[ x=.95, y=-1]{Inserisce dati somministrazione}
-\umlusecase[x=4.8, ]{Inserisce note stato paziente}
-\umlusecase[y=-6.5, x =2.6]{Visualizza dati paziente (ultime due ore)}
-\umlusecase[x=5, y=-5.3]{Inserisce diagnosi d'ingresso}
-\umlusecase[x=5.7, y=-4.2]{Aggiunge prescrizioni}
-\umlusecase[x=6.3,  y=-7.5]{Spegne allarmi}
-\umlusecase[x=.6, y=-9.4]{Visualizza/stampa reports pazienti}
-\umlusecase[x=0, y=-10.8]{Compila lettera di dimissioni}
-\end{umlsystem}
-
-\umlactor[x=-5.5, y=-1.6]{Infermiere}
-\umlactor[x=-5.5, y=-9.7]{Primario}
-\umlactor[x=10.4, y=-5.7]{Medico}
-
-\umlassoc{Infermiere}{usecase-1}
-\umlassoc{Infermiere}{usecase-2}
-\umlassoc{Infermiere}{usecase-4}
-
-\umlassoc{Medico}{usecase-4}
-\umlassoc{Medico}{usecase-5}
-\umlassoc{Medico}{usecase-6}
-\umlassoc{Medico}{usecase-7}
-
-\umlassoc{Primario}{usecase-4}
-\umlassoc{Primario}{usecase-8}
-\umlassoc{Primario}{usecase-9}
-\umlVHinclude{usecase-1}{usecase-5}
-%\umlassoc{subuser}{usecase-3}
-%\umlassoc{admin}{usecase-5}
-%\umlassoc{admin}{usecase-6}
-\umlinclude{usecase-2}{usecase-6}
-\node at(4.1, -3.35) {$\ll$include$\gg$};
-\umlVHextend{usecase-3}{usecase-2}
-%\umlinclude[name=incl]{usecase-3}{usecase-4}
-%
-%\umlnote[x=7, y=-7]{incl-1}{note on include dependency}
-\end{tikzpicture}\caption{Diagramma UML dei casi d'uso del sistema.}\label{useDiagram}
-\end{figure}
 \begin{figure}[b]
 	\begin{tikzpicture} [scale=.92]
 	\umlstateinitial[ name=A, x=8, y=0];
