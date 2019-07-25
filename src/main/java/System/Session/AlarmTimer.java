@@ -32,6 +32,15 @@ public class AlarmTimer extends Thread {
         this.timerTask.scheduleAtFixedRate(alarmThread, alarmLifeTime, alarmLifeTime);
     }
 
+    public void changeLevel(int newLevel) {
+        alarmLevel = newLevel;
+        if(newLevel == 3)
+            this.alarmLifeTime = 30*1000;
+        else if(newLevel == 2)
+            this.alarmLifeTime = 60*1000;
+        else this.alarmLifeTime = 90*1000;
+    }
+
     public void alarmDeactivated() {
         alarmThread.cancel();
         run = false;
@@ -40,6 +49,7 @@ public class AlarmTimer extends Thread {
     public void restart() {
         if (!run)
             run = true;
+        alarmThread.cancel();
         start();
     }
 

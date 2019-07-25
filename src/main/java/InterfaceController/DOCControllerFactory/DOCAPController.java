@@ -99,12 +99,14 @@ public class DOCAPController implements DOCController {
         data.removeAll(data);
         data.addAll(state.getPatients().stream().filter(Patient::isRecovered).collect(Collectors.toList()));
 
-        setSelectedPatient(pat.orElse(null));
+        if(data.size() == 0)
+            setSelectedPatient(null);
+        else setSelectedPatient(pat.orElse(null));
     }
 
     @FXML protected void fillPatientsMantainSelection(State state) {
         fillPatients(state);
-        if (selectedPatient.isPresent() && patientComboBox.getItems().contains(selectedPatient.get())) {
+        if (patientComboBox.getItems().size() > 0 && selectedPatient.isPresent() && patientComboBox.getItems().contains(selectedPatient.get())) {
             setSelectedPatient(selectedPatient.get());
         } else {
             setSelectedPatient(null);

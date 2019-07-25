@@ -25,6 +25,7 @@ import javafx.scene.control.TableView;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 
+import java.util.Date;
 import java.util.List;
 
 public class DOCMController implements DOCController {
@@ -119,7 +120,10 @@ public class DOCMController implements DOCController {
 
             ObservableList<Administration> data2 = tableAdministrations.getItems();
             data2.removeAll(data2);
-            data2.addAll(administrations);
+            administrations.forEach(a -> {
+                if(a.getDate().after(new Date(new Date().getTime() - 2*24*60*60*1000)))
+                    data2.add(a);
+            });
         }
     }
 

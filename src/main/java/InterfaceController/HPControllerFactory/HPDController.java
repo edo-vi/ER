@@ -17,6 +17,7 @@ import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -38,6 +39,7 @@ public class HPDController implements HPController{
     @FXML private TextArea dischargeText;
     @FXML private ComboBox<Recovery> patientsChoice = new ComboBox<Recovery>();
     @FXML private Label nameLabel;
+    @FXML private Button dischargeButton;
     private Disposable dis;
 
     public HPDController(Store<StringCommand> store, Subject<StateEvent> stream) {
@@ -115,6 +117,7 @@ public class HPDController implements HPController{
             patientRecoveryStartDate.setText(r.getStartDate().toString());
             patientRecoveryEndDate.setText(new java.sql.Date(Calendar.getInstance().getTime().getTime()).toString());
             patientRecoveryReasons.setText(r.getDiagnosis());
+            dischargeButton.setDisable(false);
         } else {
             patientName.setText("");
             patientSurname.setText("");
@@ -123,6 +126,7 @@ public class HPDController implements HPController{
             patientRecoveryStartDate.setText("");
             patientRecoveryEndDate.setText("");
             patientRecoveryReasons.setText("");
+            dischargeButton.setDisable(true);
         }
 
 
@@ -137,7 +141,7 @@ public class HPDController implements HPController{
     @FXML protected void discharge() {
         String dt = dischargeText.getText();
         dischargeText.clear();
-        if (dt != null && !dt.equals("")) {
+        if (dt != null && !dt.equals("") && patientsChoice.getValue() != null) {
             store.update(new StringCommand("DISCHARGE_PATIENT", new Tuple<>(this.patientsChoice.getValue(), dt)));
             store.update(new StringCommand("ERROR", "Paziente dimesso."));
         } else store.update(new StringCommand("ERROR", "Il campo: 'Diagnosi di dimissione' è obbligatorio."));

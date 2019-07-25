@@ -74,7 +74,7 @@
                   <Label fx:id="patientRecoveryStartDate" layoutX="210.0" layoutY="397.0" style="-fx-font-size: 20; -fx-text-fill: #B0C4DE;" text="" AnchorPane.leftAnchor="210.0" AnchorPane.topAnchor="397.0" />
                   <Label fx:id="patientRecoveryReasons" layoutX="210.0" layoutY="437.0" style="-fx-font-size: 20; -fx-text-fill: #B0C4DE;" text="" AnchorPane.leftAnchor="210.0" AnchorPane.topAnchor="437.0" />
                   <Label fx:id="patientRecoveryEndDate" layoutX="250.0" layoutY="497.0" style="-fx-font-size: 20; -fx-text-fill: #B0C4DE;" text="" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="497.0" />
-                  <Button layoutX="762.0" layoutY="695.0" mnemonicParsing="false" onAction="#discharge" prefHeight="40.0" prefWidth="100.0" style="-fx-font-size: 18;" text="Salva" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="100.0" />
+                  <Button fx:id="dischargeButton" layoutX="762.0" layoutY="695.0" mnemonicParsing="false" onAction="#discharge" prefHeight="40.0" prefWidth="100.0" style="-fx-font-size: 18;" text="Salva" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="100.0" />
                </children>
             </AnchorPane>
          </children>

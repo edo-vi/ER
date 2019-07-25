@@ -283,7 +283,7 @@ public class Sistema {
 
                         return new Tuple<>(new StringCommand("DISCHARGED_A_PATIENT"), s);
                     } catch (Exception e) {
-                        System.out.println("Sistema, Discharge summary: " + e);
+                        store.update(new StringCommand("ERROR", "System Error.\nUnlucky."));
                         return new Tuple<>(new StringCommand("COULD NOT_DISCHARGE_A_PATIENT"), s);
                     }
                 })
@@ -324,7 +324,7 @@ public class Sistema {
                             return new Tuple<>(new StringCommand("COULD_NOT_ADMIT_A_PATIENT"), s);
                         }
                     } catch (Patient.MoreThanOneActiveRecoveryException | Recovery.PatientNotAdmittedException e) {
-                        System.out.println("Sistema, admission summary: " + e);
+                        store.update(new StringCommand("ERROR", "System Error.\nUnlucky."));
                         return new Tuple<>(new StringCommand("COULD_NOT_ADMIT_A_PATIENT_EXC"), s);
                     }
                 })
@@ -373,7 +373,10 @@ public class Sistema {
                         AlarmTimer att = new AlarmTimer((int) c.getArg(), store);
                         x.setAlarmTimerThread(att);
                         att.start();
-                    } else x.getAlarmTimerThread().restart();
+                    } else {
+                        x.getAlarmTimerThread().changeLevel((int) c.getArg());
+                        x.getAlarmTimerThread().restart();
+                    }
 
                     return new Tuple<>(new StringCommand("START_COUNTDOWN"), s);
                 })
