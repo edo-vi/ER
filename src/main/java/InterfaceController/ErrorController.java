@@ -40,6 +40,7 @@ public class ErrorController {
         if(areAlarmsActive) {
             areAlarmsActive = false;
             store.update(new StringCommand("RESET_ALARMS"));
+            store.update(new StringCommand("STOP_COUNTDOWN"));
         }
     }
 }
