@@ -30,8 +30,8 @@ public class AlarmLoggedControlController {
         dis = this.stream.subscribe(se -> {
            String command = se.command().name();
             if(command.equals("ACTIVE_ALARM")) {
+                Tuple<Integer, Sickness> elem = (Tuple) se.command().getArg();
                 Platform.runLater(() -> {
-                    Tuple<Integer, Sickness> elem = (Tuple) se.command().getArg();
                     messageLabel.setText("Attenzione! Allarme di livello " + elem.fst() + "\n" +
                             elem.snd() + " paziente " +
                             ((elem.snd().equals(Sickness.FLUTTER)) ? se.state().getActiveRecoveries().get(0).getPatient().getName() : sys.getSickPatient().getName()) +
@@ -40,7 +40,7 @@ public class AlarmLoggedControlController {
                             "\n" +
                             "Richiesto l'intervento del dottor " + se.state().getDocAlarm().getName());
                 });
-                store.update(new StringCommand("ACTIVATE_COUNTDOWN", ((Tuple) se.command().getArg()).fst()));
+                store.update(new StringCommand("ACTIVATE_COUNTDOWN", elem.fst()));
             }
         });
     }

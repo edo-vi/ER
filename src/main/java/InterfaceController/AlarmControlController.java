@@ -45,8 +45,8 @@ public class AlarmControlController {
                     store.update(new StringCommand("ERROR", "Username e Password non validi.\nSolo i dottori possono spegnere l'allarme."));
                 }
             } else if(command.equals("ACTIVE_ALARM")) {
+                Tuple<Integer, Sickness> elem = (Tuple) se.command().getArg();
                 Platform.runLater(() -> {
-                    Tuple<Integer, Sickness> elem = (Tuple) se.command().getArg();
                     messageLabel.setText("Attenzione! Allarme di livello " + elem.fst() + "\n" +
                             elem.snd() + " paziente " +
                             ((elem.snd().equals(Sickness.FLUTTER)) ? se.state().getActiveRecoveries().get(0).getPatient().getName() : sys.getSickPatient().getName()) +
@@ -55,7 +55,7 @@ public class AlarmControlController {
                             "\n" +
                             "Richiesto l'intervento di un dottore");
                 });
-                store.update(new StringCommand("ACTIVATE_COUNTDOWN", ((Tuple) se.command().getArg()).fst()));
+                store.update(new StringCommand("ACTIVATE_COUNTDOWN", elem.fst()));
             }
         });
     }
