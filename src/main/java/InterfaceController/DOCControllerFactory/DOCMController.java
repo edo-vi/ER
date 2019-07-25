@@ -121,7 +121,7 @@ public class DOCMController implements DOCController {
             ObservableList<Administration> data2 = tableAdministrations.getItems();
             data2.removeAll(data2);
             administrations.forEach(a -> {
-                if(new Integer(new Date().toString().substring(11, 13)) - a.getHour() <= 2)
+                if(a.getDate().after(new Date(new Date().getTime() - 2*24*60*60*1000)))
                     data2.add(a);
             });
         }
