@@ -3,7 +3,7 @@
 \usepackage[11pt]{extsizes}
 \usepackage[top=2cm,bottom=3cm,left=2.3cm,right=2.3cm]{geometry}
 
-\title{Relazione progetto di Ingegneria del software 2019}
+\title{Relazione progetto di Ingegneria del software 2019 \\ \\ SI\hspace{.4mm}CURA }
 \author{***REMOVED***, Elia Piccoli, Marian Statache}
 \date{Luglio 2019}
 \usepackage{tikz}
@@ -35,6 +35,7 @@
 \begin{document}
 
 \maketitle
+\tableofcontents
 
 \newpage
 \section{Ingegneria e sviluppo}
@@ -90,18 +91,6 @@ Di seguito parte dei casi d'uso utilizzati, aggregati per chiarezza nei vari ute
 
 \end{usecase}
 
-
-\begin{usecase}
-	\addtitle{Caso d'uso}{Visualizzazione dati dei pazienti ricoverati (ultime due ore)}
-	\addfield{Utente:}{Primario, medico, infermiere}
-	\addfield{Precondizioni:}{L'utente deve essersi autenticato}
-	\additemizedfield{Passi}{
-		\item Nella propria dashboard l'utente seleziona la finestra per visualizzare i dati dei pazienti ricoverati
-		\item L'utente visualizza, in una tabella, i dati relativi ai parametri vitali, aggiornati in tempo reale ed esclusivi delle ultime due ore, di tutti i pazienti ricoverati. Visualizza inoltre tutte le somministrazioni non più vecchie di due giorni amministrate al paziente.
-	}
-	\addfield{Postcondizioni:}{L'utente visualizza le informazioni, non più vecchie di due ore, sui parametri vitali dei pazienti ricoverati, oltre che informazioni sulle amministrazioni.}
-\end{usecase}
-\vspace{4cm}
 \textbf{{\large \textit{Medico}}}
 \vspace{.25cm}
 \begin{usecase}
@@ -149,7 +138,7 @@ Di seguito parte dei casi d'uso utilizzati, aggregati per chiarezza nei vari ute
 	\addfield{Postcondizioni:}{La prescrizione viene aggiunta a quelle associate al paziente ricoverato.}
 	
 \end{usecase}
-
+\vspace{3cm}
 \textbf{{\large \textit{Infermiere}}}
 \vspace{.25cm}
 \begin{usecase}
@@ -177,6 +166,31 @@ Di seguito parte dei casi d'uso utilizzati, aggregati per chiarezza nei vari ute
 	
 \end{usecase}
 
+\vspace{2cm}
+\textbf{{\large \textit{Tutti}}}
+\vspace{.25cm}
+\begin{usecase}
+	\addtitle{Caso d'uso}{Visualizzazione dati dei pazienti ricoverati (ultime due ore)}
+	\addfield{Utente:}{Primario, medico, infermiere}
+	\addfield{Precondizioni:}{L'utente deve essersi autenticato}
+	\additemizedfield{Passi}{
+		\item Nella propria dashboard l'utente seleziona la finestra per visualizzare i dati dei pazienti ricoverati
+		\item L'utente visualizza, in una tabella, i dati relativi ai parametri vitali, aggiornati in tempo reale ed esclusivi delle ultime due ore, di tutti i pazienti ricoverati. Visualizza inoltre tutte le somministrazioni non più vecchie di due giorni amministrate al paziente.
+	}
+	\addfield{Postcondizioni:}{L'utente visualizza le informazioni, non più vecchie di due ore, sui parametri vitali dei pazienti ricoverati, oltre che informazioni sulle amministrazioni.}
+\end{usecase}
+
+\begin{usecase}
+	\addtitle{Caso d'uso}{Visualizzazione cartelle cliniche}
+	\addfield{Utente:}{Primario, medico, infermiere}
+	\addfield{Precondizioni:}{L'utente deve essersi autenticato}
+	\additemizedfield{Passi}{
+		\item Nella propria dashboard l'utente seleziona la finestra per visualizzare le cartelle cliniche
+		\item Inserisce il nome del paziente nella barra di ricerca e preme il pulsante di conferma
+		\item Seleziona dalla tabella dei risultati il ricovero voluto (un paziente può avere più di un ricovero nel suo storico)
+	}
+	\addfield{Postcondizioni:}{L'utente visualizza le informazioni relativi al ricovere del paziente selezionato}
+\end{usecase}
 \begin{figure}[t]
 	\begin{tikzpicture}
 	\begin{umlsystem}[x=0, fill=red!5]{Casi d'uso}
@@ -284,7 +298,7 @@ In generale, scelta è stata guidata e ispirata dai sistemi web dove è presente u
  		Prescription & \underline{Id}, Drug, Duration, Daily dose, Number of doses, Doctor, \textit{Recovery} \\ 
  		Recovery & \underline{Id}, Start date, End date, Diagnosis, Active, Discharge summary, Recovery state, \textit{Patient}\\
  		Monitoring & \underline{Id}, Date, Diastolic pressure, Systolic pressure, Heart rate, Temperature, \textit{Recovery}
- 	\end{tabular}\caption{Schema logico, rappresentanti campi e relazioni delle entità del database. I campi sottolineati indicano le \textit{primary keys}, quelli in corsivo le \textit{foreign keys} (mappate sempre ai campi Id della rispettiva entità).}\label{entitiesTable}
+ 	\end{tabular}\caption{Schema logico, rappresentante campi e relazioni delle entità del database. I campi sottolineati indicano le \textit{primary keys}, quelli in corsivo le \textit{foreign keys} (mappate sempre ai campi Id della rispettiva entità).}\label{entitiesTable}
  	
  \end{figure}
  \paragraph{\textbf{Design dello schema dati}} Quando si è passati all'analisi della gestione dei dati presenti nel sistema, come già citato, è subito emerso come i diversi dati fossero strettamente legati tra loro tramite relazioni, che creavano così il `pacchetto' di informazioni del singolo paziente registrato e gestito dal sistema. Finita questa fase si è passati alla creazione del Diagramma E/R (Entity Relationship), stilando così un primo schema che rappresentava come avrebbe dovuto essere costruito il sistema di storage sulla base delle considerazioni effettuate precedentemente. Una volta corrette alcune imprecisioni, e confermato la bozza, si è passati alla creazione del diagramma E/R ristrutturato, riportato nella figura \ref{ERdiagram}.
@@ -417,7 +431,7 @@ Oltre a queste verifiche periodiche si è anche eseguito un controllo finale, al 
 \paragraph{\textbf{Verifica}} Molto importante è stata anche la verifica della correttezza del programma che data la sua non banale complessità ha mostrato spesso comportamenti sbagliati in fase di programmazione. A tal fine si è deciso di operare nel seguente modo: \begin{itemize}
 	\item una fase di \textit{development testing} utilizzando \textit{unit tests} per tutte quelle classi e aree di più facile testabilità automatica: quelle meno dipendenti dagli input specifici dell'utente, eseguite dall'interfaccia grafica, e dall'integrazione con altri oggetti del sistema. Essi sono stati eseguiti affindandosi ad una libreria esterna, \textit{JUnit4}, e sono stati principalmente usati per verificare il comportamento della classe \textit{Sistema}, il `bootstrapper' del programma, del gestore centralizzato dello stato, di implementazione interna complessa, e delle diverse entità (vedi figura \ref{entitiesTable}) che lo costituiscono, le quali hanno richiesto particolare attenzione soprattutto  in termini di gestione del loro stato interno e delle sue mutazioni, che se avvenisse in modo sbagliato provocherebbe errori di alta severità: pazienti con più ricoveri attivi, in uno stato non ben definito (non \textit{in attesa}/\textit{ricoverato}/\textit{dimesso}), somministrazioni non associate a prescrizioni etc. 
 	\item una fase di \textit{release testing} dove si è cercato di testare tutti i comportamenti possibili degli utenti finali simulando diverse casistiche e flow di lavoro per verificare che il sistema gestisse correttamente gli input. In particolare si è testato il corretto comportamento di tutti i pulsanti e dei menù e si è verificato che le diverse entità, consistenti lo stato del sistema, fossero correttamente gestite, manipolate, e visualizzate nelle diverse view degli utenti. Questo tipo di test è stato eseguito a parte da tutti i membri del team cercando di simulare il comportamento di un soggetto non tecnico.
-	\item una fase di \textit{user testing} dove si è fatto testare il software ad un soggetto di media/moderata abilità informatica per verificare l'usabilità del programma di fronte ad input reali e sostanzialmente conformi a quelli che ci si aspetta da soggetti normali che utilizzerebbero in modo coerente il programma. Questa fase è stata molto utile per implementare piccole migliorie all'usabilità del programma come ad esempio un ritocco del comportamento dei menù a tendina, modifiche ad alcune tabelle --- al fine di includere dati differenti o formattati diversamente --- e anche lievi cambiamenti alla struttura e disposizione degli elementi dell'interfaccia grafica (tipo rendere alcuni pulsanti non attivi, cambiare alcune grafiche etc.). 
+	\item una fase di \textit{user testing} dove si è fatto testare il software ad un soggetto di media/moderata abilità informatica per verificare l'usabilità del programma di fronte ad input reali e sostanzialmente conformi a quelli che ci si aspetta da soggetti normali che utilizzerebbero in modo coerente il programma. Questa fase è stata molto utile per implementare piccole migliorie all'usabilità del programma come ad esempio un ritocco del comportamento dei menù a tendina, modifiche ad alcune tabelle --- al fine di includere dati differenti o formattati diversamente --- e anche lievi cambiamenti alla struttura e disposizione degli elementi dell'interfaccia grafica (tipo rendere alcuni pulsanti non attivi, cambiare alcune grafiche etc.)
 \end{itemize}
 
 \begin{figure}[t]
@@ -758,7 +772,7 @@ L'organizzazione, quindi, distingue nettamente le parti che si occupano del data
 
 \begin{landscape}
 \begin{figure}
-	%\includegraphics[scale=.085]{ClassDiagramImages/ER.pdf}
+	\includegraphics[scale=.085]{ClassDiagramImages/ER.pdf}
 	\caption{\textit{Class diagram} dell'intero programma.}\label{totalclassdiagram}
 \end{figure}
 \end{landscape}
