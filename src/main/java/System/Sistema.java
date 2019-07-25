@@ -373,7 +373,10 @@ public class Sistema {
                         AlarmTimer att = new AlarmTimer((int) c.getArg(), store);
                         x.setAlarmTimerThread(att);
                         att.start();
-                    } else x.getAlarmTimerThread().restart();
+                    } else {
+                        x.getAlarmTimerThread().changeLevel((int) c.getArg());
+                        x.getAlarmTimerThread().restart();
+                    }
 
                     return new Tuple<>(new StringCommand("START_COUNTDOWN"), s);
                 })
