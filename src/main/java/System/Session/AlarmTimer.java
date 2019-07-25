@@ -54,7 +54,7 @@ public class AlarmTimer extends Thread {
     }
 
     private class AlarmTimerThread extends TimerTask {
-        private final String mgsDeath = "RIP\n";
+        private final String mgsDeath = "Avete perso il paziente!\nIn caso di necessità questo è il\nnumero delle onoranze funebri: +39 348 3965808";
         private final String msgAlert = "Si consiglia di chiamare un medico.\nIl paziente ha i minuti contati!!";
         private String msg;
         public AlarmTimerThread() {
