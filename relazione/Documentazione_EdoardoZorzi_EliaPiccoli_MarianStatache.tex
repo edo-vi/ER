@@ -36,7 +36,7 @@
 
 \maketitle
 
-
+\newpage
 \section{Ingegneria e sviluppo}
 \subsection{Organizzazione iniziale del processo di sviluppo}
 
@@ -50,6 +50,8 @@ Ad Elia ed Edoardo invece è stato assegnato il compito di progettare e sviluppar
 \paragraph{Gestione del codice} Per permettere, soprattutto inizialmente, a tutti i membri del team di contribuire al progetto in modo personale senza creare conflitti nel codice si è deciso sin da subito di utilizzare un sistema di versionamento: la scelta è ricaduta subito su \textit{Git}, data la sua ubiquità e portabilità, installato localmente sulle macchine dei membri del team e riferente una repository remota privata localizzata su \textit{Github}. Oltre che a permettere di evitare conflitti e di mantenere coerente lo stato del progetto per tutti i membri questa scelta è stata molto importante soprattutto per risolvere diversi problemi relativi all'installazione e utilizzo di un programma per la gestione del database: l'uso di diverse \textit{branches}, utilizzate anche per lo sviluppo di parti sperimentali del sistema, ha permesso lo sviluppo in contemporanea, almeno fino alla risoluzione di tutti i problemi di installazione e configurazione, del codice concernente la gestione del database e di quello relativo alle interfacce grafiche e i loro controllori.
 
 \paragraph{Gestione dei dati} La chiara natura relazionale dei dati necessari per il funzionamento del sistema ha subito portato alla decisione di affidarsi ad un RDBMS per la loro gestione, e in particolare a PostgreSQL; tale scelta è stata motivata principalmente dalla previa esperienza di utilizzo di un membro del team. Oltre che ad utilizzare un RBDMS si è inoltre deciso di affidarsi ad un ORM --- Hibernate --- per il mapping tra entità nel database e oggetti in memoria: questa decisione è derivata soprattutto dalla volontà di mantenere semplice la logica del sistema che, per sua natura e limitata dimensione, non ha mai richiesto la maggior efficienza derivante dall'utilizzo di pure query SQL. 
+
+\paragraph{Consulenze} Nella fase progettuale è stato consultato anche un medico, la dott.sa De Carli, per avere indicazioni sui dettagli che rendono utile e in linea con le esigenze dei medici un software di questo tipo. Tra le tante cose, ha guidato il team nella definizione dei valori dei parametri vitali da monitorare, quelli che normalmente sono nei limiti accettabili, e quelli che sono motivo di allarme. Ha poi aiutato con le informazioni che sono solitamente presenti in una lettera di dimissione, oltre che quelle richieste in alcune delle schermate grafiche del software. E ha infine ricordato che, trattandosi del reparto di terapia intensiva, la lettera di dimissione non dimette realmente un paziente: infatti gli unici due modi per lasciare tale reparto sono grazie ad un miglioramento, e quindi con un cambio di reparto, oppure per via di un decesso.
 
 \subsection{Ingegneria dei requisiti}
 Data la natura didattica del progetto non si sono seguite le classiche tecniche di elicitazione dei requisiti ma essi sono stati ricavati e studiati a partire dalla specifica di consegna, considerata, almeno in parte, come documento dei requisiti. La stesura iniziale delle principali funzionalità, sotto forma di un provvisorio schema dei casi d'uso, è stata eseguita nella fase di pre-design da parte di tutti i membri del team basandoci appunto su tale documento dei requisiti.
@@ -134,7 +136,7 @@ Di seguito parte dei casi d'uso utilizzati, aggregati per chiarezza nei vari ute
 	\addfield{Postcondizioni:}{Se il numero di pazienti attualmente ricoverati è minore di dieci e ha accettato di ammetterne uno inserendo la diagnosi, allora il nome del paziente scompare dal menù a tendina ed esso sarà compreso tra quelli ricoverati}
 	
 \end{usecase}
-\vfill
+\vspace{4cm}
 \begin{usecase}
 	\addtitle{Caso d'uso}{Aggiunta di prescrizioni}
 	\addfield{Utente:}{Medico}
@@ -161,7 +163,7 @@ Di seguito parte dei casi d'uso utilizzati, aggregati per chiarezza nei vari ute
 	\addfield{Postcondizioni:}{Il paziente è inserito in stato di attesa}
 	
 \end{usecase}
-\
+
 \begin{usecase}
 	\addtitle{Caso d'uso}{Aggiunta di somministrazioni}
 	\addfield{Utente:}{Infermiere}
@@ -181,7 +183,39 @@ La scelta di design iniziale del sistema è stata fatta a tavolino tra tutti i me
 Dopo diverse discussioni e lavoro di gruppo e individuale si è deciso a grandi passi di adottare una architettura generalmente simile a quella adottata da alcuni frameworks di sviluppo web: un sistema centralizzato (\textit{repository}) di gestione e salvataggio dello stato che ad ogni modifica è propagato a tutta l'applicazione in ascolto e che si aggiorna in modo asincrono (\textit{observer pattern}); componenti decentralizzati, creati da \textit{factories} adoperate dal sistema centrale, che rappresentano singole finestre e che comprendono sia la \textit{view}, cioè quello che vede l'utente, sia la business logic (\textit{controller}) che determina come si reagisce alle diverse interazioni e modifiche dello stato centrale, oltre che ai dati (\textit{model}) ottenuti e aggiornati centralmente dal gestore dello stato --- \textit{pattern MVC}.
 
 Oltre a questo è stato spesso fatto uso della \textit{dependency injection} per garantire una maggiore modularità dei componenti e limitare la dipendenza da classi statiche e stato nascosto, spesso rischioso e prono ad errori.
- \textcolor{red!70!black}{***TODO (spiegazione del design dello stato, completa patterns)***} %TODO 
+ 
+ \paragraph{Design e scelte grafiche} Preliminarmente si è deciso di seguire un design non troppo informale, sobrio, ma al contempo elegante ed accattivante. Per la realizzazione dell'interfaccia grafica Java FX è sembrata la scelta più comoda.
+ Si è scelto di scrivere l'interfaccia in lingua italiana, dato che gli utenti sono italiani, e che magari in ambito medico è più importante l'immediatezza della lettura. 
+ Il software avrebbe da subito dovuto avere una parte dedicata al monitoraggio in tempo reale, comune ed accessibile a tutti, anche senza login. L'altra parte dell'applicazione, invece, sarebbe stata dedicata alle operazioni che i vari utenti avrebbero potuto fare autenticandosi.
+ Arrivando alla progettazione nel dettaglio di ogni singola finestra, quella dedicata al monitoraggio live è stata ideata in modo tale da rendere ben visibili le varie informazioni, grazie all'ausilio di due grafici e alla rappresentazione in grande dei valori dei parametri, posti sopra la tabella dello dove sono salvati tutti. Inoltre, la volontà di mettere nella parte inferiore i dieci grandi tasti per ogni letto, al posto ad esempio di un menù a tendina, è stata dettata dalla necessità che hanno i medici di effettuare con rapidità certe azioni. All'interno di questa finestra, poi, è possibile accedere alla simulazione dei vari allarmi, per poter verificare il comportamento del software in tali situazioni. 
+ \begin{figure}\begin{center}
+ 		\begin{tikzpicture}[scale=.9] \begin{umlseqdiag}
+ 		\umlobject[class= Sistema, fill=blue!10!white ] {a} 
+ 		\begin{umlcreatecall}[class=Store, fill obj=blue!10!white] {a}{b} \end{umlcreatecall}
+ 		\begin{umlcreatecall}[class={InterfacesController}, fill obj=blue!10!white] {a}{c} \end{umlcreatecall}
+ 		\begin{umlcall}[type=asynchron, op={\scriptsize{update("LOAD")}}]{a}{b}\end{umlcall}
+ 		\begin{umlcallself}[op={\scriptsize{load state from db}}]{b}
+ 		\end{umlcallself}
+ 		\begin{umlcall}[type=asynchron, op={\scriptsize{setup ui} (instanziando \textit{components})}, dt=13]{a}{c}
+ 		\end{umlcall}
+ 		\end{umlseqdiag} \end{tikzpicture}
+ 	\end{center}
+ 	\caption{\textit{Sequence diagram} delle operazioni eseguite durante il bootstrapping del programma. }
+ \end{figure}
+
+ Proprio in merito a tali allarmi, sarà possibile notare testando tale funzionalità, che è stato aggiunto un segnale acustico durante l'attesa dello spegnimento dell'allarme, oltre ad un segnale luminoso, opportunamente programmato, da parte della tastiera RGB del terminale in uso, tutto ciò per assicurarsi l'attenzione del personale nei momenti critici.
+ La parte dedicata all'utilizzo con autenticazione invece, individua tre tipi di utenti, primario, medici e infermieri: ognuna delle corrispondenti schermate che si aprono in seguito al login, permette loro 4 azioni, di cui le prime 2 specifiche per la tipologia di utente, e le ultime 2 comuni a tutti. Tutte queste schermate sono ovviamente di pari dimensione.
+ Nel caso del primario, la schermata di visione delle ultime 2 ore di parametri vitali, è presente il tasto con la seconda delle funzioni specifiche del primario: la stampa di un report riassuntivo degli ultimi 7 giorni, che genera un file PDF con tali informazioni, e ne permette, appunto, la stampa.
+ Un altro PDF viene generato e visualizzato quando il primario effettua una dimissione, contenente la relativa lettera.
+ Infine, dentro la sezione di aggiunta di un nuovo paziente da parte degli infermieri, è possibile notare un pulsante in fianco al campo del codice fiscale, che ne permette, così, oltre che l'inserimento manuale, anche il calcolo automatico.
+ Durante tutto il processo un'altra priorità è stata quella di disporre in modo omogeneo sulle schermate i vari componenti, occupando al meglio lo spazio a disposizione, senza sbilanciare e rendere ?pesanti? certe parti dello schermo, tutto ciò per rendere piacevole l'utilizzo dell'applicazione, oltre che chiaro e rapido.
+ 
+\paragraph{Stato} Uno dei punti di forza del design di tale architettura è la gestione centralizzata dello stato che viene mantenuto all'interno del sistema generale il quale mostra un interfaccia unica per il suo accesso e la sua modifica. In particolare, ogni sua manipolazione può avvenire esclusivamente a seguito dell'invio di un comando al gestore, precedentemente inizializzato specificando l'insieme di tutti i comandi possibili e le diverse funzioni a loro associate. 
+In questo modo è necessario specificare, di volta in volta, quando si va a costruire l'architettura in generale, quali sono le varie modifiche che potrebbero essere eseguite dai diversi componenti del sistema e l'interfaccia unica e comune ---i comandi --- che deve essere usata a tal fine. In questo modo si evita il problema di modifiche ´nascoste' dello stato che porta spesso ad errori quando diviene difficile determinare da chi, e dove, sono state eseguite modifiche.
+
+Altro punto di forza del design è la propagazione asincrona delle modifiche a tutti i \textit{subscribers}, secondo il pattern \textit{observer}: una volta instanziato lo Store da parte del SIstema i vari controllori si sottoscrivono ad esso, passandogli una funzione, che verrà richiamata asincronicamente ad ogni cambiamento di stato: questo permette, oltre ad una semplificazione della struttura dell'architettura, non dipendente da chiamate bloccanti a metodi specifici dello Store, di creare interfacce reattive che si aggiornano in tempo reale.Questa astrazione inoltre riduce la complessità associata alla gestione dei dati del sistema che altrimenti dovrebbero essere propagata in diversi stadi ai vari componenti: questo approccio è molto fragile e prono ad errori dato che spesso porta a diversi livelli di aggiornamento dei dati consegnati ai vari componenti che quindi si trovano in uno stato inconsistente; utilizzando il sistema centralizzato con interfaccia fissata, si evit
+%TODO
+
 
 \begin{figure}\begin{center}
 		\begin{tikzpicture}[scale=1] \begin{umlseqdiag}
@@ -196,6 +230,7 @@ Oltre a questo è stato spesso fatto uso della \textit{dependency injection} per 
 		\begin{umlcall}[op={\scriptsize{update(c: Command)}}, type=asynchron, dt=14] {c2}{s}\end{umlcall}
 		\begin{umlcallself}[op={\scriptsize{stato mutato}},dt=0.8]{s}
 		\begin{umlcall}[op={\scriptsize{onNext(se: StateEvent)}}, type=asynchron, dt=4]{s}{c1}
+		
 		\begin{umlcall}[op={\scriptsize{onNext(se: StateEvent)}}, type=asynchron , dt=0]{s}{c2}
 		\begin{umlcallself}[op={\scriptsize{f1(se)}}]{c1}	\end{umlcallself}
 		\begin{umlcallself}[op={\scriptsize{f2(se)}}]{c2}	\end{umlcallself}
@@ -204,7 +239,7 @@ Oltre a questo è stato spesso fatto uso della \textit{dependency injection} per 
 		\end{umlcall}
 		\end{umlcallself}
 		
-		\fill[white] (3.851,-4.59) -- (4.155,-4.59) -- (4.155,-4.62) -- (3.851, -4.62);
+		\fill[white] (3.851,-4.57) -- (4.155,-4.57) -- (4.155,-4.65) -- (3.851, -4.65);
 		
 		
 		\end{umlseqdiag} \end{tikzpicture}
@@ -212,20 +247,7 @@ Oltre a questo è stato spesso fatto uso della \textit{dependency injection} per 
 	\caption{\textit{Sequence diagram} dell'interazione di due generici controllers con lo stato centralizzato gestito dallo Store. Dopo aver invocato in modo non bloccante \textit{subscribe()}, passandogli una funzione, qualsiasi \textit{update()} chiamato sullo store comporta una mutazione interna dello stato, sulla base del comando passato: il nuovo stato viene quindi propagato a tutti i controllori `sottoscritti' tramite \textit{onNext()}; la funzione precedentemente passata in \textit{subscribe} sarà quindi chiamata, all'interno di tutti i controllori, sul nuovo stato ricevuto dallo Store.  }
 \end{figure}
 
-\begin{figure}\begin{center}
-		\begin{tikzpicture}[scale=.9] \begin{umlseqdiag}
-		\umlobject[class= Sistema, fill=blue!10!white ] {a} 
-		\begin{umlcreatecall}[class=Store, fill obj=blue!10!white] {a}{b} \end{umlcreatecall}
-		\begin{umlcreatecall}[class={InterfacesController}, fill obj=blue!10!white] {a}{c} \end{umlcreatecall}
-		\begin{umlcall}[type=asynchron, op={\scriptsize{update("LOAD")}}]{a}{b}\end{umlcall}
-		\begin{umlcallself}[op={\scriptsize{load state from db}}]{b}
-		\end{umlcallself}
-		\begin{umlcall}[type=asynchron, op={\scriptsize{setup ui} (instanziando \textit{components})}, dt=13]{a}{c}
-		\end{umlcall}
-		\end{umlseqdiag} \end{tikzpicture}
-	\end{center}
-	\caption{\textit{Sequence diagram} delle operazioni eseguite durante il bootstrapping del programma. }
-\end{figure}
+
 
 \begin{figure}\begin{center}
 		\begin{tikzpicture}[] \begin{umlseqdiag}
@@ -238,11 +260,13 @@ Oltre a questo è stato spesso fatto uso della \textit{dependency injection} per 
 		\begin{umlcall}[type=asynchron, op={\scriptsize{attiva listener}}, dt=4]{ci}{cc}\end{umlcall}
 		
 		\begin{umlcallself}[op={\scriptsize{aggiornamento}},dt=3]{cc}\end{umlcallself}
-		\begin{umlfragment} [ type=opt,inner xsep=9]
+		\begin{umlfragment} [ type=opt,
+inner xsep=9]
 		\begin{umlcall}[type=asynchron, op={\scriptsize{update(c: Command)}}, dt=6]{cc}{s}\end{umlcall}
 		%\begin{umlcall}[type=asynchron, dt=6, op={\scriptsize{onNext(se)}}]{s}{cc}\end{umlcall}	
 		\end{umlfragment}
-		\begin{umlfragment} [ type=opt,inner xsep=9]
+		\begin{umlfragment} [ type=opt,
+inner xsep=9]
 		\begin{umlcall}[type=asynchron, op={\scriptsize{components update}}, dt=8]{cc}{ci}\end{umlcall}
 		\begin{umlcall}[type=asynchron, op={\scriptsize{interfaccia aggiornata}}, dt=4]{ci}{a}\end{umlcall}
 		%\begin{umlcall}[type=asynchron, dt=6, op={\scriptsize{onNext(se)}}]{s}{cc}\end{umlcall}	
@@ -278,9 +302,6 @@ Oltre a questo è stato spesso fatto uso della \textit{dependency injection} per 
 	\end{center}\caption{\textit{Class diagram} che mostra la relazione tra InterfaceController e i vari oggetti che costituiscono la parte View-Controller dell'architettura \textit{MVC} dell'applicazione. }\label{ComponentClassDiagram}
 \end{figure}
 
-\subsection{Implementazione}
- Heila \textcolor{red!70!black}{***TODO***} %todo
- 
 \subsection{Validazione e verifica}
 Le operazioni di validazione e verifica sono state fondamentali per garantire che il progetto rispettasse la specifica e i requisiti, e che si comportasse in modo coerente e prevedibile, senza errori, a tutti gli input previsti e operazioni eseguibili degli utenti.
 
@@ -316,8 +337,13 @@ Oltre a queste verifiche periodiche si è anche eseguito un controllo finale, al 
 %
 %\section{Specifica del sistema}
 
+\subsection{Evoluzione}
+Per quanto riguarda la struttura del codice essa è stata pensata affinché non precludesse l'aggiunta di ulteriori funzionalità, non indicate nella specifica: in è stata pensata affinché tali aggiunte non stravolgeresso tutto il lavoro fatto in precedenza, già strutturato in modo modulare ed estendibile. 
+Infatti, sia per quanto riguarda un potenziale completamento del software, per portarlo da demo ad effettiva versione definitiva completa in ogni dettaglio, sia per aggiunte extra, ampliando con nuovi moduli il software per ulteriori specifiche fornite in un secondo momento, l'architettura permette l'integrazione delle componenti con estrema facilità.
+Esempi di interventi che dovremo effettuare al fine di rendere operativo il software sul campo, sono il completamento dell'algoritmo del calcolo del codice fiscale, che per ora non tiene conto del luogo di nascita, oppure la stabilizzazione della visualizzazione dei grafici di monitoraggio, o ancora, il perfezionamento della ricerca delle cartelle cliniche.
+L'organizzazione, quindi, distingue nettamente le parti che si occupano del database, quelle del sistema di controllo, e le componenti prettamente grafiche, tramite opportuna suddivisione in sorgenti e package. Si individua, così, in modo rapido il luogo di intervento per eventuali modifiche o risoluzioni di bug.
 \section{Specifica}
-\subsection{Casi d'uso}
+
 \begin{figure}[b]
 \begin{tikzpicture}
 \begin{umlsystem}[x=0, fill=red!5]{Casi d'uso}
@@ -401,7 +427,7 @@ Oltre a queste verifiche periodiche si è anche eseguito un controllo finale, al 
 	\node[darkgray!80!white, text width=2.5cm] at (9.7,-3.2) {Visualizza dati ultime 2h};
 
 	\node[darkgray!80!white,] at (13,-2.2) {Visualizza cartella clinica};
-5	\end{tikzpicture}\caption{\textit{Activity diagram} delle diverse azioni che possono essere compiute dal primario.}
+	\end{tikzpicture}\caption{\textit{Activity diagram} delle diverse azioni che possono essere compiute dal primario.}
 \end{figure}
 \begin{figure}[t]
 	\begin{tikzpicture} [scale=.92]
@@ -523,8 +549,6 @@ Oltre a queste verifiche periodiche si è anche eseguito un controllo finale, al 
 	\end{tikzpicture}\caption{\textit{Activity diagram} delle diverse azioni che possono essere compiute dall'infermiere.}
 \end{figure}
 
-
-\subsection{Diagrammi di classe}
 \begin{figure}
 	\begin{center}
 		\begin{tikzpicture}
