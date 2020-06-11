@@ -135,7 +135,7 @@ public class NURAPController implements NURController {
     }
 
     @FXML protected void showSupport() {
-        store.update(new StringCommand("ERROR", "Per supporto contattare i Main Developers\nPiccoli Elia, Marian Statache & ***REMOVED***." +
+        store.update(new StringCommand("ERROR", "Per supporto contattare i Main Developers\nPiccoli Elia, Marian Statache & Edoardo Zorzi." +
                 "\nJava is the best programming language."));
     }
 }
